@@ -32,6 +32,13 @@ void GamePlay::update(float dt)
 	}
 }
 
+void GamePlay::updateAngle(shared_ptr<Character>& character, const Vec2& loc)
+{
+	Vec2 arrowWorldSpace = character->getArrowWorldSpace();
+	auto angle = atan2(loc.y - arrowWorldSpace.y, loc.x - arrowWorldSpace.x);
+	_player->sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
+}
+
 void GamePlay::posInit()
 {
 	_command = make_unique<Command>();
@@ -50,7 +57,6 @@ void GamePlay::createPlayer()
 	_player->sprite->setScale(ratio);
 
 	_player->addParrent(this);
-
 
 	//for AIM
 	Vec2 centerpos = Vec2(_origin.x + _screenSize.width * 0.5f, _origin.y + _screenSize.height / 2.f);
@@ -90,13 +96,24 @@ void GamePlay::createSchedule()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 void GamePlay::mouseBegan(EventMouse* event)
 {
-
+	Vec2 mousePosition = Vec2(event->getCursorX(), event->getCursorY()) + _origin;
+	updateAngle(_player, mousePosition);
 }
 
 void GamePlay::mouseMoved(EventMouse* event)
 {
-	Vec2 pos = Vec2(event->getCursorX(), event->getCursorY()) + _origin;
-	_aim->setPosition(pos);
+	Vec2 mousePosition = Vec2(event->getCursorX(), event->getCursorY()) + _origin;
+	if (_aim)
+	{
+		Vec2 pos = mousePosition;
+		_aim->setPosition(pos);
+	}
+
+	//rotate player forward pointer
+	if (_player)
+	{
+		updateAngle(_player, mousePosition);
+	}
 }
 
 void GamePlay::mouseRelease(EventMouse* event)

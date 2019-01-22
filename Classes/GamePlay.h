@@ -17,6 +17,7 @@ class GamePlay : public Layer
 	void createListener();
 	void createSchedule();
 
+	void updateAngle(shared_ptr<Character>& character, const Vec2& loc);	//to rotate player for mouse/touch
 	void update(float dt);
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)

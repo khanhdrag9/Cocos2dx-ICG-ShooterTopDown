@@ -14,6 +14,7 @@ public:
 	virtual void update() = 0;
 	void addParrent(Node* parrent);
 
+	CC_SYNTHESIZE(Vec2, _arrowWorldSpace, ArrowWorldSpace);
 public:
 	Sprite* sprite;
 

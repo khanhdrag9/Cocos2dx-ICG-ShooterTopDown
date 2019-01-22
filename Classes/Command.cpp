@@ -34,6 +34,8 @@ void Command::remote(shared_ptr<Character> character, const EventKeyboard::KeyCo
 
 void Command::handleActionsCharacter(shared_ptr<Character>& character)
 {
+	character->setArrowWorldSpace(character->sprite->getParent()->convertToWorldSpace(character->sprite->getPosition()));	//update to rotate this
+
 	float incre = 5.f;
 	if (character->actions[command::MOVE_UP])
 	{
