@@ -26,7 +26,23 @@ void Command::remote(shared_ptr<Character> character, const EventKeyboard::KeyCo
 	default:
 		break;
 	}
-
+}
+void Command::remote(shared_ptr<Character> character, const EventMouse::MouseEventType& code, bool value)
+{
+	switch (code)
+	{
+	case EventMouse::MouseEventType::MOUSE_DOWN:
+		character->actions[command::SHOOT] = value;
+		break;
+	case EventMouse::MouseEventType::MOUSE_MOVE:
+		
+		break;
+	case EventMouse::MouseEventType::MOUSE_UP:
+		character->actions[command::SHOOT] = value;
+		break;
+	default:
+		break;
+	}
 }
 #else
 
@@ -53,10 +69,25 @@ void Command::handleActionsCharacter(shared_ptr<Character>& character)
 	{
 		move(character, Vec2(incre, 0));
 	}
+	if (character->actions[command::SHOOT])
+	{
+		shot(character);
+	}
 }
 
 void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 {
 	Vec2 newpos = character->sprite->getPosition() + speed;
 	character->sprite->setPosition(newpos);
+}
+
+void Command::shot(shared_ptr<Character>& character)
+{
+	auto bullet = Sprite::create(BULLET1);
+	bullet->setRotation(character->sprite->getRotation());
+	bullet->setPosition(character->sprite->getPosition());
+	float ratio = 0.25;
+	bullet->setScale(ratio);
+
+	character->sprite->getParent()->addChild(bullet);
 }

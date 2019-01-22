@@ -98,6 +98,8 @@ void GamePlay::mouseBegan(EventMouse* event)
 {
 	Vec2 mousePosition = Vec2(event->getCursorX(), event->getCursorY()) + _origin;
 	updateAngle(_player, mousePosition);
+
+	_command->remote(_player, EventMouse::MouseEventType::MOUSE_DOWN, true);
 }
 
 void GamePlay::mouseMoved(EventMouse* event)
@@ -114,17 +116,20 @@ void GamePlay::mouseMoved(EventMouse* event)
 	{
 		updateAngle(_player, mousePosition);
 	}
+
+	_command->remote(_player, EventMouse::MouseEventType::MOUSE_MOVE, true);
 }
 
 void GamePlay::mouseRelease(EventMouse* event)
 {
-
+	_command->remote(_player, EventMouse::MouseEventType::MOUSE_UP, false);
 }
 
 void GamePlay::keyPressed(EventKeyboard::KeyCode code, Event* event)
 {
 	_command->remote(_player, code, true);
 }
+
 #else
 	//touch or joystick for phone...
 
