@@ -28,7 +28,7 @@ void GamePlay::update(float dt)
 {
 	if (_command)
 	{
-		_command->handleActionsCharacter(_player);
+		_command->handleActionsCharacter(_player, dt);
 	}
 }
 
@@ -99,7 +99,7 @@ void GamePlay::mouseBegan(EventMouse* event)
 	Vec2 mousePosition = Vec2(event->getCursorX(), event->getCursorY()) + _origin;
 	updateAngle(_player, mousePosition);
 
-	_command->remote(_player, EventMouse::MouseEventType::MOUSE_DOWN, true);
+	_command->remote(_player, mousePosition, EventMouse::MouseEventType::MOUSE_DOWN, true);
 }
 
 void GamePlay::mouseMoved(EventMouse* event)
@@ -117,12 +117,13 @@ void GamePlay::mouseMoved(EventMouse* event)
 		updateAngle(_player, mousePosition);
 	}
 
-	_command->remote(_player, EventMouse::MouseEventType::MOUSE_MOVE, true);
+	_command->remote(_player, mousePosition, EventMouse::MouseEventType::MOUSE_MOVE, true);
 }
 
 void GamePlay::mouseRelease(EventMouse* event)
 {
-	_command->remote(_player, EventMouse::MouseEventType::MOUSE_UP, false);
+	Vec2 mousePosition = Vec2(event->getCursorX(), event->getCursorY()) + _origin;
+	_command->remote(_player, mousePosition, EventMouse::MouseEventType::MOUSE_UP, false);
 }
 
 void GamePlay::keyPressed(EventKeyboard::KeyCode code, Event* event)

@@ -1,7 +1,9 @@
 #include "Command.h"
 #include "Player.h"
 
-Command::Command()
+Command::Command():
+	_countshoottime(0.f),
+	_shootinterval(BULLET1_INTERVAL)
 {
 
 }
@@ -27,18 +29,20 @@ void Command::remote(shared_ptr<Character> character, const EventKeyboard::KeyCo
 		break;
 	}
 }
-void Command::remote(shared_ptr<Character> character, const EventMouse::MouseEventType& code, bool value)
+void Command::remote(shared_ptr<Character> character, const Vec2& touchpos, const EventMouse::MouseEventType& code, bool value)
 {
 	switch (code)
 	{
 	case EventMouse::MouseEventType::MOUSE_DOWN:
 		character->actions[command::SHOOT] = value;
+		_touchPos = touchpos;
 		break;
 	case EventMouse::MouseEventType::MOUSE_MOVE:
 		
 		break;
 	case EventMouse::MouseEventType::MOUSE_UP:
 		character->actions[command::SHOOT] = value;
+		_touchPos = Vec2(0, 0);
 		break;
 	default:
 		break;
@@ -48,7 +52,7 @@ void Command::remote(shared_ptr<Character> character, const EventMouse::MouseEve
 
 #endif
 
-void Command::handleActionsCharacter(shared_ptr<Character>& character)
+void Command::handleActionsCharacter(shared_ptr<Character>& character, float dt)
 {
 	character->setArrowWorldSpace(character->sprite->getParent()->convertToWorldSpace(character->sprite->getPosition()));	//update to rotate this
 
@@ -71,8 +75,14 @@ void Command::handleActionsCharacter(shared_ptr<Character>& character)
 	}
 	if (character->actions[command::SHOOT])
 	{
-		shot(character);
+		if (_countshoottime >= _shootinterval)
+		{
+			shot(character);
+			_countshoottime = 0.f;
+		}
 	}
+
+	_countshoottime += dt;
 }
 
 void Command::move(shared_ptr<Character>& character, const Vec2& speed)
@@ -83,11 +93,29 @@ void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 
 void Command::shot(shared_ptr<Character>& character)
 {
+	Vec2 poscreate = character->sprite->getPosition();
+
+	//shoot the bullet
+	Vec2 offset = _touchPos - character->sprite->getPosition();
+
+	if (offset.x < 0)
+	{
+		return;
+	}
+
 	auto bullet = Sprite::create(BULLET1);
 	bullet->setRotation(character->sprite->getRotation());
-	bullet->setPosition(character->sprite->getPosition());
+	bullet->setPosition(poscreate);
 	float ratio = 0.25;
 	bullet->setScale(ratio);
-
 	character->sprite->getParent()->addChild(bullet);
+
+	offset.normalize();
+	Vec2 shootAmount = offset * 1000;
+	Vec2 realPosTo = shootAmount + poscreate;
+
+	auto move = MoveTo::create(BULLET_SPEED, realPosTo);
+	auto release = RemoveSelf::create();
+	bullet->runAction(Sequence::createWithTwoActions(move, release));
+	//bullet->runAction(move);
 }

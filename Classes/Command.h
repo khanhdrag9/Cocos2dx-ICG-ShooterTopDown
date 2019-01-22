@@ -16,18 +16,23 @@ public:
 	};
 
 private:
+	Vec2 _touchPos;
+
+	//count time for shoot
+	float _countshoottime;
+	float _shootinterval;
 
 public:
 	Command();
 	
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 	void remote(shared_ptr<Character> character, const EventKeyboard::KeyCode& code, bool value);
-	void remote(shared_ptr<Character> character, const EventMouse::MouseEventType& code, bool value);
+	void remote(shared_ptr<Character> character, const Vec2& touchpos, const EventMouse::MouseEventType& code, bool value);
 #else
 	
 #endif
 
 	void move(shared_ptr<Character>& character , const Vec2& speed);
 	void shot(shared_ptr<Character>& character);
-	void handleActionsCharacter(shared_ptr<Character>& character);
+	void handleActionsCharacter(shared_ptr<Character>& character, float dt);
 };
