@@ -111,7 +111,7 @@ void Command::shot(shared_ptr<Character>& character)
 	character->sprite->getParent()->addChild(bullet);
 
 	offset.normalize();
-	Vec2 shootAmount = offset * 1000;
+	Vec2 shootAmount = offset * 1500;
 	Vec2 realPosTo = shootAmount + poscreate;
 
 	auto move = MoveTo::create(BULLET_SPEED, realPosTo);
