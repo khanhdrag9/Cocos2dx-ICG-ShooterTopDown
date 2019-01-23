@@ -40,4 +40,5 @@ public:
 	void move(shared_ptr<Character>& character , const Vec2& speed);
 	void shot(shared_ptr<Character>& character);
 	void handleActionsCharacter(shared_ptr<Character>& character, float dt);
+    void handleCollisionWithScreen(shared_ptr<Character>& character);
 };

@@ -55,7 +55,6 @@ void Command::remote(shared_ptr<Character> character, const Vec2& touchpos, cons
 void Command::handleActionsCharacter(shared_ptr<Character>& character, float dt)
 {
 	character->setArrowWorldSpace(character->sprite->getParent()->convertToWorldSpace(character->sprite->getPosition()));	//update to rotate this
-
 	float incre = 5.f;
 	if (character->actions[command::MOVE_UP])
 	{
@@ -87,8 +86,8 @@ void Command::handleActionsCharacter(shared_ptr<Character>& character, float dt)
 
 void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 {
-	Vec2 newpos = character->sprite->getPosition() + speed;
-	character->sprite->setPosition(newpos);
+    Vec2 newpos = character->sprite->getPosition() + speed;
+    character->sprite->setPosition(newpos);
 }
 
 void Command::shot(shared_ptr<Character>& character)
@@ -115,7 +114,7 @@ void Command::shot(shared_ptr<Character>& character)
 	PhysicsBody* body = PhysicsBody::createBox(bulletsize);
 	body->setRotationEnable(true);
 	//body->setGravityEnable(false);
-	if (character->_type = Character::typecharacter::PLAYER)
+	if (character->_type == Character::typecharacter::PLAYER)
 	{
 		body->setContactTestBitmask(PHYSICS_BULLET_PLAYER);
 		body->setCategoryBitmask(PHYSICS_BULLET_PLAYER);
@@ -139,3 +138,15 @@ void Command::shot(shared_ptr<Character>& character)
 	//bullet->runAction(move);
 	body->setVelocity(shootAmount);
 }
+
+void Command::handleCollisionWithScreen(shared_ptr<Character> &character) { 
+    if(character->actions[command::MOVE_LEFT])
+        character->actions[command::MOVE_LEFT] = false;
+    if(character->actions[command::MOVE_RIGHT])
+        character->actions[command::MOVE_RIGHT] = false;
+    if(character->actions[command::MOVE_UP])
+        character->actions[command::MOVE_UP] = false;
+    if(character->actions[command::MOVE_DOWN])
+        character->actions[command::MOVE_DOWN] = false;
+}
+

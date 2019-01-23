@@ -189,18 +189,15 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
 		//from player!
 		return false;
 	}
+    
+    if (campare2way(shape1Collision, shape2Collision, PHYSICS_PLAYER, PHYSICS_EDGE))
+    {
+        _command->handleCollisionWithScreen(_player);
+    }
 
-	if (campare2way(shape1Collision, shape2Collision, PHYSICS_BULLET_PLAYER, PHYSICS_EDGE))
+	if (campare2way(shape1Collision, shape2Collision, PHYSICS_PLAYER, PHYSICS_EDGE))
 	{
-		CCLOG("bullet player collisions with screen!");
-		if (shape1Collision == PHYSICS_BULLET_PLAYER)
-		{
-			
-		}
-		else
-		{
-			
-		}
+		
 	}
 
 	return true;
