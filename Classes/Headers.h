@@ -21,3 +21,11 @@ USING_NS_CC;
 #define BULLET1 "bullet/bullet1.png"
 #define BULLET1_INTERVAL 0.3f
 #define BULLET_SPEED 0.7f
+
+
+//physics define in game
+
+#define PHYSICS_PLAYER 0x00000001
+#define PHYSICS_EDGE 0x00000002
+#define PHYSICS_BULLET_PLAYER 0x00000001
+#define PHYSICS_BULLET_BOT 0x00000004

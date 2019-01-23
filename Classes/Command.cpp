@@ -38,7 +38,7 @@ void Command::remote(shared_ptr<Character> character, const Vec2& touchpos, cons
 		_touchPos = touchpos;
 		break;
 	case EventMouse::MouseEventType::MOUSE_MOVE:
-		
+		_touchPos = touchpos;
 		break;
 	case EventMouse::MouseEventType::MOUSE_UP:
 		character->actions[command::SHOOT] = value;
@@ -98,17 +98,33 @@ void Command::shot(shared_ptr<Character>& character)
 	//shoot the bullet
 	Vec2 offset = _touchPos - character->sprite->getPosition();
 
-	if (offset.x < 0)
+	/*if (offset.x < 0)
 	{
 		return;
-	}
+	}*/
 
 	auto bullet = Sprite::create(BULLET1);
-	bullet->setRotation(character->sprite->getRotation());
+	//bullet->setRotation(character->sprite->getRotation());
 	bullet->setPosition(poscreate);
 	float ratio = 0.25;
 	bullet->setScale(ratio);
 	character->sprite->getParent()->addChild(bullet);
+
+	//physic for bullet
+	Size bulletsize = bullet->getContentSize();
+	PhysicsBody* body = PhysicsBody::createBox(bulletsize);
+	body->setRotationEnable(true);
+	//body->setGravityEnable(false);
+	if (true)
+	{
+		body->setContactTestBitmask(PHYSICS_BULLET_PLAYER);
+		body->setCategoryBitmask(PHYSICS_BULLET_PLAYER);
+		body->setCollisionBitmask(PHYSICS_BULLET_PLAYER);
+	}
+	bullet->setPhysicsBody(body);
+
+	bullet->setRotation(character->sprite->getRotation());	//set rotate after set physicsbody to physicsbody right with rotate of bullet sprite
+	//calculate target of bullet
 
 	offset.normalize();
 	Vec2 shootAmount = offset * 1500;

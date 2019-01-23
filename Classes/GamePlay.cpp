@@ -2,8 +2,12 @@
 
 Scene* GamePlay::createScene()
 {
-	auto scene = Scene::create();
+	auto scene = Scene::createWithPhysics();
+	scene->getPhysicsWorld()->setGravity(Vec2(0, 0));
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	auto layer = GamePlay::create();
+	/*layer->_physWorld = scene->getPhysicsWorld();
+	layer->createPhysics();*/
 	scene->addChild(layer);
 	return scene;
 }
@@ -18,6 +22,7 @@ bool GamePlay::init()
 
 	posInit();
 	createPlayer();
+	createPhysics();
 	createListener();
 	createSchedule();
 
@@ -55,7 +60,6 @@ void GamePlay::createPlayer()
 	//caculate scale for screen
 	float ratio = 0.5f;
 	_player->sprite->setScale(ratio);
-
 	_player->addParrent(this);
 
 	//for AIM
@@ -64,6 +68,25 @@ void GamePlay::createPlayer()
 	_aim->setScale(0.25f);
 	_aim->setPosition(centerpos);
 	this->addChild(_aim);
+}
+
+void GamePlay::createPhysics()
+{
+	//screen
+	PhysicsBody* edge = PhysicsBody::createEdgeBox(this->getContentSize());
+	edge->setContactTestBitmask(PHYSICS_EDGE);
+	edge->setCategoryBitmask(PHYSICS_EDGE);
+	edge->setCollisionBitmask(PHYSICS_EDGE);
+	this->setPhysicsBody(edge);
+
+	//physics for player
+	auto body = PhysicsBody::createBox(_player->sprite->getContentSize());
+	body->setRotationEnable(true);
+	body->setContactTestBitmask(PHYSICS_PLAYER);
+	body->setCategoryBitmask(PHYSICS_PLAYER);
+	body->setCollisionBitmask(PHYSICS_PLAYER);
+	_player->sprite->setPhysicsBody(body);
+
 }
 
 void GamePlay::createListener()
@@ -86,6 +109,10 @@ void GamePlay::createListener()
 	//touch or joystick for phone...
 
 #endif
+
+	auto listener = EventListenerPhysicsContact::create();
+	listener->onContactBegin = CC_CALLBACK_1(GamePlay::contactBegin, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 }
 
 void GamePlay::createSchedule()
@@ -135,3 +162,31 @@ void GamePlay::keyPressed(EventKeyboard::KeyCode code, Event* event)
 	//touch or joystick for phone...
 
 #endif
+
+template<typename T>
+bool campare2way(const T& a, const T& b, const T& value1, const T& value2)
+{
+	if ((a == value1 && b == value2) || (a == value2 && b == value1))
+		return true;
+	else
+		return false;
+}
+
+bool GamePlay::contactBegin(PhysicsContact& contact)
+{
+	auto shape1 = contact.getShapeA();
+	auto shape2 = contact.getShapeB();
+
+	if (campare2way(shape1->getCollisionBitmask(), shape2->getCollisionBitmask(), PHYSICS_PLAYER, PHYSICS_BULLET_PLAYER))
+	{
+		//from player!
+		return false;
+	}
+
+	if (campare2way(shape1->getCollisionBitmask(), shape2->getCollisionBitmask(), PHYSICS_BULLET_PLAYER, PHYSICS_EDGE))
+	{
+		CCLOG("bullet player collisions with screen!");
+	}
+
+	return true;
+}

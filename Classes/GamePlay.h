@@ -12,8 +12,11 @@ class GamePlay : public Layer
 	Size _screenSize;
 	Vec2 _origin;
 
+	//PhysicsWorld* _physWorld;
+
 	void posInit();
 	void createPlayer();
+	void createPhysics();
 	void createListener();
 	void createSchedule();
 
@@ -29,6 +32,8 @@ class GamePlay : public Layer
 #else
 	//touch or joystick for phone...
 #endif
+
+	bool contactBegin(PhysicsContact& contact);
 public:
 	static Scene* createScene();
 
