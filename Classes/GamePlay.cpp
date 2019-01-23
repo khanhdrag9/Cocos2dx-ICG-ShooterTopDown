@@ -15,6 +15,9 @@ bool GamePlay::init()
 	if (!Layer::init())
 		return false;
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+    Director::getInstance()->getOpenGLView()->setCursorVisible(false);
+#endif
 	_screenSize = Director::getInstance()->getVisibleSize();
 	_origin = Director::getInstance()->getVisibleOrigin();
 

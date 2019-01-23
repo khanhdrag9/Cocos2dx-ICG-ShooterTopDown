@@ -28,3 +28,11 @@ USING_NS_CC;
 #define PHYSICS_EDGE 0x00000003
 #define PHYSICS_BULLET_PLAYER 0x00000006
 #define PHYSICS_BULLET_BOT 0x00000004
+
+//template
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+template<typename T, typename... Args>
+std::unique_ptr<T> make_unique(Args&&... args) {
+    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+#endif
