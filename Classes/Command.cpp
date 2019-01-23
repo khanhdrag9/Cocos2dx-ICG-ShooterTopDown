@@ -115,11 +115,12 @@ void Command::shot(shared_ptr<Character>& character)
 	PhysicsBody* body = PhysicsBody::createBox(bulletsize);
 	body->setRotationEnable(true);
 	//body->setGravityEnable(false);
-	if (true)
+	if (character->_type = Character::typecharacter::PLAYER)
 	{
 		body->setContactTestBitmask(PHYSICS_BULLET_PLAYER);
 		body->setCategoryBitmask(PHYSICS_BULLET_PLAYER);
 		body->setCollisionBitmask(PHYSICS_BULLET_PLAYER);
+		
 	}
 	bullet->setPhysicsBody(body);
 
@@ -127,11 +128,15 @@ void Command::shot(shared_ptr<Character>& character)
 	//calculate target of bullet
 
 	offset.normalize();
-	Vec2 shootAmount = offset * 1500;
-	Vec2 realPosTo = shootAmount + poscreate;
+	Vec2 shootAmount = offset * 1000;
+	/*Vec2 realPosTo = shootAmount + poscreate;
 
 	auto move = MoveTo::create(BULLET_SPEED, realPosTo);
 	auto release = RemoveSelf::create();
-	bullet->runAction(Sequence::createWithTwoActions(move, release));
+	auto finalaction = Sequence::createWithTwoActions(move, release);
+	finalaction->setTag(actiontag::SHOOT_MOVE);*/
+	//bullet->runAction(finalaction);
 	//bullet->runAction(move);
+	body->setVelocity(shootAmount);
+	
 }

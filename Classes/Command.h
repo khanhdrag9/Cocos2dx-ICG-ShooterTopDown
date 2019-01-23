@@ -15,6 +15,11 @@ public:
 		SHOOT
 	};
 
+	enum actiontag
+	{
+		SHOOT_MOVE
+	};
+
 private:
 	Vec2 _touchPos;
 

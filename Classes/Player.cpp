@@ -36,7 +36,7 @@ void Character::addParrent(Node* parrent)
 Player::Player()
 {
 	actions[Command::command::SHOOT] = false;
-
+	_type = PLAYER;
 	init();
 }
 

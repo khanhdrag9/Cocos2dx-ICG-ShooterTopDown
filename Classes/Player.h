@@ -5,7 +5,13 @@
 class Character : enable_shared_from_this<Character>
 {
 protected:
+	enum typecharacter
+	{
+		UNKNOWN,
+		PLAYER
+	};
 
+	typecharacter _type;
 public:
 	Character();
 	virtual ~Character();
@@ -19,6 +25,8 @@ public:
 	Sprite* sprite;
 
 	map<Command::command, bool> actions;
+
+	friend class Command;
 };
 
 class Player : public Character

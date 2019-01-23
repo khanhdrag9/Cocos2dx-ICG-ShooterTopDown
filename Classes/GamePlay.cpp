@@ -6,8 +6,6 @@ Scene* GamePlay::createScene()
 	scene->getPhysicsWorld()->setGravity(Vec2(0, 0));
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	auto layer = GamePlay::create();
-	/*layer->_physWorld = scene->getPhysicsWorld();
-	layer->createPhysics();*/
 	scene->addChild(layer);
 	return scene;
 }
@@ -77,7 +75,10 @@ void GamePlay::createPhysics()
 	edge->setContactTestBitmask(PHYSICS_EDGE);
 	edge->setCategoryBitmask(PHYSICS_EDGE);
 	edge->setCollisionBitmask(PHYSICS_EDGE);
-	this->setPhysicsBody(edge);
+	Node* edgeNode = Node::create();
+	edgeNode->setPosition(_origin.x + _screenSize.width / 2, _origin.y + _screenSize.height / 2);
+	edgeNode->setPhysicsBody(edge);
+	this->addChild(edgeNode);
 
 	//physics for player
 	auto body = PhysicsBody::createBox(_player->sprite->getContentSize());
@@ -177,15 +178,26 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
 	auto shape1 = contact.getShapeA();
 	auto shape2 = contact.getShapeB();
 
-	if (campare2way(shape1->getCollisionBitmask(), shape2->getCollisionBitmask(), PHYSICS_PLAYER, PHYSICS_BULLET_PLAYER))
+	auto shape1Collision = shape1->getCollisionBitmask();
+	auto shape2Collision = shape2->getCollisionBitmask();
+
+	if (campare2way(shape1Collision, shape2Collision, PHYSICS_PLAYER, PHYSICS_BULLET_PLAYER))
 	{
 		//from player!
 		return false;
 	}
 
-	if (campare2way(shape1->getCollisionBitmask(), shape2->getCollisionBitmask(), PHYSICS_BULLET_PLAYER, PHYSICS_EDGE))
+	if (campare2way(shape1Collision, shape2Collision, PHYSICS_BULLET_PLAYER, PHYSICS_EDGE))
 	{
 		CCLOG("bullet player collisions with screen!");
+		if (shape1Collision == PHYSICS_BULLET_PLAYER)
+		{
+			shape1->getBody()->getNode()->stopAllActionsByTag(Command::actiontag::SHOOT_MOVE);
+		}
+		else
+		{
+			shape2->getBody()->getNode()->stopAllActionsByTag(Command::actiontag::SHOOT_MOVE);
+		}
 	}
 
 	return true;
