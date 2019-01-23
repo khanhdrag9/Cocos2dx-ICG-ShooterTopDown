@@ -192,11 +192,11 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
 		CCLOG("bullet player collisions with screen!");
 		if (shape1Collision == PHYSICS_BULLET_PLAYER)
 		{
-			shape1->getBody()->getNode()->stopAllActionsByTag(Command::actiontag::SHOOT_MOVE);
+			
 		}
 		else
 		{
-			shape2->getBody()->getNode()->stopAllActionsByTag(Command::actiontag::SHOOT_MOVE);
+			
 		}
 	}
 

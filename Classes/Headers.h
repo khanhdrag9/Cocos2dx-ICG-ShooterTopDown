@@ -24,7 +24,6 @@ USING_NS_CC;
 
 
 //physics define in game
-
 #define PHYSICS_PLAYER 0x00000001
 #define PHYSICS_EDGE 0x00000003
 #define PHYSICS_BULLET_PLAYER 0x00000006

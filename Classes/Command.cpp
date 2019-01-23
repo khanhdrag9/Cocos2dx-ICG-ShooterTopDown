@@ -138,5 +138,4 @@ void Command::shot(shared_ptr<Character>& character)
 	//bullet->runAction(finalaction);
 	//bullet->runAction(move);
 	body->setVelocity(shootAmount);
-	
 }
