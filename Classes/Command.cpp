@@ -95,15 +95,21 @@ void Command::move(shared_ptr<Character>& character, const Vec2& speed)
     Vec2 newpos = character->sprite->getPosition() + speed;
 
 	auto tiledMap = _gameplay->getTiledMap();
-	Size mapsize = tiledMap->getMapSize();
-	Size tiledSize = tiledMap->getTileSize();
-	if ((newpos.x <= mapsize.width * tiledSize.width) && (newpos.x >= 0) &&
-		(newpos.y <= mapsize.height * tiledSize.height) && (newpos.y >= 0))
-	{
-		character->sprite->setPosition(newpos);
-	}
- 
+	Size tileSize = tiledMap->getTileSize();
+	auto bglayer = _gameplay->getBackgroundLayer();
 
+	int x = newpos.x / tileSize.width;
+	int y = ((tiledMap->getMapSize().height * tileSize.height) - newpos.y) / tileSize.height;
+
+	auto tileGid = bglayer->tileGIDAt(Vec2(x, y));
+	if (tileGid)
+	{
+		auto properties = tiledMap->getPropertiesForGID(tileGid).asValueMap();
+		if (properties.at("Collision").asBool() == true)
+			return;
+	}
+
+	character->sprite->setPosition(newpos);
 	//camera follow player
 	if (character->_type == Character::typecharacter::PLAYER)
 	{

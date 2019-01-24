@@ -93,7 +93,7 @@ void GamePlay::createPhysics()
 void GamePlay::createMap()
 {
 	_tileMap = TMXTiledMap::create(TITLEMAP_PATH);
-	_backgroudLayer = _tileMap->layerNamed("Board");
+	_backgroudLayer = _tileMap->layerNamed("Background");
 
 	this->addChild(_tileMap);
 

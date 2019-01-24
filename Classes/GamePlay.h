@@ -47,6 +47,7 @@ public:
 
 	void setViewPointCenter(Sprite* obj);
 	TMXTiledMap* getTiledMap() { return _tileMap; }
+	TMXLayer* getBackgroundLayer() { return _backgroudLayer; }
 
 	friend class InGameUI;
 };
