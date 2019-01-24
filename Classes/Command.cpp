@@ -1,5 +1,6 @@
 #include "Command.h"
 #include "Player.h"
+#include "GamePlay.h"
 
 Command::Command():
 	_countshoottime(0.f),
@@ -95,7 +96,10 @@ void Command::shot(shared_ptr<Character>& character)
 	Vec2 poscreate = character->sprite->getPosition();
 
 	//shoot the bullet
-	Vec2 offset = _touchPos - character->sprite->getPosition();
+
+	//Vec2 characterPos = character->sprite->getPosition();
+	Vec2 characterPos = character->getPosInScreen();
+	Vec2 offset = _touchPos - characterPos;
 
 	/*if (offset.x < 0)
 	{

@@ -12,6 +12,7 @@ Scene* GamePlay::createScene()
 
 	layer->_uiLayer = InGameUI::create();
 	layer->_uiLayer->_gamelayer = layer;
+	layer->_uiLayer->setTag(1);
 	scene->addChild(layer->_uiLayer, 1);
 
 	return scene;
@@ -44,7 +45,7 @@ void GamePlay::update(float dt)
 	{
 		_command->handleActionsCharacter(_player, dt);
 	}
-
+	setViewPointCenter(_player->sprite);
 }
 
 void GamePlay::updateAngle(shared_ptr<Character>& character, const Vec2& loc)
@@ -57,6 +58,7 @@ void GamePlay::updateAngle(shared_ptr<Character>& character, const Vec2& loc)
 void GamePlay::posInit()
 {
 	_command = make_unique<Command>();
+
 }
 
 void GamePlay::createPlayer()
@@ -179,7 +181,25 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
 
 void GamePlay::setViewPointCenter(Sprite* obj)
 {
-	auto follow = Follow::create(obj);
-	this->runAction(follow);
+	//auto follow = Follow::create(obj);
+	//this->runAction(follow);
 	//_uiLayer->runAction(follow);
+
+	Size winSize = Director::sharedDirector()->getWinSize();
+	Vec2 position = obj->getPosition();
+
+	int x = MAX(position.x, winSize.width / 2);
+	int y = MAX(position.y, winSize.height / 2);
+	x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
+	y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
+	CCPoint actualPosition = ccp(x, y);
+
+	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
+	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
+	this->setPosition(viewPoint);
+
+	//set REAL position that you see on the screen!
+	_player->setPosInScreen(Vec2(MIN(position.x, winSize.width / 2), MIN(position.y, winSize.height / 2)));
 }
+
+
