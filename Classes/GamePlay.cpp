@@ -181,10 +181,6 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
 
 void GamePlay::setViewPointCenter(Sprite* obj)
 {
-	//auto follow = Follow::create(obj);
-	//this->runAction(follow);
-	//_uiLayer->runAction(follow);
-
 	Size winSize = Director::sharedDirector()->getWinSize();
 	Vec2 position = obj->getPosition();
 
@@ -197,9 +193,6 @@ void GamePlay::setViewPointCenter(Sprite* obj)
 	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
 	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
 	this->setPosition(viewPoint);
-
-	//set REAL position that you see on the screen!
-	_player->setPosInScreen(Vec2(MIN(position.x, winSize.width / 2), MIN(position.y, winSize.height / 2)));
 }
 
 

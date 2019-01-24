@@ -21,7 +21,6 @@ public:
 	void addParrent(Node* parrent);
 
 	CC_SYNTHESIZE(Vec2, _arrowWorldSpace, ArrowWorldSpace);
-	CC_SYNTHESIZE(Vec2, _posInScreen, PosInScreen);
 public:
 	Sprite* sprite;
 

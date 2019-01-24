@@ -56,6 +56,12 @@ void InGameUI::mouseMoved(EventMouse* event)
 	}
 
 	_gamelayer->_command->remote(_gamelayer->_player, mousePosition, EventMouse::MouseEventType::MOUSE_MOVE, true);
+
+
+	{
+		Vec2 realpos = _gamelayer->convertToWorldSpace(_gamelayer->_player->sprite->getPosition());
+		CCLOG("realpos %f - %f", realpos.x, realpos.y);
+	}
 }
 
 void InGameUI::mouseRelease(EventMouse* event)
