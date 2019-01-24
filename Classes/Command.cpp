@@ -1,6 +1,7 @@
 #include "Command.h"
 #include "Player.h"
 #include "GamePlay.h"
+#include "Support.h"
 
 Command::Command():
 	_countshoottime(0.f),
@@ -93,20 +94,18 @@ void Command::handleActionsCharacter(shared_ptr<Character>& character, float dt)
 void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 {
     Vec2 newpos = character->sprite->getPosition() + speed;
-
+    
 	auto tiledMap = _gameplay->getTiledMap();
-	Size tileSize = tiledMap->getTileSize();
 	auto bglayer = _gameplay->getBackgroundLayer();
 
-	int x = newpos.x / tileSize.width;
-	int y = ((tiledMap->getMapSize().height * tileSize.height) - newpos.y) / tileSize.height;
-
-	auto tileGid = bglayer->tileGIDAt(Vec2(x, y));
+	auto tileGid = bglayer->getTileGIDAt(support::getCoordInTileMap(tiledMap, newpos));
 	if (tileGid)
 	{
 		auto properties = tiledMap->getPropertiesForGID(tileGid).asValueMap();
 		if (properties.at("Collision").asBool() == true)
+        {
 			return;
+        }
 	}
 
 	character->sprite->setPosition(newpos);
