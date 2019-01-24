@@ -3,17 +3,20 @@
 #include "Player.h"
 #include "Command.h"
 
+class InGameUI;
+
 class GamePlay : public Layer
 {
 	unique_ptr<Command> _command;
 	shared_ptr<Character> _player;
-	Sprite* _aim;
+	
 
 	Size _screenSize;
 	Vec2 _origin;
+	InGameUI* _uiLayer;
 
 	//PhysicsWorld* _physWorld;
-	TMXTiledMap* _titleMap;
+	TMXTiledMap* _tileMap;
 	TMXLayer* _backgroudLayer;
 
 
@@ -28,20 +31,19 @@ class GamePlay : public Layer
 	void update(float dt) override;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-	void mouseBegan(EventMouse* event);
-	void mouseMoved(EventMouse* event);
-	void mouseRelease(EventMouse* event);
-
 	void keyPressed(EventKeyboard::KeyCode code, Event* event);
 #else
 	//touch or joystick for phone...
 #endif
 
 	bool contactBegin(PhysicsContact& contact);
+	void setViewPointCenter(Sprite* obj);
 public:
 	static Scene* createScene();
 
 	bool init() override;
 
 	CREATE_FUNC(GamePlay);
+
+	friend class InGameUI;
 };

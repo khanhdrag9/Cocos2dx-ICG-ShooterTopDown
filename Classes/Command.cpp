@@ -140,13 +140,6 @@ void Command::shot(shared_ptr<Character>& character)
 }
 
 void Command::handleCollisionWithScreen(shared_ptr<Character> &character) { 
-    if(character->actions[command::MOVE_LEFT])
-        character->actions[command::MOVE_LEFT] = false;
-    if(character->actions[command::MOVE_RIGHT])
-        character->actions[command::MOVE_RIGHT] = false;
-    if(character->actions[command::MOVE_UP])
-        character->actions[command::MOVE_UP] = false;
-    if(character->actions[command::MOVE_DOWN])
-        character->actions[command::MOVE_DOWN] = false;
+   
 }
 
