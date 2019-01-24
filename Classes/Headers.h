@@ -14,13 +14,15 @@ using namespace std;
 USING_NS_CC;
 
 //game
+#define TITLEMAP_PATH "Map/Map1.tmx"
+
 #define PLAYER_PATH "sprite.png"
 
 #define AIM1 "aim/aim1.png"
 
 #define BULLET1 "bullet/bullet1.png"
-#define BULLET1_INTERVAL 0.3f
-#define BULLET_SPEED 0.7f
+#define BULLET1_INTERVAL 0.2f
+#define BULLET1_SPEED 0.7f
 
 
 //physics define in game

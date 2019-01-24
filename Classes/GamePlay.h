@@ -13,8 +13,12 @@ class GamePlay : public Layer
 	Vec2 _origin;
 
 	//PhysicsWorld* _physWorld;
+	TMXTiledMap* _titleMap;
+	TMXLayer* _backgroudLayer;
+
 
 	void posInit();
+	void createMap();
 	void createPlayer();
 	void createPhysics();
 	void createListener();

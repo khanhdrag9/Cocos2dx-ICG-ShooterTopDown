@@ -128,15 +128,15 @@ void Command::shot(shared_ptr<Character>& character)
 
 	offset.normalize();
 	Vec2 shootAmount = offset * 1000;
-	/*Vec2 realPosTo = shootAmount + poscreate;
+	Vec2 realPosTo = shootAmount + poscreate;
 
-	auto move = MoveTo::create(BULLET_SPEED, realPosTo);
+	auto move = MoveTo::create(BULLET1_SPEED, realPosTo);
 	auto release = RemoveSelf::create();
 	auto finalaction = Sequence::createWithTwoActions(move, release);
-	finalaction->setTag(actiontag::SHOOT_MOVE);*/
-	//bullet->runAction(finalaction);
-	//bullet->runAction(move);
-	body->setVelocity(shootAmount);
+	finalaction->setTag(actiontag::SHOOT_MOVE);
+	bullet->runAction(finalaction);
+
+	//body->setVelocity(shootAmount);	//if want to colli
 }
 
 void Command::handleCollisionWithScreen(shared_ptr<Character> &character) { 

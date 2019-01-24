@@ -22,6 +22,7 @@ bool GamePlay::init()
 	_origin = Director::getInstance()->getVisibleOrigin();
 
 	posInit();
+	createMap();
 	createPlayer();
 	createPhysics();
 	createListener();
@@ -55,11 +56,16 @@ void GamePlay::createPlayer()
 	_player = make_unique<Player>();
 
 	//calculate position start
-	Vec2 startPos = Vec2(_origin.x + _screenSize.width * 0.2, _origin.y + _screenSize.height / 2.f);
-	_player->sprite->setPosition(startPos);
+	//Vec2 startPos = Vec2(_origin.x + _screenSize.width * 0.2, _origin.y + _screenSize.height / 2.f);
+	TMXObjectGroup* objg = _titleMap->objectGroupNamed("Player");
+	auto playerPos = objg->objectNamed("PlayerPos");
+	float x = playerPos.at("x").asFloat();
+	float y = playerPos.at("y").asFloat();
+
+	_player->sprite->setPosition(x, y);
 
 	//caculate scale for screen
-	float ratio = 0.5f;
+	float ratio = 1.f;
 	_player->sprite->setScale(ratio);
 	_player->addParrent(this);
 
@@ -90,6 +96,15 @@ void GamePlay::createPhysics()
 	body->setCategoryBitmask(PHYSICS_PLAYER);
 	body->setCollisionBitmask(PHYSICS_PLAYER);
 	_player->sprite->setPhysicsBody(body);
+
+}
+
+void GamePlay::createMap()
+{
+	_titleMap = TMXTiledMap::create(TITLEMAP_PATH);
+	_backgroudLayer = _titleMap->layerNamed("Board");
+
+	this->addChild(_titleMap);
 
 }
 
