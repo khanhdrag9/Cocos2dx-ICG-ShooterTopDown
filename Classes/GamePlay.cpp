@@ -12,7 +12,6 @@ Scene* GamePlay::createScene()
 
 	layer->_uiLayer = InGameUI::create();
 	layer->_uiLayer->_gamelayer = layer;
-	layer->_uiLayer->setTag(1);
 	scene->addChild(layer->_uiLayer, 1);
 
 	return scene;
@@ -45,7 +44,6 @@ void GamePlay::update(float dt)
 	{
 		_command->handleActionsCharacter(_player, dt);
 	}
-	setViewPointCenter(_player->sprite);
 }
 
 void GamePlay::updateAngle(shared_ptr<Character>& character, const Vec2& loc)
@@ -58,7 +56,7 @@ void GamePlay::updateAngle(shared_ptr<Character>& character, const Vec2& loc)
 void GamePlay::posInit()
 {
 	_command = make_unique<Command>();
-
+	_command->setGamePlay(this);
 }
 
 void GamePlay::createPlayer()

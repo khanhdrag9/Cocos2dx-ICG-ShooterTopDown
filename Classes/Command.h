@@ -2,6 +2,7 @@
 #include "Headers.h"
 
 class Character;
+class GamePlay;
 
 class Command
 {
@@ -27,8 +28,10 @@ private:
 	float _countshoottime;
 	float _shootinterval;
 
+	GamePlay* _gameplay;
 public:
 	Command();
+	void setGamePlay(GamePlay* gameplay);
 	
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 	void remote(shared_ptr<Character> character, const EventKeyboard::KeyCode& code, bool value);

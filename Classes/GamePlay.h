@@ -37,13 +37,16 @@ class GamePlay : public Layer
 #endif
 
 	bool contactBegin(PhysicsContact& contact);
-	void setViewPointCenter(Sprite* obj);
+	
 public:
 	static Scene* createScene();
 
 	bool init() override;
 
 	CREATE_FUNC(GamePlay);
+
+	void setViewPointCenter(Sprite* obj);
+	TMXTiledMap* getTiledMap() { return _tileMap; }
 
 	friend class InGameUI;
 };

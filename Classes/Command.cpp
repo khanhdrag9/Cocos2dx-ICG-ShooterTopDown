@@ -9,6 +9,11 @@ Command::Command():
 
 }
 
+void Command::setGamePlay(GamePlay* gameplay)
+{
+	_gameplay = gameplay;
+}
+
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 void Command::remote(shared_ptr<Character> character, const EventKeyboard::KeyCode& code, bool value)
 {
@@ -88,7 +93,23 @@ void Command::handleActionsCharacter(shared_ptr<Character>& character, float dt)
 void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 {
     Vec2 newpos = character->sprite->getPosition() + speed;
-    character->sprite->setPosition(newpos);
+
+	auto tiledMap = _gameplay->getTiledMap();
+	Size mapsize = tiledMap->getMapSize();
+	Size tiledSize = tiledMap->getTileSize();
+	if ((newpos.x <= mapsize.width * tiledSize.width) && (newpos.x >= 0) &&
+		(newpos.y <= mapsize.height * tiledSize.height) && (newpos.y >= 0))
+	{
+		character->sprite->setPosition(newpos);
+	}
+ 
+
+	//camera follow player
+	if (character->_type == Character::typecharacter::PLAYER)
+	{
+		_gameplay->setViewPointCenter(character->sprite);
+	}
+
 }
 
 void Command::shot(shared_ptr<Character>& character)
