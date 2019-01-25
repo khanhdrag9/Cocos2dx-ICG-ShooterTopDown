@@ -11,11 +11,11 @@ Character::Character()
 
 Character::~Character()
 {
-	if (sprite)
+	/*if (sprite != nullptr)
 	{
 		sprite->removeFromParentAndCleanup(true);
 		CC_SAFE_DELETE(sprite);
-	}
+	}*/
 	actions.clear();
 }
 
@@ -35,8 +35,6 @@ void Character::addParrent(Node* parrent)
 //derrived
 Player::Player()
 {
-	actions[Command::command::SHOOT] = false;
-	_type = PLAYER;
 	init();
 }
 
@@ -46,11 +44,52 @@ Player::~Player()
 
 void Player::init()
 {
-	sprite = Sprite::create(PLAYER_PATH);
-	sprite->retain();
+	_type = PLAYER;
+	sprite = Sprite::create(PLAYER_SQUARE_PATH);
+
+	auto body = PhysicsBody::createBox(sprite->getContentSize());
+	body->setRotationEnable(true);
+	body->setContactTestBitmask(PHYSICS_PLAYER);
+	body->setCategoryBitmask(PHYSICS_PLAYER);
+	body->setCollisionBitmask(PHYSICS_PLAYER);
+	sprite->setPhysicsBody(body);
 }
 
-void Player::update()
+void Player::upgrade()
 {
-	
+}
+
+
+//upgrades
+PlayerSquare::PlayerSquare(const shared_ptr<Character>& player):
+	_player(player)
+{
+	init();
+}
+PlayerSquare::~PlayerSquare()
+{
+}
+
+void PlayerSquare::init()
+{
+	_player->init();
+	_type = _player->getType();
+	_arrowWorldSpace = _player->getArrowWorldSpace();
+	_typeplayer = Player::typeplayer::SQUARE;
+
+	_player->sprite = Sprite::create(PLAYER_SQUARE_PATH);
+	sprite = _player->sprite;
+
+	auto body = PhysicsBody::createBox(sprite->getContentSize());
+	body->setRotationEnable(true);
+	body->setContactTestBitmask(PHYSICS_PLAYER);
+	body->setCategoryBitmask(PHYSICS_PLAYER);
+	body->setCollisionBitmask(PHYSICS_PLAYER);
+	sprite->setPhysicsBody(body);
+}
+
+void PlayerSquare::upgrade()
+{
+	_player->upgrade();
+
 }

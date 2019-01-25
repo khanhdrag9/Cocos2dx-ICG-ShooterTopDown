@@ -93,8 +93,8 @@ void Command::handleActionsCharacter(shared_ptr<Character>& character, float dt)
 
 void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 {
-    Vec2 newpos = character->sprite->getPosition() + speed;
-    
+	Vec2 newpos = character->sprite->getPosition() + speed;
+
 	auto tiledMap = _gameplay->getTiledMap();
 	auto bglayer = _gameplay->getBackgroundLayer();
 
@@ -110,7 +110,7 @@ void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 
 	character->sprite->setPosition(newpos);
 	//camera follow player
-	if (character->_type == Character::typecharacter::PLAYER)
+	if (character->getType() == Character::typecharacter::PLAYER)
 	{
 		_gameplay->setViewPointCenter(character->sprite);
 	}

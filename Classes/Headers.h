@@ -16,7 +16,7 @@ USING_NS_CC;
 //game
 #define TITLEMAP_PATH "Map/Map1.tmx"
 
-#define PLAYER_PATH "sprite.png"
+#define PLAYER_SQUARE_PATH "sprite.png"
 
 #define AIM1 "aim/aim1.png"
 

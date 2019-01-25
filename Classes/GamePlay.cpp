@@ -61,7 +61,8 @@ void GamePlay::posInit()
 
 void GamePlay::createPlayer()
 {
-	_player = make_unique<Player>();
+	_player = make_shared<Player>();
+	_player = make_shared<PlayerSquare>(_player);
 
 	//calculate position start
 	TMXObjectGroup* objg = _tileMap->objectGroupNamed("Player");
@@ -80,13 +81,13 @@ void GamePlay::createPlayer()
 
 void GamePlay::createPhysics()
 {
-	//physics for player
-	auto body = PhysicsBody::createBox(_player->sprite->getContentSize());
-	body->setRotationEnable(true);
-	body->setContactTestBitmask(PHYSICS_PLAYER);
-	body->setCategoryBitmask(PHYSICS_PLAYER);
-	body->setCollisionBitmask(PHYSICS_PLAYER);
-	_player->sprite->setPhysicsBody(body);
+	////physics for player
+	//auto body = PhysicsBody::createBox(_player->sprite->getContentSize());
+	//body->setRotationEnable(true);
+	//body->setContactTestBitmask(PHYSICS_PLAYER);
+	//body->setCategoryBitmask(PHYSICS_PLAYER);
+	//body->setCollisionBitmask(PHYSICS_PLAYER);
+	//_player->sprite->setPhysicsBody(body);
 
 }
 
