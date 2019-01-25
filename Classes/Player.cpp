@@ -75,7 +75,7 @@ void PlayerSquare::init()
 	_player->init();
 	_type = _player->getType();
 	_arrowWorldSpace = _player->getArrowWorldSpace();
-	_typeplayer = Player::typeplayer::SQUARE;
+	_typeplayer = Character::typeplayer::SQUARE;
 
 	_player->sprite = Sprite::create(PLAYER_SQUARE_PATH);
 	sprite = _player->sprite;

@@ -11,7 +11,16 @@ protected:
 		PLAYER
 	};
 
+	enum typeplayer
+	{
+		NONE,
+		SQUARE,
+		CIRCLE,
+		RECT
+	};
+
 	typecharacter _type;
+	typeplayer _typeplayer;
 public:
 	Character();
 	virtual ~Character();
@@ -26,6 +35,7 @@ public:
 
 	map<Command::command, bool> actions;
 	const typecharacter& getType() const { return _type; }
+	const typeplayer& getTypeplayer() const { return _typeplayer; };
 
 	friend class Command;
 };
@@ -38,25 +48,15 @@ public:
 
 	virtual void init() override;
 	virtual void upgrade() override;
-
-	enum typeplayer
-	{
-		NONE,
-		SQUARE,
-		CIRCLE,
-		RECT
-	};
 };
 
 class UpgradePlayer : public Player
 {
 protected:
-	typeplayer _typeplayer;
+	
 public:
 	virtual void upgrade() = 0;
 	virtual void init() = 0;
-
-	const typeplayer& getTypeplayer() const { return _typeplayer; };
 };
 
 class PlayerSquare : public UpgradePlayer

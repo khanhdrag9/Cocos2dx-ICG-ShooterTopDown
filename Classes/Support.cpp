@@ -20,8 +20,11 @@ namespace support
         return Vec2(x, y);
     }
 
-	/*vector<Vec2> getListVec2(const shared_ptr<Character>& character)
+	vector<Vec2> getListVec2(const shared_ptr<Character>& character)
 	{
+		vector<Vec2> result;
 
-	}*/
+		//if(character->get)
+		return result;
+	}
 }
