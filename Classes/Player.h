@@ -4,7 +4,7 @@
 
 class Character : enable_shared_from_this<Character>
 {
-protected:
+public:
 	enum typecharacter
 	{
 		UNKNOWN,
@@ -18,9 +18,10 @@ protected:
 		CIRCLE,
 		RECT
 	};
-
+protected:
 	typecharacter _type;
 	typeplayer _typeplayer;
+	
 public:
 	Character();
 	virtual ~Character();
@@ -36,8 +37,6 @@ public:
 	map<Command::command, bool> actions;
 	const typecharacter& getType() const { return _type; }
 	const typeplayer& getTypeplayer() const { return _typeplayer; };
-
-	friend class Command;
 };
 
 class Player : public Character

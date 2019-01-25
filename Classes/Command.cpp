@@ -62,7 +62,7 @@ void Command::remote(shared_ptr<Character> character, const Vec2& touchpos, cons
 void Command::handleActionsCharacter(shared_ptr<Character>& character, float dt)
 {
 	character->setArrowWorldSpace(character->sprite->getParent()->convertToWorldSpace(character->sprite->getPosition()));	//update to rotate this
-	float incre = 5.f;
+	float incre = 4.f;
 	if (character->actions[command::MOVE_UP])
 	{
 		move(character, Vec2(0, incre));
@@ -96,16 +96,19 @@ void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 	Vec2 newpos = character->sprite->getPosition() + speed;
 
 	auto tiledMap = _gameplay->getTiledMap();
-	auto bglayer = _gameplay->getBackgroundLayer();
+	auto collision = _gameplay->getCollisionLayer();
 
-	auto tileGid = bglayer->getTileGIDAt(support::getCoordInTileMap(tiledMap, newpos));
+	auto tileGid = collision->getTileGIDAt(support::getCoordInTileMap(tiledMap, newpos));
 	if (tileGid)
 	{
 		auto properties = tiledMap->getPropertiesForGID(tileGid).asValueMap();
-		if (properties.at("Collision").asBool() == true)
-        {
-			return;
-        }
+		if (properties.size() > 0)
+		{
+			if (properties.at("Collision").asBool() == true)
+			{
+				return;
+			}
+		}	
 	}
 
 	character->sprite->setPosition(newpos);
@@ -143,7 +146,7 @@ void Command::shot(shared_ptr<Character>& character)
 	PhysicsBody* body = PhysicsBody::createBox(bulletsize);
 	body->setRotationEnable(true);
 	//body->setGravityEnable(false);
-	if (character->_type == Character::typecharacter::PLAYER)
+	if (character->getType() == Character::typecharacter::PLAYER)
 	{
 		body->setContactTestBitmask(PHYSICS_BULLET_PLAYER);
 		body->setCategoryBitmask(PHYSICS_BULLET_PLAYER);

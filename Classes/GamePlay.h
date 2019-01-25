@@ -18,6 +18,7 @@ class GamePlay : public Layer
 	//PhysicsWorld* _physWorld;
 	TMXTiledMap* _tileMap;
 	TMXLayer* _backgroudLayer;
+	TMXLayer* _collisionLayer;
 
 
 	void posInit();
@@ -48,6 +49,7 @@ public:
 	void setViewPointCenter(Sprite* obj);
 	TMXTiledMap* getTiledMap() { return _tileMap; }
 	TMXLayer* getBackgroundLayer() { return _backgroudLayer; }
+	TMXLayer* getCollisionLayer() { return _collisionLayer; }
 
 	friend class InGameUI;
 };

@@ -72,7 +72,7 @@ PlayerSquare::~PlayerSquare()
 
 void PlayerSquare::init()
 {
-	_player->init();
+	//_player->init();
 	_type = _player->getType();
 	_arrowWorldSpace = _player->getArrowWorldSpace();
 	_typeplayer = Character::typeplayer::SQUARE;
@@ -80,7 +80,9 @@ void PlayerSquare::init()
 	_player->sprite = Sprite::create(PLAYER_SQUARE_PATH);
 	sprite = _player->sprite;
 
-	auto body = PhysicsBody::createBox(sprite->getContentSize());
+	Vec2 position = sprite->getPosition();
+	Size size = sprite->getBoundingBox().size;
+	auto body = PhysicsBody::createBox(size);
 	body->setRotationEnable(true);
 	body->setContactTestBitmask(PHYSICS_PLAYER);
 	body->setCategoryBitmask(PHYSICS_PLAYER);

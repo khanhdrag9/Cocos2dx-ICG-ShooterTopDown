@@ -6,6 +6,7 @@
 //
 
 #include "Support.h"
+#include "Player.h"
 
 namespace support
 {
@@ -20,11 +21,25 @@ namespace support
         return Vec2(x, y);
     }
 
-	vector<Vec2> getListVec2(const shared_ptr<Character>& character)
+	vector<Vec2> getListVec2(const shared_ptr<Character>& character, const Vec2& position)
 	{
 		vector<Vec2> result;
 
-		//if(character->get)
+		Size size = character->sprite->getContentSize();
+
+		if (character->getTypeplayer() == Character::typeplayer::SQUARE)
+		{
+
+		}
+		else if (character->getTypeplayer() == Character::typeplayer::CIRCLE)
+		{
+
+		}
+		else if (character->getTypeplayer() == Character::typeplayer::RECT)
+		{
+
+		}		
+
 		return result;
 	}
 }
