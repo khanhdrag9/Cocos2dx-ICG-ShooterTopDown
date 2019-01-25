@@ -95,8 +95,8 @@ void GamePlay::createMap()
 {
 	_tileMap = TMXTiledMap::create(TITLEMAP_PATH);
 	_backgroudLayer = _tileMap->getLayer("Background");
-	_collisionLayer = _tileMap->getLayer("Collision");
-	_collisionLayer->setVisible(false);
+	//_collisionLayer = _tileMap->getLayer("Collision");
+	//_collisionLayer->setVisible(false);
 
 	this->addChild(_tileMap);
 

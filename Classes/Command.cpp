@@ -95,7 +95,7 @@ void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 {
 	Vec2 newpos = character->sprite->getPosition() + speed;
 
-	auto tiledMap = _gameplay->getTiledMap();
+	/*auto tiledMap = _gameplay->getTiledMap();
 	auto collision = _gameplay->getCollisionLayer();
 
 	auto tileGid = collision->getTileGIDAt(support::getCoordInTileMap(tiledMap, newpos));
@@ -109,7 +109,7 @@ void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 				return;
 			}
 		}	
-	}
+	}*/
 
 	character->sprite->setPosition(newpos);
 	//camera follow player
