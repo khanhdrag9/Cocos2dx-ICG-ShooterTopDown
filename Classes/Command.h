@@ -41,7 +41,9 @@ public:
 #endif
 
 	void move(shared_ptr<Character>& character , const Vec2& speed);
+    void rotate(shared_ptr<Character>& character, const Vec2& loc);
 	void shot(shared_ptr<Character>& character);
 	void handleActionsCharacter(shared_ptr<Character>& character, float dt);
     void handleCollisionWithScreen(shared_ptr<Character>& character);
+    bool checkcollisionatpos(const shared_ptr<Character>& character, const Vec2& pos);
 };

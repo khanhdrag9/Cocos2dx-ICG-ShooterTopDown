@@ -95,21 +95,8 @@ void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 {
 	Vec2 newpos = character->sprite->getPosition() + speed;
 
-	/*auto tiledMap = _gameplay->getTiledMap();
-	auto collision = _gameplay->getCollisionLayer();
-
-	auto tileGid = collision->getTileGIDAt(support::getCoordInTileMap(tiledMap, newpos));
-	if (tileGid)
-	{
-		auto properties = tiledMap->getPropertiesForGID(tileGid).asValueMap();
-		if (properties.size() > 0)
-		{
-			if (properties.at("Collision").asBool() == true)
-			{
-				return;
-			}
-		}	
-	}*/
+    if(checkcollisionatpos(character, newpos))
+        return;
 
 	character->sprite->setPosition(newpos);
 	//camera follow player
@@ -118,6 +105,18 @@ void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 		_gameplay->setViewPointCenter(character->sprite);
 	}
 
+}
+
+void Command::rotate(shared_ptr<Character>& character, const Vec2& loc)
+{
+    Vec2 arrowWorldSpace = character->getArrowWorldSpace();
+    float oldAngle = character->sprite->getRotation();
+    
+    auto angle = atan2(loc.y - arrowWorldSpace.y, loc.x - arrowWorldSpace.x);
+    character->sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
+    
+    if(checkcollisionatpos(character, character->sprite->getPosition()))
+        character->sprite->setRotation(oldAngle);   //rollback old position
 }
 
 void Command::shot(shared_ptr<Character>& character)
@@ -174,4 +173,33 @@ void Command::shot(shared_ptr<Character>& character)
 void Command::handleCollisionWithScreen(shared_ptr<Character> &character) { 
    
 }
+
+bool Command::checkcollisionatpos(const shared_ptr<Character> &character, const cocos2d::Vec2 &pos) { 
+    //check rotation collision
+    auto tiledMap = _gameplay->getTiledMap();
+    auto collision = _gameplay->getCollisionLayer();
+    vector<Vec2> listCheck = support::getListVec2(character, pos);
+    
+    for(auto& p : listCheck)
+    {
+        Vec2 coord = support::getCoordInTileMap(tiledMap, p);
+        CCLOG("Coord %f - %f", coord.x, coord.y);
+        if(coord.x < 0 || coord.y < 0)return true;
+        auto tileGid = collision->getTileGIDAt(coord);
+        if (tileGid)
+        {
+            auto properties = tiledMap->getPropertiesForGID(tileGid).asValueMap();
+            if (properties.size() > 0)
+            {
+                if (properties.at("Collision").asBool() == true)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    return false;
+}
+
 

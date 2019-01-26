@@ -48,9 +48,7 @@ void GamePlay::update(float dt)
 
 void GamePlay::updateAngle(shared_ptr<Character>& character, const Vec2& loc)
 {
-	Vec2 arrowWorldSpace = character->getArrowWorldSpace();
-	auto angle = atan2(loc.y - arrowWorldSpace.y, loc.x - arrowWorldSpace.x);
-	_player->sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
+    _command->rotate(_player, loc);
 }
 
 void GamePlay::posInit()
@@ -65,8 +63,8 @@ void GamePlay::createPlayer()
 	_player = make_shared<PlayerSquare>(_player);
 
 	//calculate position start
-	TMXObjectGroup* objg = _tileMap->objectGroupNamed("Player");
-	auto playerPos = objg->objectNamed("PlayerPos");
+	TMXObjectGroup* objg = _tileMap->getObjectGroup("Player");
+	auto playerPos = objg->getObject("PlayerPos");
 	float x = playerPos.at("x").asFloat();
 	float y = playerPos.at("y").asFloat();
 
@@ -95,7 +93,7 @@ void GamePlay::createMap()
 {
 	_tileMap = TMXTiledMap::create(TITLEMAP_PATH);
 	_backgroudLayer = _tileMap->getLayer("Background");
-	//_collisionLayer = _tileMap->getLayer("Collision");
+	_collisionLayer = _tileMap->getLayer("Collision");
 	//_collisionLayer->setVisible(false);
 
 	this->addChild(_tileMap);
@@ -182,17 +180,17 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
 
 void GamePlay::setViewPointCenter(Sprite* obj)
 {
-	Size winSize = Director::sharedDirector()->getWinSize();
+	Size winSize = Director::getInstance()->getWinSize();
 	Vec2 position = obj->getPosition();
 
 	int x = MAX(position.x, winSize.width / 2);
 	int y = MAX(position.y, winSize.height / 2);
 	x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
 	y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
-	CCPoint actualPosition = ccp(x, y);
+	Vec2 actualPosition = Vec2(x, y);
 
-	CCPoint centerOfView = ccp(winSize.width / 2, winSize.height / 2);
-	CCPoint viewPoint = ccpSub(centerOfView, actualPosition);
+	Vec2 centerOfView = Vec2(winSize.width / 2, winSize.height / 2);
+	Vec2 viewPoint = Vec2(centerOfView - actualPosition);
 	this->setPosition(viewPoint);
 }
 
