@@ -71,7 +71,7 @@ void GamePlay::createPlayer()
 	_player->sprite->setPosition(x, y);
 	setViewPointCenter(_player->sprite);
 	//caculate scale for screen
-	float ratio = 1.f;
+	float ratio = 0.8f;
 	_player->sprite->setScale(ratio);
 	_player->addParrent(this);
 
@@ -94,7 +94,7 @@ void GamePlay::createMap()
 	_tileMap = TMXTiledMap::create(TITLEMAP_PATH);
 	_backgroudLayer = _tileMap->getLayer("Background");
 	_collisionLayer = _tileMap->getLayer("Collision");
-	//_collisionLayer->setVisible(false);
+	_collisionLayer->setVisible(false);
 
 	this->addChild(_tileMap);
 

@@ -126,8 +126,30 @@ void Command::shot(shared_ptr<Character>& character)
 	//shoot the bullet
 
 	Vec2 characterPos = character->sprite->getParent()->convertToWorldSpace(character->sprite->getPosition());	//realpos is shown on the screen
-	Vec2 offset = _touchPos - characterPos;
-
+	
+//    auto box = character->sprite->getBoundingBox();
+//    Vec2 directpos;
+//    float characterRot = character->sprite->getRotation();
+//    if(characterRot <= 90)
+//    {
+//
+//    }
+//    else if(characterRot <= 180)
+//    {
+//
+//    }
+//    else if(characterRot <= 270)
+//    {
+//
+//    }
+//    else
+//    {
+//
+//    }
+//    Vec2 offset = directpos - characterPos;
+    Vec2 offset = _touchPos - characterPos;
+    
+    
 	/*if (offset.x < 0)
 	{
 		return;

@@ -36,7 +36,12 @@ namespace support
                 Vec2(box.getMinX(), box.getMinY()),
                 Vec2(box.getMaxX(), box.getMinY()),
                 Vec2(box.getMaxX(), box.getMaxY()),
-                Vec2(box.getMinX(), box.getMaxY())
+                Vec2(box.getMinX(), box.getMaxY()),
+                
+                Vec2(box.getMinX(), box.getMidY()),
+                Vec2(box.getMidX(), box.getMinY()),
+                Vec2(box.getMaxX(), box.getMidY()),
+                Vec2(box.getMidX(), box.getMaxY())
             };
 		}
 		else if (character->getTypeplayer() == Character::typeplayer::CIRCLE)
