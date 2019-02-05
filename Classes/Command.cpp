@@ -126,34 +126,7 @@ void Command::shot(shared_ptr<Character>& character)
 	//shoot the bullet
 
 	Vec2 characterPos = character->sprite->getParent()->convertToWorldSpace(character->sprite->getPosition());	//realpos is shown on the screen
-	
-//    auto box = character->sprite->getBoundingBox();
-//    Vec2 directpos;
-//    float characterRot = character->sprite->getRotation();
-//    if(characterRot <= 90)
-//    {
-//
-//    }
-//    else if(characterRot <= 180)
-//    {
-//
-//    }
-//    else if(characterRot <= 270)
-//    {
-//
-//    }
-//    else
-//    {
-//
-//    }
-//    Vec2 offset = directpos - characterPos;
     Vec2 offset = _touchPos - characterPos;
-    
-    
-	/*if (offset.x < 0)
-	{
-		return;
-	}*/
 
 	auto bullet = Sprite::create(BULLET1);
 	//bullet->setRotation(character->sprite->getRotation());
@@ -183,13 +156,13 @@ void Command::shot(shared_ptr<Character>& character)
 	Vec2 shootAmount = offset * 1000;
 	Vec2 realPosTo = shootAmount + poscreate;
 
-	auto move = MoveTo::create(BULLET1_SPEED, realPosTo);
-	auto release = RemoveSelf::create();
-	auto finalaction = Sequence::createWithTwoActions(move, release);
-	finalaction->setTag(actiontag::SHOOT_MOVE);
-	bullet->runAction(finalaction);
+//    auto move = MoveTo::create(BULLET1_SPEED, realPosTo);
+//    auto release = RemoveSelf::create();
+//    auto finalaction = Sequence::createWithTwoActions(move, release);
+//    finalaction->setTag(actiontag::SHOOT_MOVE);
+//    bullet->runAction(finalaction);
 
-	//body->setVelocity(shootAmount);	//if want to colli
+    body->setVelocity(shootAmount);    //if want to colli
 }
 
 void Command::handleCollisionWithScreen(shared_ptr<Character> &character) { 
@@ -205,7 +178,7 @@ bool Command::checkcollisionatpos(const shared_ptr<Character> &character, const 
     for(auto& p : listCheck)
     {
         Vec2 coord = support::getCoordInTileMap(tiledMap, p);
-        CCLOG("Coord %f - %f", coord.x, coord.y);
+        //CCLOG("Coord %f - %f", coord.x, coord.y);
         if(coord.x < 0 || coord.y < 0)return true;
         auto tileGid = collision->getTileGIDAt(coord);
         if (tileGid)

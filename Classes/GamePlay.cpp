@@ -97,7 +97,6 @@ void GamePlay::createMap()
 	_collisionLayer->setVisible(false);
 
 	this->addChild(_tileMap);
-
 }
 
 void GamePlay::createListener()
