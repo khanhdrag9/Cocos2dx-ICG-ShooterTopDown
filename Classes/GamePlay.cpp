@@ -202,6 +202,7 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
 	}
 
 	if (campare2way(shape1Collision, shape2Collision, PHYSICS_BULLET_PLAYER, PHYSICS_EDGE) ||
+		campare2way(shape1Collision, shape2Collision, PHYSICS_BULLET_PLAYER, PHYSICS_BULLET_PLAYER) ||
 		campare2way(shape1Collision, shape2Collision, PHYSICS_BULLET_PLAYER, PHYSICS_BULLET_BOT))
 	{
 		if (node1->getTag() == objecttag::BULLET)
