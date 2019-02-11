@@ -99,6 +99,7 @@ void Command::move(shared_ptr<Character>& character, const Vec2& speed)
         return;
 
 	character->sprite->setPosition(newpos);
+
 	//camera follow player
 	if (character->getType() == Character::typecharacter::PLAYER)
 	{
@@ -178,6 +179,7 @@ void Command::handleCollisionWithScreen(shared_ptr<Character> &character) {
 bool Command::checkcollisionatpos(const shared_ptr<Character> &character, const cocos2d::Vec2 &pos) { 
     //check rotation collision
     auto tiledMap = _gameplay->getTiledMap();
+	auto tiledMapSize = tiledMap->getMapSize();
     auto collision = _gameplay->getCollisionLayer();
     vector<Vec2> listCheck = support::getListVec2(character, pos);
     
@@ -185,7 +187,9 @@ bool Command::checkcollisionatpos(const shared_ptr<Character> &character, const 
     {
         Vec2 coord = support::getCoordInTileMap(tiledMap, p);
         //CCLOG("Coord %f - %f", coord.x, coord.y);
-        if(coord.x < 0 || coord.y < 0)return true;
+        if(coord.x < 0 || coord.y < 0 || coord.x >= tiledMapSize.width || coord.y >= tiledMapSize.height)
+			return true;
+
         auto tileGid = collision->getTileGIDAt(coord);
         if (tileGid)
         {

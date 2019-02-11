@@ -2,7 +2,9 @@
 #include "Command.h"
 #include "Bot.h"
 
-BotManager::BotManager()
+BotManager::BotManager() :
+	_countTime(0.f),
+	_interval(BOT_HANDLE_INTERVAL)
 {
 	init();
 }
@@ -20,7 +22,6 @@ shared_ptr<Character> BotManager::createBot(const Vec2& position, Node* parrent)
 	bot->sprite->setPosition(position);
 	float ratio = 0.8f;
 	bot->sprite->setScale(ratio);
-
 	
 	bot->sprite->retain();
 	bot->sprite->removeFromParentAndCleanup(true);
@@ -34,8 +35,13 @@ shared_ptr<Character> BotManager::createBot(const Vec2& position, Node* parrent)
 
 void BotManager::update(float dt, unique_ptr<Command>& command)
 {
-	for (auto& bot : _bots)
-		command->handleActionsCharacter(bot, dt);
+	if (_countTime >= _interval)
+	{
+		for (auto& bot : _bots)
+			command->handleActionsCharacter(bot, dt);
+		_countTime = 0.f;
+	}
+	_countTime += dt;
 }
 
 shared_ptr<Character> BotManager::getBot(const int & index) const

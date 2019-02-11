@@ -85,7 +85,7 @@ void GamePlay::createPlayer()
 void GamePlay::createEnemy()
 {
 	auto bot = BotManager::getInstance()->createBot(_player->sprite->getPosition(), this);
-	bot->actions.SetCommand(Command::command::MOVE_UP, true);
+	bot->actions.SetCommand(Command::command::MOVE_LEFT, true);
 }
 
 void GamePlay::createPhysics()
@@ -202,8 +202,13 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
     
     if (campare2way(shape1Collision, shape2Collision, PHYSICS_PLAYER, PHYSICS_EDGE))
     {
-       
+		//return false;
     }
+
+	if (campare2way(shape1Collision, shape2Collision, PHYSICS_ENEMY, PHYSICS_EDGE))
+	{
+		//return false;
+	}
 
 	if (campare2way(shape1Collision, shape2Collision, PHYSICS_BULLET_PLAYER, PHYSICS_EDGE) ||
 		campare2way(shape1Collision, shape2Collision, PHYSICS_BULLET_PLAYER, PHYSICS_BULLET_BOT))

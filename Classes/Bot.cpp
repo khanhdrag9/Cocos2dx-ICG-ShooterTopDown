@@ -15,6 +15,7 @@ void Bot::init()
 {
 	_type = ENEMY;
 	sprite = Sprite::create(BOT_SQUARE_PATH);
+	_typeplayer = Character::typeplayer::SQUARE;
 
 	auto body = PhysicsBody::createBox(sprite->getContentSize());
 	body->setRotationEnable(true);

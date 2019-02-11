@@ -22,6 +22,7 @@ USING_NS_CC;
 #define AIM1 "aim/aim1.png"
 
 #define PLAYER_SPEED_NORMAL 8.f
+#define BOT_HANDLE_INTERVAL 0.f
 
 #define BULLET1 "bullet/bullet1.png"
 #define BULLET1_INTERVAL 0.2f

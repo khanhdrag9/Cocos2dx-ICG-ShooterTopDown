@@ -17,5 +17,8 @@ public:
 private:
 	void init();
 
+	float _countTime;
+	float _interval;
+
 	vector<shared_ptr<Character>> _bots;
 };

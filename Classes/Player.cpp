@@ -46,6 +46,7 @@ void Player::init()
 {
 	_type = PLAYER;
 	sprite = Sprite::create(PLAYER_SQUARE_PATH);
+	_typeplayer = Character::typeplayer::SQUARE;
 
 	auto body = PhysicsBody::createBox(sprite->getContentSize());
 	body->setRotationEnable(true);
