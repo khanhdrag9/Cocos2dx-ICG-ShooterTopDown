@@ -61,6 +61,7 @@ void GamePlay::createPlayer()
 {
 	_player = make_shared<Player>();
 	_player = make_shared<PlayerSquare>(_player);
+	_player->sprite->setTag(objecttag::PLAYER);
 
 	//calculate position start
 	TMXObjectGroup* objg = _tileMap->getObjectGroup("Player");
@@ -95,6 +96,32 @@ void GamePlay::createMap()
 	_backgroudLayer = _tileMap->getLayer("Background");
 	_collisionLayer = _tileMap->getLayer("Collision");
 	_collisionLayer->setVisible(false);
+
+	Size tileSize = _tileMap->getTileSize();
+	Size mapSize = _tileMap->getMapSize();
+	//mapSize = Size(mapSize.width * tileSize.width, mapSize.height * tileSize.height);
+	
+	/*float startW = tileSize.width / 2.f;
+	float startH = tileSize.height / 2.f;*/
+
+	for (int w = 0; w < mapSize.width; w++)
+	{
+		for (int h = 0; h < mapSize.height; h++)
+		{
+			auto tile = _collisionLayer->getTileAt(Vec2(w, h));
+			if (tile)
+			{
+				Size size = tile->getBoundingBox().size;
+				auto body = PhysicsBody::createBox(size);
+				body->setContactTestBitmask(PHYSICS_EDGE);
+				body->setCategoryBitmask(PHYSICS_EDGE);
+				body->setCollisionBitmask(PHYSICS_EDGE);
+				body->setDynamic(false);
+				
+				tile->setPhysicsBody(body);
+			}
+		}
+	}
 
 	this->addChild(_tileMap);
 }
@@ -155,6 +182,9 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
 	auto shape1 = contact.getShapeA();
 	auto shape2 = contact.getShapeB();
 
+	auto node1 = shape1->getBody()->getNode();
+	auto node2 = shape2->getBody()->getNode();
+
 	auto shape1Collision = shape1->getCollisionBitmask();
 	auto shape2Collision = shape2->getCollisionBitmask();
 
@@ -169,9 +199,17 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
        
     }
 
-	if (campare2way(shape1Collision, shape2Collision, PHYSICS_PLAYER, PHYSICS_EDGE))
+	if (campare2way(shape1Collision, shape2Collision, PHYSICS_BULLET_PLAYER, PHYSICS_EDGE) ||
+		campare2way(shape1Collision, shape2Collision, PHYSICS_BULLET_PLAYER, PHYSICS_BULLET_BOT))
 	{
-		
+		if (node1->getTag() == objecttag::BULLET)
+		{
+			node1->runAction(RemoveSelf::create());
+		}
+		if (node2->getTag() == objecttag::BULLET)
+		{
+			node2->runAction(RemoveSelf::create());
+		}
 	}
 
 	return true;

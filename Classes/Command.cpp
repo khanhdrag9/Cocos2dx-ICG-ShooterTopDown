@@ -123,16 +123,12 @@ void Command::shot(shared_ptr<Character>& character)
 {
 	Vec2 poscreate = character->sprite->getPosition();
 
-	//shoot the bullet
-
-	Vec2 characterPos = character->sprite->getParent()->convertToWorldSpace(character->sprite->getPosition());	//realpos is shown on the screen
-    Vec2 offset = _touchPos - characterPos;
-
 	auto bullet = Sprite::create(BULLET1);
 	//bullet->setRotation(character->sprite->getRotation());
 	bullet->setPosition(poscreate);
 	float ratio = 0.25;
 	bullet->setScale(ratio);
+	bullet->setTag(objecttag::BULLET);
 	character->sprite->getParent()->addChild(bullet);
 
 	//physic for bullet
@@ -145,16 +141,26 @@ void Command::shot(shared_ptr<Character>& character)
 		body->setContactTestBitmask(PHYSICS_BULLET_PLAYER);
 		body->setCategoryBitmask(PHYSICS_BULLET_PLAYER);
 		body->setCollisionBitmask(PHYSICS_BULLET_PLAYER);
-		
 	}
 	bullet->setPhysicsBody(body);
 
 	bullet->setRotation(character->sprite->getRotation());	//set rotate after set physicsbody to physicsbody right with rotate of bullet sprite
 	//calculate target of bullet
 
+
+	//shoot the bullet
+
+	/*if shoot forward mouse without care about angle of character*/
+	//Vec2 characterPos = character->sprite->getParent()->convertToWorldSpace(character->sprite->getPosition());	//realpos is shown on the screen
+	//Vec2 offset = _touchPos - characterPos;
+
+	float rotate = character->sprite->getRotation();
+	float vx = sin(CC_DEGREES_TO_RADIANS(rotate));
+	float vy = cos(CC_DEGREES_TO_RADIANS(rotate));
+	Vec2 offset = Vec2(vx, vy);
 	offset.normalize();
-	Vec2 shootAmount = offset * 1000;
-	Vec2 realPosTo = shootAmount + poscreate;
+	Vec2 shootAmount = offset * BULLET1_SPEED;
+	//Vec2 realPosTo = shootAmount + poscreate;
 
 //    auto move = MoveTo::create(BULLET1_SPEED, realPosTo);
 //    auto release = RemoveSelf::create();

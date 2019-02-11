@@ -22,7 +22,14 @@ USING_NS_CC;
 
 #define BULLET1 "bullet/bullet1.png"
 #define BULLET1_INTERVAL 0.2f
-#define BULLET1_SPEED 0.7f
+#define BULLET1_SPEED 500
+
+enum objecttag
+{
+	BULLET,
+	PLAYER,
+	ENEMY
+};
 
 
 //physics define in game
