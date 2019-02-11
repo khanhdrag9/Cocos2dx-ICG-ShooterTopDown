@@ -38,7 +38,9 @@ void BotManager::update(float dt, unique_ptr<Command>& command)
 	if (_countTime >= _interval)
 	{
 		for (auto& bot : _bots)
+		{
 			command->handleActionsCharacter(bot, dt);
+		}
 		_countTime = 0.f;
 	}
 	_countTime += dt;

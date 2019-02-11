@@ -17,7 +17,7 @@ void Bot::init()
 	sprite = Sprite::create(BOT_SQUARE_PATH);
 	_typeplayer = Character::typeplayer::SQUARE;
 
-	auto body = PhysicsBody::createBox(sprite->getContentSize());
+	auto body = PhysicsBody::createBox(sprite->getContentSize(), PhysicsMaterial(0.1f, 0.5f, 1.f));
 	body->setRotationEnable(true);
 	body->setContactTestBitmask(PHYSICS_ENEMY);
 	body->setCategoryBitmask(PHYSICS_ENEMY);

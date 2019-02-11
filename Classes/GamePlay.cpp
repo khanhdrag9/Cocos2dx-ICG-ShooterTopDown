@@ -85,28 +85,11 @@ void GamePlay::createPlayer()
 void GamePlay::createEnemy()
 {
 	auto bot = BotManager::getInstance()->createBot(_player->sprite->getPosition(), this);
-	bot->actions.SetCommand(Command::command::MOVE_LEFT, true);
+	bot->actions.SetCommand(Command::command::MOVE_UP, true);
 }
 
 void GamePlay::createPhysics()
 {
-	////physics for player
-	//auto body = PhysicsBody::createBox(_player->sprite->getContentSize());
-	//body->setRotationEnable(true);
-	//body->setContactTestBitmask(PHYSICS_PLAYER);
-	//body->setCategoryBitmask(PHYSICS_PLAYER);
-	//body->setCollisionBitmask(PHYSICS_PLAYER);
-	//_player->sprite->setPhysicsBody(body);
-
-}
-
-void GamePlay::createMap()
-{
-	_tileMap = TMXTiledMap::create(TITLEMAP_PATH);
-	_backgroudLayer = _tileMap->getLayer("Background");
-	_collisionLayer = _tileMap->getLayer("Collision");
-	_collisionLayer->setVisible(false);
-
 	//physics for collision layer
 	Size mapSize = _tileMap->getMapSize();
 
@@ -123,11 +106,19 @@ void GamePlay::createMap()
 				body->setCategoryBitmask(PHYSICS_EDGE);
 				body->setCollisionBitmask(PHYSICS_EDGE);
 				body->setDynamic(false);
-				
+
 				tile->setPhysicsBody(body);
 			}
 		}
 	}
+}
+
+void GamePlay::createMap()
+{
+	_tileMap = TMXTiledMap::create(TITLEMAP_PATH);
+	_backgroudLayer = _tileMap->getLayer("Background");
+	_collisionLayer = _tileMap->getLayer("Collision");
+	_collisionLayer->setVisible(false);
 
 	this->addChild(_tileMap);
 }
