@@ -35,7 +35,8 @@ public:
 public:
 	Sprite* sprite;
 
-	map<Command::command, bool> actions;
+	//map<Command::command, bool> actions;
+	Commands actions;
 	const typecharacter& getType() const { return _type; }
 	const typeplayer& getTypeplayer() const { return _typeplayer; };
 };

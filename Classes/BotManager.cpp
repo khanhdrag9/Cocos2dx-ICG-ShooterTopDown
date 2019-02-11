@@ -2,22 +2,20 @@
 #include "Command.h"
 #include "Bot.h"
 
-BotManager::BotManager():
-	_command(nullptr)
+BotManager::BotManager()
 {
 	init();
 }
 
 BotManager::~BotManager()
 {
-	_command = nullptr;
 	for (auto& b : _bots)b = nullptr;
 	_bots.clear();
 }
 
-void BotManager::createBot(const Vec2& position, Node* parrent)
+shared_ptr<Character> BotManager::createBot(const Vec2& position, Node* parrent)
 {
-	shared_ptr<Bot> bot = make_shared<Bot>();
+	shared_ptr<Character> bot = make_shared<Bot>();
 	bot->sprite->setTag(objecttag::ENEMY);
 	bot->sprite->setPosition(position);
 	float ratio = 0.8f;
@@ -30,11 +28,25 @@ void BotManager::createBot(const Vec2& position, Node* parrent)
 	bot->sprite->autorelease();
 
 	_bots.push_back(bot);
+
+	return bot;
+}
+
+void BotManager::update(float dt, unique_ptr<Command>& command)
+{
+	for (auto& bot : _bots)
+		command->handleActionsCharacter(bot, dt);
+}
+
+shared_ptr<Character> BotManager::getBot(const int & index) const
+{
+	if (index < _bots.size())
+		return _bots[index];
+	return shared_ptr<Character>();
 }
 
 void BotManager::init()
 {
-	_command = make_unique<Command>();
 }
 
 

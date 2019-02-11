@@ -45,7 +45,9 @@ void GamePlay::update(float dt)
 	if (_command)
 	{
 		_command->handleActionsCharacter(_player, dt);
+		BotManager::getInstance()->update(dt, _command);
 	}
+	
 }
 
 void GamePlay::updateAngle(shared_ptr<Character>& character, const Vec2& loc)
@@ -82,7 +84,8 @@ void GamePlay::createPlayer()
 
 void GamePlay::createEnemy()
 {
-	BotManager::getInstance()->createBot(_player->sprite->getPosition(), this);
+	auto bot = BotManager::getInstance()->createBot(_player->sprite->getPosition(), this);
+	bot->actions.SetCommand(Command::command::MOVE_UP, true);
 }
 
 void GamePlay::createPhysics()

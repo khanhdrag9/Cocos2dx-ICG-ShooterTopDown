@@ -22,6 +22,8 @@ void Bot::init()
 	body->setCategoryBitmask(PHYSICS_ENEMY);
 	body->setCollisionBitmask(PHYSICS_ENEMY);
 	sprite->setPhysicsBody(body);
+
+	actions.AddCommand(Command::command::SHOOT, false);
 }
 
 void Bot::upgrade()

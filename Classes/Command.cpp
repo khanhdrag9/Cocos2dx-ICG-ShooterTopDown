@@ -21,16 +21,16 @@ void Command::remote(shared_ptr<Character> character, const EventKeyboard::KeyCo
 	switch (code)
 	{
 	case EventKeyboard::KeyCode::KEY_W:
-		character->actions[command::MOVE_UP] = value;
+		character->actions.SetCommand(command::MOVE_UP, value);
 		break;
 	case EventKeyboard::KeyCode::KEY_S:
-		character->actions[command::MOVE_DOWN] = value;
+		character->actions.SetCommand(command::MOVE_DOWN, value);
 		break;
 	case EventKeyboard::KeyCode::KEY_A:
-		character->actions[command::MOVE_LEFT] = value;
+		character->actions.SetCommand(command::MOVE_LEFT, value);
 		break;
 	case EventKeyboard::KeyCode::KEY_D:
-		character->actions[command::MOVE_RIGHT] = value;
+		character->actions.SetCommand(command::MOVE_RIGHT, value);
 		break;
 	default:
 		break;
@@ -41,14 +41,14 @@ void Command::remote(shared_ptr<Character> character, const Vec2& touchpos, cons
 	switch (code)
 	{
 	case EventMouse::MouseEventType::MOUSE_DOWN:
-		character->actions[command::SHOOT] = value;
+		character->actions.SetCommand(command::SHOOT, value);
 		_touchPos = touchpos;
 		break;
 	case EventMouse::MouseEventType::MOUSE_MOVE:
 		_touchPos = touchpos;
 		break;
 	case EventMouse::MouseEventType::MOUSE_UP:
-		character->actions[command::SHOOT] = value;
+		character->actions.SetCommand(command::SHOOT, value);
 		_touchPos = Vec2(0, 0);
 		break;
 	default:
@@ -62,7 +62,7 @@ void Command::remote(shared_ptr<Character> character, const Vec2& touchpos, cons
 void Command::handleActionsCharacter(shared_ptr<Character>& character, float dt)
 {
 	character->setArrowWorldSpace(character->sprite->getParent()->convertToWorldSpace(character->sprite->getPosition()));	//update to rotate this
-	float incre = 4.f;
+	float incre = PLAYER_SPEED_NORMAL;
 	if (character->actions[command::MOVE_UP])
 	{
 		move(character, Vec2(0, incre));

@@ -2,7 +2,7 @@
 #include "Headers.h"
 
 class Command;
-class Bot;
+class Character;
 
 class BotManager : public Singleton<BotManager>
 {
@@ -10,10 +10,12 @@ public:
 	BotManager();
 	virtual ~BotManager();
 
-	void createBot(const Vec2& position, Node* parrent);
+	shared_ptr<Character> createBot(const Vec2& position, Node* parrent);
+	void update(float dt, unique_ptr<Command>& command);
+
+	shared_ptr<Character> getBot(const int& index) const;
 private:
 	void init();
-	unique_ptr<Command> _command;
 
-	vector<shared_ptr<Bot>> _bots;
+	vector<shared_ptr<Character>> _bots;
 };

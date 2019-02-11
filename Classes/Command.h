@@ -47,3 +47,46 @@ public:
     void handleCollisionWithScreen(shared_ptr<Character>& character);
     bool checkcollisionatpos(const shared_ptr<Character>& character, const Vec2& pos);
 };
+
+struct Commands
+{
+private:
+	map<Command::command, bool> commands;
+public:
+	bool operator[](Command::command cmd) const
+	{
+		for (auto& c : commands)
+		{
+			if (c.first == cmd)
+			{
+				return c.second;
+			}
+		}
+
+		//CCLOG("[GET Command]Character does not contain this command!");
+		return false;
+	}
+
+	void AddCommand(Command::command cmd, bool value = false)
+	{
+		commands[cmd] = value;
+	}
+
+	void SetCommand(Command::command cmd, bool value)
+	{
+		for (auto& c : commands)
+		{
+			if (c.first == cmd)
+			{
+				c.second = value;
+			}
+		}
+
+		CCLOG("[SET Command]Character does not contain this command!");
+	}
+
+	void clear()
+	{
+		commands.clear();
+	}
+};

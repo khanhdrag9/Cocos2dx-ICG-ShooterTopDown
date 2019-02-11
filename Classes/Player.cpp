@@ -3,10 +3,10 @@
 //base class
 Character::Character()
 {
-	actions[Command::command::MOVE_UP] = false;
-	actions[Command::command::MOVE_DOWN] = false;
-	actions[Command::command::MOVE_RIGHT] = false;
-	actions[Command::command::MOVE_LEFT] = false;
+	actions.AddCommand(Command::command::MOVE_UP, false);
+	actions.AddCommand(Command::command::MOVE_DOWN, false);
+	actions.AddCommand(Command::command::MOVE_RIGHT, false);
+	actions.AddCommand(Command::command::MOVE_LEFT, false);
 }
 
 Character::~Character()
@@ -53,6 +53,8 @@ void Player::init()
 	body->setCategoryBitmask(PHYSICS_PLAYER);
 	body->setCollisionBitmask(PHYSICS_PLAYER);
 	sprite->setPhysicsBody(body);
+
+	actions.AddCommand(Command::command::SHOOT, false);
 }
 
 void Player::upgrade()
