@@ -8,7 +8,8 @@ public:
 	enum typecharacter
 	{
 		UNKNOWN,
-		PLAYER
+		PLAYER,
+		BOT
 	};
 
 	enum typeplayer

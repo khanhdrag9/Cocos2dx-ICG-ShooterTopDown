@@ -97,12 +97,8 @@ void GamePlay::createMap()
 	_collisionLayer = _tileMap->getLayer("Collision");
 	_collisionLayer->setVisible(false);
 
-	Size tileSize = _tileMap->getTileSize();
+	//physics for collision layer
 	Size mapSize = _tileMap->getMapSize();
-	//mapSize = Size(mapSize.width * tileSize.width, mapSize.height * tileSize.height);
-	
-	/*float startW = tileSize.width / 2.f;
-	float startH = tileSize.height / 2.f;*/
 
 	for (int w = 0; w < mapSize.width; w++)
 	{
