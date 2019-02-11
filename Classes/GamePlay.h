@@ -24,6 +24,7 @@ class GamePlay : public Layer
 	void posInit();
 	void createMap();
 	void createPlayer();
+	void createEnemy();
 	void createPhysics();
 	void createListener();
 	void createSchedule();

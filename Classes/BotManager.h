@@ -10,7 +10,7 @@ public:
 	BotManager();
 	virtual ~BotManager();
 
-	void createBot(const Vec2& position);
+	void createBot(const Vec2& position, Node* parrent);
 private:
 	void init();
 	unique_ptr<Command> _command;

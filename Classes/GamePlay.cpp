@@ -1,5 +1,6 @@
 #include "GamePlay.h"
 #include "InGameUI.h"
+#include "BotManager.h"
 
 Scene* GamePlay::createScene()
 {
@@ -31,6 +32,7 @@ bool GamePlay::init()
 	posInit();
 	createMap();
 	createPlayer();
+	createEnemy();
 	createPhysics();
 	createListener();
 	createSchedule();
@@ -76,6 +78,11 @@ void GamePlay::createPlayer()
 	_player->sprite->setScale(ratio);
 	_player->addParrent(this);
 
+}
+
+void GamePlay::createEnemy()
+{
+	BotManager::getInstance()->createBot(_player->sprite->getPosition(), this);
 }
 
 void GamePlay::createPhysics()

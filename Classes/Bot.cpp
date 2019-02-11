@@ -3,15 +3,17 @@
 
 Bot::Bot()
 {
+	init();
 }
 
 Bot::~Bot()
 {
+	CC_SAFE_DELETE(sprite);
 }
 
 void Bot::init()
 {
-	_type = BOT;
+	_type = ENEMY;
 	sprite = Sprite::create(BOT_SQUARE_PATH);
 
 	auto body = PhysicsBody::createBox(sprite->getContentSize());

@@ -9,7 +9,7 @@ public:
 	{
 		UNKNOWN,
 		PLAYER,
-		BOT
+		ENEMY
 	};
 
 	enum typeplayer

@@ -11,5 +11,4 @@ public:
 	void init() override;
 	void upgrade() override;
 public:
-	Sprite* sprite;
 };
