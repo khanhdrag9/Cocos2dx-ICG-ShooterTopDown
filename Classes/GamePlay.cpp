@@ -6,7 +6,7 @@ Scene* GamePlay::createScene()
 {
 	auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setGravity(Vec2(0, 0));
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//escene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
 	auto layer = GamePlay::create();
 	scene->addChild(layer, 0);
@@ -76,7 +76,7 @@ void GamePlay::createPlayer()
 	_player->sprite->setPosition(x, y);
 	setViewPointCenter(_player->sprite);
 	//caculate scale for screen
-	float ratio = 0.8f;
+	float ratio = 0.5f;
 	_player->sprite->setScale(ratio);
 	_player->addParrent(this);
 
@@ -85,7 +85,7 @@ void GamePlay::createPlayer()
 void GamePlay::createEnemy()
 {
 	auto bot = BotManager::getInstance()->createBot(_player->sprite->getPosition(), this);
-	bot->actions.SetCommand(Command::command::MOVE_UP, true);
+	//bot->actions.SetCommand(Command::command::MOVE_UP, true);
 }
 
 void GamePlay::createPhysics()

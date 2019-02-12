@@ -1,8 +1,8 @@
 #pragma once
 #include "Headers.h"
+#include "Command.h"
 
-class Command;
-class Character;
+class Bot;
 
 class BotManager : public Singleton<BotManager>
 {
@@ -20,5 +20,12 @@ private:
 	float _countTime;
 	float _interval;
 
-	vector<shared_ptr<Character>> _bots;
+	vector<shared_ptr<Bot>> _bots;
+	
+private:
+	void stop(shared_ptr<Bot> bot);
+	void move(shared_ptr<Bot> bot, Command::command cmd);
+	void rotate(shared_ptr<Bot> bot, const float& angle);
+	void shot(shared_ptr<Bot> bot);
+	void Revert(shared_ptr<Bot> bot, const int& times = 1);
 };
