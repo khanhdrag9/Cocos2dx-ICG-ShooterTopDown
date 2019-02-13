@@ -39,12 +39,12 @@ void BotManager::update(float dt, unique_ptr<Command>& command)
 	{
 		for (auto& bot : _bots)
 		{
-			move(bot, Command::command::MOVE_LEFT);
+			//move(bot, Command::command::MOVE_LEFT);
 			auto character = static_pointer_cast<Character>(bot);
 			command->handleActionsCharacter(character, dt);
 		}
 
-
+        
 
 		_countTime = 0.f;
 	}

@@ -84,8 +84,20 @@ void GamePlay::createPlayer()
 
 void GamePlay::createEnemy()
 {
-	auto bot = BotManager::getInstance()->createBot(_player->sprite->getPosition(), this);
 	//bot->actions.SetCommand(Command::command::MOVE_UP, true);
+    TMXObjectGroup* objg = _tileMap->getObjectGroup("Enemy");
+    
+    string pre = "enemyPos";
+    
+    for(int i = 1; i <= 4; i++)
+    {
+        auto pos = objg->getObject(pre + to_string(i));
+        float x = pos.at("x").asFloat();
+        float y = pos.at("y").asFloat();
+        
+        auto bot = BotManager::getInstance()->createBot(Vec2(x,y), this);
+    }
+    
 }
 
 void GamePlay::createPhysics()

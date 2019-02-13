@@ -48,7 +48,7 @@ void Player::init()
 	sprite = Sprite::create(PLAYER_SQUARE_PATH);
 	_typeplayer = Character::typeplayer::SQUARE;
 
-	auto body = PhysicsBody::createBox(sprite->getContentSize());
+	auto body = PhysicsBody::createBox(sprite->getBoundingBox().size);
 	body->setRotationEnable(true);
 	body->setContactTestBitmask(PHYSICS_PLAYER);
 	body->setCategoryBitmask(PHYSICS_PLAYER);
