@@ -39,7 +39,8 @@ public:
 #else
 	
 #endif
-
+    void moveToPoint(shared_ptr<Character>& character, const Vec2& point, const float& time);
+    void moveFollowPoints(shared_ptr<Character>& character, std::vector<Vec2>& points, const float& totalTime);
 	void move(shared_ptr<Character>& character , const Vec2& speed);
     void rotate(shared_ptr<Character>& character, const Vec2& loc);
 	void shot(shared_ptr<Character>& character);

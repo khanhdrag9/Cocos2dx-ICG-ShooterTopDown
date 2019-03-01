@@ -28,6 +28,16 @@ USING_NS_CC;
 #define BULLET1_INTERVAL 0.75f
 #define BULLET1_SPEED 1000.f
 
+
+//constants
+namespace constants
+{
+    const string nameEnemyGroup = "Enemy";
+    const string preNameEnemy = "enemyPos";
+    const string nameEnemyMoveMap = "EnemyMoveMap";
+    const string preMoveEnemy = "enemystep";
+}
+
 enum objecttag
 {
 	BULLET,

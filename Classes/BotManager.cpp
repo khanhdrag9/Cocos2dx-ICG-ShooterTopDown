@@ -44,8 +44,6 @@ void BotManager::update(float dt, unique_ptr<Command>& command)
 			command->handleActionsCharacter(character, dt);
 		}
 
-        
-
 		_countTime = 0.f;
 	}
 	_countTime += dt;
@@ -97,5 +95,10 @@ void BotManager::Revert(shared_ptr<Bot> bot, const int& times)
 	auto states = bot->_states.back();
 
 }
+
+int BotManager::getBotsCount() const { 
+    return (int)_bots.size();
+}
+
 
 

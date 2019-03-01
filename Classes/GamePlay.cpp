@@ -33,6 +33,7 @@ bool GamePlay::init()
 	createMap();
 	createPlayer();
 	createEnemy();
+    createViewCamera();
 	createPhysics();
 	createListener();
 	createSchedule();
@@ -74,7 +75,6 @@ void GamePlay::createPlayer()
 	float y = playerPos.at("y").asFloat();
 
 	_player->sprite->setPosition(x, y);
-	setViewPointCenter(_player->sprite);
 	//caculate scale for screen
 	float ratio = 0.5f;
 	_player->sprite->setScale(ratio);
@@ -85,19 +85,28 @@ void GamePlay::createPlayer()
 void GamePlay::createEnemy()
 {
 	//bot->actions.SetCommand(Command::command::MOVE_UP, true);
-    TMXObjectGroup* objg = _tileMap->getObjectGroup("Enemy");
+    TMXObjectGroup* objg = _tileMap->getObjectGroup(constants::nameEnemyGroup);
+    TMXObjectGroup* objMoveMap = _tileMap->getObjectGroup(constants::nameEnemyMoveMap);
+    int countEnemies = 1;
     
-    string pre = "enemyPos";
-    
-    for(int i = 1; i <= 4; i++)
+    for(int i = 1; i <= countEnemies; i++)
     {
-        auto pos = objg->getObject(pre + to_string(i));
+        auto pos = objg->getObject(constants::preNameEnemy + to_string(i));
         float x = pos.at("x").asFloat();
         float y = pos.at("y").asFloat();
         
         auto bot = BotManager::getInstance()->createBot(Vec2(x,y), this);
     }
     
+    //countinue...
+    
+}
+
+
+void GamePlay::createViewCamera()
+{
+    //setViewPointCenter(_player->sprite);
+    setViewPointCenter(BotManager::getInstance()->getBot(0)->sprite);
 }
 
 void GamePlay::createPhysics()
@@ -245,5 +254,4 @@ void GamePlay::setViewPointCenter(Sprite* obj)
 	Vec2 viewPoint = Vec2(centerOfView - actualPosition);
 	this->setPosition(viewPoint);
 }
-
 

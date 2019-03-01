@@ -14,6 +14,7 @@ public:
 	void update(float dt, unique_ptr<Command>& command);
 
 	shared_ptr<Character> getBot(const int& index) const;
+    int getBotsCount()const;
 private:
 	void init();
 

@@ -25,6 +25,7 @@ class GamePlay : public Layer
 	void createMap();
 	void createPlayer();
 	void createEnemy();
+    void createViewCamera();
 	void createPhysics();
 	void createListener();
 	void createSchedule();

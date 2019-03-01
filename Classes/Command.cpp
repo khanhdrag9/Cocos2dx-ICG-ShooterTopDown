@@ -207,4 +207,62 @@ bool Command::checkcollisionatpos(const shared_ptr<Character> &character, const 
     return false;
 }
 
+void Command::moveToPoint(shared_ptr<Character> &character, const cocos2d::Vec2 &point, const float &time)
+{
+    if(character && character->sprite)
+    {
+        if(character->sprite->getNumberOfRunningActions() == 0)
+        {
+            character->sprite->runAction(MoveTo::create(time, point));
+        }
+    }
+}
+
+void Command::moveFollowPoints(shared_ptr<Character> &character, std::vector<Vec2> &points, const float &totalTime) { 
+    if(character && character->sprite)
+    {
+        if(character->sprite->getNumberOfRunningActions() == 0)
+        {
+            Vector<FiniteTimeAction*> moveto;
+            vector<float> rangers;
+            vector<float> durations;
+            
+            for(int i = 0; i < points.size() - 1; i++)
+            {
+                float distance = points[0].distance(points[1]);
+                rangers.push_back(distance);
+            }
+            
+            //get ratio between distance
+            {
+                vector<float> tempRatio { 1 };
+                float sum = 0.f;
+                for(int i = 1; i < rangers.size(); i++)
+                {
+                    float ratio = (float)rangers[i] / (float)rangers[0];
+                    tempRatio.push_back(ratio);
+                    sum += ratio;
+                }
+                
+                float unit = (float)totalTime / (float)sum;
+                for(auto& r : tempRatio)
+                {
+                    durations.push_back(unit * r);
+                }
+                tempRatio.clear();
+            }
+            
+            for(int i = 0; i < points.size(); i++)
+            {
+                moveto.pushBack(MoveTo::create(durations[i], points[i]));
+            }
+            
+            auto finalMove = Sequence::create(moveto);
+            character->sprite->runAction(finalMove);
+        }
+    }
+}
+
+
+
 
