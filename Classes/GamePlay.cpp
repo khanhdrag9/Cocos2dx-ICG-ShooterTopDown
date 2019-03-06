@@ -49,6 +49,7 @@ void GamePlay::update(float dt)
 		BotManager::getInstance()->update(dt, _command);
 	}
 	
+	setViewPointCenter();
 }
 
 void GamePlay::updateAngle(shared_ptr<Character>& character, const Vec2& loc)
@@ -86,7 +87,7 @@ void GamePlay::createEnemy()
 {
 	//bot->actions.SetCommand(Command::command::MOVE_UP, true);
     TMXObjectGroup* objg = _tileMap->getObjectGroup(constants::nameEnemyGroup);
-    TMXObjectGroup* objMoveMap = _tileMap->getObjectGroup(constants::nameEnemyMoveMap);
+    
     int countEnemies = 1;
     
     for(int i = 1; i <= countEnemies; i++)
@@ -96,6 +97,11 @@ void GamePlay::createEnemy()
         float y = pos.at("y").asFloat();
         
         auto bot = BotManager::getInstance()->createBot(Vec2(x,y), this);
+
+		vector<Vec2> list;
+		list.push_back(bot->sprite->getPosition());
+		GetListVectorFromTileMap(list, constants::nameEnemyMoveMap, constants::preMoveEnemy, 1, 19);
+		_command->moveFollowPoints(bot, list, 20.f);
     }
     
     //countinue...
@@ -106,7 +112,8 @@ void GamePlay::createEnemy()
 void GamePlay::createViewCamera()
 {
     //setViewPointCenter(_player->sprite);
-    setViewPointCenter(BotManager::getInstance()->getBot(0)->sprite);
+    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
+	setViewPointCenter();
 }
 
 void GamePlay::createPhysics()
@@ -195,6 +202,20 @@ bool campare2way(const T& a, const T& b, const T& value1, const T& value2)
 		return false;
 }
 
+void GamePlay::GetListVectorFromTileMap(vector<Vec2>& list, const string & nameGroup, const string & preNameObj, const int & start, const int & end)
+{
+	TMXObjectGroup* objMoveMap = _tileMap->getObjectGroup(nameGroup);
+	for (int i = start; i <= end; i++)
+	{
+		string nameobj = preNameObj + to_string(i);
+		auto posObj = objMoveMap->getObject(nameobj);
+		float x = posObj.at("x").asFloat();
+		float y = posObj.at("y").asFloat();
+
+		list.emplace_back(x, y);
+	}
+}
+
 bool GamePlay::contactBegin(PhysicsContact& contact)
 {
 	auto shape1 = contact.getShapeA();
@@ -239,19 +260,27 @@ bool GamePlay::contactBegin(PhysicsContact& contact)
 	return true;
 }
 
-void GamePlay::setViewPointCenter(Sprite* obj)
+void GamePlay::setViewPointCenter()
 {
-	Size winSize = Director::getInstance()->getWinSize();
-	Vec2 position = obj->getPosition();
+	if (_isFollowByCam)
+	{
+		Size winSize = Director::getInstance()->getWinSize();
+		Vec2 position = _isFollowByCam->sprite->getPosition();
 
-	int x = MAX(position.x, winSize.width / 2);
-	int y = MAX(position.y, winSize.height / 2);
-	x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
-	y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
-	Vec2 actualPosition = Vec2(x, y);
+		int x = MAX(position.x, winSize.width / 2);
+		int y = MAX(position.y, winSize.height / 2);
+		x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
+		y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
+		Vec2 actualPosition = Vec2(x, y);
 
-	Vec2 centerOfView = Vec2(winSize.width / 2, winSize.height / 2);
-	Vec2 viewPoint = Vec2(centerOfView - actualPosition);
-	this->setPosition(viewPoint);
+		Vec2 centerOfView = Vec2(winSize.width / 2, winSize.height / 2);
+		Vec2 viewPoint = Vec2(centerOfView - actualPosition);
+		this->setPosition(viewPoint);
+	}
+}
+
+void GamePlay::setObjectFollowByCam(shared_ptr<Character> obj)
+{
+	_isFollowByCam = obj;
 }
 

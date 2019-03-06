@@ -103,7 +103,7 @@ void Command::move(shared_ptr<Character>& character, const Vec2& speed)
 	//camera follow player
 	if (character->getType() == Character::typecharacter::PLAYER)
 	{
-		_gameplay->setViewPointCenter(character->sprite);
+		
 	}
 
 }
@@ -252,9 +252,9 @@ void Command::moveFollowPoints(shared_ptr<Character> &character, std::vector<Vec
                 tempRatio.clear();
             }
             
-            for(int i = 0; i < points.size(); i++)
+            for(int i = 0; i < durations.size(); i++)
             {
-                moveto.pushBack(MoveTo::create(durations[i], points[i]));
+                moveto.pushBack(MoveTo::create(durations[i], points[i + 1]));
             }
             
             auto finalMove = Sequence::create(moveto);

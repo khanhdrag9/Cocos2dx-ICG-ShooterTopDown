@@ -39,6 +39,9 @@ class GamePlay : public Layer
 	//touch or joystick for phone...
 #endif
 
+private:
+	void GetListVectorFromTileMap(vector<Vec2>& list, const string& nameGroup, const string& preNameObj ,const int& start, const int& end);
+
 	bool contactBegin(PhysicsContact& contact);
 	
 public:
@@ -48,7 +51,10 @@ public:
 
 	CREATE_FUNC(GamePlay);
 
-	void setViewPointCenter(Sprite* obj);
+	void setViewPointCenter();
+	void setObjectFollowByCam(shared_ptr<Character> obj);
+	shared_ptr<Character> _isFollowByCam;
+
 	TMXTiledMap* getTiledMap() { return _tileMap; }
 	TMXLayer* getBackgroundLayer() { return _backgroudLayer; }
 	TMXLayer* getCollisionLayer() { return _collisionLayer; }
