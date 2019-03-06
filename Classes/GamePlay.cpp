@@ -101,7 +101,9 @@ void GamePlay::createEnemy()
 		vector<Vec2> list;
 		list.push_back(bot->sprite->getPosition());
 		GetListVectorFromTileMap(list, constants::nameEnemyMoveMap, constants::preMoveEnemy, 1, 19);
-		_command->moveFollowPoints(bot, list, 20.f);
+
+
+		_command->moveFollowPoints(bot, list, 12.f);
     }
     
     //countinue...
@@ -111,7 +113,7 @@ void GamePlay::createEnemy()
 
 void GamePlay::createViewCamera()
 {
-    //setViewPointCenter(_player->sprite);
+	//setObjectFollowByCam(_player);
     setObjectFollowByCam(BotManager::getInstance()->getBot(0));
 	setViewPointCenter();
 }
@@ -202,10 +204,14 @@ bool campare2way(const T& a, const T& b, const T& value1, const T& value2)
 		return false;
 }
 
-void GamePlay::GetListVectorFromTileMap(vector<Vec2>& list, const string & nameGroup, const string & preNameObj, const int & start, const int & end)
+void GamePlay::GetListVectorFromTileMap(vector<Vec2>& list, const string & nameGroup, const string & preNameObj, int start, int end)
 {
 	TMXObjectGroup* objMoveMap = _tileMap->getObjectGroup(nameGroup);
-	for (int i = start; i <= end; i++)
+
+	if (start > end)
+		std::swap(start, end);
+
+	for (int i = start; i <= end; i+=1)
 	{
 		string nameobj = preNameObj + to_string(i);
 		auto posObj = objMoveMap->getObject(nameobj);
@@ -214,6 +220,9 @@ void GamePlay::GetListVectorFromTileMap(vector<Vec2>& list, const string & nameG
 
 		list.emplace_back(x, y);
 	}
+
+	if (start > end)
+		list.reserve(end - start + 1);
 }
 
 bool GamePlay::contactBegin(PhysicsContact& contact)

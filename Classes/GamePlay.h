@@ -40,7 +40,7 @@ class GamePlay : public Layer
 #endif
 
 private:
-	void GetListVectorFromTileMap(vector<Vec2>& list, const string& nameGroup, const string& preNameObj ,const int& start, const int& end);
+	void GetListVectorFromTileMap(vector<Vec2>& list, const string& nameGroup, const string& preNameObj ,int start, int end);
 
 	bool contactBegin(PhysicsContact& contact);
 	
