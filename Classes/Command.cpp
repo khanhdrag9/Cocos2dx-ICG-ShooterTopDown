@@ -229,7 +229,7 @@ void Command::moveFollowPoints(shared_ptr<Character> &character, std::vector<Vec
             
             for(int i = 0; i < points.size() - 1; i++)
             {
-                float distance = points[0].distance(points[1]);
+                float distance = points[i].distance(points[i+1]);
                 rangers.push_back(distance);
             }
             
