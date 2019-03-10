@@ -1,5 +1,5 @@
 #pragma once
-#include "Headers.h"
+#include "../Headers.h"
 
 class GS_GamePlay : public Layer
 {
@@ -10,6 +10,7 @@ public:
 private:
     bool init() override;
     void update(float dt) override;
+    void controller();
     
     
     CREATE_FUNC(GS_GamePlay);

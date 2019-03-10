@@ -2,10 +2,14 @@
 
 //C++
 #include <iostream>
+#include <algorithm>
+#include <queue>
+#include <vector>
+
 
 using namespace std;
 
 //Cocos
-#include "Cocos2d.h"
+#include "cocos2d.h"
 
 using namespace NS_CC;
