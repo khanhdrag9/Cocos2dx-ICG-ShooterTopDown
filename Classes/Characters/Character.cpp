@@ -7,6 +7,7 @@
 
 #include "Character.h"
 #include "../Commands/Command.h"
+#include "../Defines/constants.h"
 
 Character::Character():
 //_commandHandle(nullptr),
@@ -26,6 +27,9 @@ Character::~Character()
 
 void Character::init()
 {
+    _type = Character::type::NONE;
+    _name = constants::character_none;
+    
 }
 
 
@@ -58,4 +62,18 @@ void Character::pushCommand(shared_ptr<Command>& command)
 {
     command->registAnObject(shared_from_this(), _commandQueue);
 }
+
+
+const string& Character::getName() const
+{
+    return _name;
+}
+
+
+const Character::type& Character::getType() const
+{
+    return _type;
+}
+
+
 

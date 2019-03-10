@@ -7,6 +7,14 @@ class Command;
 class Character : public enable_shared_from_this<Character>
 {
 public:
+    enum class type : int
+    {
+        NONE,
+        PLAYER
+    };
+    
+public:
+    
     Character();
     virtual ~Character();
     
@@ -15,6 +23,8 @@ public:
     void releaseCommands();
     
     virtual void pushCommand(shared_ptr<Command>& command);
+    const string& getName() const;
+    const Character::type& getType() const;
     
 protected:
     queue<shared_ptr<Command>> _commandQueue;
@@ -24,4 +34,7 @@ protected:
 public:
     Sprite* _sprite;
     PhysicsBody* _rigidBody;
+    
+    string _name;
+    Character::type _type;
 };

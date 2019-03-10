@@ -7,6 +7,7 @@
 
 #include "Player.h"
 #include "../Commands/Command.h"
+#include "../Defines/constants.h"
 
 Player::Player() : Character()
 {
@@ -16,9 +17,11 @@ void Player::init()
 {
     Character::init();
     
+    _type = Character::type::PLAYER;
+    _name = constants::character_player;
     _sprite = Sprite::create("sprite.png");
     
-    _speedMove = 5.f;
+    _speedMove = 10.f;
 }
 void Player::update(float dt)
 {

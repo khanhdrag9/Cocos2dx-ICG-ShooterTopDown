@@ -7,6 +7,18 @@ class Player;
 
 class Game : public pattern::Singleton<Game>
 {
+    
+    enum class direction : int
+    {
+        NONE,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
+    
+    
+private:
     Layer* _currentState;
     
     shared_ptr<Player> _player;
@@ -14,20 +26,22 @@ class Game : public pattern::Singleton<Game>
     bool _isHoldKey;
     vector<EventKeyboard::KeyCode> _keyIsHolds;
     
-private:
-    
     
 public:
     Game();
     ~Game();
     
     void init();
+    void initGamePlay();
     void update(float dt);
     void setCurrentState(Layer* layer);
     void handleKeyboardPress(EventKeyboard::KeyCode, Event*);   //used in gameplay
     void handleKeyboardHold();
     void handleKeyboardRelease(EventKeyboard::KeyCode, Event*); //used in gameplay
     
-    void createCharacters();
+    shared_ptr<Player> createAPlayer();
+    
     void handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode);
+    void handleMovePlayer(shared_ptr<Player> player, const direction& direct);
+    
 };

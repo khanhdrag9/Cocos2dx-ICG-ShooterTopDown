@@ -18,9 +18,9 @@ bool GS_GamePlay::init()
     if(!Layer::init())
         return false;
     
-    Game::getInstance()->init();
     Game::getInstance()->setCurrentState(this);
-    Game::getInstance()->createCharacters();
+    Game::getInstance()->initGamePlay();
+    
     controller();
     
     scheduleUpdate();
