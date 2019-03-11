@@ -6,13 +6,17 @@
 //
 
 #include "Game.h"
+#include "Objects/ObjectsPool.h"
 #include "Characters/Player.h"
 #include "Commands/CommandMoveBy.h"
+#include "Commands/CommandShoot.h"
 
 Game::Game():
 _currentState(nullptr),
 _player(nullptr),
-_isHoldKey(false)
+_isHoldKey(false),
+_counttimePlayerShoot(0.f),
+_intervelPlayerShoot(0.25f)
 {
     
 }
@@ -35,13 +39,22 @@ void Game::initGamePlay()
 void Game::update(float dt)
 {
     handleKeyboardHold();
+    _counttimePlayerShoot += dt;
     
     _player->update(dt);
+    
+    
+    ObjectsPool::getInstance()->update();
 }
 
 void Game::setCurrentState(Layer* layer)
 {
     _currentState = layer;
+}
+
+Layer* Game::getCurrentState()
+{
+    return _currentState;
 }
 
 void Game::handleKeyboardPress(EventKeyboard::KeyCode keycode, Event*)  //used in gameplay
@@ -73,6 +86,23 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
     if(_keyIsHolds.size() == 0)_isHoldKey = false;
 }
 
+bool Game::handleTouchBegan(Touch* touch, Event* event)
+{
+    return true;
+}
+
+void Game::handleTouchMoved(Touch* touch, Event* event)
+{
+    //for player
+    shared_ptr<Character> obj = _player;
+    updateAngle(obj, touch->getLocation());
+}
+
+void Game::handleTouchRelease(Touch* touch, Event* event)
+{
+    
+}
+
 shared_ptr<Player> Game::createAPlayer()
 {
     auto character = make_shared<Player>();
@@ -96,6 +126,13 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
             break;
         case cocos2d::EventKeyboard::KeyCode::KEY_D:
             handleMovePlayer(_player, Game::direction::RIGHT);
+            break;
+        case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
+            if(_counttimePlayerShoot > _intervelPlayerShoot)
+            {
+                handleShootCharacter((shared_ptr<Character>)_player, 1000);
+                _counttimePlayerShoot = 0.f;
+            }
             break;
         default:
             break;
@@ -128,4 +165,26 @@ void Game::handleMovePlayer(shared_ptr<Player> player, const Game::direction& di
     
     cmd = CommandMoveBy::createCommandMoveBy(movespeed, 0.1);
     player->pushCommand(cmd);
+}
+
+void Game::updateAngle(shared_ptr<Character> object, const Vec2& point)
+{
+    Vec2 objpos = object->_sprite->getPosition();
+    //float oldAngle = object->_sprite->getRotation();
+    
+    auto angle = atan2(point.y - objpos.y, point.x - objpos.x);
+    object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
+}
+
+void Game::handleShootCharacter(shared_ptr<Character> object, const float& speed)
+{
+    float rotate = object->_sprite->getRotation();
+    float vx = sin(CC_DEGREES_TO_RADIANS(rotate));
+    float vy = cos(CC_DEGREES_TO_RADIANS(rotate));
+    Vec2 offset = Vec2(vx, vy);
+    offset.normalize();
+    Vec2 velocity = offset * speed;
+    
+    shared_ptr<Command> cmdShoot = CommandShoot::createCommandShoot(velocity);
+    object->pushCommand(cmdShoot);
 }

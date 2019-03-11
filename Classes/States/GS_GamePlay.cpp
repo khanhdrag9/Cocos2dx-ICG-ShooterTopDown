@@ -41,4 +41,17 @@ void GS_GamePlay::controller()
     keyboardlistener->onKeyPressed = CC_CALLBACK_2(Game::handleKeyboardPress, Game::getInstance());
     keyboardlistener->onKeyReleased = CC_CALLBACK_2(Game::handleKeyboardRelease, Game::getInstance());
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardlistener, this);
+    
+    
+    auto touchlistener = EventListenerTouchOneByOne::create();
+    touchlistener->onTouchBegan = CC_CALLBACK_2(Game::handleTouchBegan, Game::getInstance());
+    touchlistener->onTouchMoved = CC_CALLBACK_2(Game::handleTouchMoved, Game::getInstance());
+    touchlistener->onTouchEnded = CC_CALLBACK_2(Game::handleTouchRelease, Game::getInstance());
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchlistener, this);
+    
+//    auto mouselistener = EventListenerMouse::create();
+//    mouselistener->onMouseDown = CC_CALLBACK_1(Game::handleTouchBegan, Game::getInstance());
+//    mouselistener->onMouseMove = CC_CALLBACK_1(Game::handleTouchMoved, Game::getInstance());
+//    mouselistener->onMouseUp = CC_CALLBACK_1(Game::handleTouchRelease, Game::getInstance());
+//    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouselistener, this);
 }
