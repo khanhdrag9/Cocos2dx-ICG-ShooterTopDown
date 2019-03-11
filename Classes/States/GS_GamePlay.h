@@ -12,6 +12,7 @@ private:
     void update(float dt) override;
     void controller();
     
+    Sprite* _aim;
     
     CREATE_FUNC(GS_GamePlay);
 };

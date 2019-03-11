@@ -20,6 +20,19 @@ bool GS_GamePlay::init()
     if(!Layer::init())
         return false;
     
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+//    Director::getInstance()->getOpenGLView()->setCursorVisible(false);
+//    auto _screenSize = Director::getInstance()->getVisibleSize();
+//    auto _origin = Director::getInstance()->getVisibleOrigin();
+//    
+//    //for AIM
+//    Vec2 centerpos = Vec2(_origin.x + _screenSize.width * 0.5f, _origin.y + _screenSize.height / 2.f);
+//    _aim = Sprite::create("aim/aim1.png");
+//    _aim->setScale(0.25f);
+//    _aim->setPosition(centerpos);
+//    this->addChild(_aim);
+//#endif
+    
     Game::getInstance()->setCurrentState(this);
     Game::getInstance()->initGamePlay();
     
