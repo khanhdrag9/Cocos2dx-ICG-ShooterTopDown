@@ -126,6 +126,6 @@ void Game::handleMovePlayer(shared_ptr<Player> player, const Game::direction& di
             break;
     }
     
-    cmd = CommandMoveBy::createCommandMoveBy(movespeed, 0.001);
+    cmd = CommandMoveBy::createCommandMoveBy(movespeed, 0.1);
     player->pushCommand(cmd);
 }

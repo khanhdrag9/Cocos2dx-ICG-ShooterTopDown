@@ -20,8 +20,11 @@ void Player::init()
     _type = Character::type::PLAYER;
     _name = constants::character_player;
     _sprite = Sprite::create("sprite.png");
+
+	_rigidBody = PhysicsBody::createBox(_sprite->getContentSize());
+	_sprite->setPhysicsBody(_rigidBody);
     
-    _speedMove = 10.f;
+    _speedMove = 100.f;
 }
 void Player::update(float dt)
 {
@@ -30,13 +33,22 @@ void Player::update(float dt)
 
 void Player::pushCommand(shared_ptr<Command>& command)
 {
-    for(int i = 0; i < _commandQueue.size(); i++)
-    {
-        auto x = *(&_commandQueue.front() + i);
-        if(x->getName() == command->getName())
-            return;
-    }
+	queue<shared_ptr<Command>> queueTemp;
+	bool isUsed = false;
+
+	while (_commandQueue.size() > 0)
+	{
+		if (_commandQueue.front()->getName() == command->getName())
+		{
+			isUsed = true;
+		}
+		queueTemp.push(_commandQueue.front());
+		_commandQueue.pop();
+	}
+
+	_commandQueue.swap(queueTemp);
     
-    command->registAnObject(shared_from_this(), _commandQueue);
+	if(!isUsed)
+		command->registAnObject(shared_from_this(), _commandQueue);
 }
 

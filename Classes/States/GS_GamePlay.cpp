@@ -5,7 +5,9 @@
 
 cocos2d::Scene *GS_GamePlay::createScene()
 {
-    Scene* scene = Scene::create();
+    Scene* scene = Scene::createWithPhysics();
+	scene->getPhysicsWorld()->setGravity(Vec2(0, 0));
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     GS_GamePlay* layer = GS_GamePlay::create();
     scene->addChild(layer);
