@@ -22,6 +22,7 @@ void Player::init()
     _sprite = Sprite::create("sprite.png");
 
 	_rigidBody = PhysicsBody::createBox(_sprite->getContentSize());
+    _rigidBody->setMass(100);
 	_sprite->setPhysicsBody(_rigidBody);
     
     _speedMove = 100.f;

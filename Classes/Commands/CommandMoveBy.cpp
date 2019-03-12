@@ -51,7 +51,8 @@ void CommandMoveBy::update(float dt)
             /*Vec2 newpos = _object->_sprite->getPosition() + _velocity;
             _object->_sprite->setPosition(newpos);*/
 
-			Vec2 newvec = _object->_rigidBody->getVelocity() + _velocity;
+			//Vec2 newvec = _object->_rigidBody->getVelocity() + _velocity;
+            Vec2 newvec = _velocity;
 			_object->_rigidBody->setVelocity(newvec);
 
             _counttime+=dt;
