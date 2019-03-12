@@ -10,6 +10,7 @@
 #include "Characters/Player.h"
 #include "Commands/CommandMoveBy.h"
 #include "Commands/CommandShoot.h"
+#include "Defines/constants.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -226,9 +227,9 @@ void Game::createMap()
 			{
 				Size size = tile->getContentSize();
 				auto body = PhysicsBody::createBox(size);
-				/*body->setContactTestBitmask(PHYSICS_EDGE);
-				body->setCategoryBitmask(PHYSICS_EDGE);
-				body->setCollisionBitmask(PHYSICS_EDGE);*/
+				body->setContactTestBitmask(physics_code::physics_edge);
+				body->setCategoryBitmask(physics_code::physics_edge);
+				body->setCollisionBitmask(physics_code::physics_edge);
 				body->setDynamic(false);
 
 				tile->setPhysicsBody(body);
@@ -240,6 +241,10 @@ void Game::createMap()
 void Game::createMainPlayer()
 {
 	_player = createAPlayer();
+
+	_player->_rigidBody->setContactTestBitmask(physics_code::physics_player);
+	_player->_rigidBody->setCategoryBitmask(physics_code::physics_player);
+	_player->_rigidBody->setCollisionBitmask(physics_code::physics_player);
 
 	//get position start from tileMap
 	TMXObjectGroup* objg = _tileMap->getObjectGroup("Player");

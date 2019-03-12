@@ -30,6 +30,20 @@ void CommandShoot::update(float dt)
     if(!_isFinished && _object != nullptr)
     {
         auto bullet = BulletBasic::createBulletBasic(_object->_sprite->getPosition(), _object->_sprite->getRotation(), _speed, true);
+
+		if (_object->getName() == constants::character_player)
+		{
+			bullet->_rigidBody->setContactTestBitmask(physics_code::physics_bullet_player);
+			bullet->_rigidBody->setCategoryBitmask(physics_code::physics_bullet_player);
+			bullet->_rigidBody->setCollisionBitmask(physics_code::physics_bullet_player);
+		}
+		else if (_object->getName() == constants::character_enemy)
+		{
+			bullet->_rigidBody->setContactTestBitmask(physics_code::physics_bullet_enemy);
+			bullet->_rigidBody->setCategoryBitmask(physics_code::physics_bullet_enemy);
+			bullet->_rigidBody->setCollisionBitmask(physics_code::physics_bullet_enemy);
+		}
+
         ObjectsPool::getInstance()->pushBulletBasic(bullet);
         _isFinished = true;
     }
