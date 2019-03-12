@@ -10,7 +10,7 @@
 
 ObjectsPool::~ObjectsPool()
 {
-    
+	_bulletBasicPool.clear();
 }
 
 void ObjectsPool::update()

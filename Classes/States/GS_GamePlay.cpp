@@ -1,6 +1,6 @@
 #include "GS_GamePlay.h"
 #include "../Game.h"
-
+#include "../Objects/ObjectsPool.h"
 
 
 cocos2d::Scene *GS_GamePlay::createScene()
@@ -33,6 +33,9 @@ bool GS_GamePlay::init()
 //    this->addChild(_aim);
 //#endif
     
+	new Game;
+	new ObjectsPool;
+
     Game::getInstance()->setCurrentState(this);
     Game::getInstance()->initGamePlay();
     

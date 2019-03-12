@@ -11,7 +11,7 @@ namespace pattern
         static bool hasInstance();
         static void freeInstance();
         
-//        Singleton();
+        Singleton();
         virtual ~Singleton(){}
         
     protected:
@@ -20,14 +20,13 @@ namespace pattern
     
     //Singleton implement functions
     template<class T>
-    T* Singleton<T>::m_instance = new T;
+    T* Singleton<T>::m_instance = nullptr;
     
-//    template<class T>
-//    Singleton<T>::Singleton()
-//    {
-//        if(m_instance == nullptr)
-//            m_instance = new T;
-//    }
+    template<class T>
+    Singleton<T>::Singleton()
+    {
+		m_instance = (T*)this;
+    }
     
     template<class T>
     T* Singleton<T>::getInstance()
