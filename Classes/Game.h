@@ -62,6 +62,7 @@ private:
     void handleShootCharacter(shared_ptr<Character> object, const float& speed);
 
 	void createMap();
+	void createMainPlayer();
 	void createStartCameraView();
 	void updateCameraView();
     

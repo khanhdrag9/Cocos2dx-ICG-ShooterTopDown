@@ -41,8 +41,8 @@ void Game::init()
 
 void Game::initGamePlay()
 {
-    _player = createAPlayer();
 	createMap();
+	createMainPlayer();
 	createStartCameraView();
 }
 
@@ -213,6 +213,41 @@ void Game::createMap()
 	_collisionLayer->setVisible(false);
 
 	_currentState->addChild(_tileMap);
+
+	//physics for collision layer
+	Size mapSize = _tileMap->getMapSize();
+
+	for (int w = 0; w < mapSize.width; w++)
+	{
+		for (int h = 0; h < mapSize.height; h++)
+		{
+			auto tile = _collisionLayer->getTileAt(Vec2(w, h));
+			if (tile)
+			{
+				Size size = tile->getContentSize();
+				auto body = PhysicsBody::createBox(size);
+				/*body->setContactTestBitmask(PHYSICS_EDGE);
+				body->setCategoryBitmask(PHYSICS_EDGE);
+				body->setCollisionBitmask(PHYSICS_EDGE);*/
+				body->setDynamic(false);
+
+				tile->setPhysicsBody(body);
+			}
+		}
+	}
+}
+
+void Game::createMainPlayer()
+{
+	_player = createAPlayer();
+
+	//get position start from tileMap
+	TMXObjectGroup* objg = _tileMap->getObjectGroup("Player");
+	auto playerPos = objg->getObject("PlayerPos");
+	float x = playerPos.at("x").asFloat();
+	float y = playerPos.at("y").asFloat();
+	_player->_sprite->setPosition(x, y);
+
 }
 
 void Game::createStartCameraView()
