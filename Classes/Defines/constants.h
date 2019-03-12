@@ -10,6 +10,8 @@ namespace constants
     const std::string command_move_by_right = "cmd_move_by_right";
     const std::string command_move_by_left = "cmd_move_by_left";
     
+    const std::string command_move_to = "cmd_move_to";
+    
     const std::string commnad_shoot = "cmd_shoot";
     
     

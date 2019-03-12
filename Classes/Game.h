@@ -4,6 +4,7 @@
 
 class Character;
 class Player;
+class Bot;
 
 class Game : public pattern::Singleton<Game>
 {
@@ -33,6 +34,8 @@ private:
 	TMXLayer* _collisionLayer;
 
 	shared_ptr<Character> _objIsFollow;
+    
+    vector<shared_ptr<Bot>> _listBots;
     
 public:
     Game();
@@ -65,5 +68,7 @@ private:
 	void createMainPlayer();
 	void createStartCameraView();
 	void updateCameraView();
+    
+    void createEnemyBots();
     
 };

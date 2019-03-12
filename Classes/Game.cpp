@@ -44,6 +44,7 @@ void Game::initGamePlay()
 {
 	createMap();
 	createMainPlayer();
+    createEnemyBots();
 	createStartCameraView();
 }
 
@@ -279,3 +280,20 @@ void Game::updateCameraView()
 		_currentState->setPosition(viewPoint);
 	}
 }
+
+void Game::createEnemyBots()
+{
+    TMXObjectGroup* objg = _tileMap->getObjectGroup("Enemy");
+    int countEnemies = (int)objg->getObjects().size();
+    
+    for(int i = 1; i <= countEnemies; i++)
+    {
+        auto pos = objg->getObject("enemyPos" + to_string(i));
+        float x = pos.at("x").asFloat();
+        float y = pos.at("y").asFloat();
+    
+        auto bot = createAPlayer(); //create bot here, use player for test, use Bot instead of
+        bot->_sprite->setPosition(x, y);
+    }
+}
+
