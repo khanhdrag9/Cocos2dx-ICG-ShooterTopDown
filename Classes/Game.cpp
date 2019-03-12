@@ -27,11 +27,11 @@ _objIsFollow(nullptr)
 
 Game::~Game()
 {
-	CC_SAFE_DELETE(_tileMap);
+	/*CC_SAFE_DELETE(_tileMap);
 	CC_SAFE_DELETE(_backgroundLayer);
 	CC_SAFE_DELETE(_collisionLayer);
 
-	_keyIsHolds.clear();
+	_keyIsHolds.clear();*/
 }
 
 void Game::init()
