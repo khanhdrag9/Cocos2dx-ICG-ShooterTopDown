@@ -16,7 +16,11 @@ _currentState(nullptr),
 _player(nullptr),
 _isHoldKey(false),
 _counttimePlayerShoot(0.f),
-_intervelPlayerShoot(0.25f)
+_intervelPlayerShoot(0.25f),
+_tileMap(nullptr),
+_backgroundLayer(nullptr),
+_collisionLayer(nullptr),
+_objIsFollow(nullptr)
 {
     
 }
@@ -34,6 +38,8 @@ void Game::init()
 void Game::initGamePlay()
 {
     _player = createAPlayer();
+	createMap();
+	createStartCameraView();
 }
 
 void Game::update(float dt)
@@ -43,7 +49,7 @@ void Game::update(float dt)
     
     _player->update(dt);
     
-    
+	updateCameraView();
     ObjectsPool::getInstance()->update();
 }
 
@@ -55,6 +61,11 @@ void Game::setCurrentState(Layer* layer)
 Layer* Game::getCurrentState()
 {
     return _currentState;
+}
+
+void Game::setObjectFollowByCam(shared_ptr<Character> object)
+{
+	_objIsFollow = object;
 }
 
 void Game::handleKeyboardPress(EventKeyboard::KeyCode keycode, Event*)  //used in gameplay
@@ -187,4 +198,40 @@ void Game::handleShootCharacter(shared_ptr<Character> object, const float& speed
     
     shared_ptr<Command> cmdShoot = CommandShoot::createCommandShoot(velocity);
     object->pushCommand(cmdShoot);
+}
+
+void Game::createMap()
+{
+	//for map backgroud
+	_tileMap = TMXTiledMap::create("Map/Map1.tmx");
+	_backgroundLayer = _tileMap->getLayer("Background");
+	_collisionLayer = _tileMap->getLayer("Collision");
+	_collisionLayer->setVisible(false);
+
+	_currentState->addChild(_tileMap);
+}
+
+void Game::createStartCameraView()
+{
+	setObjectFollowByCam((shared_ptr<Character>)_player);
+	updateCameraView();
+}
+
+void Game::updateCameraView()
+{
+	if (_objIsFollow)
+	{
+		Size winSize = Director::getInstance()->getWinSize();
+		Vec2 position = _objIsFollow->_sprite->getPosition();
+
+		int x = MAX(position.x, winSize.width / 2);
+		int y = MAX(position.y, winSize.height / 2);
+		x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
+		y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
+		Vec2 actualPosition = Vec2(x, y);
+
+		Vec2 centerOfView = Vec2(winSize.width / 2, winSize.height / 2);
+		Vec2 viewPoint = Vec2(centerOfView - actualPosition);
+		_currentState->setPosition(viewPoint);
+	}
 }
