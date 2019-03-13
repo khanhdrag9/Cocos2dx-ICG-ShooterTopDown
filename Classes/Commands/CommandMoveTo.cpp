@@ -42,7 +42,7 @@ void CommandMoveTo::update(float dt)
             offset.normalize();
             offset *= _speed;
             
-            _object->_rigidBody->setVelocity(offset);
+            //_object->_rigidBody->setVelocity(offset);
         }
     }
 }

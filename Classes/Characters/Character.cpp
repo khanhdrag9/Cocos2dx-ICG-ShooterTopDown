@@ -8,9 +8,9 @@
 #include "Character.h"
 #include "../Commands/Command.h"
 #include "../Defines/constants.h"
+#include "../Physics/RigidBody.h"
 
 Character::Character():
-//_commandHandle(nullptr),
 _sprite(nullptr),
 _rigidBody(nullptr)
 {
@@ -22,6 +22,7 @@ Character::~Character()
     //_commandHandle = nullptr;
     _sprite = nullptr;
     releaseCommands();
+    _rigidBody = nullptr;
 }
 
 

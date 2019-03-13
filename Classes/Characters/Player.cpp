@@ -9,6 +9,7 @@
 #include "../Commands/Command.h"
 #include "../Defines/constants.h"
 
+
 Player::Player() : Character()
 {
 }
@@ -21,9 +22,8 @@ void Player::init()
     _name = constants::character_player;
     _sprite = Sprite::create("sprite.png");
 
-	_rigidBody = PhysicsBody::createBox(_sprite->getContentSize());
-    _rigidBody->setMass(100);
-	_sprite->setPhysicsBody(_rigidBody);
+	//_rigidBody
+    
     
     _speedMove = 100.f;
 }

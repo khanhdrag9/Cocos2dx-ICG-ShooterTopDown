@@ -11,7 +11,6 @@
 #include "Commands/CommandMoveBy.h"
 #include "Commands/CommandShoot.h"
 #include "Defines/constants.h"
-#include "Box2D/Box2D.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -121,6 +120,11 @@ void Game::handleTouchMoved(Touch* touch, Event* event)
 void Game::handleTouchRelease(Touch* touch, Event* event)
 {
     
+}
+
+b2World* Game::getPhysicsWorld()
+{
+    return _physicsWorld;
 }
 
 shared_ptr<Player> Game::createAPlayer()
@@ -251,9 +255,7 @@ void Game::createMainPlayer()
 {
 	_player = createAPlayer();
 
-	_player->_rigidBody->setContactTestBitmask(physics_code::physics_player);
-	_player->_rigidBody->setCategoryBitmask(physics_code::physics_player);
-	_player->_rigidBody->setCollisionBitmask(physics_code::physics_player);
+	
 
 	//get position start from tileMap
 	TMXObjectGroup* objg = _tileMap->getObjectGroup("Player");

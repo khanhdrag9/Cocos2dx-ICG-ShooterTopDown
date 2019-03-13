@@ -2,7 +2,7 @@
 #include "../Headers.h"
 
 class Command;
-//class CommandHandle;
+class RigidBody;
 
 class Character : public enable_shared_from_this<Character>
 {
@@ -29,12 +29,11 @@ public:
     
 protected:
     queue<shared_ptr<Command>> _commandQueue;
-    //unique_ptr<CommandHandle> _commandHandle;
     
     
 public:
     Sprite* _sprite;
-    PhysicsBody* _rigidBody;
+    unique_ptr<RigidBody> _rigidBody;
     
     string _name;
     Character::type _type;

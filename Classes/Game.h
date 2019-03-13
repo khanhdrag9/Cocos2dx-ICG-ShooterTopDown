@@ -58,6 +58,8 @@ public:
     void handleTouchMoved(Touch* touch, Event* event);
     void handleTouchRelease(Touch* touch, Event* event);
     
+    b2World* getPhysicsWorld();
+    
 private:
     shared_ptr<Player> createAPlayer();
     

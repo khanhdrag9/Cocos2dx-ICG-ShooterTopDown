@@ -44,7 +44,7 @@ void CommandMoveBy::update(float dt)
             _counttime = 0.f;
             _duration = 0.f;
             _velocity = Vec2(0,0);
-			_object->_rigidBody->setVelocity(_velocity);
+			//_object->_rigidBody->setVelocity(_velocity);
         }
         else
         {
@@ -53,7 +53,7 @@ void CommandMoveBy::update(float dt)
 
 			//Vec2 newvec = _object->_rigidBody->getVelocity() + _velocity;
             Vec2 newvec = _velocity;
-			_object->_rigidBody->setVelocity(newvec);
+			//_object->_rigidBody->setVelocity(newvec);
 
             _counttime+=dt;
         }
