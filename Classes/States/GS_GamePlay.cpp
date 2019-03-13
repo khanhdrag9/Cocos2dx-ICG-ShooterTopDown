@@ -5,10 +5,11 @@
 
 cocos2d::Scene *GS_GamePlay::createScene()
 {
-    Scene* scene = Scene::createWithPhysics();
-	scene->getPhysicsWorld()->setGravity(Vec2(0, 0));
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-    scene->getPhysicsWorld()->setAutoStep(false);    //loop of physics will be faster than loop logic
+	Scene* scene = Scene::create();
+ //   Scene* scene = Scene::createWithPhysics();
+	//scene->getPhysicsWorld()->setGravity(Vec2(0, 0));
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+ //   scene->getPhysicsWorld()->setAutoStep(false);    //loop of physics will be faster than loop logic
     GS_GamePlay* layer = GS_GamePlay::create();
     scene->addChild(layer);
     return scene;
@@ -48,10 +49,10 @@ bool GS_GamePlay::init()
 
 void GS_GamePlay::update(float dt)
 {
-    for (int i = 0; i < 5; ++i)
+   /* for (int i = 0; i < 5; ++i)
     {
         this->getScene()->getPhysicsWorld()->step(1 / 180.0f);
-    }
+    }*/
     
     Game::getInstance()->update(dt);
 }

@@ -11,6 +11,7 @@
 #include "Commands/CommandMoveBy.h"
 #include "Commands/CommandShoot.h"
 #include "Defines/constants.h"
+#include "Box2D/Box2D.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -21,7 +22,8 @@ _intervelPlayerShoot(0.25f),
 _tileMap(nullptr),
 _backgroundLayer(nullptr),
 _collisionLayer(nullptr),
-_objIsFollow(nullptr)
+_objIsFollow(nullptr),
+_physicsWorld(nullptr)
 {
     
 }
@@ -42,6 +44,7 @@ void Game::init()
 
 void Game::initGamePlay()
 {
+	createPhysicsWorld();
 	createMap();
 	createMainPlayer();
     createEnemyBots();
@@ -204,6 +207,11 @@ void Game::handleShootCharacter(shared_ptr<Character> object, const float& speed
     
     shared_ptr<Command> cmdShoot = CommandShoot::createCommandShoot(velocity);
     object->pushCommand(cmdShoot);
+}
+
+void Game::createPhysicsWorld()
+{
+	_physicsWorld = new b2World(b2Vec2(0,0));
 }
 
 void Game::createMap()

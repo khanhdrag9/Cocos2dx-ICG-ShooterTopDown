@@ -5,10 +5,10 @@
 class Character;
 class Player;
 class Bot;
+class b2World;
 
 class Game : public pattern::Singleton<Game>
 {
-    
     enum class direction : int
     {
         NONE,
@@ -36,6 +36,8 @@ private:
 	shared_ptr<Character> _objIsFollow;
     
     vector<shared_ptr<Bot>> _listBots;
+
+	b2World* _physicsWorld;
     
 public:
     Game();
@@ -64,6 +66,7 @@ private:
     void updateAngle(shared_ptr<Character> object, const Vec2& point);
     void handleShootCharacter(shared_ptr<Character> object, const float& speed);
 
+	void createPhysicsWorld();
 	void createMap();
 	void createMainPlayer();
 	void createStartCameraView();
