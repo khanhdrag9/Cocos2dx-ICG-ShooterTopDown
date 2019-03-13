@@ -9,7 +9,7 @@ class CommandMoveTo : public Command
     
 public:
     CommandMoveTo();
-    static shared_ptr<CommandMoveTo> createCommandMoveBy(const float& speed, const Vec2& toPoint);
+    static shared_ptr<CommandMoveTo> createCommandMoveTo(const float& speed, const Vec2& toPoint);
     
     void update(float dt) override;
     

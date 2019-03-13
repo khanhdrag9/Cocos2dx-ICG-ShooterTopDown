@@ -31,13 +31,13 @@ void CommandShoot::update(float dt)
     {
         auto bullet = BulletBasic::createBulletBasic(_object->_sprite->getPosition(), _object->_sprite->getRotation(), _speed, true);
 
-		if (_object->getName() == constants::character_player)
+		if (_object->getType() == Character::type::PLAYER)
 		{
 			bullet->_rigidBody->setContactTestBitmask(physics_code::physics_bullet_player);
 			bullet->_rigidBody->setCategoryBitmask(physics_code::physics_bullet_player);
 			bullet->_rigidBody->setCollisionBitmask(physics_code::physics_bullet_player);
 		}
-		else if (_object->getName() == constants::character_enemy)
+		else if (_object->getType() == Character::type::ENEMY)
 		{
 			bullet->_rigidBody->setContactTestBitmask(physics_code::physics_bullet_enemy);
 			bullet->_rigidBody->setCategoryBitmask(physics_code::physics_bullet_enemy);

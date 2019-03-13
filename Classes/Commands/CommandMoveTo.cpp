@@ -17,7 +17,7 @@ _target(Vec2(0,0))
     
 }
 
-shared_ptr<CommandMoveTo> CommandMoveTo::createCommandMoveBy(const float& speed, const Vec2& toPoint)
+shared_ptr<CommandMoveTo> CommandMoveTo::createCommandMoveTo(const float& speed, const Vec2& toPoint)
 {
     shared_ptr<CommandMoveTo> cmd = make_shared<CommandMoveTo>();
     cmd->_speed = speed;

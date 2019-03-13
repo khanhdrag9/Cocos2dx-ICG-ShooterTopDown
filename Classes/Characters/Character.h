@@ -10,7 +10,8 @@ public:
     enum class type : int
     {
         NONE,
-        PLAYER
+        PLAYER,
+		ENEMY
     };
     
 public:
