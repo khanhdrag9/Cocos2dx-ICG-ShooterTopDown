@@ -11,6 +11,7 @@
 #include "Commands/CommandMoveBy.h"
 #include "Commands/CommandShoot.h"
 #include "Defines/constants.h"
+#include "Physics/RigidBodyPolygon.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -56,6 +57,7 @@ void Game::update(float dt)
     _counttimePlayerShoot += dt;
     
     _player->update(dt);
+    updatePhysics(dt);
     
 	updateCameraView();
     ObjectsPool::getInstance()->update();
@@ -131,6 +133,13 @@ shared_ptr<Player> Game::createAPlayer()
 {
     auto character = make_shared<Player>();
     character->init();
+    vector<Vec2> verticesPhys{
+        Vec2(-50, 50),
+        Vec2(-50, -50),
+        Vec2(50, -50),
+        Vec2(50, 50),
+    };
+    character->_rigidBody = RigidBodyPolygon::createRigidBodyPolygon(character, verticesPhys);
     
     _currentState->addChild(character->_sprite);
     return character;
@@ -215,7 +224,10 @@ void Game::handleShootCharacter(shared_ptr<Character> object, const float& speed
 
 void Game::createPhysicsWorld()
 {
-	_physicsWorld = new b2World(b2Vec2(0,0));
+	_physicsWorld = new b2World(b2Vec2(0,-8.0));
+//    _physicsWorld->SetAllowSleeping(true);
+//    _physicsWorld->SetContinuousPhysics(true);
+//    _physicsWorld->SetContactListener(this);
 }
 
 void Game::createMap()
@@ -229,33 +241,31 @@ void Game::createMap()
 	_currentState->addChild(_tileMap);
 
 	//physics for collision layer
-	Size mapSize = _tileMap->getMapSize();
-
-	for (int w = 0; w < mapSize.width; w++)
-	{
-		for (int h = 0; h < mapSize.height; h++)
-		{
-			auto tile = _collisionLayer->getTileAt(Vec2(w, h));
-			if (tile)
-			{
-				Size size = tile->getContentSize();
-				auto body = PhysicsBody::createBox(size);
-				body->setContactTestBitmask(physics_code::physics_edge);
-				body->setCategoryBitmask(physics_code::physics_edge);
-				body->setCollisionBitmask(physics_code::physics_edge);
-				body->setDynamic(false);
-
-				tile->setPhysicsBody(body);
-			}
-		}
-	}
+//    Size mapSize = _tileMap->getMapSize();
+//
+//    for (int w = 0; w < mapSize.width; w++)
+//    {
+//        for (int h = 0; h < mapSize.height; h++)
+//        {
+//            auto tile = _collisionLayer->getTileAt(Vec2(w, h));
+//            if (tile)
+//            {
+//                Size size = tile->getContentSize();
+//                auto body = PhysicsBody::createBox(size);
+//                body->setContactTestBitmask(physics_code::physics_edge);
+//                body->setCategoryBitmask(physics_code::physics_edge);
+//                body->setCollisionBitmask(physics_code::physics_edge);
+//                body->setDynamic(false);
+//
+//                tile->setPhysicsBody(body);
+//            }
+//        }
+//    }
 }
 
 void Game::createMainPlayer()
 {
 	_player = createAPlayer();
-
-	
 
 	//get position start from tileMap
 	TMXObjectGroup* objg = _tileMap->getObjectGroup("Player");
@@ -307,3 +317,18 @@ void Game::createEnemyBots()
     }
 }
 
+
+void Game::updatePhysics(float dt)
+{
+    if(_physicsWorld)
+    {
+        _physicsWorld->Step(dt, 10, 10);
+        for(b2Body* body = _physicsWorld->GetBodyList(); body; body->GetNext())
+        {
+            if(body->GetUserData() != nullptr && body->GetUserData() != NULL)
+            {
+                
+            }
+        }
+    }
+}

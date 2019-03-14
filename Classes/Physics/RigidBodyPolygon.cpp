@@ -21,7 +21,7 @@ unique_ptr<RigidBodyPolygon> RigidBodyPolygon::createRigidBodyPolygon(shared_ptr
     for(int i = 0; i < vertices.size(); i++)
     {
         Vec2 vertex = vertices[0];
-        vertices_b2[i].Set(vertex.x, vertex.y);
+        vertices_b2[i].Set(vertex.x/PTM_RATIO, vertex.y/PTM_RATIO);
     }
     
     b2PolygonShape shape;
@@ -36,8 +36,9 @@ unique_ptr<RigidBodyPolygon> RigidBodyPolygon::createRigidBodyPolygon(shared_ptr
     
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    bodyDef.position.Set(objectPos.x, objectPos.y);
+    bodyDef.position.Set(objectPos.x/PTM_RATIO, objectPos.y/PTM_RATIO);
     bodyDef.angle =  CC_DEGREES_TO_RADIANS(object->_sprite->getRotation());
+    bodyDef.userData = object.get();
     
     body->_body = Game::getInstance()->getPhysicsWorld()->CreateBody(&bodyDef);
     body->_body->CreateFixture(&fixture);
