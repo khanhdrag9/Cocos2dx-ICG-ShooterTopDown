@@ -1,0 +1,49 @@
+//
+//  ResoureManager.cpp
+//  Shooter
+//
+//  Created by Khanh on 3/16/19.
+//
+
+#include "ResourceManager.h"
+
+
+ResourceManager::ResourceManager()
+{
+    //player
+    _resMap[res::define::PLAYER_1_BLUE] = "Assets/PNG/playerShip1_blue.png";
+    _resMap[res::define::PLAYER_1_GREEN] = "Assets/PNG/playerShip1_green.png";
+    _resMap[res::define::PLAYER_1_ORANGE] = "Assets/PNG/playerShip1_orange.png";
+    _resMap[res::define::PLAYER_1_RED] = "Assets/PNG/playerShip1_red.png";
+    
+    _resMap[res::define::PLAYER_2_BLUE] = "Assets/PNG/playerShip2_blue.png";
+    _resMap[res::define::PLAYER_2_GREEN] = "Assets/PNG/playerShip2_green.png";
+    _resMap[res::define::PLAYER_2_ORANGE] = "Assets/PNG/playerShip2_orange.png";
+    _resMap[res::define::PLAYER_2_RED] = "Assets/PNG/playerShip2_red.png";
+    
+    _resMap[res::define::PLAYER_3_BLUE] = "Assets/PNG/playerShip3_blue.png";
+    _resMap[res::define::PLAYER_3_GREEN] = "Assets/PNG/playerShip3_green.png";
+    _resMap[res::define::PLAYER_3_ORANGE] = "Assets/PNG/playerShip3_orange.png";
+    _resMap[res::define::PLAYER_3_RED] = "Assets/PNG/playerShip3_red.png";
+    
+    //enemy
+    _resMap[res::define::ENEMY_1_BLUE] = "Assets/PNG/ufoBlue.png";
+    _resMap[res::define::ENEMY_1_GREEN] = "Assets/PNG/ufoGreen.png";
+    _resMap[res::define::ENEMY_1_RED] = "Assets/PNG/ufoRed.png";
+    _resMap[res::define::ENEMY_1_YELLOW] = "Assets/PNG/ufoYellow.png";
+    
+    //bullet
+    _resMap[res::define::BULLET_BLUE_1] = "Assets/PNG/Lasers/laserBlue01.png";
+    _resMap[res::define::BULLET_GREEN_1] = "Assets/PNG/Lasers/laserGreen01.png";
+    _resMap[res::define::BULLET_RED_1] = "Assets/PNG/Lasers/laserRed01.png";
+}
+
+ResourceManager::~ResourceManager()
+{
+    _resMap.clear();
+}
+
+const std::string& ResourceManager::at(const res::define& name) const
+{
+    return _resMap.at(name);
+}

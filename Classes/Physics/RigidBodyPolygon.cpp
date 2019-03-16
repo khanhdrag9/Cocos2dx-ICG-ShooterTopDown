@@ -12,7 +12,7 @@
 
 shared_ptr<RigidBodyPolygon> RigidBodyPolygon::createRigidBodyPolygon(shared_ptr<Character> object)
 {
-    unique_ptr<RigidBodyPolygon> body = pointer::make_unique<RigidBodyPolygon>();
+    shared_ptr<RigidBodyPolygon> body = make_shared<RigidBodyPolygon>();
     body->init();   //init func haven't been used yet
     body->_rect = object->_sprite->getBoundingBox();
     body->_object = object;

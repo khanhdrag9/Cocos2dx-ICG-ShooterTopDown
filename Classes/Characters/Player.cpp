@@ -8,7 +8,8 @@
 #include "Player.h"
 #include "../Commands/Command.h"
 #include "../Defines/constants.h"
-
+#include "../Resource/ResourceManager.h"
+#include "../Resource/Resources.h"
 
 Player::Player() : Character()
 {
@@ -20,10 +21,9 @@ void Player::init()
     
     _type = Character::type::PLAYER;
     _name = constants::character_player;
-    _sprite = Sprite::create("sprite.png");
-
-	//_rigidBody
     
+    res::define asset = res::define::PLAYER_1_RED;
+    _sprite = Sprite::create(ResourceManager::getInstance()->at(asset).c_str());
     
     _speedMove = 300.f;
 }

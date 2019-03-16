@@ -10,6 +10,7 @@
 #include "../Game.h"
 #include "../Physics/RigidBody.h"
 #include "../Physics/RigidWorld.h"
+#include "../Resource/ResourceManager.h"
 
 BulletBasic::BulletBasic(): Character(),
     _speed(Vec2(0,0))
@@ -35,7 +36,8 @@ shared_ptr<BulletBasic> BulletBasic::createBulletBasic(const Vec2& position, con
     shared_ptr<BulletBasic> obj = make_shared<BulletBasic>();
     obj->_name = constants::object_bullet_basic;
     
-    obj->_sprite = Sprite::create("bullet/bullet1.png");
+    res::define asset = res::define::BULLET_RED_1;
+    obj->_sprite = Sprite::create(ResourceManager::getInstance()->at(asset));
     
     //physics - note*:set to player before set character's rotation
     obj->_rigidBody = Game::getInstance()->getRigidWord()->createRigidBodyPolygon(obj);

@@ -9,6 +9,7 @@
 #include "../Objects/ObjectsPool.h"
 #include "RigidBody.h"
 #include "RigidBodyPolygon.h"
+#include "RigidBodyCircle.h"
 #include "../Characters/Character.h"
 
 
@@ -32,11 +33,6 @@ void RigidWorld::update(float dt)
     {
         if(x->_object)
         {
-            if(x->getTag() == RigidBody::tag::BULLET_PLAYER)
-            {
-                int a =4;
-            }
-            
             Vec2 currentObjPos = x->_object->_sprite->getPosition();
             Vec2 nextObjPos = currentObjPos + x->_velocity;
             x->_object->_sprite->setPosition(nextObjPos);
@@ -69,6 +65,23 @@ bool RigidWorld::checkCollisionOther(shared_ptr<RigidBody> body)
                 if(body1->_rect.intersectsRect(body2->_rect))
                     return true;
             }
+            else
+            {
+                if(body1 && !body2)
+                {
+                    shared_ptr<RigidBodyCircle> bodyCircle = dynamic_pointer_cast<RigidBodyCircle>(x);
+                    Vec2 circlePos = bodyCircle->_object->_sprite->getPosition();
+                    if(body1->_rect.intersectsCircle(circlePos, bodyCircle->_radius))
+                        return true;
+                }
+                else if(!body1 && body2)
+                {
+                    shared_ptr<RigidBodyCircle> bodyCircle = dynamic_pointer_cast<RigidBodyCircle>(body);
+                    Vec2 circlePos = bodyCircle->_object->_sprite->getPosition();
+                    if(body2->_rect.intersectsCircle(circlePos, bodyCircle->_radius))
+                        return true;
+                }
+            }
         }
     }
     
@@ -89,6 +102,14 @@ shared_ptr<RigidBodyPolygon> RigidWorld::createRigidBodyPolygon(const Rect& rect
 shared_ptr<RigidBody> RigidWorld::createRigidBodyPolygon(shared_ptr<Character> character)
 {
     shared_ptr<RigidBody> body = RigidBodyPolygon::createRigidBodyPolygon(character);
+    character->_rigidBody = body;
+    _listRigidBodies.push_back(body);
+    return body;
+}
+
+shared_ptr<RigidBody> RigidWorld::createRigidBodyCircle(shared_ptr<Character> character)
+{
+    shared_ptr<RigidBody> body = RigidBodyCircle::createRigidBodyCircle(character);
     character->_rigidBody = body;
     _listRigidBodies.push_back(body);
     return body;

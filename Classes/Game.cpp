@@ -14,6 +14,7 @@
 #include "Physics/RigidBodyPolygon.h"
 #include "Physics/RigidWorld.h"
 #include "Defines/Templates.h"
+#include "Resource/ResourceManager.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -41,7 +42,7 @@ Game::~Game()
 
 void Game::init()
 {
-    
+    new ResourceManager;
 }
 
 void Game::initGamePlay()
@@ -154,7 +155,7 @@ shared_ptr<Player> Game::createAPlayer()
 {
     auto character = make_shared<Player>();
     character->init();
-    _rigidWorld->createRigidBodyPolygon(character);
+    _rigidWorld->createRigidBodyCircle(character);
     
     _currentState->addChild(character->_sprite);
     return character;
