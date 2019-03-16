@@ -6,6 +6,9 @@ class Character;
 class RigidBody
 {
 public:
+    friend class RigidWorld;
+    
+    
     enum type : int
     {
         DYNAMIC,
@@ -13,6 +16,17 @@ public:
         KINEMATIC
     };
     
+    enum tag : int
+    {
+        PLAYER,
+        ENEMY,
+        WALL,
+        BULLET,
+        BULLET_PLAYER = PLAYER,
+        BULLET_ENEMY = ENEMY
+    };
+    
+    Vec2 _velocity;
 public:
     RigidBody();
     virtual ~RigidBody();
@@ -22,13 +36,13 @@ public:
     shared_ptr<Character> getObject() const;
     void setType(const RigidBody::type& type);
     RigidBody::type getType() const;
-    
-    void setVelocity(const Vec2& vec);
-    Vec2 getVelocity() const;
+    void setTag(int tag);
+    int getTag() const;
     
 protected:
     virtual void init();
     
-    b2Body* _body;
+    RigidBody::type _type;
     shared_ptr<Character> _object;
+    int _tag;
 };

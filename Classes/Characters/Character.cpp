@@ -30,7 +30,7 @@ void Character::init()
 {
     _type = Character::type::NONE;
     _name = constants::character_none;
-    
+
 }
 
 

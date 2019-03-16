@@ -26,10 +26,14 @@ void ObjectsPool::update()
             i++;
         }
     }
-    
 }
 
 void ObjectsPool::pushBulletBasic(shared_ptr<BulletBasic> bulletbasic)
 {
     _bulletBasicPool.push_back(bulletbasic);
+}
+
+void ObjectsPool::clear()
+{
+    _bulletBasicPool.clear();
 }

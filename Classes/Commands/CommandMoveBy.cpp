@@ -8,6 +8,7 @@
 #include "CommandMoveBy.h"
 #include "../Defines/constants.h"
 #include "../Characters/Character.h"
+#include "../Physics/RigidBody.h"
 
 CommandMoveBy::CommandMoveBy()
 {
@@ -44,17 +45,12 @@ void CommandMoveBy::update(float dt)
             _counttime = 0.f;
             _duration = 0.f;
             _velocity = Vec2(0,0);
-			//_object->_rigidBody->setVelocity(_velocity);
+			_object->_rigidBody->_velocity = _velocity;
         }
         else
         {
-            /*Vec2 newpos = _object->_sprite->getPosition() + _velocity;
-            _object->_sprite->setPosition(newpos);*/
-
-			//Vec2 newvec = _object->_rigidBody->getVelocity() + _velocity;
-            Vec2 newvec = _velocity;
-			//_object->_rigidBody->setVelocity(newvec);
-
+            //Vec2 newvec = _velocity;
+            _object->_rigidBody->_velocity = _velocity * dt;
             _counttime+=dt;
         }
     }

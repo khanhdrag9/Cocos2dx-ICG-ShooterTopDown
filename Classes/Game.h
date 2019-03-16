@@ -5,7 +5,7 @@
 class Character;
 class Player;
 class Bot;
-class b2World;
+class RigidWorld;
 
 class Game : public pattern::Singleton<Game>
 {
@@ -37,7 +37,7 @@ private:
     
     vector<shared_ptr<Bot>> _listBots;
 
-	b2World* _physicsWorld;
+	unique_ptr<RigidWorld> _rigidWorld;
     
 public:
     Game();
@@ -58,8 +58,8 @@ public:
     void handleTouchMoved(Touch* touch, Event* event);
     void handleTouchRelease(Touch* touch, Event* event);
     
-    b2World* getPhysicsWorld();
-    
+    const unique_ptr<RigidWorld>& getRigidWord() const;
+    void releaseGamePlay();
 private:
     shared_ptr<Player> createAPlayer();
     
@@ -78,4 +78,5 @@ private:
     
     
     void updatePhysics(float dt);
+    
 };

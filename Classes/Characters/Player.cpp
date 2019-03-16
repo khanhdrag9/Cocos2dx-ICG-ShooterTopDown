@@ -25,7 +25,7 @@ void Player::init()
 	//_rigidBody
     
     
-    _speedMove = 100.f;
+    _speedMove = 300.f;
 }
 void Player::update(float dt)
 {

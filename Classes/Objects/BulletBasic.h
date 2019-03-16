@@ -1,11 +1,11 @@
 #pragma once
 #include "../Headers.h"
+#include "../Characters/Character.h"
 
-class BulletBasic
+class BulletBasic : public Character
 {
 protected:
     Vec2 _speed;
-    string _name;
     
 public:
     BulletBasic();
@@ -14,9 +14,8 @@ public:
     void Shoot(const Vec2& velocity);
     void Shoot();
     
-    Vec2 getSpeed() const;
-    const string& getName() const;
+    void init() override;
+    void update(float dt) override;
     
-    Sprite* _sprite;
-    PhysicsBody* _rigidBody;
+    Vec2 getSpeed() const;
 };

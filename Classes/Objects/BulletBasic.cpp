@@ -8,18 +8,26 @@
 #include "BulletBasic.h"
 #include "../Defines/constants.h"
 #include "../Game.h"
+#include "../Physics/RigidBody.h"
+#include "../Physics/RigidWorld.h"
 
-BulletBasic::BulletBasic():
-    _sprite(nullptr),
-    _rigidBody(nullptr),
+BulletBasic::BulletBasic(): Character(),
     _speed(Vec2(0,0))
 {
 }
 
 BulletBasic::~BulletBasic()
 {
-    _rigidBody = nullptr;
-    CC_SAFE_DELETE(_sprite);
+}
+
+void BulletBasic::init()
+{
+    Character::init();
+}
+
+void BulletBasic::update(float dt)
+{
+    
 }
 
 shared_ptr<BulletBasic> BulletBasic::createBulletBasic(const Vec2& position, const float& angle, const Vec2& speed, bool forceShoot)
@@ -30,16 +38,15 @@ shared_ptr<BulletBasic> BulletBasic::createBulletBasic(const Vec2& position, con
     obj->_sprite = Sprite::create("bullet/bullet1.png");
     
     //physics - note*:set to player before set character's rotation
-    PhysicsBody* body = PhysicsBody::createBox(obj->_sprite->getContentSize());
-    obj->_sprite->setPhysicsBody(body);
-    obj->_rigidBody = body;
+    obj->_rigidBody = Game::getInstance()->getRigidWord()->createRigidBodyPolygon(obj);
+    obj->_rigidBody->setTag(RigidBody::tag::BULLET);
     
     obj->_sprite->setPosition(position);
     obj->_sprite->setRotation(angle);
     obj->_speed = speed;
     
     if(forceShoot)
-        obj->_rigidBody->setVelocity(obj->_speed);
+        obj->_rigidBody->_velocity = obj->_speed;
     
     Game::getInstance()->getCurrentState()->addChild(obj->_sprite);
     
@@ -49,20 +56,15 @@ shared_ptr<BulletBasic> BulletBasic::createBulletBasic(const Vec2& position, con
 void BulletBasic::Shoot(const Vec2& velocity)
 {
     _speed = velocity;
-    _rigidBody->setVelocity(_speed);
+    _rigidBody->_velocity = _speed;
 }
 
 void BulletBasic::Shoot()
 {
-    _rigidBody->setVelocity(_speed);
+    _rigidBody->_velocity = _speed;
 }
 
 Vec2 BulletBasic::getSpeed() const
 {
     return _speed;
-}
-
-const string& BulletBasic::getName() const
-{
-    return _name;
 }

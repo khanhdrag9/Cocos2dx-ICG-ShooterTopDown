@@ -10,8 +10,10 @@
 #include "../Defines/Templates.h"
 
 RigidBody::RigidBody():
-    _body(nullptr),
-    _object(nullptr)
+_object(nullptr),
+_velocity(Vec2(0,0)),
+_type(RigidBody::type::DYNAMIC),
+_tag(-1)
 {
 }
 
@@ -26,6 +28,7 @@ void RigidBody::init()
 
 void RigidBody::update(float dt)
 {
+    
 }
 
 shared_ptr<Character> RigidBody::getObject() const
@@ -35,50 +38,20 @@ shared_ptr<Character> RigidBody::getObject() const
 
 void RigidBody::setType(const RigidBody::type& type)
 {
-    switch (type)
-    {
-        case STATIC:
-            _body->SetType(b2_staticBody);
-            break;
-        case DYNAMIC:
-            _body->SetType(b2_dynamicBody);
-            break;
-        case KINEMATIC:
-            _body->SetType(b2_kinematicBody);
-            break;
-        default:
-            break;
-    }
+    _type = type;
 }
 
 RigidBody::type RigidBody::getType() const
 {
-    RigidBody::type type = type::DYNAMIC;
-    switch (_body->GetType())
-    {
-        case b2_staticBody:
-            type = STATIC;
-            break;
-        case b2_dynamicBody:
-            type = DYNAMIC;
-            break;
-        case b2_kinematicBody:
-            type = KINEMATIC;
-            break;
-        default:
-            break;
-    }
-    
-    return type;
+    return _type;
 }
 
-void RigidBody::setVelocity(const Vec2& vec)
+void RigidBody::setTag(int tag)
 {
-    _body->SetLinearVelocity(b2Vec2(vec.x, vec.y));
+    _tag = tag;
 }
 
-Vec2 RigidBody::getVelocity() const
+int RigidBody::getTag() const
 {
-    b2Vec2 vec = _body->GetLinearVelocity();
-    return Vec2(vec.x, vec.y);
+    return _tag;
 }

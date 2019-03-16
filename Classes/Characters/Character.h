@@ -33,7 +33,7 @@ protected:
     
 public:
     Sprite* _sprite;
-    unique_ptr<RigidBody> _rigidBody;
+    shared_ptr<RigidBody> _rigidBody;
     
     string _name;
     Character::type _type;

@@ -12,6 +12,8 @@
 #include "Commands/CommandShoot.h"
 #include "Defines/constants.h"
 #include "Physics/RigidBodyPolygon.h"
+#include "Physics/RigidWorld.h"
+#include "Defines/Templates.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -23,7 +25,7 @@ _tileMap(nullptr),
 _backgroundLayer(nullptr),
 _collisionLayer(nullptr),
 _objIsFollow(nullptr),
-_physicsWorld(nullptr)
+_rigidWorld(nullptr)
 {
     
 }
@@ -44,11 +46,12 @@ void Game::init()
 
 void Game::initGamePlay()
 {
-	createPhysicsWorld();
+    createPhysicsWorld();
 	createMap();
 	createMainPlayer();
     createEnemyBots();
 	createStartCameraView();
+    
 }
 
 void Game::update(float dt)
@@ -115,8 +118,10 @@ bool Game::handleTouchBegan(Touch* touch, Event* event)
 void Game::handleTouchMoved(Touch* touch, Event* event)
 {
     //for player
+    Vec2 point = touch->getLocation();
+    point = _currentState->convertToNodeSpace(point);
     shared_ptr<Character> obj = _player;
-    updateAngle(obj, touch->getLocation());
+    updateAngle(obj, point);
 }
 
 void Game::handleTouchRelease(Touch* touch, Event* event)
@@ -124,22 +129,32 @@ void Game::handleTouchRelease(Touch* touch, Event* event)
     
 }
 
-b2World* Game::getPhysicsWorld()
+const unique_ptr<RigidWorld>& Game::getRigidWord() const
 {
-    return _physicsWorld;
+    return _rigidWorld;
+}
+
+void Game::releaseGamePlay()
+{
+    _player = nullptr;
+    _isHoldKey = false;
+    _counttimePlayerShoot = 0.f;
+    _intervelPlayerShoot = 0.25f;
+    CC_SAFE_DELETE(_backgroundLayer);
+    CC_SAFE_DELETE(_collisionLayer);
+     CC_SAFE_DELETE(_tileMap);
+    _objIsFollow = nullptr;
+    _rigidWorld = nullptr;
+    
+    _keyIsHolds.clear();
+    ObjectsPool::getInstance()->clear();
 }
 
 shared_ptr<Player> Game::createAPlayer()
 {
     auto character = make_shared<Player>();
     character->init();
-    vector<Vec2> verticesPhys{
-        Vec2(-50, 50),
-        Vec2(-50, -50),
-        Vec2(50, -50),
-        Vec2(50, 50),
-    };
-    character->_rigidBody = RigidBodyPolygon::createRigidBodyPolygon(character, verticesPhys);
+    _rigidWorld->createRigidBodyPolygon(character);
     
     _currentState->addChild(character->_sprite);
     return character;
@@ -224,10 +239,7 @@ void Game::handleShootCharacter(shared_ptr<Character> object, const float& speed
 
 void Game::createPhysicsWorld()
 {
-	_physicsWorld = new b2World(b2Vec2(0,-8.0));
-//    _physicsWorld->SetAllowSleeping(true);
-//    _physicsWorld->SetContinuousPhysics(true);
-//    _physicsWorld->SetContactListener(this);
+    _rigidWorld = pointer::make_unique<RigidWorld>();
 }
 
 void Game::createMap()
@@ -241,32 +253,28 @@ void Game::createMap()
 	_currentState->addChild(_tileMap);
 
 	//physics for collision layer
-//    Size mapSize = _tileMap->getMapSize();
-//
-//    for (int w = 0; w < mapSize.width; w++)
-//    {
-//        for (int h = 0; h < mapSize.height; h++)
-//        {
-//            auto tile = _collisionLayer->getTileAt(Vec2(w, h));
-//            if (tile)
-//            {
-//                Size size = tile->getContentSize();
-//                auto body = PhysicsBody::createBox(size);
-//                body->setContactTestBitmask(physics_code::physics_edge);
-//                body->setCategoryBitmask(physics_code::physics_edge);
-//                body->setCollisionBitmask(physics_code::physics_edge);
-//                body->setDynamic(false);
-//
-//                tile->setPhysicsBody(body);
-//            }
-//        }
-//    }
+    Size mapSize = _tileMap->getMapSize();
+
+    for (int w = 0; w < mapSize.width; w++)
+    {
+        for (int h = 0; h < mapSize.height; h++)
+        {
+            auto tile = _collisionLayer->getTileAt(Vec2(w, h));
+            if (tile)
+            {
+                Rect size = tile->getBoundingBox();
+                auto body = _rigidWorld->createRigidBodyPolygon(size);
+                body->setTag(RigidBody::tag::WALL);
+            }
+        }
+    }
 }
 
 void Game::createMainPlayer()
 {
 	_player = createAPlayer();
-
+    _player->_rigidBody->setTag(RigidBody::tag::PLAYER);
+    
 	//get position start from tileMap
 	TMXObjectGroup* objg = _tileMap->getObjectGroup("Player");
 	auto playerPos = objg->getObject("PlayerPos");
@@ -313,6 +321,7 @@ void Game::createEnemyBots()
         float y = pos.at("y").asFloat();
     
         auto bot = createAPlayer(); //create bot here, use player for test, use Bot instead of
+        bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
         bot->_sprite->setPosition(x, y);
     }
 }
@@ -320,15 +329,6 @@ void Game::createEnemyBots()
 
 void Game::updatePhysics(float dt)
 {
-    if(_physicsWorld)
-    {
-        _physicsWorld->Step(dt, 10, 10);
-        for(b2Body* body = _physicsWorld->GetBodyList(); body; body->GetNext())
-        {
-            if(body->GetUserData() != nullptr && body->GetUserData() != NULL)
-            {
-                
-            }
-        }
-    }
+    _rigidWorld->update(dt);
 }
+

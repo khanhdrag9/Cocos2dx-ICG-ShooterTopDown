@@ -5,8 +5,12 @@ class RigidBodyPolygon : public RigidBody
 {
     void init() override;
     
+    Rect _rect;
 public:
-    static unique_ptr<RigidBodyPolygon> createRigidBodyPolygon(shared_ptr<Character> object, const vector<Vec2>& vertices);
+    static shared_ptr<RigidBodyPolygon> createRigidBodyPolygon(shared_ptr<Character> object);
     
     void update(float dt) override;
+    
+    
+    friend class RigidWorld;
 };
