@@ -2,7 +2,7 @@
 #include "../Resource/ResourceManager.h"
 #include "../Game.h"
 #include "../Objects/ObjectsPool.h"
-#include "GS_GamePlay.h"
+#include "GS_GameMenu.h"
 
 Scene* GS_Splash::createScene()
 {
@@ -51,6 +51,6 @@ void GS_Splash::update(float dt)
 
 void GS_Splash::changeToGameMenu(float time)
 {
-    Scene* menu = GS_GamePlay::createScene();
+    Scene* menu = GS_GameMenu::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(0.5f, menu));
 }

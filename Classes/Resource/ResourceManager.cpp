@@ -14,6 +14,14 @@ ResourceManager::ResourceManager()
     _resMap[res::define::SPLASH] = "splashKW.jpg";
     
     
+    //UI
+    _resMap[res::define::BTN_BLUE] = "Assets/PNG/UI/buttonBlue.png";
+    _resMap[res::define::BTN_GREEN] = "Assets/PNG/UI/buttonGreen.png";
+    _resMap[res::define::BTN_RED] = "Assets/PNG/UI/buttonRed.png";
+    _resMap[res::define::BTN_YELLOW] = "Assets/PNG/UI/buttonYellow.png";
+    _resMap[res::define::CURSOR_UI] = "Assets/PNG/UI/cursor.png";
+    _resMap[res::define::FONT_KENVECTOR_FUTURE_THIN] = "Assets/Bonus/kenvector_future_thin.ttf";
+    
     //player
     _resMap[res::define::PLAYER_1_BLUE] = "Assets/PNG/playerShip1_blue.png";
     _resMap[res::define::PLAYER_1_GREEN] = "Assets/PNG/playerShip1_green.png";

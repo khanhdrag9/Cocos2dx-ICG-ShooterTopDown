@@ -11,5 +11,6 @@ using namespace std;
 
 //Cocos
 #include "cocos2d.h"
+#include "ui/CocosGUI.h"
 
 using namespace NS_CC;

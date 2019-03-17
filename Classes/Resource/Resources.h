@@ -8,6 +8,17 @@ namespace res
         SPLASH,
         
         
+        //UI
+        BTN_BLUE,
+        BTN_GREEN,
+        BTN_RED,
+        BTN_YELLOW,
+        CURSOR_UI,
+        
+        
+        //Font
+        FONT_KENVECTOR_FUTURE_THIN,
+        
         //player
         PLAYER_1_BLUE,
         PLAYER_1_GREEN,
