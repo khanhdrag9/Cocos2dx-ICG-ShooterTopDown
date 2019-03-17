@@ -30,11 +30,7 @@ bool GS_GamePlay::init()
 //    this->addChild(_aim);
 //#endif
     
-	new Game;
-	new ObjectsPool;
-
     Game::getInstance()->setCurrentState(this);
-    Game::getInstance()->init();
     Game::getInstance()->initGamePlay();
     
     controller();

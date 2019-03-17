@@ -10,6 +10,10 @@
 
 ResourceManager::ResourceManager()
 {
+    //image
+    _resMap[res::define::SPLASH] = "splashKW.jpg";
+    
+    
     //player
     _resMap[res::define::PLAYER_1_BLUE] = "Assets/PNG/playerShip1_blue.png";
     _resMap[res::define::PLAYER_1_GREEN] = "Assets/PNG/playerShip1_green.png";

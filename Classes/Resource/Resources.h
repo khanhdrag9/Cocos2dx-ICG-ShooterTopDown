@@ -4,6 +4,10 @@ namespace res
 {
     enum class define : int
     {
+        //image
+        SPLASH,
+        
+        
         //player
         PLAYER_1_BLUE,
         PLAYER_1_GREEN,

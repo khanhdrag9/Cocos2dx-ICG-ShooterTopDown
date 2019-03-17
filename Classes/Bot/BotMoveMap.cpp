@@ -1,6 +1,6 @@
 #include "BotMoveMap.h"
-#include "Commands\Command.h"
-#include "Commands\CommandMoveTo.h"
+#include "Commands/Command.h"
+#include "Commands/CommandMoveTo.h"
 #include "Bot.h"
 
 BotMoveMap::BotMoveMap()

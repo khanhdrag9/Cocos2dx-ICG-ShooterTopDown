@@ -1,6 +1,7 @@
 #include "Bot.h"
-#include "Defines\constants.h"
-#include "Commands\Command.h"
+#include "Defines/constants.h"
+#include "Commands/Command.h"
+#include "../Physics/RigidBody.h"
 
 Bot::Bot() : Character()
 {
@@ -14,9 +15,7 @@ void Bot::init()
 	_name = constants::character_enemy;
 	_sprite = Sprite::create("sprite.png");
 
-	_rigidBody = PhysicsBody::createBox(_sprite->getContentSize());
-	_rigidBody->setMass(100);
-	_sprite->setPhysicsBody(_rigidBody);
+	
 
 	_speedMove = 100.f;
 }
