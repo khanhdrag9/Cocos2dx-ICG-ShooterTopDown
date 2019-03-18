@@ -27,6 +27,7 @@ public:
     };
     
     Vec2 _velocity;
+    shared_ptr<Character> _object;
 public:
     RigidBody();
     virtual ~RigidBody();
@@ -43,6 +44,6 @@ protected:
     virtual void init();
     
     RigidBody::type _type;
-    shared_ptr<Character> _object;
+
     int _tag;
 };

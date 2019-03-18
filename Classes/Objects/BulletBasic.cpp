@@ -13,7 +13,8 @@
 #include "../Resource/ResourceManager.h"
 
 BulletBasic::BulletBasic(): Character(),
-    _speed(Vec2(0,0))
+    _speed(Vec2(0,0)),
+    _isDestroy(false)
 {
 }
 
@@ -69,4 +70,15 @@ void BulletBasic::Shoot()
 Vec2 BulletBasic::getSpeed() const
 {
     return _speed;
+}
+
+bool BulletBasic::isDestroy()
+{
+    return _isDestroy;
+}
+
+void BulletBasic::destroy()
+{
+    _rigidBody->_object = nullptr;
+    _isDestroy = true;
 }

@@ -6,6 +6,7 @@ class BulletBasic : public Character
 {
 protected:
     Vec2 _speed;
+    bool _isDestroy;
     
 public:
     BulletBasic();
@@ -18,4 +19,7 @@ public:
     void update(float dt) override;
     
     Vec2 getSpeed() const;
+    
+    bool isDestroy();
+    void destroy();
 };

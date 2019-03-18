@@ -6,7 +6,7 @@
 //
 
 #include "ObjectsPool.h"
-
+#include "BulletBasic.h"
 
 ObjectsPool::~ObjectsPool()
 {
@@ -17,7 +17,7 @@ void ObjectsPool::update()
 {
     for(auto i = _bulletBasicPool.begin(); i != _bulletBasicPool.end();)
     {
-        if(*i == nullptr || *i == NULL)
+        if(i->get()->isDestroy())
         {
             i = _bulletBasicPool.erase(i);
         }

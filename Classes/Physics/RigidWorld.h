@@ -22,4 +22,6 @@ public:
     
     shared_ptr<RigidBody> createRigidBodyCircle(shared_ptr<Character> character);
     
+    
+    void onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> body2);
 };
