@@ -24,14 +24,15 @@ bool GS_GameMenu::init()
     auto resMgr = ResourceManager::getInstance();
     
     Vec2 pos[]{
-        Vec2(screenSize.width / 2.f, screenSize.height * 0.8),
+        Vec2(screenSize.width / 2.f, screenSize.height * 0.83),
         Vec2(screenSize.width / 2.f, screenSize.height * 0.6),
         Vec2(screenSize.width / 2.f, screenSize.height * 0.4),
         Vec2(screenSize.width / 2.f, screenSize.height * 0.2)
     };
     //create game label
-    
-    
+    Label* title = Label::createWithTTF("Shooter", resMgr->at(res::define::FONT_KENVECTOR_FUTURE_THIN), 75);
+    title->setPosition(pos[0]);
+    this->addChild(title);
     
     //create UI button
     pair<string, string> assetsBtn[]{
@@ -48,7 +49,6 @@ bool GS_GameMenu::init()
     int numberbutton = (int)titleBtn.size();
     for(int i = 0; i < numberbutton; i++)
     {
-    
         ui::Button* btn = ui::Button::create(assetsBtn[i].first, assetsBtn[i].second);
         btn->setScale(1.5f);
         btn->setTitleText(titleBtn[i]);
