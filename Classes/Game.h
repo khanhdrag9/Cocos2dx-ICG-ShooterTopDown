@@ -62,6 +62,7 @@ public:
     void releaseGamePlay();
 private:
     shared_ptr<Player> createAPlayer();
+    shared_ptr<Bot> createABot();
     
     void handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode);
     void handleMovePlayer(shared_ptr<Player> player, const direction& direct);

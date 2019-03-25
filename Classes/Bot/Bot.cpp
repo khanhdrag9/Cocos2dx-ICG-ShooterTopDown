@@ -2,6 +2,7 @@
 #include "Defines/constants.h"
 #include "Commands/Command.h"
 #include "../Physics/RigidBody.h"
+#include "../Resource/ResourceManager.h"
 
 Bot::Bot() : Character()
 {
@@ -13,7 +14,8 @@ void Bot::init()
 
 	_type = Character::type::ENEMY;
 	_name = constants::character_enemy;
-	_sprite = Sprite::create("sprite.png");
+    
+    _sprite = Sprite::create(ResourceManager::getInstance()->at(res::define::ENEMY_1_RED));
 
 	
 

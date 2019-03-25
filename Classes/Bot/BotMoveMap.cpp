@@ -3,6 +3,19 @@
 #include "Commands/CommandMoveTo.h"
 #include "Bot.h"
 
+
+LinkPosition::LinkPosition(const Vec2& f, const vector<Vec2>& os):
+    first(f),
+    others(os)
+{
+    
+}
+
+LinkPosition::~LinkPosition()
+{
+    others.clear();
+}
+
 BotMoveMap::BotMoveMap()
 {
 

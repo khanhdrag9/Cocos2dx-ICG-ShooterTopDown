@@ -15,6 +15,7 @@
 #include "Physics/RigidWorld.h"
 #include "Defines/Templates.h"
 #include "Resource/ResourceManager.h"
+#include "Bot/Bot.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -62,6 +63,9 @@ void Game::update(float dt)
     
     _player->update(dt);
     updatePhysics(dt);
+    
+    for(auto& bot : _listBots)
+        bot->update(dt);
     
 	updateCameraView();
     ObjectsPool::getInstance()->update();
@@ -159,6 +163,17 @@ shared_ptr<Player> Game::createAPlayer()
     
     _currentState->addChild(character->_sprite);
     return character;
+}
+
+shared_ptr<Bot> Game::createABot()
+{
+    auto bot = make_shared<Bot>();
+    bot->init();
+    _rigidWorld->createRigidBodyCircle(bot);
+    _listBots.push_back(bot);
+    
+    _currentState->addChild(bot->_sprite);
+    return bot;
 }
 
 void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
@@ -287,7 +302,8 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-	setObjectFollowByCam((shared_ptr<Character>)_player);
+	//setObjectFollowByCam((shared_ptr<Character>)_player);
+    setObjectFollowByCam(_listBots[0]);
 	updateCameraView();
 }
 
@@ -321,9 +337,11 @@ void Game::createEnemyBots()
         float x = pos.at("x").asFloat();
         float y = pos.at("y").asFloat();
     
-        auto bot = createAPlayer(); //create bot here, use player for test, use Bot instead of
+        auto bot = createABot(); //create bot here, use player for test, use Bot instead of
         bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
         bot->_sprite->setPosition(x, y);
+        
+        _listBots.push_back(bot);
     }
 }
 

@@ -4,6 +4,17 @@
 class CommandMoveTo;
 class Bot;
 
+class LinkPosition
+{
+public:
+    LinkPosition(){}
+    LinkPosition(const Vec2& first, const vector<Vec2>& others);
+    ~LinkPosition();
+    
+    Vec2 first;
+    vector<Vec2> others;
+};
+
 class BotMoveMap
 {
 	std::queue<shared_ptr<CommandMoveTo>> _queueMoveTo;

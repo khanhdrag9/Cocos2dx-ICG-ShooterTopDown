@@ -11,7 +11,7 @@
 
 shared_ptr<RigidBodyCircle> RigidBodyCircle::createRigidBodyCircle(shared_ptr<Character> object)
 {
-    shared_ptr<RigidBodyCircle> body = pointer::make_unique<RigidBodyCircle>();
+    shared_ptr<RigidBodyCircle> body = make_shared<RigidBodyCircle>();
     body->init();   //init func haven't been used yet
     body->_radius = (object->_sprite->getContentSize().width / 2.f) * 0.9f;
     body->_object = object;
