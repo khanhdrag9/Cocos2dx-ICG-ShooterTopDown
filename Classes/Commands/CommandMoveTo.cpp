@@ -8,6 +8,7 @@
 #include "CommandMoveTo.h"
 #include "../Defines/constants.h"
 #include "../Characters/Character.h"
+#include "../Physics/RigidBody.h"
 
 CommandMoveTo::CommandMoveTo():
 _speed(0.f),
@@ -40,9 +41,9 @@ void CommandMoveTo::update(float dt)
         {
             Vec2 offset = _target - currentPos;
             offset.normalize();
-            offset *= _speed;
+            offset *= _speed * dt;
             
-            //_object->_rigidBody->setVelocity(offset);
+            _object->_rigidBody->_velocity = offset;
         }
     }
 }

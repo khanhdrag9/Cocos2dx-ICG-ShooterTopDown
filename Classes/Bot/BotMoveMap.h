@@ -8,11 +8,11 @@ class LinkPosition
 {
 public:
     LinkPosition(){}
-    LinkPosition(const Vec2& first, const vector<Vec2>& others);
+    LinkPosition(const Vec2& first, const vector<weak_ptr<LinkPosition>>& others);
     ~LinkPosition();
     
     Vec2 first;
-    vector<Vec2> others;
+    vector<weak_ptr<LinkPosition>> others;
 };
 
 class BotMoveMap

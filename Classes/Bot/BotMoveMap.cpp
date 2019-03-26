@@ -4,7 +4,7 @@
 #include "Bot.h"
 
 
-LinkPosition::LinkPosition(const Vec2& f, const vector<Vec2>& os):
+LinkPosition::LinkPosition(const Vec2& f, const vector<weak_ptr<LinkPosition>>& os):
     first(f),
     others(os)
 {
