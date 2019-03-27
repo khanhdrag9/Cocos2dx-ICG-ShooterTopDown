@@ -4,9 +4,9 @@
 #include "Bot.h"
 
 
-LinkPosition::LinkPosition(const Vec2& f, const vector<weak_ptr<LinkPosition>>& os):
+LinkPosition::LinkPosition(const Vec2& f, const string& n):
     first(f),
-    others(os)
+    name(n)
 {
     
 }

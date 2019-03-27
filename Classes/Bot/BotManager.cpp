@@ -3,6 +3,7 @@
 #include "../Game.h"
 #include "../Physics/RigidBody.h"
 #include "../Physics/RigidWorld.h"
+#include "BotMoveMap.h"
 
 BotManager::BotManager()
 {
@@ -28,7 +29,7 @@ void BotManager::addBot(shared_ptr<Bot> bot)
 
 int BotManager::countBots() const
 {
-	return _listBots.size();
+	return (int)_listBots.size();
 }
 
 void BotManager::update(float dt)
@@ -59,6 +60,31 @@ void BotManager::initBots()
 	}
 }
 
+void BotManager::initMovePosition()
+{
+    TMXObjectGroup* movemapgroup = Game::getInstance()->getTileMap()->getObjectGroup("EnemyMoveMap");
+    int count = (int)movemapgroup->getObjects().size();
+    
+    for(int i = 1; i <= count; i++)
+    {
+        string name = "enemystep" + to_string(i);
+        auto pos = movemapgroup->getObject(name);
+        float x = pos.at("x").asFloat();
+        float y = pos.at("y").asFloat();
+        
+        shared_ptr<LinkPosition> linkpos = make_shared<LinkPosition>(Vec2(x, y), name);
+        
+        auto linknames = pos.at("LinkPosition").asString();
+        
+        std::istringstream iss(linknames);
+        vector<string> listLink(istream_iterator<string>{iss}, istream_iterator<string>());
+        for(auto link : listLink)linkpos->others.push_back(link);
+        
+        _mapPosition[name] = linkpos;
+    }
+    
+}
+
 shared_ptr<Bot> BotManager::createBot()
 {
 	auto bot = make_shared<Bot>();
@@ -74,4 +100,12 @@ shared_ptr<Bot> BotManager::getBot(const int & index)
 		return nullptr;
 
 	return _listBots[index];
+}
+
+vector<string> BotManager::getListNamePropertiesFromString(string str)
+{
+    vector<string> strs;
+    
+    
+    return strs;
 }

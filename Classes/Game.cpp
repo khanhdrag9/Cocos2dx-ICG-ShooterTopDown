@@ -52,6 +52,7 @@ void Game::initGamePlay()
     createPhysicsWorld();
 	createMap();
 	createMainPlayer();
+    BotManager::getInstance()->initMovePosition();
 	BotManager::getInstance()->initBots();
 	createStartCameraView();
     

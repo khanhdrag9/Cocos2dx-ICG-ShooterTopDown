@@ -7,7 +7,7 @@
    <image width="34" height="34" source="WallTile2.png"/>
   </tile>
  </tileset>
- <layer id="7" name="Background" width="50" height="50">
+ <layer id="7" name="Background" width="50" height="50" locked="1">
   <data encoding="csv">
 5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
 5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
@@ -67,37 +67,37 @@
   </object>
  </objectgroup>
  <objectgroup id="8" name="Enemy" locked="1" offsetx="-14.3856" offsety="9.36737">
-  <object id="47" name="enemyPos1" x="1401.73" y="154.895">
+  <object id="47" name="enemyPos1" x="1483.21" y="132.157">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="12" name="EnemyMoveMap" locked="1">
+ <objectgroup id="12" name="EnemyMoveMap">
   <object id="48" name="enemystep4" x="1057.18" y="152.822">
    <properties>
-    <property name="LinkPosition" value="enemystep2, enemystep3, enemystep4"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="53" name="enemystep2" x="1475" y="583">
-   <properties>
-    <property name="LinkPosition" value="enemystep2, enemystep3, enemystep4"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="54" name="enemystep1" x="1317" y="160">
-   <properties>
-    <property name="LinkPosition" value="enemystep2, enemystep3, enemystep4"/>
+    <property name="LinkPosition" value="enemystep1 enemystep3"/>
    </properties>
    <point/>
   </object>
   <object id="55" name="enemystep3" x="1254.5" y="377">
    <properties>
-    <property name="LinkPosition" value="enemystep2, enemystep3, enemystep4"/>
+    <property name="LinkPosition" value="enemystep1 enemystep2 enemystep4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="53" name="enemystep2" x="1475" y="583">
+   <properties>
+    <property name="LinkPosition" value="enemystep1 enemystep3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="54" name="enemystep1" x="1427.85" y="188.423">
+   <properties>
+    <property name="LinkPosition" value="enemystep2 enemystep3 enemystep4"/>
    </properties>
    <point/>
   </object>
  </objectgroup>
- <layer id="6" name="Collision" width="50" height="50" opacity="0.5">
+ <layer id="6" name="Collision" width="50" height="50" locked="1" opacity="0.5">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
