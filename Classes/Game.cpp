@@ -255,7 +255,11 @@ void Game::handleShootCharacter(shared_ptr<Character> object, const float& speed
 
 void Game::createPhysicsWorld()
 {
-    _rigidWorld = pointer::make_unique<RigidWorld>();
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+    _rigidWorld = pointer::make_unique<RigidWorld>();	//C++ 11 dont contain make_unique
+#else
+	_rigidWorld = make_unique<RigidWorld>();
+#endif
 }
 
 void Game::createMap()
