@@ -16,6 +16,7 @@
 #include "Defines/Templates.h"
 #include "Resource/ResourceManager.h"
 #include "Bot/Bot.h"
+#include "Bot/BotManager.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -51,7 +52,7 @@ void Game::initGamePlay()
     createPhysicsWorld();
 	createMap();
 	createMainPlayer();
-    createEnemyBots();
+	BotManager::getInstance()->initBots();
 	createStartCameraView();
     
 }
@@ -64,8 +65,7 @@ void Game::update(float dt)
     _player->update(dt);
     updatePhysics(dt);
     
-    for(auto& bot : _listBots)
-        bot->update(dt);
+	BotManager::getInstance()->update(dt);
     
 	updateCameraView();
     ObjectsPool::getInstance()->update();
@@ -155,6 +155,11 @@ void Game::releaseGamePlay()
     ObjectsPool::getInstance()->clear();
 }
 
+TMXTiledMap * Game::getTileMap() const
+{
+	return _tileMap;
+}
+
 shared_ptr<Player> Game::createAPlayer()
 {
     auto character = make_shared<Player>();
@@ -163,17 +168,6 @@ shared_ptr<Player> Game::createAPlayer()
     
     _currentState->addChild(character->_sprite);
     return character;
-}
-
-shared_ptr<Bot> Game::createABot()
-{
-    auto bot = make_shared<Bot>();
-    bot->init();
-    _rigidWorld->createRigidBodyCircle(bot);
-    _listBots.push_back(bot);
-    
-    _currentState->addChild(bot->_sprite);
-    return bot;
 }
 
 void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
@@ -307,7 +301,7 @@ void Game::createMainPlayer()
 void Game::createStartCameraView()
 {
 	//setObjectFollowByCam((shared_ptr<Character>)_player);
-    setObjectFollowByCam(_listBots[0]);
+    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
 	updateCameraView();
 }
 
@@ -328,25 +322,6 @@ void Game::updateCameraView()
 		Vec2 viewPoint = Vec2(centerOfView - actualPosition);
 		_currentState->setPosition(viewPoint);
 	}
-}
-
-void Game::createEnemyBots()
-{
-    TMXObjectGroup* objg = _tileMap->getObjectGroup("Enemy");
-    int countEnemies = (int)objg->getObjects().size();
-    
-    for(int i = 1; i <= countEnemies; i++)
-    {
-        auto pos = objg->getObject("enemyPos" + to_string(i));
-        float x = pos.at("x").asFloat();
-        float y = pos.at("y").asFloat();
-    
-        auto bot = createABot(); //create bot here, use player for test, use Bot instead of
-        bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
-        bot->_sprite->setPosition(x, y);
-        
-        _listBots.push_back(bot);
-    }
 }
 
 

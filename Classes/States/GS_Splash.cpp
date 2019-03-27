@@ -3,6 +3,7 @@
 #include "../Game.h"
 #include "../Objects/ObjectsPool.h"
 #include "GS_GameMenu.h"
+#include "../Bot/BotManager.h"
 
 Scene* GS_Splash::createScene()
 {
@@ -19,6 +20,7 @@ bool GS_Splash::init()
     _isInit = false;
     
     new ResourceManager;
+	new BotManager;
     
     Size sz = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();

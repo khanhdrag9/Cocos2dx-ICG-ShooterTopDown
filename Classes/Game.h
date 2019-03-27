@@ -34,8 +34,6 @@ private:
 	TMXLayer* _collisionLayer;
 
 	shared_ptr<Character> _objIsFollow;
-    
-    vector<shared_ptr<Bot>> _listBots;
 
 	unique_ptr<RigidWorld> _rigidWorld;
     
@@ -60,9 +58,10 @@ public:
     
     const unique_ptr<RigidWorld>& getRigidWord() const;
     void releaseGamePlay();
+
+	TMXTiledMap* getTileMap() const;
 private:
     shared_ptr<Player> createAPlayer();
-    shared_ptr<Bot> createABot();
     
     void handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode);
     void handleMovePlayer(shared_ptr<Player> player, const direction& direct);
@@ -74,9 +73,6 @@ private:
 	void createMainPlayer();
 	void createStartCameraView();
 	void updateCameraView();
-    
-    void createEnemyBots();
-    
     
     void updatePhysics(float dt);
     
