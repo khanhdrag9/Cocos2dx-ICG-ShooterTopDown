@@ -17,7 +17,7 @@ public:
 	const Vec2& get() const;
 	const string& getName() const;
 	void push(string other);
-	const string& otherAt(const int& index);
+    string otherAt(const int& index) const;
 	int otherSize() const;
 };
 

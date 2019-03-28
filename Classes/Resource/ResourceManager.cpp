@@ -42,7 +42,8 @@ ResourceManager::ResourceManager()
     _resMap[res::define::ENEMY_1_BLUE] = "Assets/PNG/ufoBlue.png";
     _resMap[res::define::ENEMY_1_GREEN] = "Assets/PNG/ufoGreen.png";
     _resMap[res::define::ENEMY_1_RED] = "Assets/PNG/ufoRed.png";
-    _resMap[res::define::ENEMY_1_YELLOW] = "Assets/PNG/ufoYellow.png";
+    //_resMap[res::define::ENEMY_1_YELLOW] = "Assets/PNG/ufoYellow.png";
+    _resMap[res::define::ENEMY_1_YELLOW] = "Assets/PNG/playerShip2_orange.png";
     
     //bullet
     _resMap[res::define::BULLET_BLUE_1] = "Assets/PNG/Lasers/laserBlue01.png";

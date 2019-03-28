@@ -20,7 +20,7 @@ void Bot::init()
 	_type = Character::type::ENEMY;
 	_name = constants::character_enemy;
     
-    _sprite = Sprite::create(ResourceManager::getInstance()->at(res::define::ENEMY_1_RED));
+    _sprite = Sprite::create(ResourceManager::getInstance()->at(res::define::ENEMY_1_YELLOW));
 
 	
 
@@ -41,6 +41,14 @@ void Bot::update(float dt)
 			pushCommand(cmd);
 		}
 	}
+    
+    //update rotation
+    if (_linkPos)
+    {
+        Vec2 offset = _linkPos->get() - _sprite->getPosition();   
+        auto angle = atan2(offset.y, offset.x);
+        _sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
+    }
 }
 
 void Bot::pushCommand(shared_ptr<Command>& command)

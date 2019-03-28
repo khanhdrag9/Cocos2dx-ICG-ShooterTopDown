@@ -31,17 +31,17 @@ void LinkPosition::push(string other)
 	others.push_back(other);
 }
 
-const string & LinkPosition::otherAt(const int & index)
+string LinkPosition::otherAt(const int & index) const
 {
 	if (index >= others.size())
-		return "";
+        return string("");
 
 	return others[index];
 }
 
 int LinkPosition::otherSize() const
 {
-	return others.size();
+	return (int)others.size();
 }
 
 BotMoveMap::BotMoveMap()
