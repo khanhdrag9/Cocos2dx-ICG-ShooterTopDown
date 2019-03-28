@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-up" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="67">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-up" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="15" nextobjectid="80">
  <tileset firstgid="1" source="collision.tsx"/>
  <tileset firstgid="5" name="WallTile2" tilewidth="34" tileheight="34" tilecount="1" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
@@ -41,8 +41,8 @@
 5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,
 5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,
 5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,
-5,5,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,0,5,5,5,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,5,5,
-5,5,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,0,5,5,5,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,5,5,
+5,5,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,0,5,5,5,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,0,5,5,
+5,5,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,0,5,5,5,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,0,5,5,
 5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5,5,0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,
 5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5,5,0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,
 5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5,5,0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,
@@ -67,92 +67,92 @@
   </object>
  </objectgroup>
  <objectgroup id="8" name="Enemy" locked="1" offsetx="-14.3856" offsety="9.36737">
-  <object id="47" name="enemyPos1" x="1483.21" y="132.157">
+  <object id="47" name="enemyPos1" x="1412.54" y="198.824">
    <point/>
   </object>
  </objectgroup>
  <objectgroup id="12" name="EnemyMoveMap">
-  <object id="48" name="enemystep4" x="1087.18" y="154.822">
+  <object id="54" name="enemystep1" x="1400.52" y="207.09">
    <properties>
-    <property name="LinkPosition" value="enemystep1 enemystep3"/>
+    <property name="LinkPosition" value="enemystep2 enemystep3"/>
    </properties>
    <point/>
   </object>
-  <object id="55" name="enemystep3" x="1254.5" y="377">
+  <object id="53" name="enemystep2" x="1471" y="587">
    <properties>
-    <property name="LinkPosition" value="enemystep1 enemystep2 enemystep4"/>
+    <property name="LinkPosition" value="enemystep4"/>
    </properties>
    <point/>
   </object>
-  <object id="53" name="enemystep2" x="1469.67" y="537.667">
+  <object id="69" name="enemystep4" x="1456" y="941.333">
    <properties>
-    <property name="LinkPosition" value="enemystep3 enemystep5"/>
+    <property name="LinkPosition" value="enemystep5"/>
    </properties>
    <point/>
   </object>
-  <object id="54" name="enemystep1" x="1427.85" y="188.423">
-   <properties>
-    <property name="LinkPosition" value="enemystep2 enemystep3 enemystep4"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="57" name="enemystep5" x="1458" y="714">
+  <object id="70" name="enemystep5" x="1437.33" y="1470.67">
    <properties>
     <property name="LinkPosition" value="enemystep6"/>
    </properties>
    <point/>
   </object>
-  <object id="58" name="enemystep6" x="1454" y="940">
+  <object id="71" name="enemystep6" x="949.333" y="1476">
    <properties>
     <property name="LinkPosition" value="enemystep7"/>
    </properties>
    <point/>
   </object>
-  <object id="59" name="enemystep7" x="940" y="964">
+  <object id="72" name="enemystep7" x="700" y="1478.67">
    <properties>
     <property name="LinkPosition" value="enemystep8"/>
    </properties>
    <point/>
   </object>
-  <object id="60" name="enemystep8" x="940" y="1434">
+  <object id="73" name="enemystep8" x="306.667" y="1444">
+   <properties>
+    <property name="LinkPosition" value=""/>
+   </properties>
+   <point/>
+  </object>
+  <object id="68" name="enemystep3" x="1058.67" y="138.667">
    <properties>
     <property name="LinkPosition" value="enemystep9"/>
    </properties>
    <point/>
   </object>
-  <object id="61" name="enemystep9" x="678" y="1436">
+  <object id="74" name="enemystep9" x="686.667" y="142.667">
    <properties>
     <property name="LinkPosition" value="enemystep10"/>
    </properties>
    <point/>
   </object>
-  <object id="62" name="enemystep10" x="662" y="978">
+  <object id="75" name="enemystep10" x="692" y="293.333">
    <properties>
     <property name="LinkPosition" value="enemystep11"/>
    </properties>
    <point/>
   </object>
-  <object id="63" name="enemystep11" x="162" y="942">
+  <object id="76" name="enemystep11" x="681.333" y="692">
    <properties>
     <property name="LinkPosition" value="enemystep12"/>
    </properties>
    <point/>
   </object>
-  <object id="64" name="enemystep12" x="154" y="152">
+  <object id="77" name="enemystep12" x="172" y="705.333">
    <properties>
     <property name="LinkPosition" value="enemystep13"/>
    </properties>
    <point/>
   </object>
-  <object id="65" name="enemystep13" x="692" y="142">
+  <object id="78" name="enemystep13" x="176" y="929.333">
    <properties>
     <property name="LinkPosition" value="enemystep14"/>
    </properties>
    <point/>
   </object>
-  <object id="66" name="enemystep14" x="946" y="144">
+  <object id="79" name="enemystep14" x="156" y="1298.67">
    <properties>
-    <property name="LinkPosition" value="enemystep4"/>
+    <property name="LinkPosition" value=""/>
    </properties>
    <point/>
   </object>
@@ -191,8 +191,8 @@
 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
-0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,
-0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,
+0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,0,
+0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,0,
 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,

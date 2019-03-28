@@ -24,7 +24,7 @@ void Bot::init()
 
 	
 
-	_speedMove = 150.f;
+	_speedMove = 200.f;
 }
 
 void Bot::update(float dt)
