@@ -6,14 +6,18 @@ class Bot;
 
 class LinkPosition
 {
+	string name;
+	Vec2 first;
+	vector<string> others;
 public:
     LinkPosition(){}
     LinkPosition(const Vec2& first, const string& name);
     ~LinkPosition();
     
-    string name;
-    Vec2 first;
-    vector<string> others;
+	const Vec2& get() const;
+	const string& getName() const;
+	void push(string other);
+	const string& otherAt(const int& index);
 };
 
 class BotMoveMap

@@ -16,6 +16,29 @@ LinkPosition::~LinkPosition()
     others.clear();
 }
 
+const Vec2 & LinkPosition::get() const
+{
+	return first;
+}
+
+const string& LinkPosition::getName() const
+{
+	return name;
+}
+
+void LinkPosition::push(string other)
+{
+	others.push_back(other);
+}
+
+const string & LinkPosition::otherAt(const int & index)
+{
+	if (index >= others.size())
+		return "";
+
+	return others[index];
+}
+
 BotMoveMap::BotMoveMap()
 {
 
@@ -45,5 +68,5 @@ void BotMoveMap::init(shared_ptr<Bot> bot, queue<Vec2>& queuePointTo)
 		_queueMoveTo.push(cmdMove);
 		queuePointTo.pop();
 	}
-
+	  
 }

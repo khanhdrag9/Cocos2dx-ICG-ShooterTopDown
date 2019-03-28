@@ -4,6 +4,7 @@
 #include "../Physics/RigidBody.h"
 #include "../Physics/RigidWorld.h"
 #include "BotMoveMap.h"
+#include "../Commands/CommandMoveTo.h"
 
 BotManager::BotManager()
 {
@@ -36,7 +37,11 @@ void BotManager::update(float dt)
 {
 	for (auto& bot : _listBots)
 	{
+		shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(bot->getSpeedMove(), _mapPosition["enemystep2"]->get());
+		bot->pushCommand(cmd);
+
 		bot->update(dt);
+
 	}
 }
 
@@ -78,7 +83,7 @@ void BotManager::initMovePosition()
         
         std::istringstream iss(linknames);
         vector<string> listLink(istream_iterator<string>{iss}, istream_iterator<string>());
-        for(auto link : listLink)linkpos->others.push_back(link);
+        for(auto link : listLink)linkpos->push(link);
         
         _mapPosition[name] = linkpos;
     }
