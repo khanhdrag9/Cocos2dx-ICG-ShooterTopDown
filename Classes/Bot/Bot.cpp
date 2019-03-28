@@ -9,7 +9,8 @@
 
 Bot::Bot() : Character(),
 _linkPos(nullptr),
-_speedMove(0)
+_speedMove(0),
+_currentStatus(Bot::Status::STOP)
 {
 }
 
@@ -29,23 +30,28 @@ void Bot::init()
 
 void Bot::update(float dt)
 {
+    if(_currentStatus == Status::STOP)return;
+    
 	Character::update(dt);
+    
+    if(_currentStatus == Status::WALK)
+    {
+        if (_commandQueue.empty())
+        {
+            _linkPos = BotManager::getInstance()->getNextLinkPosition(dynamic_pointer_cast<Bot>(shared_from_this()), true);
 
-	if (_commandQueue.empty())
-	{
-		_linkPos = BotManager::getInstance()->getNextLinkPosition(dynamic_pointer_cast<Bot>(shared_from_this()), true);
-
-		if (_linkPos)
-		{
-			shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(_speedMove, _linkPos->get());
-			pushCommand(cmd);
-		}
-	}
+            if (_linkPos)
+            {
+                shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(_speedMove, _linkPos->get());
+                pushCommand(cmd);
+            }
+        }
+    }
     
     //update rotation
     if (_linkPos)
     {
-        Vec2 offset = _linkPos->get() - _sprite->getPosition();   
+        Vec2 offset = _linkPos->get() - _sprite->getPosition();
         auto angle = atan2(offset.y, offset.x);
         _sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
     }
@@ -80,4 +86,14 @@ void Bot::setLinkPosition(shared_ptr<LinkPosition> newlink)
 shared_ptr<LinkPosition> Bot::getLinkPosition() const
 {
 	return _linkPos;
+}
+
+void Bot::setStatus(Status status)
+{
+    _currentStatus = status;
+}
+
+Bot::Status Bot::getStatus() const
+{
+    return _currentStatus;
 }

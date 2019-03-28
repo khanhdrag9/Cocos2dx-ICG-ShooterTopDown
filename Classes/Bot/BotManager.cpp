@@ -56,6 +56,8 @@ void BotManager::initBots()
 		Game::getInstance()->getRigidWord()->createRigidBodyCircle(bot);
 		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
 		bot->_sprite->setPosition(x, y);
+        
+        bot->setStatus(Bot::Status::WALK);
 
 		Game::getInstance()->getCurrentState()->addChild(bot->_sprite);
 	}
@@ -130,12 +132,4 @@ shared_ptr<LinkPosition> BotManager::getNextLinkPosition(shared_ptr<Bot> bot, bo
 	}
 
 	return currentLinkPos;
-}
-
-vector<string> BotManager::getListNamePropertiesFromString(string str)
-{
-    vector<string> strs;
-    
-    
-    return strs;
 }

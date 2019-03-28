@@ -9,8 +9,7 @@ class BotManager : public pattern::Singleton<BotManager>
 {
 	vector<shared_ptr<Bot>> _listBots;
     map<string, shared_ptr<LinkPosition>> _mapPosition;
-    
-    vector<string> getListNamePropertiesFromString(string str);
+
 public:
 	BotManager();
 	~BotManager();
