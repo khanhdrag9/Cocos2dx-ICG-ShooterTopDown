@@ -18,6 +18,7 @@ public:
 	const string& getName() const;
 	void push(string other);
 	const string& otherAt(const int& index);
+	int otherSize() const;
 };
 
 class BotMoveMap

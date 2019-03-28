@@ -24,6 +24,7 @@ shared_ptr<CommandMoveTo> CommandMoveTo::createCommandMoveTo(const float& speed,
     cmd->_speed = speed;
     cmd->_target = toPoint;
     cmd->_name = constants::command_move_to;
+	cmd->_isFinished = false;
     
     return cmd;
 }
@@ -39,11 +40,17 @@ void CommandMoveTo::update(float dt)
         }
         else
         {
-            Vec2 offset = _target - currentPos;
-            offset.normalize();
-            offset *= _speed * dt;
-            
-            _object->_rigidBody->_velocity = offset;
+			Vec2 oldOffSet = _target - currentPos;
+            Vec2 offset = oldOffSet.getNormalized();
+            Vec2 newoffset = offset* _speed * dt;
+			if (abs(newoffset.x) >= abs(oldOffSet.x) || abs(newoffset.y) >= abs(oldOffSet.y))
+			{
+				_object->_sprite->setPosition(_target);
+				_isFinished = true;
+				newoffset = Vec2(0,0);
+			}
+
+            _object->_rigidBody->_velocity = newoffset;
         }
     }
 }

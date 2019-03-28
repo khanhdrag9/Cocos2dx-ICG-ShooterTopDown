@@ -26,4 +26,6 @@ public:
     void initMovePosition();
 	shared_ptr<Bot> createBot();
 	shared_ptr<Bot> getBot(const int& index);
+
+	shared_ptr<LinkPosition> getNextLinkPosition(shared_ptr<Bot> bot, bool isRandom);
 };

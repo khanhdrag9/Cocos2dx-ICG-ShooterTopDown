@@ -39,6 +39,11 @@ const string & LinkPosition::otherAt(const int & index)
 	return others[index];
 }
 
+int LinkPosition::otherSize() const
+{
+	return others.size();
+}
+
 BotMoveMap::BotMoveMap()
 {
 

@@ -37,11 +37,7 @@ void BotManager::update(float dt)
 {
 	for (auto& bot : _listBots)
 	{
-		shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(bot->getSpeedMove(), _mapPosition["enemystep2"]->get());
-		bot->pushCommand(cmd);
-
 		bot->update(dt);
-
 	}
 }
 
@@ -105,6 +101,31 @@ shared_ptr<Bot> BotManager::getBot(const int & index)
 		return nullptr;
 
 	return _listBots[index];
+}
+
+int getRandom(int start, int end)
+{
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<> dist(start, end - 1);
+
+	return dist(mt);
+}
+
+shared_ptr<LinkPosition> BotManager::getNextLinkPosition(shared_ptr<Bot> bot, bool isRandom)
+{
+	if (bot->getLinkPosition() == nullptr)
+	{
+		return _mapPosition.begin()->second;
+	}
+
+	auto currentLinkPos = bot->getLinkPosition();
+
+	int randomIndex = getRandom(0, currentLinkPos->otherSize());
+	string nameNextLink = currentLinkPos->otherAt(randomIndex);
+	shared_ptr<LinkPosition> nextlink = _mapPosition[nameNextLink];
+	
+	return nextlink;
 }
 
 vector<string> BotManager::getListNamePropertiesFromString(string str)
