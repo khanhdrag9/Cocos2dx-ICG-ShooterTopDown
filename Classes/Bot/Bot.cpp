@@ -41,12 +41,16 @@ void Bot::update(float dt)
     {
         if (_commandQueue.empty())
         {
-            _linkPos = BotManager::getInstance()->getNextLinkPosition(dynamic_pointer_cast<Bot>(shared_from_this()), true);
-
-            if (_linkPos)
+            auto nextlink = BotManager::getInstance()->getNextLinkPosition(dynamic_pointer_cast<Bot>(shared_from_this()), true);
+            
+            if(nextlink->getName() != _linkPos->getName())
             {
-                shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(_speedMove, _linkPos->get());
-                pushCommand(cmd);
+                _linkPos = nextlink;
+                if (_linkPos)
+                {
+                    shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(_speedMove, _linkPos->get());
+                    pushCommand(cmd);
+                }
             }
 		
         }

@@ -65,6 +65,7 @@ void BotManager::initBots()
 		bot->_sprite->setPosition(x, y);
         
 		bot->setWalk(true);
+        bot->setLinkPosition(_mapPosition.begin()->second);
 
 		Game::getInstance()->getCurrentState()->addChild(bot->_sprite);
 	}
@@ -125,7 +126,7 @@ shared_ptr<LinkPosition> BotManager::getNextLinkPosition(shared_ptr<Bot> bot, bo
 {
 	if (bot->getLinkPosition() == nullptr)
 	{
-		return _mapPosition.begin()->second;
+        return nullptr;
 	}
 
 	auto currentLinkPos = bot->getLinkPosition();
