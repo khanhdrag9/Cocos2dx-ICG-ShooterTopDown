@@ -37,6 +37,13 @@ void BotManager::update(float dt)
 {
 	for (auto& bot : _listBots)
 	{
+		if (bot->isCanTriggerShoot())
+			bot->setStatus(Bot::Status::SHOOT);
+		else if (bot->isCanTriggerWalk())
+			bot->setStatus(Bot::Status::WALK);
+		else
+			bot->setStatus(Bot::Status::STOP);
+		
 		bot->update(dt);
 	}
 }
@@ -57,7 +64,7 @@ void BotManager::initBots()
 		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
 		bot->_sprite->setPosition(x, y);
         
-        bot->setStatus(Bot::Status::WALK);
+		bot->setWalk(true);
 
 		Game::getInstance()->getCurrentState()->addChild(bot->_sprite);
 	}

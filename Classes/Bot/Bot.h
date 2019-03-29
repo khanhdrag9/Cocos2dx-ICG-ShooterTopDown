@@ -18,6 +18,7 @@ private:
 	shared_ptr<LinkPosition> _linkPos;
     Status _currentStatus;
     
+	bool _ableWalk;
 public:
 	Bot();
     
@@ -31,4 +32,9 @@ public:
     Status getStatus() const;
     
     CC_SYNTHESIZE(float, _speedMove, SpeedMove);
+
+	bool isCanTriggerWalk();
+	bool isCanTriggerShoot();
+
+	void setWalk(bool enable);
 };

@@ -10,7 +10,8 @@
 Bot::Bot() : Character(),
 _linkPos(nullptr),
 _speedMove(0),
-_currentStatus(Bot::Status::STOP)
+_currentStatus(Bot::Status::STOP),
+_ableWalk(false)
 {
 }
 
@@ -45,8 +46,13 @@ void Bot::update(float dt)
                 shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(_speedMove, _linkPos->get());
                 pushCommand(cmd);
             }
+		
         }
     }
+	else if (_currentStatus == Status::SHOOT)
+	{
+
+	}
     
     //update rotation
     if (_linkPos)
@@ -96,4 +102,20 @@ void Bot::setStatus(Status status)
 Bot::Status Bot::getStatus() const
 {
     return _currentStatus;
+}
+
+bool Bot::isCanTriggerWalk()
+{
+	return _ableWalk;
+}
+
+bool Bot::isCanTriggerShoot()
+{
+
+	return false;
+}
+
+void Bot::setWalk(bool enable)
+{
+	_ableWalk = enable;
 }
