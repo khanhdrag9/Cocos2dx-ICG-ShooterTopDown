@@ -19,6 +19,7 @@ private:
     Status _currentStatus;
     
 	bool _ableWalk;
+	pair<float, float> _countShoot;
 public:
 	Bot();
     
@@ -37,4 +38,6 @@ public:
 	bool isCanTriggerShoot();
 
 	void setWalk(bool enable);
+
+	
 };

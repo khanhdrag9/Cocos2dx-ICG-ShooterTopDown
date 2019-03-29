@@ -55,18 +55,19 @@ public:
     bool handleTouchBegan(Touch* touch, Event* event);
     void handleTouchMoved(Touch* touch, Event* event);
     void handleTouchRelease(Touch* touch, Event* event);
-    
+	void handleShootCharacter(shared_ptr<Character> object, const float& speed);
+
     const unique_ptr<RigidWorld>& getRigidWord() const;
     void releaseGamePlay();
 
 	TMXTiledMap* getTileMap() const;
+
 private:
     shared_ptr<Player> createAPlayer();
     
     void handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode);
     void handleMovePlayer(shared_ptr<Player> player, const direction& direct);
     void updateAngle(shared_ptr<Character> object, const Vec2& point);
-    void handleShootCharacter(shared_ptr<Character> object, const float& speed);
 
 	void createPhysicsWorld();
 	void createMap();

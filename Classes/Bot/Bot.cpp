@@ -6,12 +6,14 @@
 #include "BotMoveMap.h"
 #include "../Commands/CommandMoveTo.h"
 #include "BotManager.h"
+#include "Game.h"
 
 Bot::Bot() : Character(),
 _linkPos(nullptr),
 _speedMove(0),
 _currentStatus(Bot::Status::STOP),
-_ableWalk(false)
+_ableWalk(false),
+_countShoot(pair<float, float>(0.f, 0.25f))
 {
 }
 
@@ -49,10 +51,12 @@ void Bot::update(float dt)
 		
         }
     }
-	else if (_currentStatus == Status::SHOOT)
+	else if (_currentStatus == Status::SHOOT && _countShoot.first >= _countShoot.second)
 	{
-
+		Game::getInstance()->handleShootCharacter(shared_from_this(), 1000);
+		_countShoot.first = 0.f;
 	}
+	_countShoot.first += dt;
     
     //update rotation
     if (_linkPos)
@@ -61,6 +65,7 @@ void Bot::update(float dt)
         auto angle = atan2(offset.y, offset.x);
         _sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
     }
+
 }
 
 void Bot::pushCommand(shared_ptr<Command>& command)
