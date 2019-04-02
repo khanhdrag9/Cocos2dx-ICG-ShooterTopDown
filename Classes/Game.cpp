@@ -259,6 +259,12 @@ void Game::createPhysicsWorld()
 
 void Game::createMap()
 {
+    //BG
+    Sprite* bg = Sprite::create(ResourceManager::getInstance()->at(res::define::IMG_BG_1));
+    bg->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    bg->setPosition(0,0);
+    _currentState->addChild(bg, 0);
+    
 	//for map backgroud
 	_tileMap = TMXTiledMap::create("Map/Map1.tmx");
 	_backgroundLayer = _tileMap->getLayer("Background");

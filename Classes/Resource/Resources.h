@@ -6,7 +6,7 @@ namespace res
     {
         //image
         SPLASH,
-        
+        IMG_BG_1,
         
         //UI
         BTN_BLUE,
