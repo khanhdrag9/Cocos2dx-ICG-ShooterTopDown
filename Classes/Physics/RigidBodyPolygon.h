@@ -10,7 +10,7 @@ public:
     static shared_ptr<RigidBodyPolygon> createRigidBodyPolygon(shared_ptr<Character> object);
     
     void update(float dt) override;
-    
+    const Rect& getRect() const;
     
     friend class RigidWorld;
 };

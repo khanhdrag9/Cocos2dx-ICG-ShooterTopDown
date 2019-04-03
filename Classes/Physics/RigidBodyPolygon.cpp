@@ -32,3 +32,8 @@ void RigidBodyPolygon::update(float dt)
     if(_object)
         _rect = _object->_sprite->getBoundingBox();
 }
+
+const Rect& RigidBodyPolygon::getRect() const
+{
+    return _rect;
+}

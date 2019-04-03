@@ -28,7 +28,8 @@ _tileMap(nullptr),
 _backgroundLayer(nullptr),
 _collisionLayer(nullptr),
 _objIsFollow(nullptr),
-_rigidWorld(nullptr)
+_rigidWorld(nullptr),
+_sightNode(nullptr)
 {
     
 }
@@ -55,7 +56,7 @@ void Game::initGamePlay()
     BotManager::getInstance()->initMovePosition();
 	BotManager::getInstance()->initBots();
 	createStartCameraView();
-    
+    createSight();
 }
 
 void Game::update(float dt)
@@ -69,6 +70,8 @@ void Game::update(float dt)
 	BotManager::getInstance()->update(dt);
     
 	updateCameraView();
+    updateSight(dt);
+    
     ObjectsPool::getInstance()->update();
 }
 
@@ -307,8 +310,8 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-	//setObjectFollowByCam((shared_ptr<Character>)_player);
-    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
+	setObjectFollowByCam((shared_ptr<Character>)_player);
+    //setObjectFollowByCam(BotManager::getInstance()->getBot(0));
 	updateCameraView();
 }
 
@@ -331,9 +334,67 @@ void Game::updateCameraView()
 	}
 }
 
+void Game::createSight()
+{
+    _sightNode = DrawNode::create();
+    _currentState->addChild(_sightNode);
+}
 
 void Game::updatePhysics(float dt)
 {
     _rigidWorld->update(dt);
 }
+
+void Game::updateSight(float dt)
+{
+    if(!_sightNode)return;
+    
+    _sightNode->clear();
+    
+    Vec2 playerPos = _player->_sprite->getPosition();
+    float dimention = 400.f;
+//    float view = 360;
+//    for(int i = 0; i < view; i+=10)
+//    {
+//        float x = sin(CC_DEGREES_TO_RADIANS(i)) * dimention + playerPos.x;
+//        float y = cos(CC_DEGREES_TO_RADIANS(i)) * dimention + playerPos.y;
+//        _sightNode->drawLine(playerPos, Vec2(x, y), Color4F::YELLOW);
+//    }
+    
+    for(auto& body : _rigidWorld->getListBodies())
+    {
+        if(body->getTag() == RigidBody::tag::WALL)
+        {
+            shared_ptr<RigidBodyPolygon> wall = dynamic_pointer_cast<RigidBodyPolygon>(body);
+            if(wall)
+            {
+                Rect rect = wall->getRect();
+                vector<Vec2> vertices
+                {
+                    Vec2(rect.getMinX(), rect.getMaxY()),
+                    Vec2(rect.getMinX(), rect.getMinY()),
+                    Vec2(rect.getMaxX(), rect.getMinY()),
+                    Vec2(rect.getMaxX(), rect.getMaxY())
+                };
+                
+                for(auto& point : vertices)
+                {
+                    float length = (point - playerPos).length();
+                    if(length <= dimention)
+                    {
+                        Vec2 des = point - playerPos;
+                        des.normalize();
+                        des *= dimention;
+                        des += playerPos;
+
+                        _sightNode->drawLine(playerPos, des, Color4F::YELLOW);
+                        
+                    }
+                }
+                
+            }
+        }
+    }
+}
+
 

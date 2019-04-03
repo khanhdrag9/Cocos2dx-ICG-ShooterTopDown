@@ -37,6 +37,8 @@ private:
 
 	unique_ptr<RigidWorld> _rigidWorld;
     
+    DrawNode* _sightNode;
+    
 public:
     Game();
     ~Game();
@@ -74,7 +76,9 @@ private:
 	void createMainPlayer();
 	void createStartCameraView();
 	void updateCameraView();
+    void createSight();
     
     void updatePhysics(float dt);
+    void updateSight(float dt);
     
 };

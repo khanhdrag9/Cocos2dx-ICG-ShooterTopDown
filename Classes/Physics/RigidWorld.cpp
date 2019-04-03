@@ -150,3 +150,8 @@ void RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
         }
     }
 }
+
+const vector<shared_ptr<RigidBody>>& RigidWorld::getListBodies() const
+{
+    return _listRigidBodies;
+}
