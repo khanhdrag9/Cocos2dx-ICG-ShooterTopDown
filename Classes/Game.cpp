@@ -353,6 +353,8 @@ void Game::updateSight(float dt)
     
     Vec2 playerPos = _player->_sprite->getPosition();
     float dimention = 400.f;
+
+	//for sight 360 degree
 //    float view = 360;
 //    for(int i = 0; i < view; i+=10)
 //    {
@@ -361,7 +363,8 @@ void Game::updateSight(float dt)
 //        _sightNode->drawLine(playerPos, Vec2(x, y), Color4F::YELLOW);
 //    }
     
-    for(auto& body : _rigidWorld->getListBodies())
+	//for each rect of bodies
+    /*for(auto& body : _rigidWorld->getListBodies())
     {
         if(body->getTag() == RigidBody::tag::WALL)
         {
@@ -394,7 +397,28 @@ void Game::updateSight(float dt)
                 
             }
         }
-    }
+    }*/
+
+
+	//for lines (new)
+	for (auto& line : _rigidWorld->getListLines())
+	{
+		Vec2 vertices[]{ line.start, line.end };
+
+		for (auto& point : vertices)
+		{
+			float length = (point - playerPos).length();
+			if (length <= dimention)
+			{
+				Vec2 des = point - playerPos;
+				des.normalize();
+				des *= dimention;
+				des += playerPos;
+
+				_sightNode->drawLine(playerPos, des, Color4F::YELLOW);
+			}
+		}
+	}
 }
 
 

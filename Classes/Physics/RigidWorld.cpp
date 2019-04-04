@@ -99,6 +99,15 @@ bool RigidWorld::checkCollisionOther(shared_ptr<RigidBody> body)
     return false;
 }
 
+void RigidWorld::pushLineByRect(const Rect & rect)
+{
+	//push 4 line of a rect
+	pushLine(Line(Vec2(rect.getMinX(), rect.getMaxY()), Vec2(rect.getMaxX(), rect.getMaxY())));
+	pushLine(Line(Vec2(rect.getMaxX(), rect.getMaxY()), Vec2(rect.getMaxX(), rect.getMinY())));
+	pushLine(Line(Vec2(rect.getMaxX(), rect.getMinY()), Vec2(rect.getMinX(), rect.getMinY())));
+	pushLine(Line(Vec2(rect.getMinX(), rect.getMinY()), Vec2(rect.getMinX(), rect.getMaxY())));
+}
+
 shared_ptr<RigidBodyPolygon> RigidWorld::createRigidBodyPolygon(const Rect& rect)
 {
     auto body =  make_shared<RigidBodyPolygon>();
@@ -106,6 +115,8 @@ shared_ptr<RigidBodyPolygon> RigidWorld::createRigidBodyPolygon(const Rect& rect
     body->_rect = rect;
     body->_type = RigidBody::type::STATIC;
     _listRigidBodies.push_back((shared_ptr<RigidBody>)body);
+
+	pushLineByRect(body->_rect);
     
     return body;
 }
@@ -115,6 +126,11 @@ shared_ptr<RigidBody> RigidWorld::createRigidBodyPolygon(shared_ptr<Character> c
     shared_ptr<RigidBody> body = RigidBodyPolygon::createRigidBodyPolygon(character);
     character->_rigidBody = body;
     _listRigidBodies.push_back(body);
+
+	auto bodyCast = dynamic_pointer_cast<RigidBodyPolygon>(character->_rigidBody);
+	if(bodyCast)
+		pushLineByRect(bodyCast->_rect);
+
     return body;
 }
 
@@ -154,4 +170,21 @@ void RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
 const vector<shared_ptr<RigidBody>>& RigidWorld::getListBodies() const
 {
     return _listRigidBodies;
+}
+
+const vector<Line>& RigidWorld::getListLines() const
+{
+	return _listLines;
+}
+
+void RigidWorld::pushLine(const Line & line)
+{
+	auto isExits = std::find(_listLines.begin(), _listLines.end(), line);
+	if (isExits == _listLines.end())
+		_listLines.push_back(line);
+}
+
+void RigidWorld::generateLinesAgain()
+{
+
 }
