@@ -186,5 +186,5 @@ void RigidWorld::pushLine(const Line & line)
 
 void RigidWorld::generateLinesAgain()
 {
-
+	
 }

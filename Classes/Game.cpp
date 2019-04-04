@@ -292,6 +292,8 @@ void Game::createMap()
             }
         }
     }
+
+	_rigidWorld->generateLinesAgain();
 }
 
 void Game::createMainPlayer()
