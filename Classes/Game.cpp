@@ -293,7 +293,7 @@ void Game::createMap()
         }
     }
 
-	_rigidWorld->generateLinesAgain();
+    _rigidWorld->generateLineAgain();
 }
 
 void Game::createMainPlayer()
@@ -340,6 +340,11 @@ void Game::createSight()
 {
     _sightNode = DrawNode::create();
     _currentState->addChild(_sightNode);
+    
+#if DEBUG_SIGHT
+    _debugWall = DrawNode::create();
+    _currentState->addChild(_debugWall);
+#endif
 }
 
 void Game::updatePhysics(float dt)
@@ -351,6 +356,9 @@ void Game::updateSight(float dt)
 {
     if(!_sightNode)return;
     
+#if DEBUG_SIGHT
+    _debugWall->clear();
+#endif
     _sightNode->clear();
     
     Vec2 playerPos = _player->_sprite->getPosition();
@@ -406,7 +414,10 @@ void Game::updateSight(float dt)
 	for (auto& line : _rigidWorld->getListLines())
 	{
 		Vec2 vertices[]{ line.start, line.end };
-
+        
+#if DEBUG_SIGHT
+        _debugWall->drawLine(vertices[0], vertices[1], Color4F::RED);
+#endif
 		for (auto& point : vertices)
 		{
 			float length = (point - playerPos).length();
@@ -421,6 +432,7 @@ void Game::updateSight(float dt)
 			}
 		}
 	}
+    
 }
 
 

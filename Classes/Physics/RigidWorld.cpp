@@ -184,7 +184,7 @@ void RigidWorld::pushLine(const Line & line)
 		_listLines.push_back(line);
 }
 
-void RigidWorld::generateLinesAgain()
+void RigidWorld::generateLineAgain()
 {
 	
 }

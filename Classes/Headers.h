@@ -14,3 +14,6 @@ using namespace std;
 #include "ui/CocosGUI.h"
 
 using namespace NS_CC;
+
+
+#define DEBUG_SIGHT 1

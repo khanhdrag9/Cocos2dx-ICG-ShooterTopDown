@@ -39,6 +39,10 @@ private:
     
     DrawNode* _sightNode;
     
+#if DEBUG_SIGHT
+    DrawNode* _debugWall;
+#endif
+    
 public:
     Game();
     ~Game();
