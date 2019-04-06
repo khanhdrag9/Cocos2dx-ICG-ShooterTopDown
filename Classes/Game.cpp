@@ -401,15 +401,29 @@ void Game::updateSight(float dt)
 #endif
         for (auto& point : vertices)
         {
-            float length = (point - playerPos).length();
-            if (length <= dimention)
+            Vec2 des = point - playerPos;
+            des.normalize();
+            des *= dimention;
+            des += playerPos;
+            
+            if((point - playerPos).length() <= (des - playerPos).length())
             {
-                Vec2 des = point - playerPos;
-                des.normalize();
-                des *= dimention;
-                des += playerPos;
-    
-                _sightNode->drawLine(playerPos, des, Color4F::YELLOW);
+                
+                bool isIntersect = false;
+                for(auto& checkline : _rigidWorld->getListLines())
+                {
+                    if(checkline.start == point || checkline.end == point)
+                        continue;
+                    
+                    isIntersect = Vec2::isSegmentIntersect(playerPos, point, checkline.start, checkline.end);
+                    if(isIntersect)
+                    {
+                        break;
+                    }
+                }
+                
+                if(!isIntersect)
+                    _sightNode->drawLine(playerPos, des, Color4F::YELLOW);
             }
         }
     }
