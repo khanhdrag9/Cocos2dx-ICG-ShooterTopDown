@@ -412,13 +412,16 @@ void Game::updateSight(float dt)
                 bool isIntersect = false;
                 for(auto& checkline : _rigidWorld->getListLines())
                 {
-                    if(checkline.start == point || checkline.end == point)
-                        continue;
-                    
                     isIntersect = Vec2::isSegmentIntersect(playerPos, point, checkline.start, checkline.end);
                     if(isIntersect)
                     {
-                        break;
+                        if(checkline.start == point || checkline.end == point)
+                        {
+                            des = point;
+                            isIntersect = false;
+                        }
+                        else
+                            break;
                     }
                 }
                 
