@@ -6,6 +6,7 @@ class Character;
 class Player;
 class Bot;
 class RigidWorld;
+class Vision;
 
 class Game : public pattern::Singleton<Game>
 {
@@ -43,6 +44,8 @@ private:
     DrawNode* _debugWall;
 #endif
     Sprite* _fogSprite;
+    ClippingNode* _fogClip;
+    list<shared_ptr<Vision>> _listVision;
     
 public:
     Game();

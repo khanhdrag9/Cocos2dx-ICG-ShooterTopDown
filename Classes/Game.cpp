@@ -17,6 +17,7 @@
 #include "Resource/ResourceManager.h"
 #include "Bot/Bot.h"
 #include "Bot/BotManager.h"
+#include "Envoiments/Vision.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -53,11 +54,11 @@ void Game::initGamePlay()
 {
     createPhysicsWorld();
 	createMap();
+    createSight();
 	createMainPlayer();
     BotManager::getInstance()->initMovePosition();
 	BotManager::getInstance()->initBots();
 	createStartCameraView();
-    createSight();
 }
 
 void Game::update(float dt)
@@ -172,6 +173,11 @@ shared_ptr<Player> Game::createAPlayer()
     _rigidWorld->createRigidBodyCircle(character);
     
     _currentState->addChild(character->_sprite);
+    
+    //view
+    auto view = make_shared<Vision>(character, _sightNode,_fogSprite);
+    _listVision.push_back(view);
+    
     return character;
 }
 
@@ -273,7 +279,10 @@ void Game::createMap()
     _fogSprite = Sprite::create(ResourceManager::getInstance()->at(res::define::IMG_FOG));
     _fogSprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _fogSprite->setPosition(0,0);
-    _currentState->addChild(_fogSprite, 10);
+    _fogSprite->setOpacity(245.f);
+    //_currentState->addChild(_fogSprite, 10);
+    
+
     
 	//for map backgroud
 	_tileMap = TMXTiledMap::create("Map/Map1.tmx");
@@ -392,52 +401,19 @@ void Game::updateSight(float dt)
     
 #if DEBUG_SIGHT
     _debugWall->clear();
-#endif
-    _sightNode->clear();
-    
-    Vec2 playerPos = _player->_sprite->getPosition();
-    float dimention = 400.f;
-
-
-    //for lines (new)
     for (auto& line : _rigidWorld->getListLines())
     {
-        Vec2 vertices[]{ line.start, line.end };
-#if DEBUG_SIGHT
         _debugWall->drawLine(line.start, line.end, Color4F::RED);
-#endif
-        for (auto& point : vertices)
-        {
-            Vec2 des = point - playerPos;
-            des.normalize();
-            des *= dimention;
-            des += playerPos;
-            
-            if((point - playerPos).length() <= (des - playerPos).length())
-            {
-                
-                bool isIntersect = false;
-                for(auto& checkline : _rigidWorld->getListLines())
-                {
-                    isIntersect = Vec2::isSegmentIntersect(playerPos, point, checkline.start, checkline.end);
-                    if(isIntersect)
-                    {
-                        if(checkline.start == point || checkline.end == point)
-                        {
-                            des = point;
-                            isIntersect = false;
-                        }
-                        else
-                            break;
-                    }
-                }
-                
-                if(!isIntersect)
-                    _sightNode->drawLine(playerPos, des, Color4F::YELLOW);
-            }
-        }
     }
-
+#endif
+    
+    _sightNode->clear();
+    
+    for(auto& vision : _listVision)
+    {
+        vision->update(_sightNode);
+    }
+    
     
 }
 
