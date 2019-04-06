@@ -29,7 +29,8 @@ _backgroundLayer(nullptr),
 _collisionLayer(nullptr),
 _objIsFollow(nullptr),
 _rigidWorld(nullptr),
-_sightNode(nullptr)
+_sightNode(nullptr),
+_fogSprite(nullptr)
 {
     
 }
@@ -267,6 +268,12 @@ void Game::createMap()
     bg->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     bg->setPosition(0,0);
     _currentState->addChild(bg, 0);
+    
+    //Fog
+    _fogSprite = Sprite::create(ResourceManager::getInstance()->at(res::define::IMG_FOG));
+    _fogSprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    _fogSprite->setPosition(0,0);
+    _currentState->addChild(_fogSprite, 10);
     
 	//for map backgroud
 	_tileMap = TMXTiledMap::create("Map/Map1.tmx");

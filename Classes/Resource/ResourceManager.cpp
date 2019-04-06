@@ -13,6 +13,7 @@ ResourceManager::ResourceManager()
     //image
     _resMap[res::define::SPLASH] = "splashKW.jpg";
     _resMap[res::define::IMG_BG_1] = "BG.jpg";
+    _resMap[res::define::IMG_FOG] = "Fog.jpg";
     
     //UI
     _resMap[res::define::BTN_BLUE] = "Assets/PNG/UI/buttonBlue.png";

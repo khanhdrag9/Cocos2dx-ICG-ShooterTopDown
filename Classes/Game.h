@@ -42,6 +42,7 @@ private:
 #if DEBUG_SIGHT
     DrawNode* _debugWall;
 #endif
+    Sprite* _fogSprite;
     
 public:
     Game();
