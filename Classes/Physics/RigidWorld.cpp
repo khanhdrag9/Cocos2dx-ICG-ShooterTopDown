@@ -116,7 +116,7 @@ shared_ptr<RigidBodyPolygon> RigidWorld::createRigidBodyPolygon(const Rect& rect
     body->_type = RigidBody::type::STATIC;
     _listRigidBodies.push_back((shared_ptr<RigidBody>)body);
 
-	//pushLineByRect(body->_rect);
+//    pushLineByRect(body->_rect);
     
     return body;
 }
@@ -172,17 +172,17 @@ const vector<shared_ptr<RigidBody>>& RigidWorld::getListBodies() const
     return _listRigidBodies;
 }
 
-//const vector<Line>& RigidWorld::getListLines() const
-//{
-//    return _listLines;
-//}
+const vector<Line>& RigidWorld::getListLines() const
+{
+    return _listLines;
+}
 
-//void RigidWorld::pushLine(const Line & line)
-//{
-//    auto isExits = std::find(_listLines.begin(), _listLines.end(), line);
-//    if (isExits == _listLines.end())
-//        _listLines.push_back(line);
-//}
+void RigidWorld::pushLine(const Line & line)
+{
+    auto isExits = std::find(_listLines.begin(), _listLines.end(), line);
+    if (isExits == _listLines.end())
+        _listLines.push_back(line);
+}
 
 //void RigidWorld::generateLineAgain()
 //{
@@ -204,7 +204,7 @@ const vector<shared_ptr<RigidBody>>& RigidWorld::getListBodies() const
 //    _listLines.swap(temp);
 //
 //}
-//
+
 //Line RigidWorld::is2LinesStraight(const Line& line1, const Line& line2)
 //{
 //    Vec2 point_1 = Vec2(0,0);
@@ -235,6 +235,6 @@ const vector<shared_ptr<RigidBody>>& RigidWorld::getListBodies() const
 //    {
 //        return linecheck;
 //    }
-//    
+//
 //    return LINE_ZERO;
 //}
