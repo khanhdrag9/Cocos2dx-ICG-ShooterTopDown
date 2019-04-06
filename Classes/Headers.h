@@ -16,4 +16,4 @@ using namespace std;
 using namespace NS_CC;
 
 
-#define DEBUG_SIGHT 1
+#define DEBUG_SIGHT 0

@@ -275,6 +275,11 @@ void Game::createMap()
 	_collisionLayer->setVisible(false);
 
 	_currentState->addChild(_tileMap);
+    
+    auto sigthLayer = _tileMap->getLayer("Sight");
+#if !DEBUG_SIGHT
+    sigthLayer->setVisible(false);
+#endif
 
 	//physics for collision layer
     Size mapSize = _tileMap->getMapSize();
@@ -290,10 +295,17 @@ void Game::createMap()
                 auto body = _rigidWorld->createRigidBodyPolygon(size);
                 body->setTag(RigidBody::tag::WALL);
             }
+            
+            //for sight
+            auto sight = sigthLayer->getTileAt(Vec2(w, h));
+            if(sight)
+            {
+                _listSights.push_back(sight->getPosition());
+            }
         }
     }
-
-    _rigidWorld->generateLineAgain();
+    
+    //_rigidWorld->generateLineAgain();
 }
 
 void Game::createMainPlayer()
@@ -411,27 +423,40 @@ void Game::updateSight(float dt)
 
 
 	//for lines (new)
-	for (auto& line : _rigidWorld->getListLines())
-	{
-		Vec2 vertices[]{ line.start, line.end };
-        
-#if DEBUG_SIGHT
-        _debugWall->drawLine(vertices[0], vertices[1], Color4F::RED);
-#endif
-		for (auto& point : vertices)
-		{
-			float length = (point - playerPos).length();
-			if (length <= dimention)
-			{
-				Vec2 des = point - playerPos;
-				des.normalize();
-				des *= dimention;
-				des += playerPos;
-
-				_sightNode->drawLine(playerPos, des, Color4F::YELLOW);
-			}
-		}
-	}
+//    for (auto& line : _rigidWorld->getListLines())
+//    {
+//        Vec2 vertices[]{ line.start, line.end };
+//
+//#if DEBUG_SIGHT
+//        _debugWall->drawLine(vertices[0], vertices[1], Color4F::RED);
+//#endif
+//        for (auto& point : vertices)
+//        {
+//            float length = (point - playerPos).length();
+//            if (length <= dimention)
+//            {
+//                Vec2 des = point - playerPos;
+//                des.normalize();
+//                des *= dimention;
+//                des += playerPos;
+//
+//                _sightNode->drawLine(playerPos, des, Color4F::YELLOW);
+//            }
+//        }
+//    }
+    
+    for(auto& sight : _listSights)
+    {
+        float length = (sight - playerPos).length();
+        if (length <= dimention)
+        {
+            Vec2 des = sight - playerPos;
+            des.normalize();
+            des *= dimention;
+            des += playerPos;
+            _sightNode->drawLine(playerPos, des, Color4F::RED);
+        }
+    }
     
 }
 

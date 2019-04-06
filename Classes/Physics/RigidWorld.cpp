@@ -99,14 +99,14 @@ bool RigidWorld::checkCollisionOther(shared_ptr<RigidBody> body)
     return false;
 }
 
-void RigidWorld::pushLineByRect(const Rect & rect)
-{
-	//push 4 line of a rect
-	pushLine(Line(Vec2(rect.getMinX(), rect.getMaxY()), Vec2(rect.getMaxX(), rect.getMaxY())));
-	pushLine(Line(Vec2(rect.getMaxX(), rect.getMaxY()), Vec2(rect.getMaxX(), rect.getMinY())));
-	pushLine(Line(Vec2(rect.getMaxX(), rect.getMinY()), Vec2(rect.getMinX(), rect.getMinY())));
-	pushLine(Line(Vec2(rect.getMinX(), rect.getMinY()), Vec2(rect.getMinX(), rect.getMaxY())));
-}
+//void RigidWorld::pushLineByRect(const Rect & rect)
+//{
+//    //push 4 line of a rect
+//    pushLine(Line(Vec2(rect.getMinX(), rect.getMaxY()), Vec2(rect.getMaxX(), rect.getMaxY())));
+//    pushLine(Line(Vec2(rect.getMaxX(), rect.getMaxY()), Vec2(rect.getMaxX(), rect.getMinY())));
+//    pushLine(Line(Vec2(rect.getMaxX(), rect.getMinY()), Vec2(rect.getMinX(), rect.getMinY())));
+//    pushLine(Line(Vec2(rect.getMinX(), rect.getMinY()), Vec2(rect.getMinX(), rect.getMaxY())));
+//}
 
 shared_ptr<RigidBodyPolygon> RigidWorld::createRigidBodyPolygon(const Rect& rect)
 {
@@ -116,7 +116,7 @@ shared_ptr<RigidBodyPolygon> RigidWorld::createRigidBodyPolygon(const Rect& rect
     body->_type = RigidBody::type::STATIC;
     _listRigidBodies.push_back((shared_ptr<RigidBody>)body);
 
-	pushLineByRect(body->_rect);
+	//pushLineByRect(body->_rect);
     
     return body;
 }
@@ -127,9 +127,9 @@ shared_ptr<RigidBody> RigidWorld::createRigidBodyPolygon(shared_ptr<Character> c
     character->_rigidBody = body;
     _listRigidBodies.push_back(body);
 
-	auto bodyCast = dynamic_pointer_cast<RigidBodyPolygon>(character->_rigidBody);
-	if(bodyCast)
-		pushLineByRect(bodyCast->_rect);
+//    auto bodyCast = dynamic_pointer_cast<RigidBodyPolygon>(character->_rigidBody);
+//    if(bodyCast)
+//        pushLineByRect(bodyCast->_rect);
 
     return body;
 }
@@ -172,19 +172,69 @@ const vector<shared_ptr<RigidBody>>& RigidWorld::getListBodies() const
     return _listRigidBodies;
 }
 
-const vector<Line>& RigidWorld::getListLines() const
-{
-	return _listLines;
-}
+//const vector<Line>& RigidWorld::getListLines() const
+//{
+//    return _listLines;
+//}
 
-void RigidWorld::pushLine(const Line & line)
-{
-	auto isExits = std::find(_listLines.begin(), _listLines.end(), line);
-	if (isExits == _listLines.end())
-		_listLines.push_back(line);
-}
+//void RigidWorld::pushLine(const Line & line)
+//{
+//    auto isExits = std::find(_listLines.begin(), _listLines.end(), line);
+//    if (isExits == _listLines.end())
+//        _listLines.push_back(line);
+//}
 
-void RigidWorld::generateLineAgain()
-{
-	
-}
+//void RigidWorld::generateLineAgain()
+//{
+//    vector<Line> temp;
+//    int maxinres = 2;
+//
+//    for(auto iline = _listLines.begin(); iline != _listLines.end(); iline++)
+//    {
+//        Line finalline = *iline;
+//        for(auto jline = _listLines.begin(); jline != _listLines.end();jline++)
+//        {
+//
+//        }
+//
+//    }
+//
+//
+//    _listLines.clear();
+//    _listLines.swap(temp);
+//
+//}
+//
+//Line RigidWorld::is2LinesStraight(const Line& line1, const Line& line2)
+//{
+//    Vec2 point_1 = Vec2(0,0);
+//    Vec2 point_2 = Vec2(0,0);
+//    if(line1.start == line2.start)
+//    {
+//        point_1 = line1.end;
+//        point_2 = line2.end;
+//    }
+//    else if(line1.start == line2.end)
+//    {
+//        point_1 = line1.end;
+//        point_2 = line2.start;
+//    }
+//    else if(line1.end == line2.start)
+//    {
+//        point_1 = line1.start;
+//        point_2 = line2.end;
+//    }
+//    else if(line1.end == line2.end)
+//    {
+//        point_1 = line1.start;
+//        point_2 = line2.start;
+//    }
+//
+//    Line linecheck(point_1, point_2);
+//    if((line1.lenght() + line2.lenght()) == linecheck.lenght())
+//    {
+//        return linecheck;
+//    }
+//    
+//    return LINE_ZERO;
+//}

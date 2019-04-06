@@ -42,6 +42,7 @@ private:
 #if DEBUG_SIGHT
     DrawNode* _debugWall;
 #endif
+    list<Vec2> _listSights;
     
 public:
     Game();
