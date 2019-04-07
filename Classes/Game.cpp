@@ -279,7 +279,7 @@ void Game::createMap()
     _fogSprite = Sprite::create(ResourceManager::getInstance()->at(res::define::IMG_FOG));
     _fogSprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _fogSprite->setPosition(0,0);
-    _fogSprite->setOpacity(245.f);
+    _fogSprite->setOpacity(255.f);
     //_currentState->addChild(_fogSprite, 10);
     
 
@@ -335,8 +335,7 @@ void Game::createMap()
             }
         }
     }
-    
-    //_rigidWorld->generateLineAgain();
+
 }
 
 void Game::createMainPlayer()
@@ -416,5 +415,11 @@ void Game::updateSight(float dt)
     
     
 }
+
+void Game::pushView(shared_ptr<Vision> vision)
+{
+    _listVision.push_back(vision);
+}
+
 
 

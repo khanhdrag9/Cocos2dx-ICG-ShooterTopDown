@@ -71,6 +71,8 @@ public:
     void releaseGamePlay();
 
 	TMXTiledMap* getTileMap() const;
+    
+    void pushView(shared_ptr<Vision> vision);
 
 private:
     shared_ptr<Player> createAPlayer();

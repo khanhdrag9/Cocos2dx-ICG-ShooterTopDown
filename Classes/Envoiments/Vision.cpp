@@ -12,6 +12,18 @@
 #include "../Physics/RigidWorld.h"
 
 
+float getAngleByAxis(Vec2 point, Vec2 axis)
+{
+    Vec2 vector = point - axis;
+    float angle = atan(vector.y / vector.x);
+    if(vector.x >= 0 && vector.y < 0)
+        angle += 360;
+    else if(vector.x < 0 || vector.y < 0)
+        angle += 180;
+    
+    return angle;
+}
+
 void Vision::update(cocos2d::DrawNode *draw)
 {
     Vec2 objPos = _obj->_sprite->getPosition();
@@ -21,58 +33,52 @@ void Vision::update(cocos2d::DrawNode *draw)
     //for lines (new)
     vector<Vec2> points;
     
-    for (auto& line : rigidWord->getListLines())
+    float view = 360;
+    for(int i = 0; i < view; i+=1)
     {
-        Vec2 vertices[]{ line.start, line.end };
-
-        for (auto& point : vertices)
-        {
-            Vec2 des = point - objPos;
-            des.normalize();
-            des *= dimention;
-            des += objPos;
+        float x = sin(CC_DEGREES_TO_RADIANS(i)) * dimention + objPos.x;
+        float y = cos(CC_DEGREES_TO_RADIANS(i)) * dimention + objPos.y;
             
-            if((point - objPos).length() <= (des - objPos).length())
+        Vec2 point = Vec2(x,y);
+        bool isIntersect = false;
+        for(auto& checkline : rigidWord->getListLines())
+        {
+            isIntersect = Vec2::isSegmentIntersect(objPos, point, checkline.start, checkline.end);
+
+            if(isIntersect)
             {
-                
-                bool isIntersect = false;
-                for(auto& checkline : rigidWord->getListLines())
-                {
-                    isIntersect = Vec2::isSegmentIntersect(objPos, point, checkline.start, checkline.end);
-                    if(isIntersect)
-                    {
-                        if(checkline.start == point || checkline.end == point)
-                        {
-                            des = point;
-                            isIntersect = false;
-                        }
-                        else
-                            break;
-                    }
-                }
-                
-                if(!isIntersect)
-                {
-                    draw->drawLine(objPos, des, Color4F::WHITE);
-                    points.push_back(des);
-                }
+                Vec2 intersect = Vec2::getIntersectPoint(objPos, point, checkline.start, checkline.end);
+                if((point - objPos).length() > (intersect - objPos).length())
+                    point = intersect;
             }
         }
+            
+#if DEBUG_SIGHT
+        draw->drawLine(objPos, point, Color4F::YELLOW);
+#endif
+        points.push_back(point);
+            
     }
     
     //chieu sang
     int sizePointToDraw = (int)points.size();
-    Vec2* pointToDraw = new Vec2[sizePointToDraw]();
+    Color4F light(1, 1, 0, 0.1);
     for(int i = 0; i < sizePointToDraw; i++)
     {
-        pointToDraw[i] = points[i];
+        if(i == sizePointToDraw - 1)
+        {
+            Vec2 pointToDraw[3] { objPos, points[i], points[0] };
+            draw->drawPolygon(pointToDraw, 3, light, 0, light);
+        }
+        else
+        {
+            Vec2 pointToDraw[3] { objPos, points[i], points[i+1] };
+            draw->drawPolygon(pointToDraw, 3, light, 0, light);
+        }
+        
     }
-    
-    draw->drawPolygon(pointToDraw, sizePointToDraw, Color4F(0,0,0,0), 0, Color4F(0,0,0,0));
-    //draw->drawSolidPoly(pointToDraw, sizePointToDraw, Color4F::WHITE);
+
     _clipper->setStencil(draw);
-    
-    delete[]pointToDraw;
 }
 
 
