@@ -6,10 +6,10 @@ class Character;
 class Vision
 {
     shared_ptr<Character> _obj;
-    ClippingNode* _clipper;
-    
+    bool _isDraw;
 public:
     Vision(){}
-    Vision(shared_ptr<Character> obj, DrawNode* draw, Node* soild);
-    void update(DrawNode* draw);
+    Vision(shared_ptr<Character> obj);
+    void update(DrawNode* draw, ClippingNode* clipper = nullptr);
+    void setDraw(bool draw);
 };

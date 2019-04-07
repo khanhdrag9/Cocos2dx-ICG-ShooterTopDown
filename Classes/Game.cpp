@@ -31,7 +31,8 @@ _collisionLayer(nullptr),
 _objIsFollow(nullptr),
 _rigidWorld(nullptr),
 _sightNode(nullptr),
-_fogSprite(nullptr)
+_fogSprite(nullptr),
+_fogClip(nullptr)
 {
     
 }
@@ -53,11 +54,11 @@ void Game::init()
 void Game::initGamePlay()
 {
     createPhysicsWorld();
-	createMap();
-    createSight();
+    createMap();
 	createMainPlayer();
     BotManager::getInstance()->initMovePosition();
 	BotManager::getInstance()->initBots();
+    createSight();
 	createStartCameraView();
 }
 
@@ -174,10 +175,6 @@ shared_ptr<Player> Game::createAPlayer()
     
     _currentState->addChild(character->_sprite);
     
-    //view
-    auto view = make_shared<Vision>(character, _sightNode,_fogSprite);
-    _listVision.push_back(view);
-    
     return character;
 }
 
@@ -239,7 +236,6 @@ void Game::handleMovePlayer(shared_ptr<Player> player, const Game::direction& di
 void Game::updateAngle(shared_ptr<Character> object, const Vec2& point)
 {
     Vec2 objpos = object->_sprite->getPosition();
-    //float oldAngle = object->_sprite->getRotation();
     
     auto angle = atan2(point.y - objpos.y, point.x - objpos.x);
     object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
@@ -279,7 +275,7 @@ void Game::createMap()
     _fogSprite = Sprite::create(ResourceManager::getInstance()->at(res::define::IMG_FOG));
     _fogSprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _fogSprite->setPosition(0,0);
-    _fogSprite->setOpacity(255.f);
+    _fogSprite->setOpacity(225.f);
     //_currentState->addChild(_fogSprite, 10);
     
 
@@ -354,8 +350,8 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-	setObjectFollowByCam((shared_ptr<Character>)_player);
-    //setObjectFollowByCam(BotManager::getInstance()->getBot(0));
+    setObjectFollowByCam((shared_ptr<Character>)_player);
+//    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
 	updateCameraView();
 }
 
@@ -382,6 +378,20 @@ void Game::createSight()
 {
     _sightNode = DrawNode::create();
     _currentState->addChild(_sightNode);
+    _fogClip = ClippingNode::create();
+    _fogClip->setStencil(_sightNode);
+    _fogClip->setInverted(true);
+    _fogClip->addChild(_fogSprite);
+    _currentState->addChild(_fogClip, 100);
+    
+    shared_ptr<Vision> playerVision = createView(_player);
+    playerVision->setDraw(true);
+    
+    for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
+    {
+        shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i));
+        botVision->setDraw(false);
+    }
     
 #if DEBUG_SIGHT
     _debugWall = DrawNode::create();
@@ -421,5 +431,10 @@ void Game::pushView(shared_ptr<Vision> vision)
     _listVision.push_back(vision);
 }
 
-
+shared_ptr<Vision> Game::createView(shared_ptr<Character> object)
+{
+    auto vision = make_shared<Vision>(object);
+    _listVision.push_back(vision);
+    return _listVision.back();
+}
 

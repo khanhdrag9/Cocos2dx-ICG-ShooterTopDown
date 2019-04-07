@@ -24,10 +24,10 @@ float getAngleByAxis(Vec2 point, Vec2 axis)
     return angle;
 }
 
-void Vision::update(cocos2d::DrawNode *draw)
+void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
 {
     Vec2 objPos = _obj->_sprite->getPosition();
-    float dimention = 400.f;
+    float dimention = 500.f;
     
     auto& rigidWord = Game::getInstance()->getRigidWord();
     //for lines (new)
@@ -60,35 +60,40 @@ void Vision::update(cocos2d::DrawNode *draw)
             
     }
     
-    //chieu sang
-    int sizePointToDraw = (int)points.size();
-    Color4F light(1, 1, 0, 0.1);
-    for(int i = 0; i < sizePointToDraw; i++)
+    if(_isDraw)
     {
-        if(i == sizePointToDraw - 1)
+        //chieu sang
+        int sizePointToDraw = (int)points.size();
+        Color4F light(1, 1, 0, 0.1);
+        for(int i = 0; i < sizePointToDraw; i++)
         {
-            Vec2 pointToDraw[3] { objPos, points[i], points[0] };
-            draw->drawPolygon(pointToDraw, 3, light, 0, light);
-        }
-        else
-        {
-            Vec2 pointToDraw[3] { objPos, points[i], points[i+1] };
-            draw->drawPolygon(pointToDraw, 3, light, 0, light);
+            if(i == sizePointToDraw - 1)
+            {
+                Vec2 pointToDraw[3] { objPos, points[i], points[0] };
+                draw->drawPolygon(pointToDraw, 3, light, 0, light);
+            }
+            else
+            {
+                Vec2 pointToDraw[3] { objPos, points[i], points[i+1] };
+                draw->drawPolygon(pointToDraw, 3, light, 0, light);
+            }
+            
         }
         
+        if(clipper)
+            clipper->setStencil(draw);
     }
-
-    _clipper->setStencil(draw);
 }
 
 
-Vision::Vision(shared_ptr<Character> obj, DrawNode* draw, Node* soild):
-_obj(obj)
+Vision::Vision(shared_ptr<Character> obj):
+_obj(obj),
+_isDraw(false)
 {
-    _clipper = ClippingNode::create();
-    _clipper->setStencil(draw);
-    _clipper->setInverted(true);
-    
-    _clipper->addChild(soild);
-    Game::getInstance()->getCurrentState()->addChild(_clipper, 100);
+
+}
+
+void Vision::setDraw(bool draw)
+{
+    _isDraw = draw;
 }
