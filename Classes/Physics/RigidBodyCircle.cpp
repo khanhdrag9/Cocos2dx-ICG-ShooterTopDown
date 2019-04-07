@@ -28,3 +28,8 @@ void RigidBodyCircle::update(float dt)
 {
     RigidBody::update(dt);
 }
+
+const float& RigidBodyCircle::getRadius() const
+{
+    return _radius;
+}
