@@ -30,6 +30,7 @@ private:
     Layer* _currentState;
     
     shared_ptr<Player> _player;
+	bool _playerShoot;
     float _counttimePlayerShoot;
     float _intervelPlayerShoot;
     

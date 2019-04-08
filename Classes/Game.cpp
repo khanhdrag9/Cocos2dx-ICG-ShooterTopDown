@@ -24,9 +24,10 @@
 Game::Game():
 _currentState(nullptr),
 _player(nullptr),
-_isHoldKey(false),
+_playerShoot(false),
 _counttimePlayerShoot(0.f),
 _intervelPlayerShoot(0.25f),
+_isHoldKey(false),
 _tileMap(nullptr),
 _backgroundLayer(nullptr),
 _collisionLayer(nullptr),
@@ -67,9 +68,21 @@ void Game::initGamePlay()
 void Game::update(float dt)
 {
     handleKeyboardHold();
+
+	//player
     _counttimePlayerShoot += dt;
-    
+	if (_playerShoot)
+	{
+		if (_counttimePlayerShoot > _intervelPlayerShoot)
+		{
+			handleShootCharacter((shared_ptr<Character>)_player, 1000);
+			_counttimePlayerShoot = 0.f;
+		}
+		_playerShoot = false;
+	}
     _player->update(dt);
+	//end player
+
     updatePhysics(dt);
     
 	BotManager::getInstance()->update(dt);
@@ -196,11 +209,7 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
             handleMovePlayer(_player, Game::direction::RIGHT);
             break;
         case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
-            if(_counttimePlayerShoot > _intervelPlayerShoot)
-            {
-                handleShootCharacter((shared_ptr<Character>)_player, 1000);
-                _counttimePlayerShoot = 0.f;
-            }
+			_playerShoot = true;
             break;
         default:
             break;

@@ -29,7 +29,7 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 
 		}
 		
-		if (body->getTag() == RigidBody::tag::PLAYER)
+		if (body->getTag() == RigidBody::tag::PLAYER && body->getObject() && body->getObject()->getType() == Character::type::PLAYER)
 		{
 			if (&(*_obj) == &(*body->getObject()))	//so sanh xem co dang check trung` bot ko!
 				continue;
