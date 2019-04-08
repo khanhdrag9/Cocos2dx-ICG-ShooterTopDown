@@ -54,7 +54,7 @@ public:
     shared_ptr<RigidBody> createRigidBodyCircle(shared_ptr<Character> character);
     
     
-    void onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> body2);
+    bool onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> body2);
     const vector<shared_ptr<RigidBody>>& getListBodies() const;
     const vector<Line>& getListLines() const;
 

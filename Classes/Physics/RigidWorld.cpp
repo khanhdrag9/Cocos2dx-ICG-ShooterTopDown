@@ -26,6 +26,21 @@ RigidWorld::~RigidWorld()
 
 void RigidWorld::update(float dt)
 {
+	//clean body
+	for (auto begin = _listRigidBodies.begin(); begin != _listRigidBodies.end();) 
+	{
+		auto& body = *begin;
+		if (body->getTag() != RigidBody::tag::WALL)
+		{
+			if (body->getObject() == nullptr)
+				begin = _listRigidBodies.erase(begin);
+			else
+				++begin;
+		}
+		else
+			++begin;
+	}
+
     for(auto& x : _listRigidBodies)
     {
         x->update(dt);
@@ -66,8 +81,8 @@ bool RigidWorld::checkCollisionOther(shared_ptr<RigidBody> body)
             {
                 if(body1->_rect.intersectsRect(body2->_rect))
                 {
-                    onCollision(body1, body2);
-                    return true;
+                    return onCollision(body1, body2);
+                    //return true;
                 }
             }
             else
@@ -78,8 +93,8 @@ bool RigidWorld::checkCollisionOther(shared_ptr<RigidBody> body)
                     Vec2 circlePos = bodyCircle->_object->_sprite->getPosition();
                     if(body1->_rect.intersectsCircle(circlePos, bodyCircle->_radius))
                     {
-                        onCollision(body1, bodyCircle);
-                        return true;
+                        return onCollision(body1, bodyCircle);
+                        //return true;
                     }
                 }
                 else if(!body1 && body2)
@@ -88,8 +103,8 @@ bool RigidWorld::checkCollisionOther(shared_ptr<RigidBody> body)
                     Vec2 circlePos = bodyCircle->_object->_sprite->getPosition();
                     if(body2->_rect.intersectsCircle(circlePos, bodyCircle->_radius))
                     {
-                        onCollision(body2, bodyCircle);
-                        return true;
+                        return onCollision(body2, bodyCircle);
+                        //return true;
                     }
                 }
             }
@@ -142,7 +157,7 @@ shared_ptr<RigidBody> RigidWorld::createRigidBodyCircle(shared_ptr<Character> ch
     return body;
 }
 
-void RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> body2)
+bool RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> body2)
 {
     shared_ptr<Character> obj1 = body1->_object;
     shared_ptr<Character> obj2 = body2->_object;
@@ -153,7 +168,11 @@ void RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
         if(obj1->getName() == constants::object_bullet_basic)
         {
             shared_ptr<BulletBasic> bullet = dynamic_pointer_cast<BulletBasic>(obj1);
-            if(bullet)bullet->destroy();
+			if (bullet)
+			{
+				bullet->destroy();
+				return false;
+			}
         }
     }
     
@@ -162,9 +181,15 @@ void RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
         if(obj2->getName() == constants::object_bullet_basic)
         {
             shared_ptr<BulletBasic> bullet = dynamic_pointer_cast<BulletBasic>(obj2);
-            if(bullet)bullet->destroy();
+			if (bullet)
+			{
+				bullet->destroy();
+				return false;
+			}
         }
     }
+
+	return true;
 }
 
 const vector<shared_ptr<RigidBody>>& RigidWorld::getListBodies() const
