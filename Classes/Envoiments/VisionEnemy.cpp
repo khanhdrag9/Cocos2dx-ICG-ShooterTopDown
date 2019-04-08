@@ -72,7 +72,7 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 				if (isInterest)
 				{
 					//Shoot when in vision!
-					Vec2 vectorAngle = bot->_sprite->getPosition() - objPos;
+					Vec2 vectorAngle = body->getObject()->_sprite->getPosition() - bot->_sprite->getPosition();
 					auto angle = atan2(vectorAngle.y, vectorAngle.x);
 					_obj->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
 

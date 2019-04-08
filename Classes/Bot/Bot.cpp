@@ -37,11 +37,13 @@ void Bot::update(float dt)
     
 	Character::update(dt);
     
+    bool isMoved = false;
     if(containStatus(Status::WALK))
     {
         if (_commandQueue.empty())
         {
             auto nextlink = BotManager::getInstance()->getNextLinkPosition(dynamic_pointer_cast<Bot>(shared_from_this()), true);
+            if(&(*nextlink) != &(*_linkPos))isMoved = true;
             
             if(nextlink->getName() != _linkPos->getName())
             {
@@ -64,7 +66,7 @@ void Bot::update(float dt)
 	_countShoot.first += dt;
     
     //update rotation
-    if (_linkPos)
+    if (_linkPos && isMoved)
     {
         Vec2 offset = _linkPos->get() - _sprite->getPosition();
         auto angle = atan2(offset.y, offset.x);
