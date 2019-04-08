@@ -18,6 +18,12 @@ class Game : public pattern::Singleton<Game>
         LEFT,
         RIGHT
     };
+
+	enum type_vision
+	{
+		VISION_PLAYER,
+		VISION_ENEMY
+	};
     
     
 private:
@@ -73,7 +79,7 @@ public:
 	TMXTiledMap* getTileMap() const;
     
     void pushView(shared_ptr<Vision> vision);
-    shared_ptr<Vision> createView(shared_ptr<Character> object);
+    shared_ptr<Vision> createView(shared_ptr<Character> object, type_vision type);
 
 private:
     shared_ptr<Player> createAPlayer();

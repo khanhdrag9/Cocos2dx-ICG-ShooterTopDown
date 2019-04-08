@@ -18,6 +18,7 @@
 #include "Bot/Bot.h"
 #include "Bot/BotManager.h"
 #include "Envoiments/Vision.h"
+#include "Envoiments/VisionPlayer.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -384,13 +385,13 @@ void Game::createSight()
     _fogClip->addChild(_fogSprite);
     _currentState->addChild(_fogClip, 100);
     
-    shared_ptr<Vision> playerVision = createView(_player);
+    shared_ptr<Vision> playerVision = createView(_player, type_vision::VISION_PLAYER);
     playerVision->setDraw(true);
     
     for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
     {
-        shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i));
-        botVision->setDraw(false);
+        shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
+        botVision->setDraw(true);
     }
     
 #if DEBUG_SIGHT
@@ -431,9 +432,23 @@ void Game::pushView(shared_ptr<Vision> vision)
     _listVision.push_back(vision);
 }
 
-shared_ptr<Vision> Game::createView(shared_ptr<Character> object)
+shared_ptr<Vision> Game::createView(shared_ptr<Character> object, type_vision type)
 {
-    auto vision = make_shared<Vision>(object);
+	shared_ptr<Vision> vision;
+	
+	switch (type)
+	{
+	case type_vision::VISION_PLAYER:
+		vision = make_shared<VisionPlayer>(object);
+		break;
+	case type_vision::VISION_ENEMY:
+		vision = make_shared<Vision>(object);
+		break;
+	default:
+		vision = make_shared<Vision>(object);
+		break;
+	}
+	
     _listVision.push_back(vision);
     return _listVision.back();
 }
