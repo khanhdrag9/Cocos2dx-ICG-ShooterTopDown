@@ -65,6 +65,11 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 					if (isInterest)
 						break;
 				}
+                
+#if DEBUG_ENEMY
+                draw->drawLine(objPos ,positionBody, Color4F::RED);
+                draw->drawCircle(objPos, circleBody->getRadius(), 0, 360, false, Color4F::RED);
+#endif
 			}
 
 			if (auto bot = dynamic_pointer_cast<Bot>(_obj))

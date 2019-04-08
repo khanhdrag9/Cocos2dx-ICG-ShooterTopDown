@@ -361,8 +361,8 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-    //setObjectFollowByCam((shared_ptr<Character>)_player);
-    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
+    setObjectFollowByCam((shared_ptr<Character>)_player);
+//    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
 	updateCameraView();
 }
 
@@ -396,12 +396,12 @@ void Game::createSight()
     _currentState->addChild(_fogClip, 100);
     
     shared_ptr<Vision> playerVision = createView(_player, type_vision::VISION_PLAYER);
-    playerVision->setDraw(false);
+    playerVision->setDraw(true);
     
     for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
     {
         shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
-        botVision->setDraw(true);
+        botVision->setDraw(false);
     }
     
 #if DEBUG_SIGHT

@@ -1,5 +1,6 @@
 #include "VisionPlayer.h"
 #include "../Game.h"
+#include "../Defines/constants.h"
 #include "../Characters/Character.h"
 #include "../Physics/RigidBody.h"
 #include "../Physics/RigidWorld.h"
@@ -23,7 +24,9 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 	//visible Enemy
 	for (auto body : Game::getInstance()->getRigidWord()->getListBodies())
 	{
-		if (body->getTag() != RigidBody::tag::ENEMY)continue;
+        if (body->getTag() != RigidBody::tag::ENEMY)continue;
+        if (!body->getObject())continue;
+        if (body->_object->getName() == constants::object_bullet_basic)continue;
 
 		if (&(*_obj) == &(*body->getObject()))	//so sanh xem co dang check trung` bot ko!
 			continue;
@@ -33,12 +36,6 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 		{
 			auto obj = circleBody->getObject();
 			Vec2 positionBody = obj->_sprite->getPosition();
-
-#if DEBUG_ENEMY
-			draw->drawLine(objPos, positionBody, Color4F::RED);
-			draw->drawCircle(positionBody, circleBody->getRadius(), 0, 360, false, Color4F::RED);
-#endif
-
 			Rect rect = body->_object->_sprite->getBoundingBox();
 			Line lines[]
 			{
@@ -66,10 +63,10 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 			}
 		}
 
-		/*if(body->getObject())
-			if (isInterest)
-				body->getObject()->_sprite->setVisible(true);
-			else
-				body->getObject()->_sprite->setVisible(false);*/
+        if(body->getObject())
+            if (isInterest)
+                body->getObject()->_sprite->setVisible(true);
+            else
+                body->getObject()->_sprite->setVisible(false);
 	}
 }

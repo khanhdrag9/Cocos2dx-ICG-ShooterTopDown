@@ -75,7 +75,7 @@ void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
         
         
 #if DEBUG_SIGHT
-        draw->drawLine(objPos, point, Color4F::YELLOW);
+        draw->drawLine(objPos, point, Color4F(1, 1, 0, 0.25));
 #endif
         _points.push_back(point);
             
