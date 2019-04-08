@@ -132,6 +132,11 @@ void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
             auto obj = circleBody->getObject();
             Vec2 positionBody = obj->_sprite->getPosition();
 
+#if DEBUG_ENEMY
+			draw->drawLine(objPos, positionBody, Color4F::RED);
+			draw->drawCircle(positionBody, circleBody->getRadius(), 0, 360, false, Color4F::RED);
+#endif
+			
             Rect rect = body->_object->_sprite->getBoundingBox();
             Line lines[]
             {
