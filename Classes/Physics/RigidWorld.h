@@ -59,8 +59,4 @@ public:
     const vector<Line>& getListLines() const;
 
     void pushLine(const Line& line);
-//    void generateLineAgain();
-    
-private:
-//    Line is2LinesStraight(const Line& line1, const Line& line2);
 };
