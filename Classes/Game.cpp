@@ -350,8 +350,8 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-//    setObjectFollowByCam((shared_ptr<Character>)_player);
-    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
+    setObjectFollowByCam((shared_ptr<Character>)_player);
+//    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
 	updateCameraView();
 }
 

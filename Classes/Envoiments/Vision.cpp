@@ -131,16 +131,7 @@ void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
         {
             auto obj = circleBody->getObject();
             Vec2 positionBody = obj->_sprite->getPosition();
-//            float radius = circleBody->getRadius();
-//
-//            Line lines[]
-//            {
-//                Line( Vec2(positionBody.x - radius, positionBody.y + radius) , Vec2(positionBody.x + radius, positionBody.y + radius) ),
-//                Line( Vec2(positionBody.x + radius, positionBody.y + radius) , Vec2(positionBody.x + radius, positionBody.y - radius) ),
-//                Line( Vec2(positionBody.x + radius, positionBody.y - radius) , Vec2(positionBody.x - radius, positionBody.y - radius) ),
-//                Line( Vec2(positionBody.x - radius, positionBody.y - radius) , Vec2(positionBody.x - radius, positionBody.y + radius) )
-//            };
-            
+
             Rect rect = body->_object->_sprite->getBoundingBox();
             Line lines[]
             {
