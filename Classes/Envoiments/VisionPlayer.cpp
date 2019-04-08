@@ -66,9 +66,10 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 			}
 		}
 
-		if (isInterest)
-			body->getObject()->_sprite->setVisible(true);
-		else
-			body->getObject()->_sprite->setVisible(false);
+		/*if(body->getObject())
+			if (isInterest)
+				body->getObject()->_sprite->setVisible(true);
+			else
+				body->getObject()->_sprite->setVisible(false);*/
 	}
 }

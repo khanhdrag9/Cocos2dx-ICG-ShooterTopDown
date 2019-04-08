@@ -39,9 +39,11 @@ void BotManager::update(float dt)
 	{
 		if (bot->isCanTriggerShoot())
 			bot->setStatus(Bot::Status::SHOOT);
-		else if (bot->isCanTriggerWalk())
+
+		if (bot->isCanTriggerWalk())
 			bot->setStatus(Bot::Status::WALK);
-		else
+		
+		if(!bot->isCanTriggerWalk() && !bot->isCanTriggerShoot())
 			bot->setStatus(Bot::Status::STOP);
 		
 		bot->update(dt);

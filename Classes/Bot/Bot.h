@@ -16,9 +16,10 @@ public:
 private:
     
 	shared_ptr<LinkPosition> _linkPos;
-    Status _currentStatus;
+    list<Status> _currentStatus;
     
 	bool _ableWalk;
+	bool _ableShoot;
 	pair<float, float> _countShoot;
 public:
 	Bot();
@@ -30,14 +31,16 @@ public:
 	shared_ptr<LinkPosition> getLinkPosition() const;
     
     void setStatus(Status status);
-    Status getStatus() const;
+    list<Status>& getStatus();
     
     CC_SYNTHESIZE(float, _speedMove, SpeedMove);
+
+	bool containStatus(Status status);
 
 	bool isCanTriggerWalk();
 	bool isCanTriggerShoot();
 
 	void setWalk(bool enable);
-
+	void setShoot(bool enable);
 	
 };

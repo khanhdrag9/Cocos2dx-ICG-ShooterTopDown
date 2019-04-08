@@ -19,6 +19,7 @@
 #include "Bot/BotManager.h"
 #include "Envoiments/Vision.h"
 #include "Envoiments/VisionPlayer.h"
+#include "Envoiments/VisionEnemy.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -351,8 +352,8 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-    setObjectFollowByCam((shared_ptr<Character>)_player);
-//    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
+    //setObjectFollowByCam((shared_ptr<Character>)_player);
+    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
 	updateCameraView();
 }
 
@@ -386,7 +387,7 @@ void Game::createSight()
     _currentState->addChild(_fogClip, 100);
     
     shared_ptr<Vision> playerVision = createView(_player, type_vision::VISION_PLAYER);
-    playerVision->setDraw(true);
+    playerVision->setDraw(false);
     
     for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
     {
@@ -442,7 +443,7 @@ shared_ptr<Vision> Game::createView(shared_ptr<Character> object, type_vision ty
 		vision = make_shared<VisionPlayer>(object);
 		break;
 	case type_vision::VISION_ENEMY:
-		vision = make_shared<Vision>(object);
+		vision = make_shared<VisionEnemy>(object);
 		break;
 	default:
 		vision = make_shared<Vision>(object);

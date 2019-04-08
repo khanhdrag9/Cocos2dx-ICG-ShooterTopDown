@@ -11,8 +11,8 @@
 Bot::Bot() : Character(),
 _linkPos(nullptr),
 _speedMove(0),
-_currentStatus(Bot::Status::STOP),
 _ableWalk(false),
+_ableShoot(false),
 _countShoot(pair<float, float>(0.f, 0.25f))
 {
 }
@@ -33,11 +33,11 @@ void Bot::init()
 
 void Bot::update(float dt)
 {
-    if(_currentStatus == Status::STOP)return;
+    if(containStatus(Status::STOP))return;
     
 	Character::update(dt);
     
-    if(_currentStatus == Status::WALK)
+    if(containStatus(Status::WALK))
     {
         if (_commandQueue.empty())
         {
@@ -55,7 +55,8 @@ void Bot::update(float dt)
 		
         }
     }
-	else if (_currentStatus == Status::SHOOT && _countShoot.first >= _countShoot.second)
+
+	if (containStatus(Status::SHOOT) && _countShoot.first >= _countShoot.second)
 	{
 		Game::getInstance()->handleShootCharacter(shared_from_this(), 1000);
 		_countShoot.first = 0.f;
@@ -70,6 +71,7 @@ void Bot::update(float dt)
         _sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
     }
 
+	_currentStatus.clear();
 }
 
 void Bot::pushCommand(shared_ptr<Command>& command)
@@ -105,12 +107,18 @@ shared_ptr<LinkPosition> Bot::getLinkPosition() const
 
 void Bot::setStatus(Status status)
 {
-    _currentStatus = status;
+	_currentStatus.push_back(status);
 }
 
-Bot::Status Bot::getStatus() const
+list<Bot::Status>& Bot::getStatus()
 {
     return _currentStatus;
+}
+
+bool Bot::containStatus(Status status)
+{
+	auto check = std::find(_currentStatus.begin(), _currentStatus.end(), status);
+	return check != _currentStatus.end();
 }
 
 bool Bot::isCanTriggerWalk()
@@ -120,11 +128,15 @@ bool Bot::isCanTriggerWalk()
 
 bool Bot::isCanTriggerShoot()
 {
-
-	return false;
+	return _ableShoot;
 }
 
 void Bot::setWalk(bool enable)
 {
 	_ableWalk = enable;
+}
+
+void Bot::setShoot(bool enable)
+{
+	_ableShoot = enable;
 }
