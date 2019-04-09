@@ -87,8 +87,8 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 					bot->setShoot(true);
 
 					//move to target
-					shared_ptr<Command> moveCmd = CommandMoveTo::createCommandMoveTo(bot->getSpeedMove(), target);
-					bot->pushCommand(moveCmd, true);
+//                    shared_ptr<Command> moveCmd = CommandMoveTo::createCommandMoveTo(bot->getSpeedMove(), target);
+//                    bot->pushCommand(moveCmd, true);
 				}
 				else
 				{
