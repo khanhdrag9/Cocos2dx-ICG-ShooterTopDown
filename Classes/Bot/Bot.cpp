@@ -76,25 +76,10 @@ void Bot::update(float dt)
 	_currentStatus.clear();
 }
 
-void Bot::pushCommand(shared_ptr<Command>& command)
+void Bot::pushCommand(shared_ptr<Command>& command, bool replace)
 {
-	queue<shared_ptr<Command>> queueTemp;
-	bool isUsed = false;
+	Character::pushCommand(command, replace);
 
-	while (_commandQueue.size() > 0)
-	{
-		if (_commandQueue.front()->getName() == command->getName())
-		{
-			isUsed = true;
-		}
-		queueTemp.push(_commandQueue.front());
-		_commandQueue.pop();
-	}
-
-	_commandQueue.swap(queueTemp);
-
-	if (!isUsed)
-		command->registAnObject(shared_from_this(), _commandQueue);
 }
 
 void Bot::setLinkPosition(shared_ptr<LinkPosition> newlink)

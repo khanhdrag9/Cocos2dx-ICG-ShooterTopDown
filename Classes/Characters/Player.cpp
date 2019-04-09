@@ -32,24 +32,8 @@ void Player::update(float dt)
     Character::update(dt);
 }
 
-void Player::pushCommand(shared_ptr<Command>& command)
+void Player::pushCommand(shared_ptr<Command>& command, bool replace)
 {
-	queue<shared_ptr<Command>> queueTemp;
-	bool isUsed = false;
-
-	while (_commandQueue.size() > 0)
-	{
-		if (_commandQueue.front()->getName() == command->getName())
-		{
-			isUsed = true;
-		}
-		queueTemp.push(_commandQueue.front());
-		_commandQueue.pop();
-	}
-
-	_commandQueue.swap(queueTemp);
-    
-	if(!isUsed)
-		command->registAnObject(shared_from_this(), _commandQueue);
+	Character::pushCommand(command, replace);
 }
 

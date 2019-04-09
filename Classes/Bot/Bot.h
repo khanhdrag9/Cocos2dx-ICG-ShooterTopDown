@@ -26,7 +26,7 @@ public:
     
     void init() override;
     void update(float dt) override;
-    void pushCommand(shared_ptr<Command>& command) override;
+    void pushCommand(shared_ptr<Command>& command, bool replace = false) override;
 	void setLinkPosition(shared_ptr<LinkPosition> newlink);
 	shared_ptr<LinkPosition> getLinkPosition() const;
     

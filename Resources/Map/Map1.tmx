@@ -217,7 +217,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="17" name="Lines">
+ <objectgroup id="17" name="Lines" locked="1">
   <object id="86" name="1" x="64" y="1536">
    <properties>
     <property name="next" type="int" value="26"/>

@@ -59,9 +59,33 @@ void Character::releaseCommands()
 }
 
 
-void Character::pushCommand(shared_ptr<Command>& command)
+void Character::pushCommand(shared_ptr<Command>& command, bool replace)
 {
-    command->registAnObject(shared_from_this(), _commandQueue);
+   // command->registAnObject(shared_from_this(), _commandQueue);
+	queue<shared_ptr<Command>> queueTemp;
+	bool isUsed = false;
+
+	while (_commandQueue.size() > 0)
+	{
+		if (_commandQueue.front()->getName() == command->getName())
+		{
+			isUsed = true;
+		}
+
+		if (!isUsed)
+			queueTemp.push(_commandQueue.front());
+		else if (!replace)
+			queueTemp.push(_commandQueue.front());
+		else
+			isUsed = false;
+
+		_commandQueue.pop();
+	}
+
+	_commandQueue.swap(queueTemp);
+
+	if (!isUsed)
+		command->registAnObject(shared_from_this(), _commandQueue);
 }
 
 

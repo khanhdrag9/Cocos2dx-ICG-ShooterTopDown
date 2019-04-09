@@ -23,7 +23,7 @@ public:
     virtual void update(float dt);
     void releaseCommands();
     
-    virtual void pushCommand(shared_ptr<Command>& command);
+    virtual void pushCommand(shared_ptr<Command>& command, bool replace = false);
     const string& getName() const;
     const Character::type& getType() const;
     

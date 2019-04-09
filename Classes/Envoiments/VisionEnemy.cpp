@@ -6,6 +6,8 @@
 #include "../Physics/RigidWorld.h"
 #include "../Physics/RigidBodyPolygon.h"
 #include "../Physics/RigidBodyCircle.h"
+#include "../Commands/CommandMoveBy.h"
+#include "../Commands/CommandMoveTo.h"
 
 VisionEnemy::VisionEnemy() : Vision()
 {
@@ -77,11 +79,16 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 				if (isInterest)
 				{
 					//Shoot when in vision!
-					Vec2 vectorAngle = body->getObject()->_sprite->getPosition() - bot->_sprite->getPosition();
+					Vec2 target = body->getObject()->_sprite->getPosition();
+					Vec2 vectorAngle = target - bot->_sprite->getPosition();
 					auto angle = atan2(vectorAngle.y, vectorAngle.x);
 					_obj->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
 
 					bot->setShoot(true);
+
+					//move to target
+					shared_ptr<Command> moveCmd = CommandMoveTo::createCommandMoveTo(bot->getSpeedMove(), target);
+					bot->pushCommand(moveCmd, true);
 				}
 				else
 				{
