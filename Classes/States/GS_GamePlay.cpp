@@ -48,6 +48,10 @@ void GS_GamePlay::update(float dt)
     }*/
     
     Game::getInstance()->update(dt);
+
+	/*if (test->get_id);
+	test = make_unique<thread>(&Game::updateSight, Game::getInstance(), dt);
+	test->join();*/
 }
 
 void GS_GamePlay::controller()

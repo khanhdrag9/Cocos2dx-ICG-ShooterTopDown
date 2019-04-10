@@ -15,24 +15,25 @@
 
 void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
 {
-	getPointIntersect();
+	//getPointIntersect();
     
 	Vec2 objPos = _obj->_sprite->getPosition();
     if(_isDraw)
     {
         //chieu sang
-        int sizePointToDraw = (int)_points.size();
+		vector<Vec2> temp = _points2;
+		int sizePointToDraw = (int)temp.size();
         Color4F light(0, 0, 0, 0);
         for(int i = 0; i < sizePointToDraw; i++)
         {
             if(i == sizePointToDraw - 1)
             {
-                Vec2 pointToDraw[3] { objPos, _points[i], _points[0] };
+                Vec2 pointToDraw[3] { objPos, temp[i], temp[0] };
                 draw->drawPolygon(pointToDraw, 3, light, 0, light);
             }
             else
             {
-                Vec2 pointToDraw[3] { objPos, _points[i], _points[i+1] };
+                Vec2 pointToDraw[3] { objPos, temp[i], temp[i+1] };
                 draw->drawPolygon(pointToDraw, 3, light, 0, light);
             }
             
@@ -44,15 +45,33 @@ void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
     
 }
 
+void Vision::threadGetPoint()
+{
+	while(_isStop)
+	{ 
+		getPointIntersect();
+		_points2.swap(_points);
+	}
+}
+
 Vision::Vision():
 	_obj(nullptr),
-	_isDraw(false)
+	_isDraw(false),
+	_isStop(true)
 {}
 
 Vision::Vision(shared_ptr<Character> obj):
 _obj(obj),
-_isDraw(false)
+_isDraw(false),
+_isStop(true)
 {
+	thread t(&Vision::threadGetPoint, this);
+	t.detach();
+}
+
+Vision::~Vision()
+{
+	_isStop = false;
 }
 
 void Vision::setDraw(bool draw)
