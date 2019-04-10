@@ -14,4 +14,5 @@ public:
     Vision(shared_ptr<Character> obj);
     virtual void update(DrawNode* draw, ClippingNode* clipper = nullptr);
     void setDraw(bool draw);
+	void getPointIntersect();
 };
