@@ -15,9 +15,7 @@
 
 void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
 {
-	thread t(&Vision::getPointIntersect, this);
-	if(t.joinable())
-		t.join();
+	getPointIntersect();
     
 	Vec2 objPos = _obj->_sprite->getPosition();
     if(_isDraw)
