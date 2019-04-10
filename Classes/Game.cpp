@@ -59,8 +59,8 @@ void Game::initGamePlay()
     createPhysicsWorld();
     createMap();
 	createMainPlayer();
-    BotManager::getInstance()->initMovePosition();
-	BotManager::getInstance()->initBots();
+    //BotManager::getInstance()->initMovePosition();
+	//BotManager::getInstance()->initBots();
     createSight();
 	createStartCameraView();
 }
@@ -292,7 +292,7 @@ void Game::createMap()
 
     
 	//for map backgroud
-	_tileMap = TMXTiledMap::create("Map/Map1.tmx");
+	_tileMap = TMXTiledMap::create("Map/Map2.tmx");
 	_backgroundLayer = _tileMap->getLayer("Background");
 	_collisionLayer = _tileMap->getLayer("Collision");
 	_collisionLayer->setVisible(false);
@@ -318,6 +318,7 @@ void Game::createMap()
     
     //for sight
     auto lineGO = _tileMap->getObjectGroup("Lines");
+	if(lineGO)
     for(int i = 1; i <= lineGO->getObjects().size(); i++)
     {
         //start

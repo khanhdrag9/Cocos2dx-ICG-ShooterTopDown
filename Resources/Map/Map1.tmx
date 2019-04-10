@@ -72,7 +72,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="Enemy" locked="1" offsetx="-14.3856" offsety="9.36737">
+ <objectgroup id="8" name="Enemy">
   <object id="47" name="enemyPos1" x="1412.54" y="198.824">
    <point/>
   </object>
