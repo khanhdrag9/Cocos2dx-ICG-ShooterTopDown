@@ -45,7 +45,7 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 
 			for (auto& checkline : lines)
 			{
-				for (auto& point : _points)
+				for (auto& point : _points2)
 				{
 					if (Vec2::isSegmentIntersect(objPos, point, checkline.start, checkline.end))
 					{

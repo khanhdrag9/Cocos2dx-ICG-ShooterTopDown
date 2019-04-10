@@ -10,7 +10,7 @@ protected:
     bool _isDraw;
 	vector<Vec2> _points;
 	vector<Vec2> _points2;
-	void threadGetPoint();
+	virtual void threadGetPoint();
 	bool _isStop;
 	
 public:

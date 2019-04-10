@@ -138,6 +138,9 @@ shared_ptr<LinkPosition> BotManager::getNextLinkPosition(shared_ptr<Bot> bot, bo
 		int randomIndex = getRandom(0, currentLinkPos->otherSize());
 		string nameNextLink = currentLinkPos->otherAt(randomIndex);
 		shared_ptr<LinkPosition> nextlink = _mapPosition[nameNextLink];
+        if(nextlink == nullptr)
+            return currentLinkPos;
+        
 		return nextlink;
 	}
 
