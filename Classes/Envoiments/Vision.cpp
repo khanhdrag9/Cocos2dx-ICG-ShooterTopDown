@@ -32,6 +32,8 @@ void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
         bool isIntersect = false;
         for(auto& checkline : rigidWord->getListLines())
         {
+			//if ((checkline.start - objPos).length() > dimention && (checkline.end - objPos).length() > dimention)continue;
+
             isIntersect = Vec2::isSegmentIntersect(objPos, point, checkline.start, checkline.end);
 
             if(isIntersect)

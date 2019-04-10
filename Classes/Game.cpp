@@ -300,7 +300,10 @@ void Game::createMap()
 	_currentState->addChild(_tileMap);
 
 	//physics for collision layer
-    Size mapSize = _tileMap->getMapSize();
+	Size mapSize = _tileMap->getMapSize();
+	Vec2 scaleSize = Vec2(mapSize.width / 50.f, mapSize.height / 50.f);
+	bg->setScale(scaleSize.x, scaleSize.y);
+	_fogSprite->setScale(scaleSize.x, scaleSize.y);
 
     for (int w = 0; w < mapSize.width; w++)
     {
