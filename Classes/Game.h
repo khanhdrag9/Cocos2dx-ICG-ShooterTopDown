@@ -54,6 +54,11 @@ private:
     ClippingNode* _fogClip;
     list<shared_ptr<Vision>> _listVision;
     
+	bool _isRunVision = true;
+	bool _initThreadVision = false;
+	unique_ptr<thread> _visionThread;
+
+	std::mutex _mutex;
 public:
     Game();
     ~Game();
@@ -97,6 +102,8 @@ private:
     void createSight();
     
     void updatePhysics(float dt);
+
+public:
     void updateSight(float dt);
     
 };

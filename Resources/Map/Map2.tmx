@@ -1166,7 +1166,7 @@
   </object>
   <object id="193" name="174" x="1152" y="512">
    <properties>
-    <property name="next" type="int" value="174"/>
+    <property name="next" type="int" value="171"/>
    </properties>
    <point/>
   </object>
