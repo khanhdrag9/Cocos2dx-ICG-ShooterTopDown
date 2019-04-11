@@ -88,6 +88,7 @@ void Game::update(float dt)
 	BotManager::getInstance()->update(dt);
     
 	updateCameraView();
+
     updateSight(dt);
     
     ObjectsPool::getInstance()->update();
@@ -216,7 +217,9 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
 			_player->_sprite->setPosition(getRandomPosition());		//random rivavel position
 			break;
 		case cocos2d::EventKeyboard::KeyCode::KEY_2:
-			_listVision.clear();	//disble vision
+			//_listVision.clear();	//disble vision
+			for (auto& vision : _listVision)
+				vision->stop();
 			break;
 #endif
         default:
@@ -456,12 +459,22 @@ void Game::updateSight(float dt)
 #endif
     
     _sightNode->clear();
+
+	//delete vision is marked delete
+	for (auto i = _listVision.begin(); i != _listVision.end();)
+	{
+		if ((*i)->avaibleToDelete())
+			i = _listVision.erase(i);
+		else
+			++i;
+	}
     
+	//update vision
     for(auto& vision : _listVision)
     {
         vision->update(_sightNode);
     }
-    
+  
     
 }
 

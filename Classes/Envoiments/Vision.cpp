@@ -53,20 +53,24 @@ void Vision::threadGetPoint()
 		getPointIntersect();
 		_points2.swap(_points);
 	}
+
+	_avaiableToDelete = true;
 }
 
 Vision::Vision():
 	_obj(nullptr),
 	_isDraw(false),
 	_isStop(false),
-	_threadRun(false)
+	_threadRun(false),
+	_avaiableToDelete(false)
 {}
 
 Vision::Vision(shared_ptr<Character> obj):
 _obj(obj),
 _isDraw(false),
 _isStop(false),
-_threadRun(false)
+_threadRun(false),
+_avaiableToDelete(false)
 {
 	_threadVision = thread(&Vision::threadGetPoint, this);
 	_threadVision.detach();
@@ -74,13 +78,23 @@ _threadRun(false)
 
 Vision::~Vision()
 {
-	_isStop = true;
 	_threadRun = false;
+	_obj = nullptr;
 }
 
 void Vision::setDraw(bool draw)
 {
     _isDraw = draw;
+}
+
+bool Vision::avaibleToDelete() const
+{
+	return _avaiableToDelete;
+}
+
+void Vision::stop()
+{
+	_isStop = true;
 }
 
 void Vision::getPointIntersect()
