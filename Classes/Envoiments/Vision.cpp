@@ -65,8 +65,8 @@ _obj(obj),
 _isDraw(false),
 _isStop(true)
 {
-	thread t(&Vision::threadGetPoint, this);
-	t.detach();
+	_threadVision = thread(&Vision::threadGetPoint, this);
+	_threadVision.detach();
 }
 
 Vision::~Vision()

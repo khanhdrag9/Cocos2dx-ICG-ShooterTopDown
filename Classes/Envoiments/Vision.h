@@ -12,7 +12,7 @@ protected:
 	vector<Vec2> _points2;
 	virtual void threadGetPoint();
 	bool _isStop;
-
+	thread _threadVision;
 	void getPointIntersect();
 public:
 	Vision();
