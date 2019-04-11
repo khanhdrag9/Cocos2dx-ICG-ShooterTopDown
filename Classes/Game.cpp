@@ -212,8 +212,11 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
 			_playerShoot = true;
             break;
 #if CHEAT
-		case cocos2d::EventKeyboard::KeyCode::KEY_1:
-			_player->_sprite->setPosition(getRandomPosition());
+		case cocos2d::EventKeyboard::KeyCode::KEY_1:	
+			_player->_sprite->setPosition(getRandomPosition());		//random rivavel position
+			break;
+		case cocos2d::EventKeyboard::KeyCode::KEY_2:
+			_listVision.clear();	//disble vision
 			break;
 #endif
         default:
@@ -380,8 +383,8 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-//    setObjectFollowByCam((shared_ptr<Character>)_player);
-    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
+    setObjectFollowByCam((shared_ptr<Character>)_player);
+//    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
 	updateCameraView();
 }
 
