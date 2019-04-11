@@ -53,12 +53,8 @@ private:
     Sprite* _fogSprite;
     ClippingNode* _fogClip;
     list<shared_ptr<Vision>> _listVision;
-    
-	bool _isRunVision = true;
-	bool _initThreadVision = false;
-	unique_ptr<thread> _visionThread;
 
-	std::mutex _mutex;
+	vector<Vec2> _revivalPosition;
 public:
     Game();
     ~Game();
@@ -102,6 +98,8 @@ private:
     void createSight();
     
     void updatePhysics(float dt);
+
+	Vec2 getRandomPosition() const;
 
 public:
     void updateSight(float dt);

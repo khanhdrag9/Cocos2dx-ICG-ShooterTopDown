@@ -211,6 +211,11 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
         case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
 			_playerShoot = true;
             break;
+#if CHEAT
+		case cocos2d::EventKeyboard::KeyCode::KEY_1:
+			_player->_sprite->setPosition(getRandomPosition());
+			break;
+#endif
         default:
             break;
     }
@@ -347,6 +352,20 @@ void Game::createMap()
         }
     }
 
+	//for revival position
+	auto revivalObj = _tileMap->getObjectGroup("RevivalPosition");
+	if (revivalObj)
+		for (int i = 1; i <= revivalObj->getObjects().size(); i++)
+		{
+			string name = to_string(i);
+			auto pointInTile1 = revivalObj->getObject(name);
+			if (pointInTile1.size() == 0)continue;
+
+			float x = pointInTile1.at("x").asFloat();
+			float y = pointInTile1.at("y").asFloat();
+
+			_revivalPosition.emplace_back(x, y);
+		}
 }
 
 void Game::createMainPlayer()
@@ -354,12 +373,8 @@ void Game::createMainPlayer()
 	_player = createAPlayer();
     _player->_rigidBody->setTag(RigidBody::tag::PLAYER);
     
-	//get position start from tileMap
-	TMXObjectGroup* objg = _tileMap->getObjectGroup("Player");
-	auto playerPos = objg->getObject("PlayerPos");
-	float x = playerPos.at("x").asFloat();
-	float y = playerPos.at("y").asFloat();
-	_player->_sprite->setPosition(x, y);
+	Vec2 ranPosition = getRandomPosition();
+	_player->_sprite->setPosition(ranPosition);
 
 }
 
@@ -417,6 +432,12 @@ void Game::createSight()
 void Game::updatePhysics(float dt)
 {
     _rigidWorld->update(dt);
+}
+
+Vec2 Game::getRandomPosition() const
+{
+	int ranIndex = RandomHelper::random_int(0, (int)_revivalPosition.size() - 1);
+	return _revivalPosition.at(ranIndex);
 }
 
 void Game::updateSight(float dt)
