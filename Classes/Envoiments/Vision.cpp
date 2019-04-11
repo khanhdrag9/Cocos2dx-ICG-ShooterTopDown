@@ -47,7 +47,7 @@ void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
 
 void Vision::threadGetPoint()
 {
-	while(_isStop)
+	while(!_isStop)
 	{ 
 		getPointIntersect();
 		_points2.swap(_points);
@@ -57,13 +57,13 @@ void Vision::threadGetPoint()
 Vision::Vision():
 	_obj(nullptr),
 	_isDraw(false),
-	_isStop(true)
+	_isStop(false)
 {}
 
 Vision::Vision(shared_ptr<Character> obj):
 _obj(obj),
 _isDraw(false),
-_isStop(true)
+_isStop(false)
 {
 	_threadVision = thread(&Vision::threadGetPoint, this);
 	_threadVision.detach();
@@ -71,7 +71,7 @@ _isStop(true)
 
 Vision::~Vision()
 {
-	_isStop = false;
+	_isStop = true;
 }
 
 void Vision::setDraw(bool draw)
