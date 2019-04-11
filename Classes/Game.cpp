@@ -218,8 +218,22 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
 			break;
 		case cocos2d::EventKeyboard::KeyCode::KEY_2:
 			//_listVision.clear();	//disble vision
-			for (auto& vision : _listVision)
-				vision->stop();
+            if(_listVision.size() > 0)
+            {
+                for (auto& vision : _listVision)
+                    vision->stop();
+            }
+            else
+            {
+                shared_ptr<Vision> playerVision = createView(_player, type_vision::VISION_PLAYER);
+                playerVision->setDraw(true);
+                
+                for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
+                {
+                    shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
+                    botVision->setDraw(false);
+                }
+            }
 			break;
 #endif
         default:
