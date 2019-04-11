@@ -1,5 +1,6 @@
 #include "BotManager.h"
 #include "Bot.h"
+#include "../Characters/Player.h"
 #include "../Game.h"
 #include "../Physics/RigidBody.h"
 #include "../Physics/RigidWorld.h"
@@ -52,19 +53,35 @@ void BotManager::update(float dt)
 
 void BotManager::initBots()
 {
-	TMXObjectGroup* objg = Game::getInstance()->getTileMap()->getObjectGroup("Enemy");
-	int countEnemies = (int)objg->getObjects().size();
+	//TMXObjectGroup* objg = Game::getInstance()->getTileMap()->getObjectGroup("Enemy");
+	//int countEnemies = (int)objg->getObjects().size();
+	int countEnemies = 1;
+
+	//get position to init bots
+	Vec2 playerPosition = Game::getInstance()->getPlayer()->_sprite->getPosition();
+	vector<Vec2> history;
+	for (int i = 0; i < countEnemies;)
+	{
+		Vec2 pos = Game::getInstance()->getRandomPosition();
+		auto find = std::find(history.begin(), history.end(), pos);
+		if (find == history.end() && pos != playerPosition)
+		{
+			history.push_back(pos);
+			++i;
+		}
+	}
 
 	for (int i = 1; i <= countEnemies; i++)
 	{
-		auto pos = objg->getObject("enemyPos" + to_string(i));
+		/*auto pos = objg->getObject("enemyPos" + to_string(i));
 		float x = pos.at("x").asFloat();
-		float y = pos.at("y").asFloat();
+		float y = pos.at("y").asFloat();*/
 
 		auto bot = createBot(); //create bot here, use player for test, use Bot instead of
 		Game::getInstance()->getRigidWord()->createRigidBodyCircle(bot);
 		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
-		bot->_sprite->setPosition(x, y);
+		//bot->_sprite->setPosition(x, y);
+		bot->_sprite->setPosition(history[i-1]);
         
 		bot->setWalk(true);
         bot->setLinkPosition(_mapPosition.begin()->second);

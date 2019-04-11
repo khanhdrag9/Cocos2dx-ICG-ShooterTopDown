@@ -82,6 +82,7 @@ public:
     
     void pushView(shared_ptr<Vision> vision);
     shared_ptr<Vision> createView(shared_ptr<Character> object, type_vision type);
+	shared_ptr<Player> getPlayer() const;
 
 private:
     shared_ptr<Player> createAPlayer();
@@ -98,10 +99,10 @@ private:
     void createSight();
     
     void updatePhysics(float dt);
-
-	Vec2 getRandomPosition() const;
-
+	void updateSight(float dt);
+	
 public:
-    void updateSight(float dt);
+	Vec2 getRandomPosition() const;
+   
     
 };

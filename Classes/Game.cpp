@@ -504,3 +504,8 @@ shared_ptr<Vision> Game::createView(shared_ptr<Character> object, type_vision ty
     return _listVision.back();
 }
 
+shared_ptr<Player> Game::getPlayer() const
+{
+	return _player;
+}
+
