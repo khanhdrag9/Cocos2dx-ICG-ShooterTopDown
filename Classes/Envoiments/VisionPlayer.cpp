@@ -22,6 +22,7 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 	Vec2 objPos = _obj->_sprite->getPosition();
 
 	//visible Enemy
+	vector<Vec2> temp = _points2;
 	for (auto body : Game::getInstance()->getRigidWord()->getListBodies())
 	{
         if (body->getTag() != RigidBody::tag::ENEMY)continue;
@@ -45,7 +46,7 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 
 			for (auto& checkline : lines)
 			{
-				for (auto& point : _points2)
+				for (auto& point : temp)
 				{
 					if (Vec2::isSegmentIntersect(objPos, point, checkline.start, checkline.end))
 					{

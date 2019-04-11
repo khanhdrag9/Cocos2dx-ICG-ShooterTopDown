@@ -12,12 +12,13 @@ protected:
 	vector<Vec2> _points2;
 	virtual void threadGetPoint();
 	bool _isStop;
-	
+
+	void getPointIntersect();
 public:
 	Vision();
     Vision(shared_ptr<Character> obj);
 	virtual ~Vision();
     virtual void update(DrawNode* draw, ClippingNode* clipper = nullptr);
     void setDraw(bool draw);
-	void getPointIntersect();
+	
 };

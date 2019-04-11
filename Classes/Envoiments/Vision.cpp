@@ -95,7 +95,8 @@ void Vision::getPointIntersect()
 
 		Vec2 point = Vec2(x, y);
 		bool isIntersect = false;
-		for (auto& checkline : rigidWord->getListLines())
+		vector<Line> listLine = rigidWord->getListLines();
+		for (auto& checkline : listLine)
 		{
 			isIntersect = Vec2::isSegmentIntersect(objPos, point, checkline.start, checkline.end);
 
