@@ -22,6 +22,8 @@ void BotManager::init()
 
 void BotManager::clear()
 {
+    for(auto& bot : _listBots)
+        bot->destroy();
 	_listBots.clear();
 	_mapPosition.clear();
 }

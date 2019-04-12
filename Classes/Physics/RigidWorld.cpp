@@ -32,7 +32,7 @@ void RigidWorld::update(float dt)
 		auto& body = *begin;
 		if (body->getTag() != RigidBody::tag::WALL)
 		{
-			if (body->getObject() == nullptr)
+			if (body->getObject() == nullptr || body->getObject()->isDestroyed())
 				begin = _listRigidBodies.erase(begin);
 			else
 				++begin;

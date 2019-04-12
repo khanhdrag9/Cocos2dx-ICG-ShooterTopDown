@@ -12,23 +12,23 @@
 
 Character::Character():
 _sprite(nullptr),
-_rigidBody(nullptr)
+_rigidBody(nullptr),
+_destroy(false)
 {
 }
 
 
 Character::~Character()
 {
+    CCLOG("Delete Character");
     //_commandHandle = nullptr;
     _sprite->runAction(RemoveSelf::create());
-    releaseCommands();
-	_rigidBody->_object = nullptr;
-    _rigidBody = nullptr;
 }
 
 
 void Character::init()
 {
+    _destroy = false;
     _type = Character::type::NONE;
     _name = constants::character_none;
 
@@ -37,6 +37,8 @@ void Character::init()
 
 void Character::update(float dt)
 {
+    if(_destroy)return;
+        
     queue<shared_ptr<Command>> tempCommand;
     while (_commandQueue.size() > 0)
     {
@@ -62,6 +64,8 @@ void Character::releaseCommands()
 
 void Character::pushCommand(shared_ptr<Command>& command, bool replace)
 {
+    if(_destroy)return;
+    
    // command->registAnObject(shared_from_this(), _commandQueue);
 	queue<shared_ptr<Command>> queueTemp;
 	bool isUsed = false;
@@ -101,5 +105,16 @@ const Character::type& Character::getType() const
     return _type;
 }
 
+void Character::destroy()
+{
+    releaseCommands();
+    if(_rigidBody)
+        _rigidBody->_object = nullptr;
+    _rigidBody = nullptr;
+    _destroy = true;
+}
 
-
+bool Character::isDestroyed()
+{
+    return _destroy;
+}

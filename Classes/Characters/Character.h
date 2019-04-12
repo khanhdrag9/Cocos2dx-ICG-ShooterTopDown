@@ -26,10 +26,11 @@ public:
     virtual void pushCommand(shared_ptr<Command>& command, bool replace = false);
     const string& getName() const;
     const Character::type& getType() const;
-    
+    void destroy();
+    bool isDestroyed();
 protected:
     queue<shared_ptr<Command>> _commandQueue;
-    
+    bool _destroy;
     
 public:
     Sprite* _sprite;
