@@ -223,10 +223,10 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
 			_playerShoot = true;
             break;
 #if CHEAT
-		case cocos2d::EventKeyboard::KeyCode::KEY_1:	
+		case cocos2d::EventKeyboard::KeyCode::KEY_F1:	
 			_player->_sprite->setPosition(getRandomPosition());		//random rivavel position
 			break;
-		case cocos2d::EventKeyboard::KeyCode::KEY_2:
+		case cocos2d::EventKeyboard::KeyCode::KEY_F2:
 			//_listVision.clear();	//disble vision
             if(_listVision.size() > 0)
             {
@@ -244,6 +244,17 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
                     botVision->setDraw(false);
                 }
             }
+			break;
+		case cocos2d::EventKeyboard::KeyCode::KEY_F3:
+			//_listVision.clear();	//disble vision
+			if (BotManager::getInstance()->countBots() > 0)
+				BotManager::getInstance()->clear();
+			else
+			{
+				BotManager::getInstance()->initMovePosition();
+				BotManager::getInstance()->initBots();
+			}
+
 			break;
 #endif
         default:
@@ -487,7 +498,10 @@ void Game::updateSight(float dt)
 	//delete vision is marked delete
 	for (auto i = _listVision.begin(); i != _listVision.end();)
 	{
-		if ((*i)->avaibleToDelete())
+		auto& vision = (*i);
+		if (vision->getObject().use_count() <= 1 || vision == nullptr)
+			vision->stop();
+		if (vision->avaibleToDelete())
 			i = _listVision.erase(i);
 		else
 			++i;

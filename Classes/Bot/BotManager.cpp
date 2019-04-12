@@ -22,6 +22,8 @@ void BotManager::init()
 
 void BotManager::clear()
 {
+	_listBots.clear();
+	_mapPosition.clear();
 }
 
 void BotManager::addBot(shared_ptr<Bot> bot)

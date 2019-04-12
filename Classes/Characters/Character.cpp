@@ -22,6 +22,7 @@ Character::~Character()
     //_commandHandle = nullptr;
     _sprite->runAction(RemoveSelf::create());
     releaseCommands();
+	_rigidBody->_object = nullptr;
     _rigidBody = nullptr;
 }
 
