@@ -91,6 +91,15 @@ void Game::update(float dt)
 	updateCameraView();
 
     updateSight(dt);
+#if DEBUG_ENEMY
+	for (int i = 0; i < BotManager::getInstance()->countBots(); i++)
+	{
+		auto obj = BotManager::getInstance()->getBot(i);
+		_sightNode->drawLine(obj->_sprite->getPosition(), _player->_sprite->getPosition(), Color4F::RED);
+		if (auto circleBody = dynamic_pointer_cast<RigidBodyCircle>(obj->_rigidBody))
+			_sightNode->drawCircle(obj->_sprite->getPosition(), circleBody->getRadius(), 0, 360, false, Color4F::RED);
+	}
+#endif
     
     ObjectsPool::getInstance()->update();
 }
@@ -488,15 +497,7 @@ void Game::updateSight(float dt)
     for(auto& vision : _listVision)
     {
         vision->update(_sightNode);
-
-#if DEBUG_ENEMY
-		auto obj = vision->getObject();
-		_sightNode->drawLine(obj->_sprite->getPosition(), _player->_sprite->getPosition(), Color4F::RED);
-		if (auto circleBody = dynamic_pointer_cast<RigidBodyCircle>(obj->_rigidBody))
-			_sightNode->drawCircle(obj->_sprite->getPosition(), circleBody->getRadius(), 0, 360, false, Color4F::RED);
-#endif
     }
-  
     
 }
 
