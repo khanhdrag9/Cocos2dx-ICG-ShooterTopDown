@@ -101,7 +101,7 @@ void Vision::getPointIntersect()
 {
 	Vec2 objPos = _obj->_sprite->getPosition();
 	float dimention = 500.f;
-	auto& rigidWord = Game::getInstance()->getRigidWord();
+	auto listLine = Game::getInstance()->getRigidWord()->getListLines();
 
 	_points.clear();
 
@@ -113,7 +113,6 @@ void Vision::getPointIntersect()
 
 		Vec2 point = Vec2(x, y);
 		bool isIntersect = false;
-		vector<Line> listLine = rigidWord->getListLines();
 		for (auto& checkline : listLine)
 		{
 			isIntersect = Vec2::isSegmentIntersect(objPos, point, checkline.start, checkline.end);
