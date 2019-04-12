@@ -12,6 +12,7 @@
 #include "Commands/CommandShoot.h"
 #include "Defines/constants.h"
 #include "Physics/RigidBodyPolygon.h"
+#include "Physics/RigidBodyCircle.h"
 #include "Physics/RigidWorld.h"
 #include "Defines/Templates.h"
 #include "Resource/ResourceManager.h"
@@ -487,6 +488,13 @@ void Game::updateSight(float dt)
     for(auto& vision : _listVision)
     {
         vision->update(_sightNode);
+
+#if DEBUG_ENEMY
+		auto obj = vision->getObject();
+		_sightNode->drawLine(obj->_sprite->getPosition(), _player->_sprite->getPosition(), Color4F::RED);
+		if (auto circleBody = dynamic_pointer_cast<RigidBodyCircle>(obj->_rigidBody))
+			_sightNode->drawCircle(obj->_sprite->getPosition(), circleBody->getRadius(), 0, 360, false, Color4F::RED);
+#endif
     }
   
     

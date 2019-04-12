@@ -97,6 +97,11 @@ void Vision::stop()
 	_isStop = true;
 }
 
+shared_ptr<Character> Vision::getObject()
+{
+	return _obj;
+}
+
 void Vision::getPointIntersect()
 {
 	Vec2 objPos = _obj->_sprite->getPosition();

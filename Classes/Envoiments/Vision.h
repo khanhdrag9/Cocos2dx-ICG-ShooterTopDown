@@ -24,4 +24,5 @@ public:
     void setDraw(bool draw);
 	bool avaibleToDelete() const;
 	void stop();
+	shared_ptr<Character> getObject();
 };
