@@ -22,6 +22,7 @@ public:
 	virtual ~Vision();
     virtual void update(DrawNode* draw, ClippingNode* clipper = nullptr);
     void setDraw(bool draw);
+    bool isDraw();
 	bool avaibleToDelete() const;
 	void stop();
 	shared_ptr<Character> getObject();

@@ -9,6 +9,7 @@
 #include "Informations.h"
 #include "../Characters/Character.h"
 #include "Bot.h"
+#include "../Commands/CommandMoveBy.h"
 
 InformationCenter::InformationCenter():
 _isStop(false)
@@ -38,7 +39,9 @@ void InformationCenter::update()
                 if(object)
                 {
                     //Detect enemy
-                    if(information->getType() == Information::InformationType::DetectEnemy)
+                    auto typeInformation = information->getType();
+                    bool isBotShoot = false;
+                    if(typeInformation == Information::InformationType::DetectEnemy)
                     {
                         if(auto detectenemy = dynamic_pointer_cast<InformationDetectEnemy>(information))
                         {
@@ -51,11 +54,14 @@ void InformationCenter::update()
                                 object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
                                 
                                 if(auto bot = dynamic_pointer_cast<Bot>(object))
+                                {
+                                    isBotShoot = true;
                                     bot->setShoot(true);
+                                }
                             }
                         }
                     }
-                    else if(information->getType() == Information::InformationType::EnemyOutVision)
+                    else if(typeInformation == Information::InformationType::EnemyOutVision)
                     {
                         if(auto bot = dynamic_pointer_cast<Bot>(object))
                             bot->setShoot(false);
@@ -63,6 +69,34 @@ void InformationCenter::update()
                     
                     
                     //other
+                    if(typeInformation == Information::InformationType::MoveAround)
+                    {
+                        if(auto movearound = dynamic_pointer_cast<InformationMoveAround>(information))
+                        {
+                            auto& pointsCollision = movearound->_aroundCollision;
+                            auto& pointsNotCollision = movearound->_aroundNotCollision;
+                            Vec2 objPosition = object->_sprite->getPosition();
+                            //caculator...
+                            
+                            
+                            auto max = std::max_element(pointsNotCollision.begin(), pointsNotCollision.end(), [&](Vec2 point1, Vec2 point2){
+                                return (objPosition - point1).length() > (objPosition - point2).length();
+                            });
+                            if(max != pointsNotCollision.end())
+                            {
+                                Vec2 direction = *max - object->_sprite->getPosition();
+                                direction.normalize();
+                                direction *= 100;
+                                if(auto bot = dynamic_pointer_cast<Bot>(object))
+                                {
+                                    bot->setWalk(true);
+                                    shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(direction, 0.1);
+                                    bot->Character::pushCommand(cmd);
+                                }
+                            }
+                        }
+                        
+                    }
                     
                 }
             }

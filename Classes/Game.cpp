@@ -181,8 +181,20 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
             {
                 BotManager::getInstance()->initMovePosition();
                 BotManager::getInstance()->initBots();
+                for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
+                {
+                    shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
+                    botVision->setDraw(false);
+                }
             }
             
+            break;
+        case cocos2d::EventKeyboard::KeyCode::KEY_F4:
+            for(auto& vision : _listVision)
+            {
+                if(auto b = dynamic_pointer_cast<Bot>(vision->getObject()))
+                    vision->setDraw(!vision->isDraw());
+            }
             break;
         default:
             break;
@@ -429,8 +441,8 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-    setObjectFollowByCam((shared_ptr<Character>)_player);
-//    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
+//    setObjectFollowByCam((shared_ptr<Character>)_player);
+    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
 	updateCameraView();
 }
 

@@ -87,6 +87,11 @@ void Vision::setDraw(bool draw)
     _isDraw = draw;
 }
 
+bool Vision::isDraw()
+{
+    return _isDraw;
+}
+
 bool Vision::avaibleToDelete() const
 {
 	return _avaiableToDelete;

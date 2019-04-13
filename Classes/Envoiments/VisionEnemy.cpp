@@ -25,6 +25,10 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 	//return;	//disble vision enemy
 	Vec2 objPos = _obj->_sprite->getPosition();
 
+    //for init information
+    shared_ptr<Information> moveInfo = make_shared<InformationMoveAround>(_obj, _points2);
+    InformationCenter::getInstance()->pushInformation(_obj, moveInfo);
+    
 	vector<Vec2> temp = _points2;
 	for (auto body : Game::getInstance()->getRigidWord()->getListBodies())
 	{

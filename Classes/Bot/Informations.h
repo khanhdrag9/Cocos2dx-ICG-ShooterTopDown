@@ -12,7 +12,8 @@ public:
     {
         None,
         DetectEnemy,
-        EnemyOutVision
+        EnemyOutVision,
+        MoveAround
     };
     
 protected:
@@ -44,4 +45,17 @@ public:
     InformationEnemyOutVision();
     
     friend class InformationCenter;
-}; 
+};
+
+class InformationMoveAround : public Information
+{
+    vector<Vec2> _aroundCollision;
+    vector<Vec2> _aroundNotCollision;
+public:
+    InformationMoveAround();
+    InformationMoveAround(const vector<Vec2>& aroundCollision, const vector<Vec2>& aroundNotCollision);
+    InformationMoveAround(shared_ptr<Character> object, const vector<Vec2>& around);
+    ~InformationMoveAround();
+    
+    friend class InformationCenter;
+};
