@@ -21,6 +21,7 @@
 #include "Envoiments/Vision.h"
 #include "Envoiments/VisionPlayer.h"
 #include "Envoiments/VisionEnemy.h"
+#include "Bot/InformationCenter.h"
 
 Game::Game():
 _currentState(nullptr),
@@ -53,6 +54,7 @@ Game::~Game()
 void Game::init()
 {
     new ResourceManager;
+    new InformationCenter;
 }
 
 void Game::initGamePlay()

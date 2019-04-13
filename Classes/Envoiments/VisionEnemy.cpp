@@ -8,6 +8,8 @@
 #include "../Physics/RigidBodyCircle.h"
 #include "../Commands/CommandMoveBy.h"
 #include "../Commands/CommandMoveTo.h"
+#include "../Bot/Informations.h"
+#include "../Bot/InformationCenter.h"
 
 VisionEnemy::VisionEnemy() : Vision()
 {
@@ -20,10 +22,9 @@ VisionEnemy::VisionEnemy(shared_ptr<Character> obj) : Vision(obj)
 void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 {
 	Vision::update(draw, clipper);
-	return;	//disble vision enemy
+	//return;	//disble vision enemy
 	Vec2 objPos = _obj->_sprite->getPosition();
 
-	//visible Enemy
 	vector<Vec2> temp = _points2;
 	for (auto body : Game::getInstance()->getRigidWord()->getListBodies())
 	{
@@ -76,26 +77,35 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 				if (isInterest)
 				{
 					//Shoot when in vision!
-					Vec2 target = body->getObject()->_sprite->getPosition();
-					Vec2 vectorAngle = target - bot->_sprite->getPosition();
-					auto angle = atan2(vectorAngle.y, vectorAngle.x);
-					_obj->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
-
-					bot->setShoot(true);
+                    shared_ptr<Character> enemy = body->getObject();
+                    Vec2 target = enemy->_sprite->getPosition();
+//                    Vec2 vectorAngle = target - bot->_sprite->getPosition();
+//                    auto angle = atan2(vectorAngle.y, vectorAngle.x);
+//                    _obj->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
+//
+//                    bot->setShoot(true);
 
 					//move to target
 //                    shared_ptr<Command> moveCmd = CommandMoveTo::createCommandMoveTo(bot->getSpeedMove(), target);
 //                    bot->pushCommand(moveCmd, true);
+                    
+                    float distance = (target - _obj->_sprite->getPosition()).length();
+                    shared_ptr<Information> information = make_shared<InformationDetectEnemy>(body->getObject(), distance);
+                    InformationCenter::getInstance()->pushInformation(_obj, information);
 				}
-				else
-				{
-					bot->setShoot(false);
-				}
+                else
+                {
+//                    bot->setShoot(false);
+                    shared_ptr<Information> information = make_shared<InformationEnemyOutVision>();
+                    InformationCenter::getInstance()->pushInformation(_obj, information);
+                }
 			}
-			else
-			{
-				bot->setShoot(false);
-			}
+            else
+            {
+//                bot->setShoot(false);
+                shared_ptr<Information> information = make_shared<InformationEnemyOutVision>();
+                InformationCenter::getInstance()->pushInformation(_obj, information);
+            }
 
 		}
 	}
