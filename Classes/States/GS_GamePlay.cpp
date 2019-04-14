@@ -1,13 +1,16 @@
 #include "GS_GamePlay.h"
 #include "../Game.h"
 #include "../Objects/ObjectsPool.h"
+#include "GS_GamePlayUI.h"
 
 
 cocos2d::Scene *GS_GamePlay::createScene()
 {
 	Scene* scene = Scene::create();
     GS_GamePlay* layer = GS_GamePlay::create();
+    layer->_uilayer = GS_GamePlayUI::create();
     scene->addChild(layer);
+    scene->addChild(layer->_uilayer);
     return scene;
 }
 
@@ -52,6 +55,11 @@ void GS_GamePlay::update(float dt)
 	/*if (test->get_id);
 	test = make_unique<thread>(&Game::updateSight, Game::getInstance(), dt);
 	test->join();*/
+}
+
+GS_GamePlayUI* GS_GamePlay::getUILayer() const
+{
+    return _uilayer;
 }
 
 void GS_GamePlay::controller()

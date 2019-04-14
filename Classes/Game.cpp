@@ -6,6 +6,8 @@
 //
 
 #include "Game.h"
+#include "States/GS_GamePlay.h"
+#include "States/GS_GamePlayUI.h"
 #include "Objects/ObjectsPool.h"
 #include "Characters/Player.h"
 #include "Commands/CommandMoveBy.h"
@@ -35,7 +37,8 @@ _objIsFollow(nullptr),
 _rigidWorld(nullptr),
 _sightNode(nullptr),
 _fogSprite(nullptr),
-_fogClip(nullptr)
+_fogClip(nullptr),
+_isMouseDown(false)
 {
     
 }
@@ -239,6 +242,7 @@ void Game::handleTouchMoved(EventMouse* event)
 void Game::handleTouchRelease(EventMouse* event)
 {
     _isMouseDown = false;
+    _playerShoot = false;
 }
 #endif
 
@@ -463,8 +467,16 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-    setObjectFollowByCam((shared_ptr<Character>)_player);
-//    setObjectFollowByCam(BotManager::getInstance()->getBot(0));
+    auto character = (shared_ptr<Character>)_player;
+    //auto character = BotManager::getInstance()->getBot(0);
+    if(GS_GamePlay* gameplayLayer = dynamic_cast<GS_GamePlay*>(_currentState))
+    {
+        if(gameplayLayer->getUILayer())
+            gameplayLayer->getUILayer()->setCharacter(character);
+    }
+    
+    
+    setObjectFollowByCam(character);
 	updateCameraView();
 }
 

@@ -23,8 +23,8 @@ void Mag::update(float dt)
 bool Mag::canShoot()
 {
     bool can = _countTime >= _timeReshoot;
-    if(can)_countTime = 0.f;
-    return can;
+    if(can && _currentBullets > 0)_countTime = 0.f;
+    return can && _currentBullets > 0;
 }
 void Mag::resetCountTime()
 {
@@ -41,4 +41,14 @@ float Mag::reload()
 {
     _currentBullets = _maxBullet;
     return _timeReload;
+}
+
+const int& Mag::getMaxBullet() const
+{
+    return _maxBullet;
+}
+
+const int& Mag::getCurrentBullet() const
+{
+    return _currentBullets;
 }

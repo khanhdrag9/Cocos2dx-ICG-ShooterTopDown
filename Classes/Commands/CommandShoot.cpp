@@ -11,6 +11,8 @@
 #include "../Objects/ObjectsPool.h"
 #include "../Defines/constants.h"
 #include "../Physics/RigidBody.h"
+#include "../Characters/Player.h"
+#include "../Bot/Bot.h"
 
 CommandShoot::CommandShoot():
     _speed(Vec2(0,0))
@@ -35,10 +37,18 @@ void CommandShoot::update(float dt)
 		if (_object->getType() == Character::type::PLAYER)
 		{
             bullet->_rigidBody->setTag(RigidBody::tag::BULLET_PLAYER);
+            if(auto player = dynamic_pointer_cast<Player>(_object))
+            {
+                player->getMag()->decreBullet();
+            }
 		}
 		else if (_object->getType() == Character::type::ENEMY)
 		{
 			bullet->_rigidBody->setTag(RigidBody::tag::BULLET_ENEMY);
+            if(auto enemy = dynamic_pointer_cast<Bot>(_object))
+            {
+                enemy->getMag()->decreBullet();
+            }
 		}
 
         ObjectsPool::getInstance()->pushBulletBasic(bullet);

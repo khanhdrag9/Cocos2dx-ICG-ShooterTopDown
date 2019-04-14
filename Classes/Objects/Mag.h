@@ -18,4 +18,7 @@ public:
     void resetCountTime();
     void decreBullet(int decre = 1);
     float reload();
+    
+    const int& getMaxBullet() const;
+    const int& getCurrentBullet() const;
 };
