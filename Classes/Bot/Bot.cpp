@@ -12,8 +12,7 @@ Bot::Bot() : Character(),
 _linkPos(nullptr),
 _speedMove(0),
 _ableWalk(false),
-_ableShoot(false),
-_countShoot(pair<float, float>(0.f, 0.25f))
+_ableShoot(false)
 {
 }
 
@@ -25,10 +24,10 @@ void Bot::init()
 	_name = constants::character_enemy;
     
     _sprite = Sprite::create(ResourceManager::getInstance()->at(res::define::ENEMY_1_YELLOW));
-
-	
-
+    
 	_speedMove = 200.f;
+    
+    _bulletMag = pointer::make_unique<Mag>(0.25, 30);
 }
 
 void Bot::update(float dt)
@@ -36,6 +35,7 @@ void Bot::update(float dt)
     if(containStatus(Status::STOP))return;
     
 	Character::update(dt);
+    _bulletMag->update(dt);
     
     bool isMoved = false;
     if(containStatus(Status::WALK))
@@ -58,12 +58,10 @@ void Bot::update(float dt)
         }
     }
 
-	if (containStatus(Status::SHOOT) && _countShoot.first >= _countShoot.second)
+	if (containStatus(Status::SHOOT) && _bulletMag->canShoot())
 	{
 		Game::getInstance()->handleShootCharacter(shared_from_this(), 1000);
-		_countShoot.first = 0.f;
 	}
-	_countShoot.first += dt;
     
     //update rotation
     if (_linkPos && isMoved)
@@ -126,4 +124,9 @@ void Bot::setWalk(bool enable)
 void Bot::setShoot(bool enable)
 {
 	_ableShoot = enable;
+}
+
+const unique_ptr<Mag>& Bot::getMag() const
+{
+    return _bulletMag;
 }

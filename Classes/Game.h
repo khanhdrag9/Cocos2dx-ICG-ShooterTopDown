@@ -31,8 +31,6 @@ private:
     
     shared_ptr<Player> _player;
 	bool _playerShoot;
-    float _counttimePlayerShoot;
-    float _intervelPlayerShoot;
     
     bool _isHoldKey;
     vector<EventKeyboard::KeyCode> _keyIsHolds;

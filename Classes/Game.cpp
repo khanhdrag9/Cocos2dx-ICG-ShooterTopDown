@@ -27,8 +27,6 @@ Game::Game():
 _currentState(nullptr),
 _player(nullptr),
 _playerShoot(false),
-_counttimePlayerShoot(0.f),
-_intervelPlayerShoot(0.25f),
 _isHoldKey(false),
 _tileMap(nullptr),
 _backgroundLayer(nullptr),
@@ -73,15 +71,12 @@ void Game::update(float dt)
     handleKeyboardHold();
 
 	//player
-    _counttimePlayerShoot += dt;
 	if (_playerShoot)
 	{
-		if (_counttimePlayerShoot > _intervelPlayerShoot)
+		if (_player->getMag()->canShoot())
 		{
 			handleShootCharacter((shared_ptr<Character>)_player, 1000);
-			_counttimePlayerShoot = 0.f;
 		}
-		_playerShoot = false;
 	}
     _player->update(dt);
 	//end player
@@ -256,8 +251,6 @@ void Game::releaseGamePlay()
 {
     _player = nullptr;
     _isHoldKey = false;
-    _counttimePlayerShoot = 0.f;
-    _intervelPlayerShoot = 0.25f;
     CC_SAFE_DELETE(_backgroundLayer);
     CC_SAFE_DELETE(_collisionLayer);
      CC_SAFE_DELETE(_tileMap);

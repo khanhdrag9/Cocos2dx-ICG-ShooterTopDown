@@ -1,5 +1,6 @@
 #pragma once
 #include "../Characters/Character.h"
+#include "../Objects/Mag.h"
 
 class LinkPosition;
 
@@ -20,7 +21,7 @@ private:
     
 	bool _ableWalk;
 	bool _ableShoot;
-	pair<float, float> _countShoot;
+    unique_ptr<Mag> _bulletMag;
 public:
 	Bot();
     
@@ -43,4 +44,6 @@ public:
 	void setWalk(bool enable);
 	void setShoot(bool enable);
 	
+    
+    const unique_ptr<Mag>& getMag() const;
 };
