@@ -203,6 +203,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
     
 }
 
+#if USE_TOUCH
 bool Game::handleTouchBegan(Touch* touch, Event* event)
 {
     return true;
@@ -221,6 +222,30 @@ void Game::handleTouchRelease(Touch* touch, Event* event)
 {
     
 }
+#else
+bool Game::handleTouchBegan(EventMouse* event)
+{
+    _playerShoot = true;
+    _isMouseDown = true;
+    return true;
+}
+
+void Game::handleTouchMoved(EventMouse* event)
+{
+    //for player
+    if(_isMouseDown) _playerShoot = true;
+    
+    Vec2 point = event->getLocation() + Director::getInstance()->getVisibleOrigin();
+    point = _currentState->convertToNodeSpace(point);
+    shared_ptr<Character> obj = _player;
+    updateAngle(obj, point);
+}
+
+void Game::handleTouchRelease(EventMouse* event)
+{
+    _isMouseDown = false;
+}
+#endif
 
 const unique_ptr<RigidWorld>& Game::getRigidWord() const
 {
@@ -315,7 +340,11 @@ void Game::updateAngle(shared_ptr<Character> object, const Vec2& point)
     Vec2 objpos = object->_sprite->getPosition();
     
     auto angle = atan2(point.y - objpos.y, point.x - objpos.x);
+#if USE_TOUCH
     object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
+#else
+    object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(angle) + 90);
+#endif
 }
 
 void Game::handleShootCharacter(shared_ptr<Character> object, const float& speed)

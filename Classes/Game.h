@@ -70,9 +70,16 @@ public:
     void handleKeyboardHold();
     void handleKeyboardRelease(EventKeyboard::KeyCode, Event*); //used in gameplay
     
+#if USE_TOUCH
     bool handleTouchBegan(Touch* touch, Event* event);
     void handleTouchMoved(Touch* touch, Event* event);
     void handleTouchRelease(Touch* touch, Event* event);
+#else
+    bool handleTouchBegan(EventMouse* event);
+    void handleTouchMoved(EventMouse* event);
+    void handleTouchRelease(EventMouse* event);
+    bool _isMouseDown;
+#endif
 	void handleShootCharacter(shared_ptr<Character> object, const float& speed);
 
     const unique_ptr<RigidWorld>& getRigidWord() const;

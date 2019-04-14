@@ -17,6 +17,9 @@ class InformationCenter : public pattern::Singleton<InformationCenter>
     pair<shared_ptr<Character>, shared_ptr<InformationEnemyOutVision>> _enemyOutVision;
     void triggerEnemyOutVision();
     
+    //MoveAround
+    
+    
 public:
     InformationCenter();
     ~InformationCenter();
