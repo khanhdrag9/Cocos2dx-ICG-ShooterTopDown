@@ -27,7 +27,7 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 
     //for init information
     shared_ptr<Information> moveInfo = make_shared<InformationMoveAround>(_obj, _points2);
-    InformationCenter::getInstance()->pushInformation(_obj, moveInfo);
+    //InformationCenter::getInstance()->pushInformation(_obj, moveInfo);
     
 	vector<Vec2> temp = _points2;
 	for (auto body : Game::getInstance()->getRigidWord()->getListBodies())
@@ -83,31 +83,20 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 					//Shoot when in vision!
                     shared_ptr<Character> enemy = body->getObject();
                     Vec2 target = enemy->_sprite->getPosition();
-//                    Vec2 vectorAngle = target - bot->_sprite->getPosition();
-//                    auto angle = atan2(vectorAngle.y, vectorAngle.x);
-//                    _obj->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
-//
-//                    bot->setShoot(true);
-
-					//move to target
-//                    shared_ptr<Command> moveCmd = CommandMoveTo::createCommandMoveTo(bot->getSpeedMove(), target);
-//                    bot->pushCommand(moveCmd, true);
                     
                     float distance = (target - _obj->_sprite->getPosition()).length();
-                    shared_ptr<Information> information = make_shared<InformationDetectEnemy>(body->getObject(), distance);
+                    auto information = make_shared<InformationDetectEnemy>(body->getObject(), distance);
                     InformationCenter::getInstance()->pushInformation(_obj, information);
 				}
                 else
                 {
-//                    bot->setShoot(false);
-                    shared_ptr<Information> information = make_shared<InformationEnemyOutVision>();
+                    auto information = make_shared<InformationEnemyOutVision>();
                     InformationCenter::getInstance()->pushInformation(_obj, information);
                 }
 			}
             else
             {
-//                bot->setShoot(false);
-                shared_ptr<Information> information = make_shared<InformationEnemyOutVision>();
+                auto information = make_shared<InformationEnemyOutVision>();
                 InformationCenter::getInstance()->pushInformation(_obj, information);
             }
 
