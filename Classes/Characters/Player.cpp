@@ -28,7 +28,7 @@ void Player::init()
     
     _speedMove = 300.f;
     
-    _bulletMag = pointer::make_unique<Mag>(0.25, 30);
+    _bulletMag = pointer::make_unique<Mag>(0.25, 30, 1.5f);
 }
 void Player::update(float dt)
 {

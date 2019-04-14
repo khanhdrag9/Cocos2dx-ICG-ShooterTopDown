@@ -27,7 +27,7 @@ void Bot::init()
     
 	_speedMove = 200.f;
     
-    _bulletMag = pointer::make_unique<Mag>(0.25, 30);
+    _bulletMag = pointer::make_unique<Mag>(0.25, 30, 1.5f);
 }
 
 void Bot::update(float dt)
