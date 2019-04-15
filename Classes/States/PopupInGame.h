@@ -7,12 +7,9 @@ class PopupInGame : public Layer
     
 public:
     PopupInGame();
-    
-    static Scene* createScene();
-    
     bool init() override;
     
     
-    CREATE_FUNC(GS_GamePlayUI);
+    CREATE_FUNC(PopupInGame);
 };
 

@@ -8,6 +8,7 @@ namespace res
         SPLASH,
         IMG_BG_1,
         IMG_FOG,
+        IMG_BLACK,
         
         //UI
         BTN_BLUE,

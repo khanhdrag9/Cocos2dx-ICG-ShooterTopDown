@@ -53,6 +53,8 @@ private:
     list<shared_ptr<Vision>> _listVision;
 
 	vector<Vec2> _revivalPosition;
+    
+    bool _isPopupInGameVisible;
 public:
     Game();
     ~Game();
@@ -105,7 +107,8 @@ private:
     
     void updatePhysics(float dt);
 	void updateSight(float dt);
-	
+    
+	void usePopupInGame(bool push);
 public:
 	Vec2 getRandomPosition() const;
    

@@ -8,6 +8,7 @@
 #include "Game.h"
 #include "States/GS_GamePlay.h"
 #include "States/GS_GamePlayUI.h"
+#include "States/PopupInGame.h"
 #include "Objects/ObjectsPool.h"
 #include "Characters/Player.h"
 #include "Commands/CommandMoveBy.h"
@@ -38,7 +39,8 @@ _rigidWorld(nullptr),
 _sightNode(nullptr),
 _fogSprite(nullptr),
 _fogClip(nullptr),
-_isMouseDown(false)
+_isMouseDown(false),
+_isPopupInGameVisible(false)
 {
     
 }
@@ -147,8 +149,12 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
     
     if(_keyIsHolds.size() == 0)_isHoldKey = false;
    
-#if CHEAT
+    
     switch (keycode) {
+        case cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE:
+            usePopupInGame(!_isPopupInGameVisible);
+            break;
+#if CHEAT
         case cocos2d::EventKeyboard::KeyCode::KEY_F1:
             _player->_sprite->setPosition(getRandomPosition());        //random rivavel position
             break;
@@ -194,10 +200,10 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
                     vision->setDraw(!vision->isDraw());
             }
             break;
+#endif
         default:
             break;
     }
-#endif
     
 }
 
@@ -602,3 +608,30 @@ shared_ptr<Player> Game::getPlayer() const
 	return _player;
 }
 
+void Game::usePopupInGame(bool push)
+{
+    if(push)
+    {
+        auto popup = PopupInGame::create();
+        popup->setName("ingamepopup");
+        if(auto gameplay = dynamic_cast<GS_GamePlay*>(_currentState))
+        {
+            gameplay->getUILayer()->addChild(popup);
+            _isPopupInGameVisible = true;
+        }
+        else
+            CC_SAFE_DELETE(popup);
+    }
+    else
+    {
+        if(auto gameplay = dynamic_cast<GS_GamePlay*>(_currentState))
+        {
+            auto popup = gameplay->getUILayer()->getChildByName("ingamepopup");
+            if(popup)
+            {
+                popup->runAction(RemoveSelf::create());
+                _isPopupInGameVisible = false;
+            }
+        }
+    }
+}

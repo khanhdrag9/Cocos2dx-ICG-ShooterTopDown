@@ -6,13 +6,10 @@
 //
 
 #include "PopupInGame.h"
+#include "../Resource/ResourceManager.h"
 
-Scene* PopupInGame::createScene()
+PopupInGame::PopupInGame()
 {
-    auto scene = Scene::create();
-    PopupInGame* layer = PopupInGame::create();
-    scene->addChild(layer);
-    return scene;
 }
 
 bool PopupInGame::init()
@@ -20,7 +17,14 @@ bool PopupInGame::init()
     if(!Layer::init())
         return false;
     
+    auto resMgr = ResourceManager::getInstance();
     
+    auto bg = Sprite::create(resMgr->at(res::define::IMG_BLACK));
+    bg->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    bg->setOpacity(150);
+    this->addChild(bg);
+    
+    //popup here
     
     return true;
 }
