@@ -37,7 +37,8 @@ shared_ptr<CommandMoveBy> CommandMoveBy::createCommandMoveBy(const Vec2& vec, co
 
 void CommandMoveBy::update(float dt)
 {
-    if(!_isFinished && _object)
+    auto object = _object.lock();
+    if(!_isFinished && object)
     {
         if(_counttime >= _duration)
         {
@@ -45,12 +46,12 @@ void CommandMoveBy::update(float dt)
             _counttime = 0.f;
             _duration = 0.f;
             _velocity = Vec2(0,0);
-			_object->_rigidBody->_velocity = _velocity;
+			object->_rigidBody->_velocity = _velocity;
         }
         else
         {
             //Vec2 newvec = _velocity;
-            _object->_rigidBody->_velocity = _velocity * dt;
+            object->_rigidBody->_velocity = _velocity * dt;
             _counttime+=dt;
         }
     }

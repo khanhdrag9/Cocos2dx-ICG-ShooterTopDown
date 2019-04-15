@@ -77,9 +77,9 @@ void GS_GamePlay::controller()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchlistener, this);
 #else
     auto mouselistener = EventListenerMouse::create();
-    mouselistener->onMouseDown = CC_CALLBACK_1(Game::handleTouchBegan, Game::getInstance());
-    mouselistener->onMouseMove = CC_CALLBACK_1(Game::handleTouchMoved, Game::getInstance());
-    mouselistener->onMouseUp = CC_CALLBACK_1(Game::handleTouchRelease, Game::getInstance());
+    mouselistener->onMouseDown = CC_CALLBACK_1(Game::handleMouseBegan, Game::getInstance());
+    mouselistener->onMouseMove = CC_CALLBACK_1(Game::handleMouseMoved, Game::getInstance());
+    mouselistener->onMouseUp = CC_CALLBACK_1(Game::handleMouseRelease, Game::getInstance());
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouselistener, this);
 #endif
 }

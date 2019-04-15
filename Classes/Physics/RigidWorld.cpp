@@ -21,6 +21,8 @@ RigidWorld::RigidWorld()
 
 RigidWorld::~RigidWorld()
 {
+    _listLines.clear();
+    _listRigidBodies.clear();
     
 }
 

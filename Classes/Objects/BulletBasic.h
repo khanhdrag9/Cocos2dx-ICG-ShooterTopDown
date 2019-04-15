@@ -20,7 +20,4 @@ public:
     
     Vec2 getSpeed() const;
     int getDamge() const;
-    
-    bool isDestroy();
-    void destroy();
 };

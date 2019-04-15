@@ -75,9 +75,9 @@ public:
     void handleTouchMoved(Touch* touch, Event* event);
     void handleTouchRelease(Touch* touch, Event* event);
 #else
-    bool handleTouchBegan(EventMouse* event);
-    void handleTouchMoved(EventMouse* event);
-    void handleTouchRelease(EventMouse* event);
+    bool handleMouseBegan(EventMouse* event);
+    void handleMouseMoved(EventMouse* event);
+    void handleMouseRelease(EventMouse* event);
     bool _isMouseDown;
 #endif
 	void handleShootCharacter(shared_ptr<Character> object, const float& speed);
@@ -90,6 +90,9 @@ public:
     void pushView(shared_ptr<Vision> vision);
     shared_ptr<Vision> createView(shared_ptr<Character> object, type_vision type);
 	shared_ptr<Player> getPlayer() const;
+    
+    void resetGame();
+    void backToHomeMenu();
 
 private:
     shared_ptr<Player> createAPlayer();

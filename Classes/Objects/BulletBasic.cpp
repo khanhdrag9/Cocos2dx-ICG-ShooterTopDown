@@ -21,6 +21,7 @@ BulletBasic::BulletBasic(): Character(),
 
 BulletBasic::~BulletBasic()
 {
+    
 }
 
 void BulletBasic::init()
@@ -76,15 +77,4 @@ Vec2 BulletBasic::getSpeed() const
 int BulletBasic::getDamge() const
 {
     return _damge;
-}
-
-bool BulletBasic::isDestroy()
-{
-    return _isDestroy;
-}
-
-void BulletBasic::destroy()
-{
-    _rigidBody->_object = nullptr;
-    _isDestroy = true;
 }

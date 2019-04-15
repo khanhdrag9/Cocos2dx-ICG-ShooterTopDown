@@ -17,7 +17,7 @@ void ObjectsPool::update()
 {
     for(auto i = _bulletBasicPool.begin(); i != _bulletBasicPool.end();)
     {
-        if(i->get()->isDestroy())
+        if(i->get()->isDestroyed())
         {
             i = _bulletBasicPool.erase(i);
         }
@@ -35,5 +35,7 @@ void ObjectsPool::pushBulletBasic(shared_ptr<BulletBasic> bulletbasic)
 
 void ObjectsPool::clear()
 {
+    for(auto& bullet : _bulletBasicPool)
+        bullet->destroy();
     _bulletBasicPool.clear();
 }

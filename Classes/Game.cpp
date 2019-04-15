@@ -76,14 +76,21 @@ void Game::update(float dt)
     handleKeyboardHold();
 
 	//player
-	if (_playerShoot)
-	{
-		if (_player->getMag()->canShoot())
-		{
-			handleShootCharacter((shared_ptr<Character>)_player, 1000);
-		}
-	}
-    _player->update(dt);
+    if(_player)
+    {
+        if(_player->isDestroyed())
+        {
+            _player = nullptr;
+        }
+        else if (_playerShoot)
+        {
+            if (_player->getMag()->canShoot())
+            {
+                handleShootCharacter((shared_ptr<Character>)_player, 1000);
+            }
+        }
+        _player->update(dt);
+    }
 	//end player
 
     updatePhysics(dt);
@@ -104,6 +111,7 @@ void Game::update(float dt)
 #endif
     
     ObjectsPool::getInstance()->update();
+    InformationCenter::getInstance()->clear();
 }
 
 void Game::setCurrentState(Layer* layer)
@@ -219,7 +227,9 @@ void Game::handleTouchMoved(Touch* touch, Event* event)
     Vec2 point = touch->getLocation();
     point = _currentState->convertToNodeSpace(point);
     shared_ptr<Character> obj = _player;
-    updateAngle(obj, point);
+    
+    if(obj)
+        updateAngle(obj, point);
 }
 
 void Game::handleTouchRelease(Touch* touch, Event* event)
@@ -227,14 +237,14 @@ void Game::handleTouchRelease(Touch* touch, Event* event)
     
 }
 #else
-bool Game::handleTouchBegan(EventMouse* event)
+bool Game::handleMouseBegan(EventMouse* event)
 {
     _playerShoot = true;
     _isMouseDown = true;
     return true;
 }
 
-void Game::handleTouchMoved(EventMouse* event)
+void Game::handleMouseMoved(EventMouse* event)
 {
     //for player
     if(_isMouseDown) _playerShoot = true;
@@ -242,10 +252,12 @@ void Game::handleTouchMoved(EventMouse* event)
     Vec2 point = event->getLocation() + Director::getInstance()->getVisibleOrigin();
     point = _currentState->convertToNodeSpace(point);
     shared_ptr<Character> obj = _player;
-    updateAngle(obj, point);
+    
+    if(obj)
+        updateAngle(obj, point);
 }
 
-void Game::handleTouchRelease(EventMouse* event)
+void Game::handleMouseRelease(EventMouse* event)
 {
     _isMouseDown = false;
     _playerShoot = false;
@@ -259,16 +271,69 @@ const unique_ptr<RigidWorld>& Game::getRigidWord() const
 
 void Game::releaseGamePlay()
 {
-    _player = nullptr;
+//    if(_player)
+//    {
+//        _player->destroy();
+//        _player = nullptr;
+//    }
+    _playerShoot = false;
     _isHoldKey = false;
-    CC_SAFE_DELETE(_backgroundLayer);
-    CC_SAFE_DELETE(_collisionLayer);
-     CC_SAFE_DELETE(_tileMap);
+    _keyIsHolds.clear();
+    
+    if(_tileMap)
+    {
+        _tileMap->removeFromParentAndCleanup(true);
+        _tileMap = nullptr;
+    }
+    
     _objIsFollow = nullptr;
     _rigidWorld = nullptr;
     
-    _keyIsHolds.clear();
+    if(_sightNode)
+    {
+        _sightNode->removeFromParentAndCleanup(true);
+        _sightNode = nullptr;
+    }
+#if DEBUG_SIGHT
+    if(_debugWall)
+    {
+        _debugWall->removeFromParentAndCleanup(true);
+        _debugWall = nullptr;
+    }
+#endif
+    
+    if(_fogSprite)
+    {
+        _fogSprite->removeFromParentAndCleanup(true);
+        _fogSprite = nullptr;
+    }
+    if(_fogClip)
+    {
+        _fogClip->removeFromParentAndCleanup(true);
+        _fogClip = nullptr;
+    }
+    
+    for(auto& vision : _listVision)
+        vision->stop();
+    //_listVision.clear();
+    
+    _revivalPosition.clear();
+    _isPopupInGameVisible = false;
     ObjectsPool::getInstance()->clear();
+    
+#if USE_TOUCH
+#else
+    _isMouseDown = false;
+#endif
+    auto botMgr = BotManager::getInstance();
+    botMgr->clear();
+    
+    if(_player)
+    {
+        _player->releaseCommands();
+        _player->destroy();
+        //_player = nullptr;
+    }
 }
 
 TMXTiledMap * Game::getTileMap() const
@@ -534,7 +599,8 @@ void Game::createSight()
 
 void Game::updatePhysics(float dt)
 {
-    _rigidWorld->update(dt);
+    if(_rigidWorld)
+        _rigidWorld->update(dt);
 }
 
 Vec2 Game::getRandomPosition() const
@@ -545,29 +611,32 @@ Vec2 Game::getRandomPosition() const
 
 void Game::updateSight(float dt)
 {
+    //delete vision is marked delete
+    for (auto i = _listVision.begin(); i != _listVision.end();)
+    {
+        auto& vision = (*i);
+        if (vision->getObject()->isDestroyed())
+            vision->stop();
+        if (vision->avaibleToDelete())
+            i = _listVision.erase(i);
+        else
+            ++i;
+    }
+    
     if(!_sightNode)return;
     
 #if DEBUG_SIGHT
-    _debugWall->clear();
-    for (auto& line : _rigidWorld->getListLines())
+    if(_debugWall)
     {
-        _debugWall->drawLine(line.start, line.end, Color4F::RED);
+        _debugWall->clear();
+        for (auto& line : _rigidWorld->getListLines())
+        {
+            _debugWall->drawLine(line.start, line.end, Color4F::RED);
+        }
     }
 #endif
     
     _sightNode->clear();
-
-	//delete vision is marked delete
-	for (auto i = _listVision.begin(); i != _listVision.end();)
-	{
-		auto& vision = (*i);
-		if (vision->getObject()->isDestroyed())
-            vision->stop();
-		if (vision->avaibleToDelete())
-			i = _listVision.erase(i);
-		else
-			++i;
-	}
     
 	//update vision
     for(auto& vision : _listVision)
@@ -634,4 +703,14 @@ void Game::usePopupInGame(bool push)
             }
         }
     }
+}
+
+void Game::resetGame()
+{
+    
+}
+
+void Game::backToHomeMenu()
+{
+    releaseGamePlay();
 }

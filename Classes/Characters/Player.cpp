@@ -16,6 +16,11 @@ Player::Player() : Character()
 {
 }
 
+Player::~Player()
+{
+    
+}
+
 void Player::init()
 {
     Character::init();

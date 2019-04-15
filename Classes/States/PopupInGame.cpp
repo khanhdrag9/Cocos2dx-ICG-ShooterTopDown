@@ -7,6 +7,7 @@
 
 #include "PopupInGame.h"
 #include "../Resource/ResourceManager.h"
+#include "../Game.h"
 
 PopupInGame::PopupInGame()
 {
@@ -25,6 +26,11 @@ bool PopupInGame::init()
     this->addChild(bg);
     
     //popup here
+    auto backtoHomeMenu = MenuItemFont::create("Home", CC_CALLBACK_0(Game::backToHomeMenu, Game::getInstance()));
+    
+    auto menu = Menu::create(backtoHomeMenu, NULL);
+    
+    this->addChild(menu);
     
     return true;
 }

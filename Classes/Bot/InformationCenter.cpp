@@ -93,4 +93,7 @@ void InformationCenter::clear()
 {
     while(_enemyIsDetected.size() > 0)
         _enemyIsDetected.pop();
+    
+    _enemyOutVision.first = nullptr;
+    _enemyOutVision.second = nullptr;
 }

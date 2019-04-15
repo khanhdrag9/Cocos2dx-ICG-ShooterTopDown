@@ -30,22 +30,23 @@ shared_ptr<CommandShoot> CommandShoot::createCommandShoot(const Vec2& speed)
 
 void CommandShoot::update(float dt)
 {
-    if(!_isFinished && _object != nullptr)
+    auto object = _object.lock();
+    if(!_isFinished && object)
     {
-        auto bullet = BulletBasic::createBulletBasic(_object->_sprite->getPosition(), _object->_sprite->getRotation(), _speed * dt, true);
+        auto bullet = BulletBasic::createBulletBasic(object->_sprite->getPosition(), object->_sprite->getRotation(), _speed * dt, true);
 
-		if (_object->getType() == Character::type::PLAYER)
+		if (object->getType() == Character::type::PLAYER)
 		{
             bullet->_rigidBody->setTag(RigidBody::tag::BULLET_PLAYER);
-            if(auto player = dynamic_pointer_cast<Player>(_object))
+            if(auto player = dynamic_pointer_cast<Player>(object))
             {
                 player->getMag()->decreBullet();
             }
 		}
-		else if (_object->getType() == Character::type::ENEMY)
+		else if (object->getType() == Character::type::ENEMY)
 		{
 			bullet->_rigidBody->setTag(RigidBody::tag::BULLET_ENEMY);
-            if(auto enemy = dynamic_pointer_cast<Bot>(_object))
+            if(auto enemy = dynamic_pointer_cast<Bot>(object))
             {
                 enemy->getMag()->decreBullet();
             }

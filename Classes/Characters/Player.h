@@ -8,6 +8,7 @@ class Player : public Character
     
 public:
     Player();
+    ~Player();
     
     void init() override;
     void update(float dt) override;

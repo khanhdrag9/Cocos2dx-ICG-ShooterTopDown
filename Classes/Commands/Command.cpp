@@ -9,9 +9,13 @@
 #include "../Characters/Character.h"
 
 Command::Command():
-_isFinished(true),
-_object(nullptr)
+_isFinished(true)
 {
+}
+
+Command::~Command()
+{
+    
 }
 
 const string& Command::getName() const

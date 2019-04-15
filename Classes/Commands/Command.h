@@ -8,6 +8,7 @@ class Command : public enable_shared_from_this<Command>
 {
 public:
     Command();
+    ~Command();
     
     void setFinished(bool finished);
     bool isFinished();
@@ -22,5 +23,5 @@ protected:
     bool _isFinished;
     string _name;
     
-    shared_ptr<Character> _object;
+    weak_ptr<Character> _object;
 };
