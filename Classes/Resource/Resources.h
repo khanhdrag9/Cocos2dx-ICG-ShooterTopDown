@@ -19,6 +19,7 @@ namespace res
         
         //Font
         FONT_KENVECTOR_FUTURE_THIN,
+        FONT_ARIAL,
         
         //player
         PLAYER_1_BLUE,

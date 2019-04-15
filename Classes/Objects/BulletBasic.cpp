@@ -14,7 +14,8 @@
 
 BulletBasic::BulletBasic(): Character(),
     _speed(Vec2(0,0)),
-    _isDestroy(false)
+    _isDestroy(false),
+    _damge(20)
 {
 }
 
@@ -70,6 +71,11 @@ void BulletBasic::Shoot()
 Vec2 BulletBasic::getSpeed() const
 {
     return _speed;
+}
+
+int BulletBasic::getDamge() const
+{
+    return _damge;
 }
 
 bool BulletBasic::isDestroy()

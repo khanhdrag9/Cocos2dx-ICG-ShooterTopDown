@@ -23,12 +23,21 @@ bool GS_GamePlayUI::init()
     auto sz = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
 
-    string font = ResourceManager::getInstance()->at(res::define::FONT_KENVECTOR_FUTURE_THIN);
+    //mag properties
+    string font = ResourceManager::getInstance()->at(res::define::FONT_ARIAL);
     _playerBullet = Label::createWithTTF("0/0", font , 50);
     _playerBullet->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
     _playerBullet->setPosition(origin.x + sz.width / 2.f, origin.y);
     
     this->addChild(_playerBullet);
+    
+    //player properties
+    _propertiesPlayer = Label::createWithTTF("0%", font, 30);
+    _propertiesPlayer->setColor(Color3B::RED);
+    _propertiesPlayer->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+    _propertiesPlayer->setPosition(origin.x + sz.width - 10, origin.y + 10);
+    
+    this->addChild(_propertiesPlayer);
     
     this->scheduleUpdate();
     
@@ -44,6 +53,9 @@ void GS_GamePlayUI::update(float)
     if(auto character = _characterProfile)
     {
         _playerBullet->setVisible(true);
+        _propertiesPlayer->setVisible(true);
+        
+        //for Mag bullet
         int maxbullet = 0;
         int currentbullet = 0;
         
@@ -60,14 +72,19 @@ void GS_GamePlayUI::update(float)
             currentbullet = mag->getCurrentBullet();
         }
         
+        string formatMag = to_string(currentbullet) + "/" + to_string(maxbullet);
+        _playerBullet->setString(formatMag);
         
-        string format = to_string(currentbullet) + "/" + to_string(maxbullet);
-        _playerBullet->setString(format);
+        //for HP
+        int currentHP = character->getCurrentHP();
+        string formatHP = "HP:" + to_string(currentHP) + "%";
+        _propertiesPlayer->setString(formatHP);
         
     }
     else
     {
         _playerBullet->setVisible(false);
+        _propertiesPlayer->setVisible(false);
     }
     
 }

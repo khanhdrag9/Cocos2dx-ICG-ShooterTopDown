@@ -13,7 +13,9 @@
 Character::Character():
 _sprite(nullptr),
 _rigidBody(nullptr),
-_destroy(false)
+_destroy(false),
+_maxHP(100),
+_currentHP(_maxHP)
 {
 }
 
@@ -37,7 +39,7 @@ void Character::init()
 
 void Character::update(float dt)
 {
-    if(_destroy)return;
+    if(_destroy || _currentHP <= 0)return;
         
     queue<shared_ptr<Command>> tempCommand;
     while (_commandQueue.size() > 0)
@@ -64,7 +66,7 @@ void Character::releaseCommands()
 
 void Character::pushCommand(shared_ptr<Command>& command, bool replace)
 {
-    if(_destroy)return;
+    if(_destroy || _currentHP <= 0)return;
     
    // command->registAnObject(shared_from_this(), _commandQueue);
 	queue<shared_ptr<Command>> queueTemp;
@@ -103,6 +105,31 @@ const string& Character::getName() const
 const Character::type& Character::getType() const
 {
     return _type;
+}
+
+int Character::getMaxHP() const
+{
+    return _maxHP;
+}
+
+int Character::getCurrentHP()
+{
+    return _currentHP;
+}
+
+void Character::decreHP(int decre)
+{
+    _currentHP -= decre;
+    if(_currentHP < 0)
+    {
+        _currentHP = 0;
+    }
+}
+
+void Character::heal(int heal)
+{
+    _currentHP += heal;
+    if(_currentHP > _maxHP)_currentHP = _maxHP;
 }
 
 void Character::destroy()

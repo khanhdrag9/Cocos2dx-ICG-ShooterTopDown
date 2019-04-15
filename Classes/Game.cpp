@@ -296,9 +296,11 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
         case cocos2d::EventKeyboard::KeyCode::KEY_D:
             handleMovePlayer(_player, Game::direction::RIGHT);
             break;
+#if USE_TOUCH
         case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
 			_playerShoot = true;
             break;
+#endif
         default:
             break;
     }

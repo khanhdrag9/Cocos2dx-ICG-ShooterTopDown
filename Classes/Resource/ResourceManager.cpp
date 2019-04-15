@@ -22,6 +22,7 @@ ResourceManager::ResourceManager()
     _resMap[res::define::BTN_YELLOW] = "Assets/PNG/UI/buttonYellow.png";
     _resMap[res::define::CURSOR_UI] = "Assets/PNG/UI/cursor.png";
     _resMap[res::define::FONT_KENVECTOR_FUTURE_THIN] = "Assets/Bonus/kenvector_future_thin.ttf";
+    _resMap[res::define::FONT_ARIAL] = "fonts/arial.ttf";
     
     //player
     _resMap[res::define::PLAYER_1_BLUE] = "Assets/PNG/playerShip1_blue.png";

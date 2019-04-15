@@ -1,3 +1,4 @@
+#pragma once
 #include "../Headers.h"
 
 class Character;
@@ -5,6 +6,7 @@ class Character;
 class GS_GamePlayUI : public Layer
 {
     Label* _playerBullet;
+    Label* _propertiesPlayer;
     
     shared_ptr<Character> _characterProfile;
 public:

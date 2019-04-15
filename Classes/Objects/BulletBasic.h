@@ -7,7 +7,7 @@ class BulletBasic : public Character
 protected:
     Vec2 _speed;
     bool _isDestroy;
-    
+    int _damge;
 public:
     BulletBasic();
     virtual ~BulletBasic();
@@ -19,6 +19,7 @@ public:
     void update(float dt) override;
     
     Vec2 getSpeed() const;
+    int getDamge() const;
     
     bool isDestroy();
     void destroy();

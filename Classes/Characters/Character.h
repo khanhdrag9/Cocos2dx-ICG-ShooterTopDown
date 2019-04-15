@@ -26,12 +26,18 @@ public:
     virtual void pushCommand(shared_ptr<Command>& command, bool replace = false);
     const string& getName() const;
     const Character::type& getType() const;
+    int getMaxHP() const;
+    int getCurrentHP();
+    void decreHP(int decre);
+    void heal(int heal);
     void destroy();
     bool isDestroyed();
 protected:
     queue<shared_ptr<Command>> _commandQueue;
     bool _destroy;
     
+    int _maxHP;
+    int _currentHP;
 public:
     Sprite* _sprite;
     shared_ptr<RigidBody> _rigidBody;

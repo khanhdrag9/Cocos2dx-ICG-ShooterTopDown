@@ -114,15 +114,6 @@ bool RigidWorld::checkCollisionOther(shared_ptr<RigidBody> body)
     return false;
 }
 
-//void RigidWorld::pushLineByRect(const Rect & rect)
-//{
-//    //push 4 line of a rect
-//    pushLine(Line(Vec2(rect.getMinX(), rect.getMaxY()), Vec2(rect.getMaxX(), rect.getMaxY())));
-//    pushLine(Line(Vec2(rect.getMaxX(), rect.getMaxY()), Vec2(rect.getMaxX(), rect.getMinY())));
-//    pushLine(Line(Vec2(rect.getMaxX(), rect.getMinY()), Vec2(rect.getMinX(), rect.getMinY())));
-//    pushLine(Line(Vec2(rect.getMinX(), rect.getMinY()), Vec2(rect.getMinX(), rect.getMaxY())));
-//}
-
 shared_ptr<RigidBodyPolygon> RigidWorld::createRigidBodyPolygon(const Rect& rect)
 {
     auto body =  make_shared<RigidBodyPolygon>();
@@ -171,6 +162,11 @@ bool RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
 			if (bullet)
 			{
 				bullet->destroy();
+                if(auto character = dynamic_pointer_cast<Character>(obj2))
+                {
+                    character->decreHP(bullet->getDamge());
+                    if(character->getCurrentHP() <= 0)character->releaseCommands();
+                }
 				return false;
 			}
         }
@@ -184,6 +180,11 @@ bool RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
 			if (bullet)
 			{
 				bullet->destroy();
+                if(auto character = dynamic_pointer_cast<Character>(obj2))
+                {
+                    character->decreHP(bullet->getDamge());
+                    if(character->getCurrentHP() <= 0)character->releaseCommands();
+                }
 				return false;
 			}
         }
