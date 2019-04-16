@@ -18,7 +18,8 @@ class InformationCenter : public pattern::Singleton<InformationCenter>
     void triggerEnemyOutVision();
     
     //MoveAround
-    
+    list<pair<shared_ptr<Character>, shared_ptr<InformationMoveAround>>> _enemyMoveAround;
+    void triggerEnemyMoveAround();
     
 public:
     InformationCenter();
@@ -26,6 +27,7 @@ public:
     
     void pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationDetectEnemy> information);
     void pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationEnemyOutVision> information);
+    void pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationMoveAround> information);
     
     void stop();
     void clear();

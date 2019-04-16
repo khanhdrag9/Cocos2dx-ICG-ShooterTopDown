@@ -6,6 +6,7 @@
 //
 
 #include "Game.h"
+#include "States/GS_GameMenu.h"
 #include "States/GS_GamePlay.h"
 #include "States/GS_GamePlayUI.h"
 #include "States/PopupInGame.h"
@@ -40,7 +41,8 @@ _sightNode(nullptr),
 _fogSprite(nullptr),
 _fogClip(nullptr),
 _isMouseDown(false),
-_isPopupInGameVisible(false)
+_isPopupInGameVisible(false),
+_isPopupKDAVisible(false)
 {
     
 }
@@ -82,14 +84,14 @@ void Game::update(float dt)
         {
             _player = nullptr;
         }
-        else if (_playerShoot)
+        else
         {
-            if (_player->getMag()->canShoot())
+            if (_playerShoot && _player->getMag()->canShoot())
             {
                 handleShootCharacter((shared_ptr<Character>)_player, 1000);
             }
+            _player->update(dt);
         }
-        _player->update(dt);
     }
 	//end player
 
@@ -131,6 +133,10 @@ void Game::setObjectFollowByCam(shared_ptr<Character> object)
 
 void Game::handleKeyboardPress(EventKeyboard::KeyCode keycode, Event*)  //used in gameplay
 {
+    if(keycode == EventKeyboard::KeyCode::KEY_TAB)
+    {
+        useKDATab(!_isPopupKDAVisible);
+    }
     _isHoldKey = true;
     _keyIsHolds.push_back(keycode);
 }
@@ -161,6 +167,9 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
     switch (keycode) {
         case cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE:
             usePopupInGame(!_isPopupInGameVisible);
+            break;
+        case cocos2d::EventKeyboard::KeyCode::KEY_TAB:
+            useKDATab(!_isPopupKDAVisible);
             break;
 #if CHEAT
         case cocos2d::EventKeyboard::KeyCode::KEY_F1:
@@ -432,11 +441,7 @@ void Game::handleShootCharacter(shared_ptr<Character> object, const float& speed
 
 void Game::createPhysicsWorld()
 {
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-    _rigidWorld = pointer::make_unique<RigidWorld>();	//C++ 11 dont contain make_unique
-#else
-	_rigidWorld = make_unique<RigidWorld>();
-#endif
+    _rigidWorld = make_unique<RigidWorld>();	//C++ 11 dont contain make_unique
 }
 
 void Game::createMap()
@@ -705,6 +710,15 @@ void Game::usePopupInGame(bool push)
     }
 }
 
+void Game::useKDATab(bool show)
+{
+    if(auto gameplay = dynamic_cast<GS_GamePlay*>(_currentState))
+    {
+        gameplay->getUILayer()->useKDATab(show);
+        _isPopupKDAVisible = show;
+    }
+}
+
 void Game::resetGame()
 {
     
@@ -713,4 +727,6 @@ void Game::resetGame()
 void Game::backToHomeMenu()
 {
     releaseGamePlay();
+    auto home = GS_GameMenu::createScene();
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5, home));
 }

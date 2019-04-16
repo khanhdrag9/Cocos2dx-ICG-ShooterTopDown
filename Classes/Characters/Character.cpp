@@ -24,7 +24,7 @@ Character::~Character()
 {
     CCLOG("Delete Character");
     //_commandHandle = nullptr;
-    _sprite->runAction(RemoveSelf::create());
+    if(_sprite)_sprite->removeFromParentAndCleanup(true);
 }
 
 

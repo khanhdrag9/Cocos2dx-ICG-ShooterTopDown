@@ -10,10 +10,17 @@
 #include "../Resource/ResourceManager.h"
 #include "../Characters/Player.h"
 #include "../Bot/Bot.h"
+#include "../Bot/BotManager.h"
 
 GS_GamePlayUI::GS_GamePlayUI():
-_playerBullet(nullptr)
+_playerBullet(nullptr),
+_menuKDA(nullptr)
 {}
+
+GS_GamePlayUI::~GS_GamePlayUI()
+{
+    _listKDA.clear();
+}
 
 bool GS_GamePlayUI::init()
 {
@@ -24,7 +31,9 @@ bool GS_GamePlayUI::init()
     auto origin = Director::getInstance()->getVisibleOrigin();
 
     //mag properties
-    string font = ResourceManager::getInstance()->at(res::define::FONT_ARIAL);
+    auto resMgr = ResourceManager::getInstance();
+    
+    string font = resMgr->at(res::define::FONT_ARIAL);
     _playerBullet = Label::createWithTTF("0/0", font , 50);
     _playerBullet->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
     _playerBullet->setPosition(origin.x + sz.width / 2.f, origin.y);
@@ -43,6 +52,15 @@ bool GS_GamePlayUI::init()
     
     //set player profile
     setCharacter(Game::getInstance()->getPlayer());
+    
+    //KDA
+    _kdaTab = Sprite::create(resMgr->at(res::define::IMG_BLACK));
+    _kdaTab->setPosition(sz.width / 2.f + origin.x, sz.height / 2.f + origin.y);
+    _kdaTab->setScale(0.35, 0.2);
+    _kdaTab->runAction(FadeTo::create(0, 0));
+    this->addChild(_kdaTab);
+    
+    initKDA(BotManager::getInstance()->countBots() + 1);
     
     return true;
 }
@@ -87,9 +105,56 @@ void GS_GamePlayUI::update(float)
         _propertiesPlayer->setVisible(false);
     }
     
+    //update KDA
+    if(_menuKDA)
+        _menuKDA->setOpacity(_kdaTab->getOpacity());
 }
 
 void GS_GamePlayUI::setCharacter(const shared_ptr<Character>& character)
 {
     _characterProfile = character;
+}
+
+void GS_GamePlayUI::initKDA(const int& number)
+{
+    _listKDA.clear();
+    if(_menuKDA)_menuKDA->removeAllChildrenWithCleanup(true);
+    
+    auto resMgr = ResourceManager::getInstance();
+    string font = resMgr->at(res::define::FONT_ARIAL);
+    
+    //title
+    string formatTile = "Name       K       D";
+    Label* tile = Label::createWithTTF(formatTile, font, 150);
+    MenuItem* itemTile = MenuItemLabel::create(tile);
+    _listKDA.pushBack(itemTile);
+    
+    for(int i = 0; i < number; i++)
+    {
+        string format = "Name       0       0";
+        Label* label = Label::createWithTTF(format, font, 150);
+        MenuItem* item = MenuItemLabel::create(label);
+        _listKDA.pushBack(item);
+    }
+    
+    _menuKDA = Menu::createWithArray(_listKDA);
+    _menuKDA->alignItemsVerticallyWithPadding(40);
+    _menuKDA->setOpacity(_kdaTab->getOpacity());
+    _menuKDA->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    
+    _kdaTab->addChild(_menuKDA);
+    auto sizeTab = _kdaTab->getContentSize();
+    _menuKDA->setPosition(sizeTab.width / 2.f, sizeTab.height / 2.f);
+}
+
+void GS_GamePlayUI::useKDATab(bool show)
+{
+    Action* action;
+    if(show)
+        action = FadeTo::create(0.5f, 150);
+    else
+        action = FadeTo::create(0.5f, 0);
+    
+    if(_kdaTab)
+        _kdaTab->runAction(action);
 }

@@ -20,6 +20,9 @@ _enemyOutVision(nullptr, nullptr)
     
     thread enemyOutVision(&InformationCenter::triggerEnemyOutVision, this);
     enemyOutVision.detach();
+    
+    thread enemyMoveAround(&InformationCenter::triggerEnemyMoveAround, this);
+    enemyMoveAround.detach();
 }
 
 InformationCenter::~InformationCenter()
@@ -74,6 +77,17 @@ void InformationCenter::triggerEnemyOutVision()
     }
 }
 
+void InformationCenter::triggerEnemyMoveAround()
+{
+    while (!_isStop)
+    {
+//        for(auto movearound : _enemyMoveAround)
+//        {
+//            
+//        }
+    }
+}
+
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationDetectEnemy> information)
 {
     _enemyIsDetected.push(pair<shared_ptr<Character>,shared_ptr<InformationDetectEnemy>>(character, information));
@@ -82,6 +96,11 @@ void InformationCenter::pushInformation(const shared_ptr<Character>& character, 
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationEnemyOutVision> information)
 {
     _enemyOutVision = pair<shared_ptr<Character>, shared_ptr<InformationEnemyOutVision>>(character, information);
+}
+
+void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationMoveAround> information)
+{
+    _enemyMoveAround.push_back(pair<shared_ptr<Character>, shared_ptr<InformationMoveAround>>(character, information));
 }
 
 void InformationCenter::stop()
@@ -96,4 +115,6 @@ void InformationCenter::clear()
     
     _enemyOutVision.first = nullptr;
     _enemyOutVision.second = nullptr;
+    
+    _enemyMoveAround.clear();
 }

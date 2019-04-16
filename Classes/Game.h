@@ -55,6 +55,7 @@ private:
 	vector<Vec2> _revivalPosition;
     
     bool _isPopupInGameVisible;
+    bool _isPopupKDAVisible;
 public:
     Game();
     ~Game();
@@ -112,6 +113,7 @@ private:
 	void updateSight(float dt);
     
 	void usePopupInGame(bool push);
+    void useKDATab(bool show);
 public:
 	Vec2 getRandomPosition() const;
    

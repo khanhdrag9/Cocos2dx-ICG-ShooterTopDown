@@ -6,6 +6,7 @@
 #include "../Physics/RigidWorld.h"
 #include "BotMoveMap.h"
 #include "../Commands/CommandMoveTo.h"
+#include "InformationCenter.h"
 
 BotManager::BotManager()
 {
@@ -124,6 +125,9 @@ shared_ptr<Bot> BotManager::createBot()
 	auto bot = make_shared<Bot>();
 	bot->init();
 	_listBots.push_back(bot);
+    
+    shared_ptr<InformationMoveAround> information = make_shared<InformationMoveAround>();
+    InformationCenter::getInstance()->pushInformation(bot, information);
 
 	return bot;
 }
