@@ -7,6 +7,7 @@
 #include "../Commands/CommandMoveTo.h"
 #include "BotManager.h"
 #include "Game.h"
+#include "InformationCenter.h"
 
 Bot::Bot() : Character(),
 _linkPos(nullptr),
@@ -40,22 +41,23 @@ void Bot::update(float dt)
     bool isMoved = false;
     if(containStatus(Status::WALK))
     {
-        if (_commandQueue.empty())
-        {
-            auto nextlink = BotManager::getInstance()->getNextLinkPosition(dynamic_pointer_cast<Bot>(shared_from_this()), true);
-            if(&(*nextlink) != &(*_linkPos))isMoved = true;
-            
-            if(nextlink->getName() != _linkPos->getName())
-            {
-                _linkPos = nextlink;
-                if (_linkPos)
-                {
-                    shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(_speedMove, _linkPos->get());
-                    pushCommand(cmd);
-                }
-            }
-		
-        }
+        shared_ptr<InformationMoveAround> information = make_shared<InformationMoveAround>();
+        InformationCenter::getInstance()->pushInformation(shared_from_this(), information);
+//        if (_commandQueue.empty())
+//        {
+//            auto nextlink = BotManager::getInstance()->getNextLinkPosition(dynamic_pointer_cast<Bot>(shared_from_this()), true);
+//            if(&(*nextlink) != &(*_linkPos))isMoved = true;
+//
+//            if(nextlink->getName() != _linkPos->getName())
+//            {
+//                _linkPos = nextlink;
+//                if (_linkPos)
+//                {
+//                    shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(_speedMove, _linkPos->get());
+//                    pushCommand(cmd);
+//                }
+//            }
+//        }
     }
 
 	if (containStatus(Status::SHOOT) && _bulletMag->canShoot())

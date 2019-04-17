@@ -72,9 +72,20 @@ void InformationCenter::triggerEnemyOutVision()
 
 void InformationCenter::triggerEnemyMoveAround()
 {
-    while (!_isStop)
+    //while (!_isStop)
     {
-        
+        for(auto& index : _enemyMoveAround)
+        {
+            if(auto bot = dynamic_pointer_cast<Bot>(index.first))
+            {
+                float speed = bot->getSpeedMove();
+                Vec2 velocity = Vec2(speed, 0);
+                
+                shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(velocity, 0.1);
+                bot->pushCommand(cmd);
+            }
+            
+        }
     }
 }
 
@@ -111,7 +122,7 @@ void InformationCenter::update()
 {
     if(_isStop)return;
     
-    
+    triggerEnemyMoveAround();
 }
 
 void InformationCenter::stop()
