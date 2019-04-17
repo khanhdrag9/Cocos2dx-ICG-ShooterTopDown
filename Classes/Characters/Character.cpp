@@ -74,17 +74,20 @@ void Character::pushCommand(shared_ptr<Command>& command, bool replace)
 
 	while (_commandQueue.size() > 0)
 	{
-		if (_commandQueue.front()->getName() == command->getName())
-		{
-			isUsed = true;
-		}
+        if(_commandQueue.front())
+        {
+            if (_commandQueue.front()->getName() == command->getName())
+            {
+                isUsed = true;
+            }
 
-		if (!isUsed)
-			queueTemp.push(_commandQueue.front());
-		else if (!replace)
-			queueTemp.push(_commandQueue.front());
-		else
-			isUsed = false;
+            if (!isUsed)
+                queueTemp.push(_commandQueue.front());
+            else if (!replace)
+                queueTemp.push(_commandQueue.front());
+            else
+                isUsed = false;
+        }
 
 		_commandQueue.pop();
 	}

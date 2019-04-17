@@ -114,7 +114,10 @@ void Game::update(float dt)
 #endif
     
     ObjectsPool::getInstance()->update();
+    
+    InformationCenter::getInstance()->update();
     InformationCenter::getInstance()->clear();
+    
 }
 
 void Game::setCurrentState(Layer* layer)

@@ -12,7 +12,7 @@
 #include "../Commands/CommandMoveBy.h"
 
 InformationCenter::InformationCenter():
-_isStop(false),
+_isStop(true),
 _enemyOutVision(nullptr, nullptr)
 {
     
@@ -74,10 +74,7 @@ void InformationCenter::triggerEnemyMoveAround()
 {
     while (!_isStop)
     {
-        for(auto movearound : _enemyMoveAround)
-        {
-            
-        }
+        
     }
 }
 
@@ -101,19 +98,29 @@ void InformationCenter::start()
     _isStop = false;
     
     detectEnemy = thread(&InformationCenter::triggerDetectEnemy, this);
-    detectEnemy.detach();
+    //detectEnemy.detach();
     
     enemyOutVision = thread(&InformationCenter::triggerEnemyOutVision, this);
-    enemyOutVision.detach();
+//    enemyOutVision.detach();
     
     enemyMoveAround = thread(&InformationCenter::triggerEnemyMoveAround, this);
-    enemyMoveAround.detach();
+//    enemyMoveAround.detach();
+}
+
+void InformationCenter::update()
+{
+    if(_isStop)return;
+    
+    
 }
 
 void InformationCenter::stop()
 {
     _isStop = true;
     
+    detectEnemy.join();
+    enemyOutVision.join();
+    enemyMoveAround.join();
 }
 
 void InformationCenter::clear()

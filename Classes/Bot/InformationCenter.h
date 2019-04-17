@@ -4,6 +4,7 @@
 #include "Informations.h"
 
 class Character;
+class Command;
 
 class InformationCenter : public pattern::Singleton<InformationCenter>
 {
@@ -23,6 +24,10 @@ class InformationCenter : public pattern::Singleton<InformationCenter>
     thread enemyMoveAround;
     list<pair<shared_ptr<Character>, shared_ptr<InformationMoveAround>>> _enemyMoveAround;
     void triggerEnemyMoveAround();
+    using characterCommandPair = pair<shared_ptr<Character>, shared_ptr<Command>>;
+//    queue<characterCommandPair> _queueCmds;
+//    queue<characterCommandPair> _queueCmdsTemp;
+    vector<characterCommandPair> _queueCmds;
     
 public:
     InformationCenter();
@@ -33,6 +38,7 @@ public:
     void pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationMoveAround> information);
     
     void start();
+    void update();
     void stop();
     void clear();
 };
