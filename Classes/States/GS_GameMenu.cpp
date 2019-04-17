@@ -2,12 +2,17 @@
 #include "../Game.h"
 #include "../Resource/ResourceManager.h"
 #include "GS_GamePlay.h"
+#include "UIPageView.h"
 
 cocos2d::Scene *GS_GameMenu::createScene()
 {
 	Scene* scene = Scene::create();
-    GS_GameMenu* layer = GS_GameMenu::create();
-    scene->addChild(layer);
+	GS_GameMenu* layer = GS_GameMenu::create();
+    scene->addChild(layer, 2);
+
+	UIPageView* pageView = UIPageView::create();
+	scene->addChild(pageView, 1);
+
     return scene;
 }
 
@@ -31,47 +36,48 @@ bool GS_GameMenu::init()
     };
     //create game label
     Label* title = Label::createWithTTF("Shooter", resMgr->at(res::define::FONT_KENVECTOR_FUTURE_THIN), 75);
-    title->setPosition(pos[0]);
-    this->addChild(title);
+	title->setColor(Color3B::RED);
+	title->setPosition(pos[0]);
+    this->addChild(title, 3);
     
     //create UI button
-    pair<string, string> assetsBtn[]{
-        pair<string, string>(resMgr->at(res::define::BTN_GREEN), resMgr->at(res::define::BTN_RED)),
-        pair<string, string>(resMgr->at(res::define::BTN_YELLOW), resMgr->at(res::define::BTN_RED)),
-    };
-    
-    vector<string> titleBtn{
-        "Start",
-        "Option"
-    };
+    //pair<string, string> assetsBtn[]{
+    //    pair<string, string>(resMgr->at(res::define::BTN_GREEN), resMgr->at(res::define::BTN_RED)),
+    //    pair<string, string>(resMgr->at(res::define::BTN_YELLOW), resMgr->at(res::define::BTN_RED)),
+    //};
+    //
+    //vector<string> titleBtn{
+    //    "Start",
+    //    "Option"
+    //};
 
-    vector<ui::Button*> listBtns;
-    int numberbutton = (int)titleBtn.size();
-    for(int i = 0; i < numberbutton; i++)
-    {
-        ui::Button* btn = ui::Button::create(assetsBtn[i].first, assetsBtn[i].second);
-        btn->setScale(1.5f);
-        btn->setTitleText(titleBtn[i]);
-        btn->setTitleColor(Color3B::BLACK);
-        btn->setTitleFontSize(25);
-        btn->setTitleFontName(resMgr->at(res::define::FONT_KENVECTOR_FUTURE_THIN));
-        btn->setPosition(pos[i+1]);
-        listBtns.push_back(btn);
-        
-        this->addChild(btn);
-    }
-    
-    //init callback to btn
-    listBtns[0]->addTouchEventListener([&](Ref*, ui::Widget::TouchEventType type){
-        if(type == ui::Widget::TouchEventType::ENDED)
-            GoToGamePlay();
-    });
-    
-    listBtns[1]->addTouchEventListener([&](Ref*, ui::Widget::TouchEventType type){
-        if(type == ui::Widget::TouchEventType::ENDED)
-            GoToOption();
-    });
-    
+    //vector<ui::Button*> listBtns;
+    //int numberbutton = (int)titleBtn.size();
+    //for(int i = 0; i < numberbutton; i++)
+    //{
+    //    ui::Button* btn = ui::Button::create(assetsBtn[i].first, assetsBtn[i].second);
+    //    btn->setScale(1.5f);
+    //    btn->setTitleText(titleBtn[i]);
+    //    btn->setTitleColor(Color3B::BLACK);
+    //    btn->setTitleFontSize(25);
+    //    btn->setTitleFontName(resMgr->at(res::define::FONT_KENVECTOR_FUTURE_THIN));
+    //    btn->setPosition(pos[i+1]);
+    //    listBtns.push_back(btn);
+    //    
+    //    this->addChild(btn);
+    //}
+    //
+    ////init callback to btn
+    //listBtns[0]->addTouchEventListener([&](Ref*, ui::Widget::TouchEventType type){
+    //    if(type == ui::Widget::TouchEventType::ENDED)
+    //        GoToGamePlay();
+    //});
+    //
+    //listBtns[1]->addTouchEventListener([&](Ref*, ui::Widget::TouchEventType type){
+    //    if(type == ui::Widget::TouchEventType::ENDED)
+    //        GoToOption();
+    //});
+
     return true;
 }
 

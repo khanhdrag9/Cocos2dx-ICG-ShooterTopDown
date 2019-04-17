@@ -151,9 +151,9 @@ void GS_GamePlayUI::useKDATab(bool show)
 {
     Action* action;
     if(show)
-        action = FadeTo::create(0.5f, 150);
+        action = FadeTo::create(0.25f, 150);
     else
-        action = FadeTo::create(0.5f, 0);
+        action = FadeTo::create(0.25f, 0);
     
     if(_kdaTab)
         _kdaTab->runAction(action);
