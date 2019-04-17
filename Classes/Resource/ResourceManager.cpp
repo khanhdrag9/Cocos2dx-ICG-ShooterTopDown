@@ -14,13 +14,19 @@ ResourceManager::ResourceManager()
     _resMap[res::define::SPLASH] = "splashKW.jpg";
     _resMap[res::define::IMG_BG_1] = "BG.jpg";
     _resMap[res::define::IMG_FOG] = "Fog.jpg";
-    _resMap[res::define::IMG_BLACK] = "Black.jpg";
+	_resMap[res::define::IMG_BLACK] = "Black.jpg";
+
+	//image Map
+	_resMap[res::define::IMG_MAP1] = "";
+	_resMap[res::define::IMG_MAP2] = "";
+	_resMap[res::define::IMG_MAP3] = "";
     
     //UI
     _resMap[res::define::BTN_BLUE] = "Assets/PNG/UI/buttonBlue.png";
     _resMap[res::define::BTN_GREEN] = "Assets/PNG/UI/buttonGreen.png";
     _resMap[res::define::BTN_RED] = "Assets/PNG/UI/buttonRed.png";
     _resMap[res::define::BTN_YELLOW] = "Assets/PNG/UI/buttonYellow.png";
+	_resMap[res::define::BTN_OPTION] = "";
     _resMap[res::define::CURSOR_UI] = "Assets/PNG/UI/cursor.png";
     _resMap[res::define::FONT_KENVECTOR_FUTURE_THIN] = "Assets/Bonus/kenvector_future_thin.ttf";
     _resMap[res::define::FONT_ARIAL] = "fonts/arial.ttf";
@@ -40,6 +46,11 @@ ResourceManager::ResourceManager()
     _resMap[res::define::PLAYER_3_GREEN] = "Assets/PNG/playerShip3_green.png";
     _resMap[res::define::PLAYER_3_ORANGE] = "Assets/PNG/playerShip3_orange.png";
     _resMap[res::define::PLAYER_3_RED] = "Assets/PNG/playerShip3_red.png";
+
+	//character
+	_resMap[res::define::CHARACTER_TRIANGLE] = "";
+	_resMap[res::define::CHARACTER_SQUARE] = "";
+	_resMap[res::define::CHARACTER_CIRCLE] = "";
     
     //enemy
     _resMap[res::define::ENEMY_1_BLUE] = "Assets/PNG/ufoBlue.png";

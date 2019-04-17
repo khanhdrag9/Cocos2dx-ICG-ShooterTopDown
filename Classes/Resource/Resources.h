@@ -9,12 +9,16 @@ namespace res
         IMG_BG_1,
         IMG_FOG,
         IMG_BLACK,
+		IMG_MAP1,
+		IMG_MAP2,
+		IMG_MAP3,
         
         //UI
         BTN_BLUE,
         BTN_GREEN,
         BTN_RED,
         BTN_YELLOW,
+		BTN_OPTION,
         CURSOR_UI,
         
         
@@ -35,6 +39,11 @@ namespace res
         PLAYER_3_GREEN,
         PLAYER_3_ORANGE,
         PLAYER_3_RED,
+
+		//character
+		CHARACTER_TRIANGLE,
+		CHARACTER_SQUARE,
+		CHARACTER_CIRCLE,
         
         //enemy
         ENEMY_1_BLUE,
