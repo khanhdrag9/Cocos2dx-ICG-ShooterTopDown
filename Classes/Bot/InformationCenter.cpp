@@ -15,14 +15,7 @@ InformationCenter::InformationCenter():
 _isStop(false),
 _enemyOutVision(nullptr, nullptr)
 {
-    thread detectEnemy(&InformationCenter::triggerDetectEnemy, this);
-    detectEnemy.detach();
     
-    thread enemyOutVision(&InformationCenter::triggerEnemyOutVision, this);
-    enemyOutVision.detach();
-    
-    thread enemyMoveAround(&InformationCenter::triggerEnemyMoveAround, this);
-    enemyMoveAround.detach();
 }
 
 InformationCenter::~InformationCenter()
@@ -81,10 +74,10 @@ void InformationCenter::triggerEnemyMoveAround()
 {
     while (!_isStop)
     {
-//        for(auto movearound : _enemyMoveAround)
-//        {
-//            
-//        }
+        for(auto movearound : _enemyMoveAround)
+        {
+            
+        }
     }
 }
 
@@ -103,9 +96,24 @@ void InformationCenter::pushInformation(const shared_ptr<Character>& character, 
     _enemyMoveAround.push_back(pair<shared_ptr<Character>, shared_ptr<InformationMoveAround>>(character, information));
 }
 
+void InformationCenter::start()
+{
+    _isStop = false;
+    
+    detectEnemy = thread(&InformationCenter::triggerDetectEnemy, this);
+    detectEnemy.detach();
+    
+    enemyOutVision = thread(&InformationCenter::triggerEnemyOutVision, this);
+    enemyOutVision.detach();
+    
+    enemyMoveAround = thread(&InformationCenter::triggerEnemyMoveAround, this);
+    enemyMoveAround.detach();
+}
+
 void InformationCenter::stop()
 {
     _isStop = true;
+    
 }
 
 void InformationCenter::clear()

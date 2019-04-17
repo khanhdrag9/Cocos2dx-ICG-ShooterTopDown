@@ -92,6 +92,9 @@ void BotManager::initBots()
         bot->setLinkPosition(_mapPosition.begin()->second);
 
 		Game::getInstance()->getCurrentState()->addChild(bot->_sprite);
+        
+        shared_ptr<InformationMoveAround> info = make_shared<InformationMoveAround>();
+        InformationCenter::getInstance()->pushInformation(bot, info);
 	}
 }
 

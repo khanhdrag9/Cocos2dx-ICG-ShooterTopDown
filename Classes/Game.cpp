@@ -71,6 +71,7 @@ void Game::initGamePlay()
     BotManager::getInstance()->initBots();
     createSight();
 	createStartCameraView();
+    InformationCenter::getInstance()->start();
 }
 
 void Game::update(float dt)
@@ -343,6 +344,8 @@ void Game::releaseGamePlay()
         _player->destroy();
         //_player = nullptr;
     }
+    
+    InformationCenter::getInstance()->stop();
 }
 
 TMXTiledMap * Game::getTileMap() const
@@ -545,8 +548,8 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-    auto character = (shared_ptr<Character>)_player;
-    //auto character = BotManager::getInstance()->getBot(0);
+//    auto character = (shared_ptr<Character>)_player;
+    auto character = BotManager::getInstance()->getBot(0);
     if(GS_GamePlay* gameplayLayer = dynamic_cast<GS_GamePlay*>(_currentState))
     {
         if(gameplayLayer->getUILayer())
@@ -593,7 +596,7 @@ void Game::createSight()
     for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
     {
         shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
-        botVision->setDraw(false);
+        botVision->setDraw(true);
     }
     
 #if DEBUG_SIGHT

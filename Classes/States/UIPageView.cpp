@@ -44,7 +44,8 @@ bool UIPageView::init()
 		pageView->insertCustomItem(layout, i);
 	}
 
-	pageView->scrollToItem(mapCount - 2);
+	pageView->scrollToItem(0);
+    pageView->setIndicatorEnabled(false);
 
 	pageView->setIndicatorIndexNodesOpacity(0);
 	this->addChild(pageView);
