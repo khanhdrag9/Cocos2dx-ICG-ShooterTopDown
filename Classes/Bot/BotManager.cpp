@@ -126,7 +126,8 @@ shared_ptr<Bot> BotManager::createBot()
 	bot->init();
 	_listBots.push_back(bot);
     
-    shared_ptr<InformationMoveAround> information = make_shared<InformationMoveAround>();
+    shared_ptr<description> des = make_shared<des_init>();
+    shared_ptr<InformationMoveAround> information = make_shared<InformationMoveAround>(des);
     InformationCenter::getInstance()->pushInformation(bot, information);
 
 	return bot;

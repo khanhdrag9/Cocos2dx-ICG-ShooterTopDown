@@ -24,7 +24,11 @@ Character::~Character()
 {
     CCLOG("Delete Character");
     //_commandHandle = nullptr;
-    if(_sprite)_sprite->removeFromParentAndCleanup(true);
+    if(_sprite)
+    {
+        //_sprite->removeFromParent();
+        _sprite->removeFromParentAndCleanup(true);
+    }
 }
 
 

@@ -116,7 +116,7 @@ void Game::update(float dt)
     ObjectsPool::getInstance()->update();
     
     InformationCenter::getInstance()->update();
-    InformationCenter::getInstance()->clear();
+    InformationCenter::getInstance()->clear(false);
     
 }
 
@@ -293,6 +293,8 @@ void Game::releaseGamePlay()
     _isHoldKey = false;
     _keyIsHolds.clear();
     
+    InformationCenter::getInstance()->stop();
+    
     if(_tileMap)
     {
         _tileMap->removeFromParentAndCleanup(true);
@@ -348,7 +350,7 @@ void Game::releaseGamePlay()
         //_player = nullptr;
     }
     
-    InformationCenter::getInstance()->stop();
+    InformationCenter::getInstance()->clear(true);
 }
 
 TMXTiledMap * Game::getTileMap() const

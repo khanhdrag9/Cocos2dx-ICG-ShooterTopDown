@@ -41,7 +41,8 @@ void Bot::update(float dt)
     bool isMoved = false;
     if(containStatus(Status::WALK))
     {
-        shared_ptr<InformationMoveAround> information = make_shared<InformationMoveAround>();
+        shared_ptr<description> des = make_shared<des_walk>(_rigidBody->_velocity);
+        shared_ptr<InformationMoveAround> information = make_shared<InformationMoveAround>(des);
         InformationCenter::getInstance()->pushInformation(shared_from_this(), information);
 //        if (_commandQueue.empty())
 //        {
