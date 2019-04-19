@@ -33,7 +33,7 @@ void CommandShoot::update(float dt)
     auto object = _object.lock();
     if(!_isFinished && object)
     {
-        auto bullet = BulletBasic::createBulletBasic(object->_sprite->getPosition(), object->_sprite->getRotation(), _speed * dt, true);
+        auto bullet = BulletBasic::createBulletBasic(object->_sprite->getPosition(), object->_sprite->getRotation(), _speed, true);
 
 		if (object->getType() == Character::type::PLAYER)
 		{
