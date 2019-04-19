@@ -569,8 +569,11 @@ void Game::createMainPlayer()
 
 void Game::createStartCameraView()
 {
-//    auto character = (shared_ptr<Character>)_player;
+#if DEBUG_ENEMY
     auto character = BotManager::getInstance()->getBot(0);
+#else
+	auto character = (shared_ptr<Character>)_player;
+#endif
     if(GS_GamePlay* gameplayLayer = dynamic_cast<GS_GamePlay*>(_currentState))
     {
         if(gameplayLayer->getUILayer())
