@@ -26,9 +26,12 @@ class InformationCenter : public pattern::Singleton<InformationCenter>
     using pairCharacterMove = pair<shared_ptr<Character>, shared_ptr<InformationMoveAround>>;
     list<pairCharacterMove> _enemyMoveAround;
     void triggerEnemyMoveAround();
-    inline bool speedAvaiable(const Vec2& speedCheck, const float& min, const float& max) const;
+   
     Vec2 getRandomMove(float speed) const;
     void moveWithVelocity(pairCharacterMove& pair, const Vec2& velocity);
+
+public:
+	inline bool speedAvaiable(const Vec2& speedCheck, const float& min, const float& max) const;
     
 public:
     InformationCenter();
@@ -42,4 +45,6 @@ public:
     void update();
     void stop();
     void clear(bool full);
+
+
 };

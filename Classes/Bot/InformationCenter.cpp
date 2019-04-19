@@ -11,6 +11,8 @@
 #include "Bot.h"
 #include "../Commands/CommandMoveBy.h"
 
+
+
 InformationCenter::InformationCenter():
 _isStop(true),
 _enemyOutVision(nullptr, nullptr)
@@ -135,22 +137,39 @@ void InformationCenter::triggerEnemyMoveAround()
                     break;
                 case description_type::run:
                     break;
-                case description_type::detect_collision:
-                    if(auto bot = dynamic_pointer_cast<Bot>(index.first))
-                    {
-                        float speed = bot->getSpeedMove();
-                        Vec2 velocity = getRandomMove(speed);
-                        
-//                        if(false)
-//                        {
-//                            
-//                        }
-                        
-                        moveWithVelocity(index, velocity);
-                        
-                    }
+                case description_type::detect_collision_wall:
+					if (auto dcw = dynamic_pointer_cast<des_detect_collision_wall>(backDes))
+					{
+						if (auto bot = dynamic_pointer_cast<Bot>(index.first))
+						{
+							float speed = bot->getSpeedMove();
+							Vec2 currentVec = dcw->getCurrentVec();
+							Vec2 velocity = Vec2::ZERO;
+							do
+							{
+								velocity = getRandomMove(speed);
+							} while (velocity == currentVec);
+							moveWithVelocity(index, velocity);
+						}
+					}
+                    
                     break;
-                case description_type::collision:
+                case description_type::collision_wall:
+					if (auto cw = dynamic_pointer_cast<des_collision_wall>(backDes))
+					{
+						if (auto bot = dynamic_pointer_cast<Bot>(index.first))
+						{
+							float speed = bot->getSpeedMove();
+							Vec2 currentVec = cw->getCurrentVec();
+							Vec2 velocity = Vec2::ZERO;
+							do
+							{
+								velocity = getRandomMove(speed);
+							} while (velocity == currentVec);
+							moveWithVelocity(index, velocity);
+						}
+					}
+
                     break;
                 default:
                     break;
@@ -184,18 +203,20 @@ void InformationCenter::moveWithVelocity(pairCharacterMove& pair, const Vec2& ve
     shared_ptr<description> des = make_shared<des_walk>(velocity);
     pair.second->add(make_shared<InformationMoveAround>(des));
     
-    shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(velocity, 1);
+    shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(velocity, 0.1);
     pair.first->pushCommand(cmd);
 }
 
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationDetectEnemy> information)
 {
     _enemyIsDetected.push(pair<shared_ptr<Character>,shared_ptr<InformationDetectEnemy>>(character, information));
+	triggerEnemyMoveAround();
 }
 
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationEnemyOutVision> information)
 {
     _enemyOutVision = pair<shared_ptr<Character>, shared_ptr<InformationEnemyOutVision>>(character, information);
+	triggerEnemyMoveAround();
 }
 
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationMoveAround> information)
@@ -219,6 +240,8 @@ void InformationCenter::pushInformation(const shared_ptr<Character>& character, 
     }
     else
         _enemyMoveAround.push_back(pair<shared_ptr<Character>, shared_ptr<InformationMoveAround>>(character, information));
+
+	triggerEnemyMoveAround();
 }
 
 void InformationCenter::start()
@@ -239,22 +262,15 @@ void InformationCenter::update()
 {
     if(_isStop)return;
     
-    triggerEnemyMoveAround();
+    //triggerEnemyMoveAround();
 }
 
 void InformationCenter::stop()
 {
     _isStop = true;
-    while (detectEnemy.joinable())
-    {
-        detectEnemy.join();
-        break;
-    }
-    while(enemyOutVision.joinable())
-    {
-        enemyOutVision.join();
-        break;
-    }
+    
+    detectEnemy.join();
+    enemyOutVision.join();
         
     //enemyMoveAround.join();
 }

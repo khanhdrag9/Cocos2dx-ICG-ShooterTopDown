@@ -11,6 +11,8 @@
 #include "../Bot/Informations.h"
 #include "../Bot/InformationCenter.h"
 
+const float VisionEnemy::ranger_detect_collision = 96.f;
+
 VisionEnemy::VisionEnemy() : Vision()
 {
 }
@@ -23,12 +25,53 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 {
 	Vision::update(draw, clipper);
 	//return;	//disble vision enemy
+
+	if (_obj->isDestroyed())return;
+
 	Vec2 objPos = _obj->_sprite->getPosition();
+
+	//for detect collision with wall
+	if (auto bot = dynamic_pointer_cast<Bot>(_obj))
+	{
+		Vec2 speedCheck = bot->_rigidBody->_velocity;
+		//float speed = bot->getSpeedMove() * Director::getInstance()->getDeltaTime();
+		Rect rect = bot->_sprite->getBoundingBox();
+		Vec2 startPoint[1];
+		startPoint[0] = objPos;
+
+		for(auto& point : startPoint)
+		//if (InformationCenter::getInstance()->speedAvaiable(speedCheck, speed / 4.f, speed * 4.f))
+		{
+			Vec2 offset = speedCheck.getNormalized() * ranger_detect_collision;
+			Vec2 target = offset + point;
+#if DEBUG_ENEMY
+			draw->drawLine(point, target, Color4F::BLUE);
+#endif
+			auto listLine = Game::getInstance()->getRigidWord()->getListLines();
+			for (auto& checkline : listLine)
+			{
+				if (Vec2::isSegmentIntersect(point, target, checkline.start, checkline.end))
+				{
+					auto des = make_shared<des_detect_collision_wall>(speedCheck);
+					shared_ptr<InformationMoveAround> information = make_shared<InformationMoveAround>(des);
+					InformationCenter::getInstance()->pushInformation(bot, information);
+					break;
+				}
+			}
+		}
+
+	}
+	
     
 	vector<Vec2> temp = _points2;
 	for (auto body : Game::getInstance()->getRigidWord()->getListBodies())
 	{
 		if (body->getTag() == RigidBody::tag::BULLET_PLAYER)
+		{
+
+		}
+
+		if (body->getTag() == RigidBody::tag::WALL)
 		{
 
 		}

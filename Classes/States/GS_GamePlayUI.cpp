@@ -19,7 +19,7 @@ _menuKDA(nullptr)
 
 GS_GamePlayUI::~GS_GamePlayUI()
 {
-    _listKDA.clear();
+   
 }
 
 bool GS_GamePlayUI::init()
@@ -157,4 +157,10 @@ void GS_GamePlayUI::useKDATab(bool show)
     
     if(_kdaTab)
         _kdaTab->runAction(action);
+}
+
+void GS_GamePlayUI::clear()
+{
+	_listKDA.clear();
+	_characterProfile = nullptr;
 }

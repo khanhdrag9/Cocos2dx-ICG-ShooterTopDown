@@ -16,6 +16,7 @@ protected:
 	atomic_bool _threadRun;
 	thread _threadVision;
 	void getPointIntersect();
+	float _vision;
 public:
 	Vision();
     Vision(shared_ptr<Character> obj);
@@ -26,4 +27,6 @@ public:
 	bool avaibleToDelete() const;
 	void stop();
 	shared_ptr<Character> getObject();
+
+	static const float origin_vision;
 };

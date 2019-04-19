@@ -24,6 +24,7 @@ public:
     void initKDA(const int& number);
     void useKDATab(bool show);
     
+	void clear();
     CREATE_FUNC(GS_GamePlayUI);
 };
 

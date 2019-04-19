@@ -50,13 +50,15 @@ public:
 
 /*--------------------------*/
 
+//Description
 enum class description_type : int
 {
+	none,
     init,
     walk,
     run,
-    detect_collision,
-    collision
+    detect_collision_wall,
+    collision_wall
 };
 
 class description
@@ -80,18 +82,44 @@ class des_walk : public description
     Vec2 _vec;
 public:
     des_walk(const Vec2& velocity);
-    Vec2 getVelocity() const;
+    inline Vec2 getVelocity() const;
 };
+
+inline Vec2 des_walk::getVelocity() const { return _vec; }
 
 class des_run : public description
 {
     Vec2 _point;
 public:
     des_run(const Vec2& point);
-    Vec2 getVelocity() const;
+	inline Vec2 getVelocity() const;
 };
 
+inline Vec2 des_run::getVelocity() const { return _point; }
 
+class des_detect_collision_wall : public description
+{
+protected:
+	Vec2 _currentVec;
+public:
+	des_detect_collision_wall() {}
+	des_detect_collision_wall(const Vec2& rotation);
+	inline Vec2 getCurrentVec() const;
+};
+
+inline Vec2 des_detect_collision_wall::getCurrentVec() const { return _currentVec; }
+
+class des_collision_wall : public des_detect_collision_wall
+{
+	Vec2 _collisionPoint;
+public:
+	des_collision_wall(const Vec2& currentVec, const Vec2& collisionPoint);	//collision point havent used 
+	inline Vec2 getCollisionPoint() const;
+};
+
+inline Vec2 des_collision_wall::getCollisionPoint() const { return _collisionPoint; }
+
+//Information
 class InformationMoveAround : public Information
 {
 protected:

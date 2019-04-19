@@ -44,7 +44,8 @@ void CommandMoveTo::update(float dt)
         {
 			Vec2 oldOffSet = _target - currentPos;
             Vec2 offset = oldOffSet.getNormalized();
-            Vec2 newoffset = offset* _speed * dt;
+            //Vec2 newoffset = offset* _speed * dt;
+			Vec2 newoffset = offset * _speed;
 			if (abs(newoffset.x) >= abs(oldOffSet.x) || abs(newoffset.y) >= abs(oldOffSet.y))
 			{
 				object->_sprite->setPosition(_target);

@@ -200,8 +200,17 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
             break;
         case cocos2d::EventKeyboard::KeyCode::KEY_F3:
             //_listVision.clear();    //disble vision
-            if (BotManager::getInstance()->countBots() > 0)
-                BotManager::getInstance()->clear();
+			if (BotManager::getInstance()->countBots() > 0)
+			{
+				BotManager::getInstance()->clear();
+				if (GS_GamePlay* gameplayLayer = dynamic_cast<GS_GamePlay*>(_currentState))
+				{
+					if (gameplayLayer->getUILayer())
+						gameplayLayer->getUILayer()->clear();
+				}
+				InformationCenter::getInstance()->stop();
+				InformationCenter::getInstance()->clear(true);
+			}
             else
             {
                 BotManager::getInstance()->initMovePosition();
@@ -211,6 +220,8 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
                     shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
                     botVision->setDraw(false);
                 }
+
+
             }
             
             break;
@@ -349,6 +360,12 @@ void Game::releaseGamePlay()
         _player->destroy();
         //_player = nullptr;
     }
+	
+	if (GS_GamePlay* gameplayLayer = dynamic_cast<GS_GamePlay*>(_currentState))
+	{
+		if (gameplayLayer->getUILayer())
+			gameplayLayer->getUILayer()->clear();
+	}
     
     InformationCenter::getInstance()->clear(true);
 }

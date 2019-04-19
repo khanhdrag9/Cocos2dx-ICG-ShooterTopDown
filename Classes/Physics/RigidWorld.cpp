@@ -13,6 +13,7 @@
 #include "../Characters/Character.h"
 #include "../Defines/constants.h"
 #include "../Objects/BulletBasic.h"
+#include "../Bot/InformationCenter.h"
 
 
 RigidWorld::RigidWorld()
@@ -43,17 +44,17 @@ void RigidWorld::update(float dt)
 			++begin;
 	}
 
-    for(auto& x : _listRigidBodies)
-    {
-        x->update(dt);
-    }
+    //for(auto& x : _listRigidBodies)
+    //{
+    //    x->update(dt);
+    //}
     
     for(auto& x : _listRigidBodies)
     {
         if(x->_object != nullptr)
         {
             Vec2 currentObjPos = x->_object->_sprite->getPosition();
-            Vec2 nextObjPos = currentObjPos + x->_velocity;
+            Vec2 nextObjPos = currentObjPos + x->_velocity * dt;
             x->_object->_sprite->setPosition(nextObjPos);
             x->update(dt);
             
@@ -191,6 +192,17 @@ bool RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
 			}
         }
     }
+
+	if (body1->getTag() == RigidBody::tag::WALL && obj2)
+	{
+		auto des = make_shared<des_collision_wall>(body2->_velocity, Vec2(0, 0));
+		InformationCenter::getInstance()->pushInformation(obj2, make_shared<InformationMoveAround>(des));
+	}
+	else if (body2->getTag() == RigidBody::tag::WALL && obj1)
+	{
+		auto des = make_shared<des_collision_wall>(body1->_velocity, Vec2(0, 0));
+		InformationCenter::getInstance()->pushInformation(obj1, make_shared<InformationMoveAround>(des));
+	}
 
 	return true;
 }

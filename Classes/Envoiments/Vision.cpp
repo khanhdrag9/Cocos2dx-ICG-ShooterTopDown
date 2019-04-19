@@ -13,6 +13,8 @@
 #include "../Physics/RigidBodyPolygon.h"
 #include "../Physics/RigidBodyCircle.h"
 
+const float Vision::origin_vision = 500.f;
+
 void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
 {
 	//getPointIntersect();
@@ -62,7 +64,8 @@ Vision::Vision():
 	_isDraw(false),
 	_isStop(false),
 	_threadRun(false),
-	_avaiableToDelete(false)
+	_avaiableToDelete(false),
+	_vision(origin_vision)
 {}
 
 Vision::Vision(shared_ptr<Character> obj):
@@ -70,7 +73,8 @@ _obj(obj),
 _isDraw(false),
 _isStop(false),
 _threadRun(false),
-_avaiableToDelete(false)
+_avaiableToDelete(false),
+_vision(origin_vision)
 {
 	_threadVision = thread(&Vision::threadGetPoint, this);
 	_threadVision.detach();
@@ -110,7 +114,7 @@ shared_ptr<Character> Vision::getObject()
 void Vision::getPointIntersect()
 {
 	Vec2 objPos = _obj->_sprite->getPosition();
-	float dimention = 500.f;
+	float dimention = _vision;
 	auto listLine = Game::getInstance()->getRigidWord()->getListLines();
 
 	_points.clear();

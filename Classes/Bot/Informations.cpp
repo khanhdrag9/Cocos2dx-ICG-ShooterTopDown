@@ -43,6 +43,7 @@ InformationEnemyOutVision::InformationEnemyOutVision()
 }
 
 //Move Around
+//Description
 description_type description::getType() const
 {
     return _type;
@@ -51,12 +52,23 @@ description_type description::getType() const
 des_init::des_init() { _type = description_type::init; }
 
 des_walk::des_walk(const Vec2& velocity) : _vec(velocity) { _type = description_type::walk; }
-Vec2 des_walk::getVelocity() const { return _vec; }
 
 des_run::des_run(const Vec2& point) : _point(point) { _type = description_type::run; }
-Vec2 des_run::getVelocity() const { return _point; }
 
+des_detect_collision_wall::des_detect_collision_wall(const Vec2 & currentVec)
+	: _currentVec(currentVec)
+{
+	_type = description_type::detect_collision_wall;
+}
 
+des_collision_wall::des_collision_wall(const Vec2& currentVec, const Vec2& collisionPoint) : 
+	_collisionPoint(collisionPoint)
+{
+	_currentVec = currentVec;
+	_type = description_type::collision_wall;
+}
+
+//information
 const int InformationMoveAround::limit_description = 100;
 
 InformationMoveAround::InformationMoveAround()
