@@ -194,7 +194,11 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
                 for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
                 {
                     shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
+#if DEBUG_ENEMY
+					botVision->setDraw(true);
+#else
                     botVision->setDraw(false);
+#endif
                 }
             }
             break;
@@ -217,7 +221,11 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
                 for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
                 {
                     shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
+#if DEBUG_ENEMY
                     botVision->setDraw(true);
+#else
+					botVision->setDraw(false);
+#endif
                 }
 
 				_objIsFollow = BotManager::getInstance()->getBot(0);
@@ -620,7 +628,11 @@ void Game::createSight()
     for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
     {
         shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
+#if DEBUG_ENEMY
         botVision->setDraw(true);
+#else
+		botVision->setDraw(false);
+#endif
     }
     
 #if DEBUG_SIGHT

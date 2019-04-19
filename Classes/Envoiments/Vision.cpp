@@ -77,7 +77,7 @@ _avaiableToDelete(false),
 _vision(origin_vision)
 {
 	_threadVision = thread(&Vision::threadGetPoint, this);
-	_threadVision.detach();
+	//_threadVision.detach();
 }
 
 Vision::~Vision()
@@ -103,7 +103,12 @@ bool Vision::avaibleToDelete() const
 
 void Vision::stop()
 {
+	if (_avaiableToDelete)return;
+
 	_isStop = true;
+	while (_threadVision.joinable() == false || _avaiableToDelete == false);
+	_threadVision.join();
+	
 }
 
 shared_ptr<Character> Vision::getObject()
