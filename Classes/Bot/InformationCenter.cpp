@@ -84,8 +84,16 @@ void InformationCenter::triggerEnemyMoveAround()
 {
     //while (!_isStop)
     {
-        for(auto& index : _enemyMoveAround)
+        //for(auto& index : _enemyMoveAround)
+		for(auto begin = _enemyMoveAround.begin(); begin != _enemyMoveAround.end();)
         {
+			auto& index = *begin;
+			if (index.first->isDestroyed())
+			{
+				begin = _enemyMoveAround.erase(begin);
+				continue;
+			}
+
             auto information = index.second;
             auto backDes = information->_descriptions.back();
             
@@ -175,6 +183,7 @@ void InformationCenter::triggerEnemyMoveAround()
                     break;
             }
             
+			++begin;
         }
     }
 }
@@ -262,7 +271,7 @@ void InformationCenter::update()
 {
     if(_isStop)return;
     
-    //triggerEnemyMoveAround();
+    triggerEnemyMoveAround();
 }
 
 void InformationCenter::stop()

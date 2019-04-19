@@ -202,17 +202,11 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
             //_listVision.clear();    //disble vision
 			if (BotManager::getInstance()->countBots() > 0)
 			{
-				if (GS_GamePlay* gameplayLayer = dynamic_cast<GS_GamePlay*>(_currentState))
-				{
-					if (gameplayLayer->getUILayer())
-						gameplayLayer->getUILayer()->clear();
-				}
-				InformationCenter::getInstance()->stop();
-				InformationCenter::getInstance()->clear(true);
 				BotManager::getInstance()->clear();
 
 				if (auto bot = dynamic_pointer_cast<Bot>(_objIsFollow))
 				{
+					_objIsFollow = nullptr;
 					_objIsFollow = _player;
 				}
 			}

@@ -33,8 +33,8 @@ void Bot::init()
 
 void Bot::update(float dt)
 {
-    if(containStatus(Status::STOP))return;
-    
+    if(containStatus(Status::STOP) || _destroy)return;
+
 	Character::update(dt);
     _bulletMag->update(dt);
     

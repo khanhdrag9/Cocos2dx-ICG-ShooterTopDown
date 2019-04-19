@@ -70,34 +70,36 @@ void GS_GamePlayUI::update(float)
     //if(auto character = _characterProfile.lock())
     if(auto character = _characterProfile)
     {
-        _playerBullet->setVisible(true);
-        _propertiesPlayer->setVisible(true);
-        
-        //for Mag bullet
-        int maxbullet = 0;
-        int currentbullet = 0;
-        
-        if(auto player = dynamic_pointer_cast<Player>(character))
-        {
-            auto& mag = player->getMag();
-            maxbullet = mag->getMaxBullet();
-            currentbullet = mag->getCurrentBullet();
-        }
-        else if(auto bot = dynamic_pointer_cast<Bot>(character))
-        {
-            auto& mag = bot->getMag();
-            maxbullet = mag->getMaxBullet();
-            currentbullet = mag->getCurrentBullet();
-        }
-        
-        string formatMag = to_string(currentbullet) + "/" + to_string(maxbullet);
-        _playerBullet->setString(formatMag);
-        
-        //for HP
-        int currentHP = character->getCurrentHP();
-        string formatHP = "HP:" + to_string(currentHP) + "%";
-        _propertiesPlayer->setString(formatHP);
-        
+		if (!character->isDestroyed())
+		{
+			_playerBullet->setVisible(true);
+			_propertiesPlayer->setVisible(true);
+
+			//for Mag bullet
+			int maxbullet = 0;
+			int currentbullet = 0;
+
+			if (auto player = dynamic_pointer_cast<Player>(character))
+			{
+				auto& mag = player->getMag();
+				maxbullet = mag->getMaxBullet();
+				currentbullet = mag->getCurrentBullet();
+			}
+			else if (auto bot = dynamic_pointer_cast<Bot>(character))
+			{
+				auto& mag = bot->getMag();
+				maxbullet = mag->getMaxBullet();
+				currentbullet = mag->getCurrentBullet();
+			}
+
+			string formatMag = to_string(currentbullet) + "/" + to_string(maxbullet);
+			_playerBullet->setString(formatMag);
+
+			//for HP
+			int currentHP = character->getCurrentHP();
+			string formatHP = "HP:" + to_string(currentHP) + "%";
+			_propertiesPlayer->setString(formatHP);
+		}
     }
     else
     {

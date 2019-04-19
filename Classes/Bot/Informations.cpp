@@ -84,6 +84,10 @@ InformationMoveAround::InformationMoveAround(shared_ptr<description> des)
 
 InformationMoveAround::~InformationMoveAround()
 {
+	while (_descriptions.size() > 0)
+	{
+		_descriptions.pop();
+	}
 }
 
 void InformationMoveAround::add(shared_ptr<InformationMoveAround> newInfo)

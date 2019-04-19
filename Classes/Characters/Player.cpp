@@ -38,6 +38,8 @@ void Player::init()
 void Player::update(float dt)
 {
     Character::update(dt);
+	if (_destroy)return;
+
     _bulletMag->update(dt);
 }
 
