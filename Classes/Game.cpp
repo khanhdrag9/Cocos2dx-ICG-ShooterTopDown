@@ -217,10 +217,10 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
                 for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
                 {
                     shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
-                    botVision->setDraw(false);
+                    botVision->setDraw(true);
                 }
 
-
+				_objIsFollow = BotManager::getInstance()->getBot(0);
             }
             
             break;
