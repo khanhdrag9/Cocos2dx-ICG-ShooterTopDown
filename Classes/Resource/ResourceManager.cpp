@@ -12,14 +12,22 @@ ResourceManager::ResourceManager()
 {
     //image
     _resMap[res::define::SPLASH] = "splashKW.jpg";
+    _resMap[res::define::IMG_HOME_SCREEN_1] = "HomeScene.jpg";
+    _resMap[res::define::IMG_HOME_SCREEN_1_NO_TITLE] = "HomeSceneWithoutTitle.jpg";
     _resMap[res::define::IMG_BG_1] = "BG.jpg";
     _resMap[res::define::IMG_FOG] = "Fog.jpg";
 	_resMap[res::define::IMG_BLACK] = "Black.jpg";
+    
 
 	//image Map
-	_resMap[res::define::IMG_MAP1] = "";
-	_resMap[res::define::IMG_MAP2] = "";
-	_resMap[res::define::IMG_MAP3] = "";
+	_resMap[res::define::IMG_MAP1] = "Map/map2Img.png";
+	_resMap[res::define::IMG_MAP2] = "Map/map2Img.png";
+	_resMap[res::define::IMG_MAP3] = "Map/map2Img.png";
+    
+    //Map link
+    _resMap[res::define::MAP1] = "Map/Map1.tmx";
+    _resMap[res::define::MAP2] = "Map/Map2.tmx";
+    _resMap[res::define::MAP3] = "Map/Map3.tmx";
     
     //UI
     _resMap[res::define::BTN_BLUE] = "Assets/PNG/UI/buttonBlue.png";

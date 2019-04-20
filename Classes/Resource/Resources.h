@@ -6,12 +6,19 @@ namespace res
     {
         //image
         SPLASH,
+        IMG_HOME_SCREEN_1,
+        IMG_HOME_SCREEN_1_NO_TITLE,
         IMG_BG_1,
         IMG_FOG,
         IMG_BLACK,
 		IMG_MAP1,
 		IMG_MAP2,
 		IMG_MAP3,
+        
+        //Map link
+        MAP1,
+        MAP2,
+        MAP3,
         
         //UI
         BTN_BLUE,

@@ -25,6 +25,15 @@ class Game : public pattern::Singleton<Game>
 		VISION_ENEMY
 	};
     
+    struct GameMap   //first is name, second is link tile map
+    {
+        string name;
+        string linkMap;
+        string linkImage;
+        GameMap(const string& n, const string& lm, const string& li):
+        name(n), linkMap(lm), linkImage(li)
+        {}
+    };
     
 private:
     Layer* _currentState;
@@ -35,9 +44,9 @@ private:
     bool _isHoldKey;
     vector<EventKeyboard::KeyCode> _keyIsHolds;
     
+    vector<GameMap> _listMaps;
+    
 	TMXTiledMap* _tileMap;
-	TMXLayer* _backgroundLayer;
-	TMXLayer* _collisionLayer;
 
 	shared_ptr<Character> _objIsFollow;
 
@@ -100,6 +109,7 @@ public:
     void setEnableVolunm(bool enable);
     bool isEnableVolumn();
 
+    const vector<GameMap>& getGameMaps() const;
 private:
     shared_ptr<Player> createAPlayer();
     

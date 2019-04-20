@@ -13,7 +13,6 @@ public:
 	~UIPageView();
 
 	bool init() override;
-
 	
 };
 

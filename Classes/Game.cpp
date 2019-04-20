@@ -33,8 +33,6 @@ _player(nullptr),
 _playerShoot(false),
 _isHoldKey(false),
 _tileMap(nullptr),
-_backgroundLayer(nullptr),
-_collisionLayer(nullptr),
 _objIsFollow(nullptr),
 _rigidWorld(nullptr),
 _sightNode(nullptr),
@@ -50,8 +48,6 @@ _isPopupKDAVisible(false)
 Game::~Game()
 {
 	/*CC_SAFE_DELETE(_tileMap);
-	CC_SAFE_DELETE(_backgroundLayer);
-	CC_SAFE_DELETE(_collisionLayer);
 
 	_keyIsHolds.clear();*/
 }
@@ -60,6 +56,14 @@ void Game::init()
 {
     new ResourceManager;
     new InformationCenter;
+    
+    auto resMgr = ResourceManager::getInstance();
+    _listMaps.clear();
+    _listMaps = vector<GameMap>{
+        GameMap("MAP1", resMgr->at(res::define::MAP1), resMgr->at(res::define::IMG_MAP1)),
+        GameMap("MAP2", resMgr->at(res::define::MAP2), resMgr->at(res::define::IMG_MAP2)),
+        GameMap("MAP3", resMgr->at(res::define::MAP3), resMgr->at(res::define::IMG_MAP3))
+    };
 }
 
 void Game::initGamePlay()
@@ -501,9 +505,8 @@ void Game::createMap()
     
 	//for map backgroud
 	_tileMap = TMXTiledMap::create("Map/Map2.tmx");
-	_backgroundLayer = _tileMap->getLayer("Background");
-	_collisionLayer = _tileMap->getLayer("Collision");
-	_collisionLayer->setVisible(false);
+    auto collisionLayer = _tileMap->getLayer("Collision");
+	collisionLayer->setVisible(false);
 
 	_currentState->addChild(_tileMap);
 
@@ -517,7 +520,7 @@ void Game::createMap()
     {
         for (int h = 0; h < mapSize.height; h++)
         {
-            auto tile = _collisionLayer->getTileAt(Vec2(w, h));
+            auto tile = collisionLayer->getTileAt(Vec2(w, h));
             if (tile)
             {
                 Rect size = tile->getBoundingBox();
@@ -788,7 +791,13 @@ void Game::setEnableVolunm(bool enable)
     if(_enableVolumn)
     {
         auto audio = SimpleAudioEngine::getInstance();
-        const char* musicsBG = ResourceManager::getInstance()->at(res::define::MUSIC_ACTION_FIGHT).c_str();
+        res::define backgroundMusics[] = {
+            res::define::MUSIC_ACTION_FIGHT,
+            res::define::MUSIC_BOSS_FIGHT,
+            res::define::MUSIC_READY_TO_FIGHT
+        };
+        
+        const char* musicsBG = ResourceManager::getInstance()->at(backgroundMusics[random(0, 2)]).c_str();
         if(audio->isBackgroundMusicPlaying())
             audio->resumeBackgroundMusic();
         else
@@ -801,4 +810,9 @@ void Game::setEnableVolunm(bool enable)
 bool Game::isEnableVolumn()
 {
     return _enableVolumn;
+}
+
+const vector<Game::GameMap>& Game::getGameMaps() const
+{
+    return _listMaps;
 }

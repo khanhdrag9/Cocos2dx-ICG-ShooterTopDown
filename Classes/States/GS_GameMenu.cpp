@@ -3,6 +3,7 @@
 #include "../Resource/ResourceManager.h"
 #include "GS_GamePlay.h"
 #include "UIPageView.h"
+#include "GS_PickMap.h"
 
 cocos2d::Scene *GS_GameMenu::createScene()
 {
@@ -10,7 +11,7 @@ cocos2d::Scene *GS_GameMenu::createScene()
 	GS_GameMenu* layer = GS_GameMenu::create();
     scene->addChild(layer, 2);
 
-	UIPageView* pageView = UIPageView::create();
+//    UIPageView* pageView = UIPageView::create();
     //scene->addChild(pageView, 1);
 
     return scene;
@@ -32,7 +33,7 @@ bool GS_GameMenu::init()
     auto game = Game::getInstance();
     
     //background
-    auto bg = Sprite::create("HomeScene.jpg");
+    auto bg = Sprite::create(resMgr->at(res::define::IMG_HOME_SCREEN_1));
     bg->setPosition(center);
     this->addChild(bg, 0);
     
@@ -110,7 +111,9 @@ void GS_GameMenu::GoToGamePlay()
 
 void GS_GameMenu::GoToPickMap()
 {
-    
+    auto pickmap = GS_PickMap::createScene();
+    Director::getInstance()->pushScene(TransitionFadeBL::create(1.0f, pickmap));
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 }
 
 void GS_GameMenu::GoToOption()
