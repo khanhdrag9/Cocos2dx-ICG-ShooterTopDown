@@ -77,6 +77,12 @@ void Game::initGamePlay()
 void Game::update(float dt)
 {
     handleKeyboardHold();
+    
+    //update properties ui
+    if(auto gameplayer = dynamic_cast<GS_GamePlay*>(_currentState))
+    {
+        gameplayer->getUILayer()->setCharacter(_objIsFollow);
+    }
 
 	//player
     if(_player)
@@ -719,6 +725,11 @@ shared_ptr<Vision> Game::createView(shared_ptr<Character> object, type_vision ty
 shared_ptr<Player> Game::getPlayer() const
 {
 	return _player;
+}
+
+shared_ptr<Character> Game::getCurrentTargetView() const
+{
+    return _objIsFollow;
 }
 
 void Game::usePopupInGame(bool push)

@@ -91,6 +91,7 @@ public:
     void pushView(shared_ptr<Vision> vision);
     shared_ptr<Vision> createView(shared_ptr<Character> object, type_vision type);
 	shared_ptr<Player> getPlayer() const;
+    shared_ptr<Character> getCurrentTargetView() const;
     
     void resetGame();
     void backToHomeMenu();
