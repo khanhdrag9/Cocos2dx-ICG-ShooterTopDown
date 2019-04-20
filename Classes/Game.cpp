@@ -494,7 +494,7 @@ void Game::createMap()
     _fogSprite = Sprite::create(ResourceManager::getInstance()->at(res::define::IMG_FOG));
     _fogSprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _fogSprite->setPosition(0,0);
-    _fogSprite->setOpacity(225.f);
+    _fogSprite->setOpacity(150.f);
     //_currentState->addChild(_fogSprite, 10);
     
 
