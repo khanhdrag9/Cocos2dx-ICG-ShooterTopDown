@@ -31,6 +31,16 @@ ResourceManager::ResourceManager()
     _resMap[res::define::FONT_KENVECTOR_FUTURE_THIN] = "Assets/Bonus/kenvector_future_thin.ttf";
     _resMap[res::define::FONT_ARIAL] = "fonts/arial.ttf";
     
+    //musics
+    _resMap[res::define::MUSIC_ACTION_FIGHT] = "action_fight.mp3";
+    _resMap[res::define::MUSIC_READY_TO_FIGHT] = "ready_to_fight.mp3";
+    _resMap[res::define::MUSIC_BOSS_FIGHT] = "boss_fight.mp3";
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic(at(res::define::MUSIC_ACTION_FIGHT).c_str());
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic(at(res::define::MUSIC_READY_TO_FIGHT).c_str());
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic(at(res::define::MUSIC_BOSS_FIGHT).c_str());
+    
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+    
     //player
     _resMap[res::define::PLAYER_1_BLUE] = "Assets/PNG/playerShip1_blue.png";
     _resMap[res::define::PLAYER_1_GREEN] = "Assets/PNG/playerShip1_green.png";

@@ -780,3 +780,25 @@ void Game::backToHomeMenu()
     auto home = GS_GameMenu::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(0.5, home));
 }
+
+void Game::setEnableVolunm(bool enable)
+{
+    _enableVolumn = enable;
+    auto audio = SimpleAudioEngine::getInstance();
+    if(_enableVolumn)
+    {
+        auto audio = SimpleAudioEngine::getInstance();
+        const char* musicsBG = ResourceManager::getInstance()->at(res::define::MUSIC_ACTION_FIGHT).c_str();
+        if(audio->isBackgroundMusicPlaying())
+            audio->resumeBackgroundMusic();
+        else
+            audio->playBackgroundMusic(musicsBG);
+    }
+    else
+        audio->pauseBackgroundMusic();
+}
+
+bool Game::isEnableVolumn()
+{
+    return _enableVolumn;
+}

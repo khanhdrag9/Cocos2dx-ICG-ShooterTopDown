@@ -26,6 +26,11 @@ namespace res
         FONT_KENVECTOR_FUTURE_THIN,
         FONT_ARIAL,
         
+        //musics
+        MUSIC_ACTION_FIGHT,
+        MUSIC_READY_TO_FIGHT,
+        MUSIC_BOSS_FIGHT,
+        
         //player
         PLAYER_1_BLUE,
         PLAYER_1_GREEN,

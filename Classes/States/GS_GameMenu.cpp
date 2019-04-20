@@ -11,7 +11,7 @@ cocos2d::Scene *GS_GameMenu::createScene()
     scene->addChild(layer, 2);
 
 	UIPageView* pageView = UIPageView::create();
-//    scene->addChild(pageView, 1);
+    //scene->addChild(pageView, 1);
 
     return scene;
 }
@@ -26,57 +26,78 @@ bool GS_GameMenu::init()
     
     Size screenSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    Vec2 center = Vec2(screenSize.width / 2.f + origin.x, screenSize.height / 2.f + origin.y);
+            
     auto resMgr = ResourceManager::getInstance();
+    auto game = Game::getInstance();
     
-    Vec2 pos[]{
-        Vec2(screenSize.width / 2.f, screenSize.height * 0.83),
-        Vec2(screenSize.width / 2.f, screenSize.height * 0.6),
-        Vec2(screenSize.width / 2.f, screenSize.height * 0.4),
-        Vec2(screenSize.width / 2.f, screenSize.height * 0.2)
-    };
-    //create game label
-    Label* title = Label::createWithTTF("Shooter", resMgr->at(res::define::FONT_KENVECTOR_FUTURE_THIN), 75);
-	title->setColor(Color3B::RED);
-	title->setPosition(pos[0]);
-    this->addChild(title, 3);
+    //background
+    auto bg = Sprite::create("HomeScene.jpg");
+    bg->setPosition(center);
+    this->addChild(bg, 0);
     
-    //create UI button
-    pair<string, string> assetsBtn[]{
-        pair<string, string>(resMgr->at(res::define::BTN_GREEN), resMgr->at(res::define::BTN_RED)),
-        pair<string, string>(resMgr->at(res::define::BTN_YELLOW), resMgr->at(res::define::BTN_RED)),
-    };
+    //touch screen text
+    auto label = Label::createWithTTF("Touch on screen to start game", resMgr->at(res::define::FONT_KENVECTOR_FUTURE_THIN), 30);
+    label->setPosition(center.x, center.y * 0.6);
+    this->addChild(label);
     
-    vector<string> titleBtn{
-        "Start",
-        "Option"
-    };
-
-    vector<ui::Button*> listBtns;
-    int numberbutton = (int)titleBtn.size();
-    for(int i = 0; i < numberbutton; i++)
-    {
-        ui::Button* btn = ui::Button::create(assetsBtn[i].first, assetsBtn[i].second);
-        btn->setScale(1.5f);
-        btn->setTitleText(titleBtn[i]);
-        btn->setTitleColor(Color3B::BLACK);
-        btn->setTitleFontSize(25);
-        btn->setTitleFontName(resMgr->at(res::define::FONT_KENVECTOR_FUTURE_THIN));
-        btn->setPosition(pos[i+1]);
-        listBtns.push_back(btn);
-        
-        this->addChild(btn);
-    }
+    auto actionLabel = Sequence::createWithTwoActions(FadeIn::create(1.f), FadeOut::create(0.5f));
+    label->runAction(RepeatForever::create(actionLabel));
     
-    //init callback to btn
-    listBtns[0]->addTouchEventListener([&](Ref*, ui::Widget::TouchEventType type){
-        if(type == ui::Widget::TouchEventType::ENDED)
-            GoToGamePlay();
-    });
-    
-    listBtns[1]->addTouchEventListener([&](Ref*, ui::Widget::TouchEventType type){
+    //option
+    _option = ui::Button::create("optionFill.png");
+    _option->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+    _option->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height));
+    _option->setScale(0.25);
+    _option->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
         if(type == ui::Widget::TouchEventType::ENDED)
             GoToOption();
     });
+    this->addChild(_option);
+    
+    game->setEnableVolunm(true);
+    _volumn = ui::Button::create("volumnOn.png");
+    _volumn->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+    _volumn->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height * 0.9));
+    _volumn->setScale(0.25);
+    _volumn->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
+        if(type == ui::Widget::TouchEventType::ENDED)
+            this->modifyVolumn();
+    });
+    this->addChild(_volumn);
+    
+    _disbleVolumn = Sprite::create("volumnOff.png");
+    _disbleVolumn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    _disbleVolumn->setVisible(!game->isEnableVolumn());
+    _volumn->addChild(_disbleVolumn);
+    _volumn->setVisible(false);
+    
+    _about = ui::Button::create("about.png");
+    _about->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+    _about->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height * 0.8));
+    _about->setScale(0.25f);
+    _about->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
+        if(type == ui::Widget::TouchEventType::ENDED)
+            GoToAbout();
+    });
+    this->addChild(_about);
+    _about->setVisible(_volumn->isVisible());
+    
+    //touch
+    auto touchlistner = EventListenerTouchOneByOne::create();
+    touchlistner->onTouchBegan = [this](Touch* touch, Event*){ return true;};
+    touchlistner->onTouchEnded = [this](Touch* touch, Event*)
+    {
+        this->GoToPickMap();
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchlistner, this);
+    
+//    auto tileMap = TMXTiledMap::create("Map/Map2.tmx");
+//    auto collisionLayer = tileMap->getLayer("Collision");
+//    collisionLayer->setVisible(false);
+//    this->addChild(tileMap);
+//
+//    tileMap->setScale(0.2);
 
     return true;
 }
@@ -87,7 +108,25 @@ void GS_GameMenu::GoToGamePlay()
     Director::getInstance()->pushScene(TransitionFade::create(0.5, gameplay));
 }
 
+void GS_GameMenu::GoToPickMap()
+{
+    
+}
+
 void GS_GameMenu::GoToOption()
+{
+    _volumn->setVisible(!_volumn->isVisible());
+    _about->setVisible(_volumn->isVisible());
+}
+
+void GS_GameMenu::modifyVolumn()
+{
+    bool enableVolumn = Game::getInstance()->isEnableVolumn();
+    Game::getInstance()->setEnableVolunm(!enableVolumn);
+    _disbleVolumn->setVisible(enableVolumn);
+}
+
+void GS_GameMenu::GoToAbout()
 {
     
 }

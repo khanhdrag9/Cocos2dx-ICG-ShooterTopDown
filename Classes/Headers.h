@@ -11,6 +11,8 @@ using namespace std;
 
 //Cocos
 #include "cocos2d.h"
+#include "audio/include/SimpleAudioEngine.h"
+using namespace CocosDenshion;
 #include "ui/CocosGUI.h"
 
 using namespace NS_CC;

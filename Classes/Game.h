@@ -56,6 +56,7 @@ private:
     
     bool _isPopupInGameVisible;
     bool _isPopupKDAVisible;
+    bool _enableVolumn;
 public:
     Game();
     ~Game();
@@ -95,6 +96,9 @@ public:
     
     void resetGame();
     void backToHomeMenu();
+    
+    void setEnableVolunm(bool enable);
+    bool isEnableVolumn();
 
 private:
     shared_ptr<Player> createAPlayer();

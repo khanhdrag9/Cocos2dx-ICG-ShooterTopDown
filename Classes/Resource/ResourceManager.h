@@ -1,9 +1,9 @@
 #pragma once
 
-#include <iostream>
 #include "Resources.h"
 #include "../Defines/Templates.h"
 #include <map>
+#include "Headers.h"
 
 
 class ResourceManager : public pattern::Singleton<ResourceManager>
