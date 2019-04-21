@@ -73,7 +73,6 @@ void Game::initGamePlay()
     createPhysicsWorld();
     createMap();
 	createMainPlayer();
-    BotManager::getInstance()->initMovePosition();
     BotManager::getInstance()->initBots();
     createSight();
 	createStartCameraView();
@@ -228,7 +227,6 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
 			}
             else
             {
-                BotManager::getInstance()->initMovePosition();
                 BotManager::getInstance()->initBots();
                 for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
                 {

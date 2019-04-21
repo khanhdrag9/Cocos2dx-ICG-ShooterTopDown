@@ -10,7 +10,6 @@
 #include "InformationCenter.h"
 
 Bot::Bot() : Character(),
-_linkPos(nullptr),
 _speedMove(0),
 _ableWalk(false),
 _ableShoot(false)
@@ -67,12 +66,6 @@ void Bot::update(float dt)
 	}
     
     //update rotation
-    if (_linkPos && isMoved)
-    {
-        Vec2 offset = _linkPos->get() - _sprite->getPosition();
-        auto angle = atan2(offset.y, offset.x);
-        _sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
-    }
 
 	_currentStatus.clear();
 }
@@ -83,15 +76,6 @@ void Bot::pushCommand(shared_ptr<Command>& command, bool replace)
 
 }
 
-void Bot::setLinkPosition(shared_ptr<LinkPosition> newlink)
-{
-	_linkPos = newlink;
-}
-
-shared_ptr<LinkPosition> Bot::getLinkPosition() const
-{
-	return _linkPos;
-}
 
 void Bot::setStatus(Status status)
 {

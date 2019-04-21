@@ -26,7 +26,6 @@ void BotManager::clear()
     for(auto& bot : _listBots)
         bot->destroy();
 	_listBots.clear();
-	_mapPosition.clear();
 }
 
 void BotManager::addBot(shared_ptr<Bot> bot)
@@ -88,36 +87,10 @@ void BotManager::initBots()
 		//bot->_sprite->setPosition(x, y);
 		bot->_sprite->setPosition(history[i-1]);
         
-		bot->setWalk(true);
-        bot->setLinkPosition(_mapPosition.begin()->second);
+        bot->setWalk(true);
 
 		Game::getInstance()->getCurrentState()->addChild(bot->_sprite);
 	}
-}
-
-void BotManager::initMovePosition()
-{
-    TMXObjectGroup* movemapgroup = Game::getInstance()->getTileMap()->getObjectGroup("EnemyMoveMap");
-    int count = (int)movemapgroup->getObjects().size();
-    
-    for(int i = 1; i <= count; i++)
-    {
-        string name = "enemystep" + to_string(i);
-        auto pos = movemapgroup->getObject(name);
-        float x = pos.at("x").asFloat();
-        float y = pos.at("y").asFloat();
-        
-        shared_ptr<LinkPosition> linkpos = make_shared<LinkPosition>(Vec2(x, y), name);
-        
-        auto linknames = pos.at("LinkPosition").asString();
-        
-        std::istringstream iss(linknames);
-        vector<string> listLink(istream_iterator<string>{iss}, istream_iterator<string>());
-        for(auto link : listLink)linkpos->push(link);
-        
-        _mapPosition[name] = linkpos;
-    }
-    
 }
 
 shared_ptr<Bot> BotManager::createBot()
@@ -139,36 +112,4 @@ shared_ptr<Bot> BotManager::getBot(const int & index)
 		return nullptr;
 
 	return _listBots[index];
-}
-
-int getRandom(int start, int end)
-{
-	std::random_device rd;
-	std::mt19937 mt(rd());
-	std::uniform_int_distribution<> dist(start, end - 1);
-
-	return dist(mt);
-}
-
-shared_ptr<LinkPosition> BotManager::getNextLinkPosition(shared_ptr<Bot> bot, bool isRandom)
-{
-	if (bot->getLinkPosition() == nullptr)
-	{
-        return nullptr;
-	}
-
-	auto currentLinkPos = bot->getLinkPosition();
-
-	if (int count = currentLinkPos->otherSize() > 0)
-	{
-		int randomIndex = getRandom(0, currentLinkPos->otherSize());
-		string nameNextLink = currentLinkPos->otherAt(randomIndex);
-		shared_ptr<LinkPosition> nextlink = _mapPosition[nameNextLink];
-        if(nextlink == nullptr)
-            return currentLinkPos;
-        
-		return nextlink;
-	}
-
-	return currentLinkPos;
 }

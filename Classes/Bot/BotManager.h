@@ -8,7 +8,6 @@ class LinkPosition;
 class BotManager : public pattern::Singleton<BotManager>
 {
 	vector<shared_ptr<Bot>> _listBots;
-    map<string, shared_ptr<LinkPosition>> _mapPosition;
 
 public:
 	BotManager();
@@ -22,9 +21,6 @@ public:
 	void update(float dt);
 
 	void initBots();
-    void initMovePosition();
 	shared_ptr<Bot> createBot();
 	shared_ptr<Bot> getBot(const int& index);
-
-	shared_ptr<LinkPosition> getNextLinkPosition(shared_ptr<Bot> bot, bool isRandom);
 };
