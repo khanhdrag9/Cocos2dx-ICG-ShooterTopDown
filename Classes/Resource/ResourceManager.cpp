@@ -20,9 +20,9 @@ ResourceManager::ResourceManager()
     
 
 	//image Map
-	_resMap[res::define::IMG_MAP1] = "Map/MapImage/MapImage2.jpg";
+	_resMap[res::define::IMG_MAP1] = "Map/MapImage/MapImage1.jpg";
 	_resMap[res::define::IMG_MAP2] = "Map/MapImage/MapImage2.jpg";
-	_resMap[res::define::IMG_MAP3] = "Map/MapImage/MapImage2.jpg";
+	_resMap[res::define::IMG_MAP3] = "Map/MapImage/MapImage3.jpg";
     
     //Map link
     _resMap[res::define::MAP1] = "Map/Map1.tmx";

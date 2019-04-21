@@ -62,9 +62,9 @@ void Game::init()
     auto resMgr = ResourceManager::getInstance();
     _listMaps.clear();
     _listMaps = vector<GameMap>{
-        GameMap("MAP1", resMgr->at(res::define::MAP1), resMgr->at(res::define::IMG_MAP1)),
-        GameMap("MAP2", resMgr->at(res::define::MAP2), resMgr->at(res::define::IMG_MAP2)),
-        GameMap("MAP3", resMgr->at(res::define::MAP3), resMgr->at(res::define::IMG_MAP3))
+        GameMap("MAP1", resMgr->at(res::define::MAP1), resMgr->at(res::define::IMG_MAP1))
+        , GameMap("MAP2", resMgr->at(res::define::MAP2), resMgr->at(res::define::IMG_MAP2))
+//        , GameMap("MAP3", resMgr->at(res::define::MAP3), resMgr->at(res::define::IMG_MAP3))
     };
 }
 
@@ -504,7 +504,7 @@ void Game::createMap()
 
     
 	//for map backgroud
-	_tileMap = TMXTiledMap::create("Map/Map2.tmx");
+	_tileMap = TMXTiledMap::create(_linkMap->linkMap);
     auto collisionLayer = _tileMap->getLayer("Collision");
 	collisionLayer->setVisible(false);
 
@@ -820,5 +820,5 @@ const vector<Game::GameMap>& Game::getGameMaps() const
 
 void Game::setMap(const int& index)
 {
-    _linkMap = &_linkMap[index];
+    _linkMap = &_listMaps[index];
 }

@@ -63,7 +63,8 @@ void VisionEnemy::update(DrawNode * draw, ClippingNode * clipper)
 	}
 	
     
-	vector<Vec2> temp = _points2;
+    vector<Vec2> temp = _points2;
+    
 	for (auto body : Game::getInstance()->getRigidWord()->getListBodies())
 	{
 		if (body->getTag() == RigidBody::tag::BULLET_PLAYER)

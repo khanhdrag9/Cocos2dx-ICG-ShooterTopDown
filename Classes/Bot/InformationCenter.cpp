@@ -34,26 +34,29 @@ void InformationCenter::triggerDetectEnemy()
             auto& pairInfo = _enemyIsDetected.front();
             auto information = pairInfo.second;
             auto object = pairInfo.first;
-            auto enemy = information->_enemy.lock();
             
-            if(enemy)
+            if(!information->_enemy.expired())
             {
+                auto enemy = information->_enemy.lock();
                 if(enemy)
                 {
-                    Vec2 target = enemy->_sprite->getPosition();
-//                    Vec2 vectorAngle = target - object->_sprite->getPosition();
-//                    auto angle = atan2(vectorAngle.y, vectorAngle.x);
-//                    object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
-                    object->_sprite->setRotation(getRotateForwardAPoint(object, target));
-                    
-                    if(auto bot = dynamic_pointer_cast<Bot>(object))
+                    if(enemy)
                     {
-                        bot->setShoot(true);
+                        Vec2 target = enemy->_sprite->getPosition();
+    //                    Vec2 vectorAngle = target - object->_sprite->getPosition();
+    //                    auto angle = atan2(vectorAngle.y, vectorAngle.x);
+    //                    object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
+                        object->_sprite->setRotation(getRotateForwardAPoint(object, target));
+                        
+                        if(auto bot = dynamic_pointer_cast<Bot>(object))
+                        {
+                            bot->setShoot(true);
+                        }
                     }
                 }
+                
+                _enemyIsDetected.pop();
             }
-            
-            _enemyIsDetected.pop();
         }
     }
 }
