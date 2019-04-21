@@ -47,6 +47,7 @@ private:
     vector<GameMap> _listMaps;
     
 	TMXTiledMap* _tileMap;
+    GameMap* _linkMap;
 
 	shared_ptr<Character> _objIsFollow;
 
@@ -110,6 +111,7 @@ public:
     bool isEnableVolumn();
 
     const vector<GameMap>& getGameMaps() const;
+    void setMap(const int& index);
 private:
     shared_ptr<Player> createAPlayer();
     

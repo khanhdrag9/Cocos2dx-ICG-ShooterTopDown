@@ -40,7 +40,9 @@ _fogSprite(nullptr),
 _fogClip(nullptr),
 _isMouseDown(false),
 _isPopupInGameVisible(false),
-_isPopupKDAVisible(false)
+_isPopupKDAVisible(false),
+_linkMap(nullptr),
+_enableVolumn(true)
 {
     
 }
@@ -781,7 +783,8 @@ void Game::backToHomeMenu()
 {
     releaseGamePlay();
     auto home = GS_GameMenu::createScene();
-    Director::getInstance()->replaceScene(TransitionFade::create(0.5, home));
+    //Director::getInstance()->replaceScene(TransitionFade::create(0.5, home));
+    Director::getInstance()->popScene();
 }
 
 void Game::setEnableVolunm(bool enable)
@@ -815,4 +818,9 @@ bool Game::isEnableVolumn()
 const vector<Game::GameMap>& Game::getGameMaps() const
 {
     return _listMaps;
+}
+
+void Game::setMap(const int& index)
+{
+    _linkMap = &_linkMap[index];
 }

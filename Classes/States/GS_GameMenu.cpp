@@ -56,7 +56,8 @@ bool GS_GameMenu::init()
     });
     this->addChild(_option);
     
-    game->setEnableVolunm(true);
+    bool volumnIsEnable = game->isEnableVolumn();
+    game->setEnableVolunm(volumnIsEnable);
     _volumn = ui::Button::create("volumnOn.png");
     _volumn->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     _volumn->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height * 0.9));
@@ -71,7 +72,7 @@ bool GS_GameMenu::init()
     _disbleVolumn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _disbleVolumn->setVisible(!game->isEnableVolumn());
     _volumn->addChild(_disbleVolumn);
-    _volumn->setVisible(false);
+    _volumn->setVisible(!volumnIsEnable);
     
     _about = ui::Button::create("about.png");
     _about->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
@@ -92,13 +93,7 @@ bool GS_GameMenu::init()
         this->GoToPickMap();
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchlistner, this);
-    
-//    auto tileMap = TMXTiledMap::create("Map/Map2.tmx");
-//    auto collisionLayer = tileMap->getLayer("Collision");
-//    collisionLayer->setVisible(false);
-//    this->addChild(tileMap);
-//
-//    tileMap->setScale(0.2);
+
 
     return true;
 }
@@ -113,7 +108,6 @@ void GS_GameMenu::GoToPickMap()
 {
     auto pickmap = GS_PickMap::createScene();
     Director::getInstance()->pushScene(TransitionFadeBL::create(1.0f, pickmap));
-    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 }
 
 void GS_GameMenu::GoToOption()

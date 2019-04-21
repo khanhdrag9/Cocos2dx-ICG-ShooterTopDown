@@ -21,6 +21,7 @@ namespace res
         MAP3,
         
         //UI
+        BTN_PLAY,
         BTN_BLUE,
         BTN_GREEN,
         BTN_RED,

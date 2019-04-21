@@ -20,9 +20,9 @@ ResourceManager::ResourceManager()
     
 
 	//image Map
-	_resMap[res::define::IMG_MAP1] = "Map/map2Img.png";
-	_resMap[res::define::IMG_MAP2] = "Map/map2Img.png";
-	_resMap[res::define::IMG_MAP3] = "Map/map2Img.png";
+	_resMap[res::define::IMG_MAP1] = "Map/MapImage/MapImage2.jpg";
+	_resMap[res::define::IMG_MAP2] = "Map/MapImage/MapImage2.jpg";
+	_resMap[res::define::IMG_MAP3] = "Map/MapImage/MapImage2.jpg";
     
     //Map link
     _resMap[res::define::MAP1] = "Map/Map1.tmx";
@@ -30,6 +30,7 @@ ResourceManager::ResourceManager()
     _resMap[res::define::MAP3] = "Map/Map3.tmx";
     
     //UI
+    _resMap[res::define::BTN_PLAY] = "Map/MapImage/ButtonPlay.png";
     _resMap[res::define::BTN_BLUE] = "Assets/PNG/UI/buttonBlue.png";
     _resMap[res::define::BTN_GREEN] = "Assets/PNG/UI/buttonGreen.png";
     _resMap[res::define::BTN_RED] = "Assets/PNG/UI/buttonRed.png";
