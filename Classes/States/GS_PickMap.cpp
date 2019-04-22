@@ -8,7 +8,13 @@ using namespace ui;
 
 GS_PickMap::GS_PickMap():
 _countMap(0),
-_pageView(nullptr)
+_countCharacter(0),
+_countPages(0),
+_pageView(nullptr),
+_pageViewCharacter(nullptr),
+_pageViewGlobal(nullptr),
+_nextPageLeft(nullptr),
+_nextPageRight(nullptr)
 {
     
 }
@@ -24,64 +30,143 @@ Scene* GS_PickMap::createScene()
 
 bool GS_PickMap::init()
 {
-    if(!Layer::init())
-        return false;
+	if (!Layer::init())
+		return false;
+
+	Game::getInstance()->setCurrentState(this);
+
+	Size screenSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	Vec2 center = Vec2(screenSize.width / 2.f + origin.x, screenSize.height / 2.f + origin.y);
+
+	auto resMgr = ResourceManager::getInstance();
+	auto game = Game::getInstance();
+
+	//bg
+	auto bg = Sprite::create(resMgr->at(res::define::IMG_HOME_SCREEN_1_NO_TITLE));
+	bg->setPosition(center);
+	this->addChild(bg, 0);
+
+	/*=============================For PageViews=============================*/
+	//init page view map
+	Size pageSize = Size(screenSize.width, screenSize.height);
+	_pageView = PageView::create();
+	_pageView->setDirection(PageView::Direction::VERTICAL);
+	_pageView->setContentSize(pageSize);
+	_pageView->removeAllItems();
+	_pageView->setIndicatorEnabled(false);
+	//pageView->setGlobalZOrder(200);
+
+	auto listmap = game->getGameMaps();
+	string fontTitle = resMgr->at(res::define::FONT_KENVECTOR_FUTURE_THIN);
+	_countMap = (int)listmap.size();
+	for (int i = 0; i < _countMap; ++i)
+	{
+		Layout* layout = Layout::create();
+		layout->setContentSize(pageSize);
+
+		ImageView* imageView = ImageView::create(listmap[i].linkImage);
+		imageView->setScale9Enabled(true);
+		imageView->setContentSize(pageSize);
+		imageView->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+		imageView->setPosition(Vec2(pageSize.width / 2.f, 0));
+		layout->addChild(imageView);
+
+		//        Label* title = Label::createWithTTF(listmap[i].name, fontTitle, 120);
+		//        title->setColor(Color3B(102, 51, 51));
+		////        title->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+		//        title->setPosition(Vec2(pageSize.width / 2.f + origin.x, pageSize.height * 0.8f + origin.y));
+		//        layout->addChild(title, 2);
+
+		_pageView->insertCustomItem(layout, i);
+	}
+	_pageView->scrollToItem(0);
+	_pageView->setIndicatorIndexNodesOpacity(0);
+	//this->addChild(_pageView);
+
+	//page for character choose
+	Size pageSizeCharacter = pageSize;
+	_pageViewCharacter = PageView::create();
+	_pageViewCharacter->setDirection(PageView::Direction::VERTICAL);
+	_pageViewCharacter->setContentSize(pageSizeCharacter);
+	_pageViewCharacter->removeAllItems();
+	_pageViewCharacter->setIndicatorEnabled(false);
+
+	_countCharacter = 3;
+
+	for (int i = 0; i < _countCharacter; ++i)
+	{
+		Layout* layout = Layout::create();
+		layout->setContentSize(pageSizeCharacter);
+
+		ImageView* imageView = ImageView::create("Test.jpg");
+		imageView->setScale9Enabled(true);
+		imageView->setContentSize(pageSizeCharacter);
+		imageView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		imageView->setPosition(Vec2(pageSize.width / 2.f, pageSize.height / 2.f));
+		layout->addChild(imageView);
+
+		_pageViewCharacter->insertCustomItem(layout, i);
+	}
+	_pageViewCharacter->scrollToItem(0);
+	_pageViewCharacter->setIndicatorIndexNodesOpacity(0);
+	//this->addChild(_pageViewCharacter);
+
+	//init global pageView ( map + character chooses)
+	Size pageSizeGlobal = pageSize;
+	_pageViewGlobal = PageView::create();
+	_pageViewGlobal->setDirection(PageView::Direction::HORIZONTAL);
+	_pageViewGlobal->setContentSize(pageSizeGlobal);
+	_pageViewGlobal->removeAllItems();
+	_pageViewGlobal->setIndicatorEnabled(false);
+	
+	PageView* pageChilds[] = { _pageView, _pageViewCharacter };
+	for (int i = 0; i < 2; ++i)
+	{
+		Layout* layout = Layout::create();
+		layout->setContentSize(pageSizeGlobal);
+		layout->addChild(pageChilds[i], i);
+
+		_pageViewGlobal->insertCustomItem(layout, i);
+	}
+	_pageViewGlobal->scrollToItem(0);
+	_pageViewGlobal->setIndicatorIndexNodesOpacity(0);
+	
+	this->addChild(_pageViewGlobal);
     
-    Game::getInstance()->setCurrentState(this);
-    
-    Size screenSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    Vec2 center = Vec2(screenSize.width / 2.f + origin.x, screenSize.height / 2.f + origin.y);
-    
-    auto resMgr = ResourceManager::getInstance();
-    auto game = Game::getInstance();
-    
-    //bg
-    auto bg = Sprite::create(resMgr->at(res::define::IMG_HOME_SCREEN_1_NO_TITLE));
-    bg->setPosition(center);
-    this->addChild(bg, 0);
-    
-    //init page view map
-    Size pageSize = Size(screenSize.width, screenSize.height);
-    _pageView = PageView::create();
-    _pageView->setDirection(PageView::Direction::HORIZONTAL);
-//    pageView->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-    _pageView->setContentSize(pageSize);
-//    pageView->setPosition(Vec2(screenSize.width / 2.f + origin.x, origin.y + screenSize.height / 2.f));
-    _pageView->removeAllItems();
-    _pageView->setIndicatorEnabled(true);
-    //pageView->setGlobalZOrder(200);
-    
-    auto listmap = game->getGameMaps();
-    string fontTitle = resMgr->at(res::define::FONT_KENVECTOR_FUTURE_THIN);
-    _countMap = (int)listmap.size();
-    for (int i = 0; i < _countMap; ++i)
-    {
-        Layout* layout = Layout::create();
-        layout->setContentSize(pageSize);
-        
-        ImageView* imageView = ImageView::create(listmap[i].linkImage);
-        imageView->setScale9Enabled(true);
-        imageView->setContentSize(pageSize);
-        imageView->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-        imageView->setPosition(Vec2(pageSize.width / 2.f, 0));
-        layout->addChild(imageView);
-        
-//        Label* title = Label::createWithTTF(listmap[i].name, fontTitle, 120);
-//        title->setColor(Color3B(102, 51, 51));
-////        title->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
-//        title->setPosition(Vec2(pageSize.width / 2.f + origin.x, pageSize.height * 0.8f + origin.y));
-//        layout->addChild(title, 2);
-        
-        _pageView->insertCustomItem(layout, i);
-    }
-    
-    _pageView->scrollToItem(0);
-    _pageView->setIndicatorEnabled(false);
-    
-    _pageView->setIndicatorIndexNodesOpacity(0);
-    this->addChild(_pageView);
-    
+
+	/*=============================For buttons===================================*/
+	//next side page btn
+	_countPages = 2;
+	Button* btnNextPage[2];
+	for (int i = 0; i < 2; i++)
+	{
+		btnNextPage[i] = Button::create("OptionAssets/nextPage.png");
+		btnNextPage[i]->setScale(0.25f);
+		btnNextPage[i]->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type) {
+			if (type == Widget::TouchEventType::ENDED)
+			{
+				int currentPage = (int)_pageViewGlobal->getCurrentPageIndex();
+				if (++currentPage >= TOTAL)currentPage = 0;
+				GoToSidePage(currentPage);
+			}
+		});
+		this->addChild(btnNextPage[i]);
+	}
+
+	{
+		_nextPageLeft = btnNextPage[0];
+		Size left = _nextPageLeft->getBoundingBox().size;
+		_nextPageLeft->setPosition(Vec2(origin.x + left.width * 0.4f, origin.y + center.y));
+		_nextPageLeft->setFlipX(true);
+		_nextPageLeft->setVisible(false);
+
+		_nextPageRight = btnNextPage[1];
+		Size right = _nextPageRight->getBoundingBox().size;
+		_nextPageRight->setPosition(Vec2(origin.x + screenSize.width - left.width * 0.4f, origin.y + center.y));
+	}
+	
+
     //Play btn
     Button* play = Button::create(resMgr->at(res::define::BTN_PLAY));
     play->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
@@ -115,4 +200,17 @@ void GS_PickMap::GoToMap(const int& index)
     Scene* gameplay = GS_GamePlay::createScene();
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     Director::getInstance()->replaceScene(TransitionFade::create(1.f, gameplay));
+}
+
+void GS_PickMap::GoToSidePage(const int& index)
+{
+	_nextPageLeft->setVisible(true);
+	_nextPageRight->setVisible(true);
+
+	if (index == 0)
+		_nextPageLeft->setVisible(false);
+	else if (index == _countPages - 1)
+		_nextPageRight->setVisible(false);
+
+	_pageViewGlobal->scrollToItem(index);
 }
