@@ -59,7 +59,7 @@ void BotManager::initBots()
 {
 	//TMXObjectGroup* objg = Game::getInstance()->getTileMap()->getObjectGroup("Enemy");
 	//int countEnemies = (int)objg->getObjects().size();
-	int countEnemies = 5;
+	int countEnemies = 1;
 
 	//get position to init bots
 	Vec2 playerPosition = Game::getInstance()->getPlayer()->_sprite->getPosition();

@@ -10,12 +10,13 @@
 #include "../Characters/Character.h"
 #include "Bot.h"
 #include "../Commands/CommandMoveBy.h"
+#include "../Physics/RigidBody.h"
 
 
 
-InformationCenter::InformationCenter():
-_isStop(true),
-_enemyOutVision(nullptr, nullptr)
+InformationCenter::InformationCenter() :
+	_isStop(true),
+	_enemyOutVision(nullptr, nullptr)
 {
     
 }
@@ -46,8 +47,9 @@ void InformationCenter::triggerDetectEnemy()
     //                    Vec2 vectorAngle = target - object->_sprite->getPosition();
     //                    auto angle = atan2(vectorAngle.y, vectorAngle.x);
     //                    object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
-                        object->_sprite->setRotation(getRotateForwardAPoint(object, target));
-                        
+                        //object->_sprite->setRotation(getRotateForwardAPoint(object, target));
+						float rotationIsTargeted = getRotateForwardAPoint(object, target);
+						_rotationsIsTargeted.push_back(pair<shared_ptr<Character>, float>(object, rotationIsTargeted));
                         if(auto bot = dynamic_pointer_cast<Bot>(object))
                         {
                             bot->setShoot(true);
@@ -117,7 +119,7 @@ void InformationCenter::triggerEnemyMoveAround()
                             if(!speedAvaiable(velocity, minSpeed, maxSpeed))
                             {
                                 Vec2 previousPos = Vec2::ZERO;
-                                auto temp = information->_descriptions;
+								/*list<shared_ptr<description>> temp = information->_descriptions;
                                 while (temp.size() > 0)
                                 {
                                     if(auto walk = dynamic_pointer_cast<des_walk>(temp.front()))
@@ -128,11 +130,30 @@ void InformationCenter::triggerEnemyMoveAround()
                                     }
                                     
                                     temp.pop();
-                                }
+                                }*/
+								for (auto& des : information->_descriptions)
+								{
+									if (auto walk = dynamic_pointer_cast<des_walk>(des))
+									{
+										Vec2 walVelocity = walk->getVelocity();
+										if (speedAvaiable(walVelocity, minSpeed, maxSpeed))
+											previousPos = walk->getVelocity();
+									}
+								}
+
+								for (auto des : information->_descriptions)
+								{
+									if (auto walk = dynamic_pointer_cast<des_walk>(des))
+									{
+										Vec2 walVelocity = walk->getVelocity();
+										if (speedAvaiable(walVelocity, minSpeed, maxSpeed))
+											previousPos = walk->getVelocity();
+									}
+								}
                                 
                                 if(!speedAvaiable(previousPos, minSpeed, maxSpeed))
                                 {
-                                    previousPos = getRandomMove(speed);
+									previousPos = getRandomMove(speed);
                                 }
                                 
                                 velocity = previousPos;
@@ -146,6 +167,28 @@ void InformationCenter::triggerEnemyMoveAround()
                     }
                     
                     break;
+				case description_type::detect_new_road:
+					if (auto newRoad = dynamic_pointer_cast<des_detect_new_road>(backDes))
+					{
+						if (auto bot = dynamic_pointer_cast<Bot>(index.first))
+						{
+							const Vec2 botVec = bot->_rigidBody->_velocity;
+							Vec2 road = newRoad->getDirect();
+							Vec2 velocity = bot->getSpeedMove() * road;
+							int ratio = random(0, 1000);
+
+							if (ratio < 10)
+							{
+								moveWithVelocity(index, velocity);
+							}
+							else if(ratio < 100)
+							{
+								if (!isReverseRedirect(botVec, road)) // ko nguoc huong di chuyen
+									moveWithVelocity(index, velocity);
+							}
+						}
+					}
+					break;
                 case description_type::run:
                     break;
                 case description_type::detect_collision_wall:
@@ -213,22 +256,31 @@ Vec2 InformationCenter::getRandomMove(float speed) const
 void InformationCenter::moveWithVelocity(pairCharacterMove& pair, const Vec2& velocity)
 {
     shared_ptr<description> des = make_shared<des_walk>(velocity);
-    pair.second->add(make_shared<InformationMoveAround>(des));
+    //pair.second->add(make_shared<InformationMoveAround>(des));
     
     shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(velocity, 0.1);
     pair.first->pushCommand(cmd);
 }
 
+bool InformationCenter::isReverseRedirect(const Vec2& currentVec, const Vec2& newVec)
+{
+	float current = currentVec.x > currentVec.y ? currentVec.x : currentVec.y;
+	float newv = newVec.x > newVec.y ? newVec.x : newVec.y;
+
+	if (current * newv < 0)return true;
+	return false;
+}
+
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationDetectEnemy> information)
 {
     _enemyIsDetected.push(pair<shared_ptr<Character>,shared_ptr<InformationDetectEnemy>>(character, information));
-	triggerEnemyMoveAround();
+	//triggerEnemyMoveAround();
 }
 
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationEnemyOutVision> information)
 {
     _enemyOutVision = pair<shared_ptr<Character>, shared_ptr<InformationEnemyOutVision>>(character, information);
-	triggerEnemyMoveAround();
+	//triggerEnemyMoveAround();
 }
 
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationMoveAround> information)
@@ -253,7 +305,15 @@ void InformationCenter::pushInformation(const shared_ptr<Character>& character, 
     else
         _enemyMoveAround.push_back(pair<shared_ptr<Character>, shared_ptr<InformationMoveAround>>(character, information));
 
-	triggerEnemyMoveAround();
+	for (auto& des : information->_descriptions)
+	{
+		if (des->getType() == description_type::collision_wall)
+		{
+			triggerEnemyMoveAround();
+			break;
+		}
+	}
+	
 }
 
 void InformationCenter::start()
@@ -275,6 +335,11 @@ void InformationCenter::update()
     if(_isStop)return;
     
     triggerEnemyMoveAround();
+	auto temp = _rotationsIsTargeted;
+	for (auto& t : temp)
+		t.first->_sprite->setRotation(t.second);
+	_rotationsIsTargeted.clear();
+	temp.clear();
 }
 
 void InformationCenter::stop()
@@ -289,8 +354,11 @@ void InformationCenter::stop()
 
 void InformationCenter::clear(bool full)
 {
-    while(_enemyIsDetected.size() > 0)
-        _enemyIsDetected.pop();
+	if (full)
+	{
+		while (_enemyIsDetected.size() > 0)
+			_enemyIsDetected.pop();
+	}
     
     _enemyOutVision.first = nullptr;
     _enemyOutVision.second = nullptr;

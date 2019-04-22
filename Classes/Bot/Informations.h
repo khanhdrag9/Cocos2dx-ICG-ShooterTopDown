@@ -56,6 +56,7 @@ enum class description_type : int
 	none,
     init,
     walk,
+	detect_new_road,
     run,
     detect_collision_wall,
     collision_wall
@@ -82,10 +83,21 @@ class des_walk : public description
     Vec2 _vec;
 public:
     des_walk(const Vec2& velocity);
+	virtual ~des_walk();
     inline Vec2 getVelocity() const;
 };
 
 inline Vec2 des_walk::getVelocity() const { return _vec; }
+
+class des_detect_new_road : public description
+{
+	Vec2 _direct;
+public:
+	des_detect_new_road(const Vec2& direct);
+	inline Vec2 getDirect() const;
+};
+
+inline Vec2 des_detect_new_road::getDirect() const { return _direct; }
 
 class des_run : public description
 {
@@ -123,8 +135,8 @@ inline Vec2 des_collision_wall::getCollisionPoint() const { return _collisionPoi
 class InformationMoveAround : public Information
 {
 protected:
-    queue<shared_ptr<description>> _descriptions;
-    
+    //queue<shared_ptr<description>> _descriptions;
+	list<shared_ptr<description>> _descriptions;
 public:
     InformationMoveAround();
     InformationMoveAround(shared_ptr<description> des);

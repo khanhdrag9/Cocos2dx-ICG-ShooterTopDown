@@ -15,6 +15,7 @@ class InformationCenter : public pattern::Singleton<InformationCenter>
     queue<pair<shared_ptr<Character>,shared_ptr<InformationDetectEnemy>>> _enemyIsDetected;
     void triggerDetectEnemy();
     float getRotateForwardAPoint(shared_ptr<Character> character ,const Vec2& point);
+	vector<pair<shared_ptr<Character>, float>> _rotationsIsTargeted;
     
     //EnemyOutVision
     thread enemyOutVision;
@@ -29,6 +30,7 @@ class InformationCenter : public pattern::Singleton<InformationCenter>
    
     Vec2 getRandomMove(float speed) const;
     void moveWithVelocity(pairCharacterMove& pair, const Vec2& velocity);
+	bool isReverseRedirect(const Vec2& currentVec, const Vec2& newVec);
 
 public:
 	inline bool speedAvaiable(const Vec2& speedCheck, const float& min, const float& max) const;

@@ -12,6 +12,7 @@
 #include "../Physics/RigidWorld.h"
 #include "../Physics/RigidBodyPolygon.h"
 #include "../Physics/RigidBodyCircle.h"
+#include "../Bot/InformationCenter.h"
 
 const float Vision::origin_vision = 500.f;
 
@@ -131,22 +132,51 @@ void Vision::getPointIntersect()
 		float y = cos(CC_DEGREES_TO_RADIANS(i)) * dimention + objPos.y;
 
 		Vec2 point = Vec2(x, y);
+		Vec2 pointTemp = point;
 		bool isIntersect = false;
 		for (auto& checkline : listLine)
 		{
-			isIntersect = Vec2::isSegmentIntersect(objPos, point, checkline.start, checkline.end);
+			isIntersect = Vec2::isSegmentIntersect(objPos, pointTemp, checkline.start, checkline.end);
 
 			if (isIntersect)
 			{
-				Vec2 intersect = Vec2::getIntersectPoint(objPos, point, checkline.start, checkline.end);
-				if ((point - objPos).length() > (intersect - objPos).length())
-					point = intersect;
+				Vec2 intersect = Vec2::getIntersectPoint(objPos, pointTemp, checkline.start, checkline.end);
+				if ((pointTemp - objPos).length() > (intersect - objPos).length())
+					pointTemp = intersect;
 			}
 		}
 
-#if DEBUG_SIGHT
-		draw->drawLine(objPos, point, Color4F(1, 1, 0, 0.25));
-#endif
+		if (point == pointTemp)
+		{
+			float offsetX = abs(point.x - objPos.x);
+			float offsetY = abs(point.y - objPos.y);
+			float ratioOk = 1.f;
+
+			Vec2 direct = Vec2::ZERO;
+			if (offsetX < ratioOk)
+			{
+				if (point.y - objPos.y > 0)
+					direct.y = 1;
+				else
+					direct.y = -1;
+			}
+
+			if (offsetY < ratioOk)
+			{
+				if (point.x - objPos.x > 0)
+					direct.x = 1;
+				else
+					direct.x = -1;
+			}
+
+			if (direct != Vec2::ZERO)
+			{
+				auto des = make_shared<des_detect_new_road>(direct);
+				InformationCenter::getInstance()->pushInformation(_obj, make_shared<InformationMoveAround>(des));
+			}
+		}
+
+		point = pointTemp;
 		_points.push_back(point);
 	}
 }

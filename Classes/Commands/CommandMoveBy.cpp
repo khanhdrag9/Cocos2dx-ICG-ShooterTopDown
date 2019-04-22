@@ -10,10 +10,14 @@
 #include "../Characters/Character.h"
 #include "../Physics/RigidBody.h"
 
-CommandMoveBy::CommandMoveBy()
+CommandMoveBy::CommandMoveBy():
+	_counttime(0.f),
+	_numberRun(0),
+	_duration(0.f)
 {
 }
 
+Vec2 _velocity;
 shared_ptr<CommandMoveBy> CommandMoveBy::createCommandMoveBy(const Vec2& vec, const float& duration)
 {
     shared_ptr<CommandMoveBy> cmd = make_shared<CommandMoveBy>();

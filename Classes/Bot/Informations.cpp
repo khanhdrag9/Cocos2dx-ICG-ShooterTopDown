@@ -52,6 +52,10 @@ description_type description::getType() const
 des_init::des_init() { _type = description_type::init; }
 
 des_walk::des_walk(const Vec2& velocity) : _vec(velocity) { _type = description_type::walk; }
+des_walk::~des_walk() {
+}
+
+des_detect_new_road::des_detect_new_road(const Vec2& direct) : _direct(direct) { _type = description_type::detect_new_road; }
 
 des_run::des_run(const Vec2& point) : _point(point) { _type = description_type::run; }
 
@@ -79,29 +83,32 @@ InformationMoveAround::InformationMoveAround()
 InformationMoveAround::InformationMoveAround(shared_ptr<description> des)
 {
     _type = InformationType::MoveAround;
-    _descriptions.push(des);
+    _descriptions.push_back(des);
 }
 
 InformationMoveAround::~InformationMoveAround()
 {
-	while (_descriptions.size() > 0)
+	/*while (_descriptions.size() > 0)
 	{
 		_descriptions.pop();
-	}
+	}*/
+	_descriptions.clear();
 }
 
 void InformationMoveAround::add(shared_ptr<InformationMoveAround> newInfo)
 {
-    auto& queueNew = newInfo->_descriptions;
-    while (queueNew.size() > 0)
+    //auto queueNew = newInfo->_descriptions;
+    while (newInfo->_descriptions.size() > 0)
     {
-        _descriptions.push(queueNew.front());
-        queueNew.pop();
+        _descriptions.push_back(newInfo->_descriptions.front());
+		newInfo->_descriptions.pop_front();
+		if(_descriptions.size() > limit_description)
+			_descriptions.pop_front();
     }
     
     //limit
-    while (_descriptions.size() > limit_description)
+    /*while (_descriptions.size() > limit_description)
     {
         _descriptions.pop();
-    }
+    }*/
 }
