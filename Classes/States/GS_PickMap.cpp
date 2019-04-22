@@ -141,7 +141,11 @@ bool GS_PickMap::init()
 	Button* btnNextPage[2];
 	for (int i = 0; i < 2; i++)
 	{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 		btnNextPage[i] = Button::create("OptionAssets/nextPage.png");
+#else
+        btnNextPage[i] = Button::create("nextPage.png");
+#endif
 		btnNextPage[i]->setScale(0.25f);
 		btnNextPage[i]->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type) {
 			if (type == Widget::TouchEventType::ENDED)
@@ -158,12 +162,12 @@ bool GS_PickMap::init()
 		_nextPageLeft = btnNextPage[0];
 		Size left = _nextPageLeft->getBoundingBox().size;
 		_nextPageLeft->setPosition(Vec2(origin.x + left.width * 0.4f, origin.y + center.y));
-		_nextPageLeft->setFlipX(true);
+		_nextPageLeft->setFlippedX(true);
 		_nextPageLeft->setVisible(false);
 
 		_nextPageRight = btnNextPage[1];
 		Size right = _nextPageRight->getBoundingBox().size;
-		_nextPageRight->setPosition(Vec2(origin.x + screenSize.width - left.width * 0.4f, origin.y + center.y));
+		_nextPageRight->setPosition(Vec2(origin.x + screenSize.width - left.width * 0.4f, center.y));
 	}
 	
 

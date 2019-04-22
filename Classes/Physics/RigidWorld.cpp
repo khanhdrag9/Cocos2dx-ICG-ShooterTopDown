@@ -14,6 +14,7 @@
 #include "../Defines/constants.h"
 #include "../Objects/BulletBasic.h"
 #include "../Bot/InformationCenter.h"
+#include "../Bot/Bot.h"
 
 
 RigidWorld::RigidWorld()
@@ -183,11 +184,11 @@ bool RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
 			if (bullet)
 			{
 				bullet->destroy();
-                if(auto character = dynamic_pointer_cast<Character>(obj2))
-                {
-                    character->decreHP(bullet->getDamge());
-                    if(character->getCurrentHP() <= 0)character->releaseCommands();
-                }
+//                if(auto character = dynamic_pointer_cast<Character>(obj2))
+//                {
+//                    character->decreHP(bullet->getDamge());
+//                    if(character->getCurrentHP() <= 0)character->releaseCommands();
+//                }
 				return false;
 			}
         }
@@ -196,11 +197,21 @@ bool RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
 	if (body1->getTag() == RigidBody::tag::WALL && obj2)
 	{
 		auto des = make_shared<des_collision_wall>(body2->_velocity, Vec2(0, 0));
+        
+        if(auto bot = dynamic_pointer_cast<Bot>(obj2))
+        {
+            bot->setWalk(false);
+        }
 		InformationCenter::getInstance()->pushInformation(obj2, make_shared<InformationMoveAround>(des));
+    
 	}
 	else if (body2->getTag() == RigidBody::tag::WALL && obj1)
 	{
 		auto des = make_shared<des_collision_wall>(body1->_velocity, Vec2(0, 0));
+//        if(auto bot = dynamic_pointer_cast<Bot>(obj1))
+//        {
+//            bot->setStatus(Bot::Status::STOP);
+//        }
 		InformationCenter::getInstance()->pushInformation(obj1, make_shared<InformationMoveAround>(des));
 	}
 

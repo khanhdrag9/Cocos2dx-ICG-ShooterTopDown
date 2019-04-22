@@ -37,7 +37,6 @@ void Bot::update(float dt)
 	Character::update(dt);
     _bulletMag->update(dt);
     
-    bool isMoved = false;
     if(containStatus(Status::WALK))
     {
         shared_ptr<description> des = make_shared<des_walk>(_rigidBody->_velocity);

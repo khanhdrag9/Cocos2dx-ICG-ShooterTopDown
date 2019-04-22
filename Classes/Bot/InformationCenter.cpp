@@ -131,13 +131,17 @@ void InformationCenter::triggerEnemyMoveAround()
                                     
                                     temp.pop();
                                 }*/
-								for (auto& des : information->_descriptions)
+//                                for (auto& des : information->_descriptions)
+                                for(auto des = information->_descriptions.rbegin(); des != information->_descriptions.rend(); des--)
 								{
-									if (auto walk = dynamic_pointer_cast<des_walk>(des))
+									if (auto walk = dynamic_pointer_cast<des_walk>(*des))
 									{
 										Vec2 walVelocity = walk->getVelocity();
 										if (speedAvaiable(walVelocity, minSpeed, maxSpeed))
+                                        {
 											previousPos = walk->getVelocity();
+                                            break;
+                                        }
 									}
 								}
 
@@ -168,26 +172,26 @@ void InformationCenter::triggerEnemyMoveAround()
                     
                     break;
 				case description_type::detect_new_road:
-					if (auto newRoad = dynamic_pointer_cast<des_detect_new_road>(backDes))
-					{
-						if (auto bot = dynamic_pointer_cast<Bot>(index.first))
-						{
-							const Vec2 botVec = bot->_rigidBody->_velocity;
-							Vec2 road = newRoad->getDirect();
-							Vec2 velocity = bot->getSpeedMove() * road;
-							int ratio = random(0, 1000);
+                    if (auto newRoad = dynamic_pointer_cast<des_detect_new_road>(backDes))
+                    {
+                        if (auto bot = dynamic_pointer_cast<Bot>(index.first))
+                        {
+                            const Vec2 botVec = bot->_rigidBody->_velocity;
+                            Vec2 road = newRoad->getDirect();
+                            Vec2 velocity = bot->getSpeedMove() * road;
+                            int ratio = random(0, 1000);
 
-							if (ratio < 10)
-							{
-								moveWithVelocity(index, velocity);
-							}
-							else if(ratio < 100)
-							{
-								if (!isReverseRedirect(botVec, road)) // ko nguoc huong di chuyen
-									moveWithVelocity(index, velocity);
-							}
-						}
-					}
+                            if (ratio < 10)
+                            {
+                                moveWithVelocity(index, velocity);
+                            }
+                            else if(ratio < 100)
+                            {
+                                if (!isReverseRedirect(botVec, road)) // ko nguoc huong di chuyen
+                                    moveWithVelocity(index, velocity);
+                            }
+                        }
+                    }
 					break;
                 case description_type::run:
                     break;
@@ -209,20 +213,20 @@ void InformationCenter::triggerEnemyMoveAround()
                     
                     break;
                 case description_type::collision_wall:
-					if (auto cw = dynamic_pointer_cast<des_collision_wall>(backDes))
-					{
-						if (auto bot = dynamic_pointer_cast<Bot>(index.first))
-						{
-							float speed = bot->getSpeedMove();
-							Vec2 currentVec = cw->getCurrentVec();
-							Vec2 velocity = Vec2::ZERO;
-							do
-							{
-								velocity = getRandomMove(speed);
-							} while (velocity == currentVec);
-							moveWithVelocity(index, velocity);
-						}
-					}
+                    if (auto cw = dynamic_pointer_cast<des_collision_wall>(backDes))
+                    {
+                        if (auto bot = dynamic_pointer_cast<Bot>(index.first))
+                        {
+                            float speed = bot->getSpeedMove();
+                            Vec2 currentVec = cw->getCurrentVec();
+                            Vec2 velocity = Vec2::ZERO;
+                            do
+                            {
+                                velocity = getRandomMove(speed);
+                            } while (velocity == currentVec);
+                            moveWithVelocity(index, velocity);
+                        }
+                    }
 
                     break;
                 default:
@@ -274,13 +278,11 @@ bool InformationCenter::isReverseRedirect(const Vec2& currentVec, const Vec2& ne
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationDetectEnemy> information)
 {
     _enemyIsDetected.push(pair<shared_ptr<Character>,shared_ptr<InformationDetectEnemy>>(character, information));
-	//triggerEnemyMoveAround();
 }
 
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationEnemyOutVision> information)
 {
     _enemyOutVision = pair<shared_ptr<Character>, shared_ptr<InformationEnemyOutVision>>(character, information);
-	//triggerEnemyMoveAround();
 }
 
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationMoveAround> information)
