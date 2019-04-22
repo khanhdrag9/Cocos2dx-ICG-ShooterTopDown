@@ -46,7 +46,11 @@ bool GS_GameMenu::init()
     label->runAction(RepeatForever::create(actionLabel));
     
     //option
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	_option = ui::Button::create("OptionAssets/optionFill.png");
+#else
     _option = ui::Button::create("optionFill.png");
+#endif
     _option->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     _option->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height));
     _option->setScale(0.25);
@@ -58,7 +62,11 @@ bool GS_GameMenu::init()
     
     bool volumnIsEnable = game->isEnableVolumn();
     game->setEnableVolunm(volumnIsEnable);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	_volumn = ui::Button::create("OptionAssets/volumnOn.png");
+#else
     _volumn = ui::Button::create("volumnOn.png");
+#endif
     _volumn->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     _volumn->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height * 0.9));
     _volumn->setScale(0.25);
@@ -68,13 +76,21 @@ bool GS_GameMenu::init()
     });
     this->addChild(_volumn);
     
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	_disbleVolumn = Sprite::create("OptionAssets/volumnOff.png");
+#else
     _disbleVolumn = Sprite::create("volumnOff.png");
+#endif
     _disbleVolumn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _disbleVolumn->setVisible(!game->isEnableVolumn());
     _volumn->addChild(_disbleVolumn);
     _volumn->setVisible(!volumnIsEnable);
     
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	_about = ui::Button::create("OptionAssets/about.png");
+#else
     _about = ui::Button::create("about.png");
+#endif
     _about->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     _about->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height * 0.8));
     _about->setScale(0.25f);
