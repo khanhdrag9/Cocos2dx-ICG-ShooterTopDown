@@ -206,7 +206,7 @@ void InformationCenter::triggerEnemyMoveAround()
 							do
 							{
 								velocity = getRandomMove(speed);
-							} while (velocity == currentVec);
+							} while (velocity == currentVec || isReverseRedirect(currentVec, velocity));
 							moveWithVelocity(index, velocity);
 						}
 					}
@@ -223,7 +223,7 @@ void InformationCenter::triggerEnemyMoveAround()
                             do
                             {
                                 velocity = getRandomMove(speed);
-                            } while (velocity == currentVec);
+                            } while (velocity == currentVec || isReverseRedirect(currentVec, velocity));
                             moveWithVelocity(index, velocity);
                         }
                     }
@@ -268,11 +268,12 @@ void InformationCenter::moveWithVelocity(pairCharacterMove& pair, const Vec2& ve
 
 bool InformationCenter::isReverseRedirect(const Vec2& currentVec, const Vec2& newVec)
 {
-	float current = currentVec.x > currentVec.y ? currentVec.x : currentVec.y;
-	float newv = newVec.x > newVec.y ? newVec.x : newVec.y;
+    float angle = Vec2::angle(currentVec, newVec);
+    if(currentVec.x * newVec.x < 0 || currentVec.y * newVec.y < 0)
+        angle = 180.f - angle;
 
-	if (current * newv < 0)return true;
-	return false;
+    if(abs(abs(angle) - 180) < 10.f)return true;
+    return false;
 }
 
 void InformationCenter::pushInformation(const shared_ptr<Character>& character, shared_ptr<InformationDetectEnemy> information)
@@ -307,15 +308,15 @@ void InformationCenter::pushInformation(const shared_ptr<Character>& character, 
     else
         _enemyMoveAround.push_back(pair<shared_ptr<Character>, shared_ptr<InformationMoveAround>>(character, information));
 
-	for (auto& des : information->_descriptions)
-	{
-		if (des->getType() == description_type::collision_wall)
-		{
-			triggerEnemyMoveAround();
-			break;
-		}
-	}
-	
+//    for (auto& des : information->_descriptions)
+//    {
+//        if (des->getType() == description_type::collision_wall)
+//        {
+//            triggerEnemyMoveAround();
+//            break;
+//        }
+//    }
+
 }
 
 void InformationCenter::start()

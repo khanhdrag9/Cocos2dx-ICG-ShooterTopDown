@@ -172,7 +172,7 @@ void Vision::getPointIntersect()
 			if (direct != Vec2::ZERO)
 			{
 				auto des = make_shared<des_detect_new_road>(direct);
-				InformationCenter::getInstance()->pushInformation(_obj, make_shared<InformationMoveAround>(des));
+				//InformationCenter::getInstance()->pushInformation(_obj, make_shared<InformationMoveAround>(des));
 			}
 		}
 
