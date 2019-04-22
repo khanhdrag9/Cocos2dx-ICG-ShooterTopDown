@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="11">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="141">
  <tileset firstgid="1" name="collision" tilewidth="64" tileheight="64" tilecount="1" columns="1">
   <image source="collision.png" width="64" height="64"/>
  </tileset>
@@ -100,10 +100,784 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="4" name="Lines" visible="0">
-  <object id="10" name="1" x="2548.18" y="738.758">
+ <objectgroup id="4" name="Lines">
+  <object id="11" name="1" x="64" y="1856">
    <properties>
-    <property name="next" type="int" value="0"/>
+    <property name="next" type="int" value="2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="12" name="2" x="2368" y="1856">
+   <properties>
+    <property name="next" type="int" value="3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="13" name="3" x="2368" y="1728">
+   <properties>
+    <property name="next" type="int" value="4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" name="4" x="2432" y="1728">
+   <properties>
+    <property name="next" type="int" value="5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" name="5" x="2432" y="1856">
+   <properties>
+    <property name="next" type="int" value="6"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="16" name="6" x="3136" y="1856">
+   <properties>
+    <property name="next" type="int" value="7"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" name="7" x="3136" y="1024">
+   <properties>
+    <property name="next" type="int" value="8"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="18" name="8" x="3008" y="1024">
+   <properties>
+    <property name="next" type="int" value="9"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="19" name="9" x="3008" y="960">
+   <properties>
+    <property name="next" type="int" value="10"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="20" name="10" x="3136" y="960">
+   <properties>
+    <property name="next" type="int" value="11"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="21" name="11" x="3136" y="64">
+   <properties>
+    <property name="next" type="int" value="12"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="22" name="12" x="2432" y="64">
+   <properties>
+    <property name="next" type="int" value="13"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="23" name="13" x="2432" y="256">
+   <properties>
+    <property name="next" type="int" value="14"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="24" name="14" x="2368" y="256">
+   <properties>
+    <property name="next" type="int" value="15"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="25" name="15" x="2368" y="64">
+   <properties>
+    <property name="next" type="int" value="16"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="26" name="16" x="896" y="64">
+   <properties>
+    <property name="next" type="int" value="17"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="27" name="17" x="896" y="256">
+   <properties>
+    <property name="next" type="int" value="18"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="28" name="18" x="832" y="256">
+   <properties>
+    <property name="next" type="int" value="19"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="29" name="19" x="832" y="64">
+   <properties>
+    <property name="next" type="int" value="20"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="30" name="20" x="64" y="64">
+   <properties>
+    <property name="next" type="int" value="21"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="31" name="21" x="64" y="960">
+   <properties>
+    <property name="next" type="int" value="22"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="32" name="22" x="192" y="960">
+   <properties>
+    <property name="next" type="int" value="23"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="33" name="23" x="192" y="1024">
+   <properties>
+    <property name="next" type="int" value="24"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="34" name="24" x="64" y="1024">
+   <properties>
+    <property name="next" type="int" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="35" name="25" x="256" y="1472">
+   <properties>
+    <property name="next" type="int" value="26"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="36" name="26" x="256" y="1408">
+   <properties>
+    <property name="next" type="int" value="27"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="37" name="27" x="640" y="1408">
+   <properties>
+    <property name="next" type="int" value="28"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="38" name="28" x="640" y="1472">
+   <properties>
+    <property name="next" type="int" value="25"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="39" name="29" x="832" y="1664">
+   <properties>
+    <property name="next" type="int" value="30"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="40" name="30" x="832" y="1344">
+   <properties>
+    <property name="next" type="int" value="31"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="41" name="31" x="896" y="1344">
+   <properties>
+    <property name="next" type="int" value="32"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="42" name="32" x="896" y="1664">
+   <properties>
+    <property name="next" type="int" value="29"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="43" name="33" x="1088" y="1664">
+   <properties>
+    <property name="next" type="int" value="34"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="44" name="34" x="1088" y="1600">
+   <properties>
+    <property name="next" type="int" value="35"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="45" name="35" x="1600" y="1600">
+   <properties>
+    <property name="next" type="int" value="36"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="46" name="36" x="1600" y="1216">
+   <properties>
+    <property name="next" type="int" value="37"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="47" name="37" x="1664" y="1216">
+   <properties>
+    <property name="next" type="int" value="38"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="48" name="38" x="1664" y="1344">
+   <properties>
+    <property name="next" type="int" value="39"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="49" name="39" x="2176" y="1344">
+   <properties>
+    <property name="next" type="int" value="40"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="50" name="40" x="2176" y="1408">
+   <properties>
+    <property name="next" type="int" value="41"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="51" name="41" x="1664" y="1408">
+   <properties>
+    <property name="next" type="int" value="42"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="52" name="42" x="1664" y="1664">
+   <properties>
+    <property name="next" type="int" value="33"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="53" name="43" x="1088" y="1408">
+   <properties>
+    <property name="next" type="int" value="44"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="54" name="44" x="1088" y="1344">
+   <properties>
+    <property name="next" type="int" value="45"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="55" name="45" x="1408" y="1344">
+   <properties>
+    <property name="next" type="int" value="46"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="56" name="46" x="1408" y="1408">
+   <properties>
+    <property name="next" type="int" value="43"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="57" name="47" x="384" y="1024">
+   <properties>
+    <property name="next" type="int" value="48"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="58" name="48" x="384" y="960">
+   <properties>
+    <property name="next" type="int" value="49"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="59" name="49" x="832" y="960">
+   <properties>
+    <property name="next" type="int" value="50"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="60" name="50" x="832" y="832">
+   <properties>
+    <property name="next" type="int" value="51"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="61" name="51" x="896" y="832">
+   <properties>
+    <property name="next" type="int" value="52"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="62" name="52" x="896" y="960">
+   <properties>
+    <property name="next" type="int" value="53"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="63" name="53" x="1152" y="960">
+   <properties>
+    <property name="next" type="int" value="54"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="64" name="54" x="1152" y="1024">
+   <properties>
+    <property name="next" type="int" value="55"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="65" name="55" x="896" y="1024">
+   <properties>
+    <property name="next" type="int" value="56"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="66" name="56" x="896" y="1152">
+   <properties>
+    <property name="next" type="int" value="57"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="67" name="57" x="832" y="1152">
+   <properties>
+    <property name="next" type="int" value="58"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="68" name="58" x="832" y="1024">
+   <properties>
+    <property name="next" type="int" value="47"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="69" name="59" x="256" y="576">
+   <properties>
+    <property name="next" type="int" value="60"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="70" name="60" x="256" y="512">
+   <properties>
+    <property name="next" type="int" value="61"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="71" name="61" x="640" y="512">
+   <properties>
+    <property name="next" type="int" value="62"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="72" name="62" x="640" y="576">
+   <properties>
+    <property name="next" type="int" value="59"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="73" name="63" x="832" y="640">
+   <properties>
+    <property name="next" type="int" value="64"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="74" name="64" x="896" y="640">
+   <properties>
+    <property name="next" type="int" value="65"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="75" name="65" x="896" y="448">
+   <properties>
+    <property name="next" type="int" value="66"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="76" name="66" x="832" y="448">
+   <properties>
+    <property name="next" type="int" value="63"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="77" name="67" x="1088" y="320">
+   <properties>
+    <property name="next" type="int" value="68"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="78" name="68" x="1088" y="256">
+   <properties>
+    <property name="next" type="int" value="69"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="79" name="69" x="1408" y="256">
+   <properties>
+    <property name="next" type="int" value="70"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="80" name="70" x="1408" y="320">
+   <properties>
+    <property name="next" type="int" value="67"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="81" name="71" x="1088" y="640">
+   <properties>
+    <property name="next" type="int" value="72"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="82" name="72" x="1088" y="576">
+   <properties>
+    <property name="next" type="int" value="73"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="83" name="73" x="1600" y="576">
+   <properties>
+    <property name="next" type="int" value="74"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="84" name="74" x="1600" y="256">
+   <properties>
+    <property name="next" type="int" value="75"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="85" name="75" x="1664" y="256">
+   <properties>
+    <property name="next" type="int" value="76"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="86" name="76" x="1664" y="448">
+   <properties>
+    <property name="next" type="int" value="77"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="87" name="77" x="2176" y="448">
+   <properties>
+    <property name="next" type="int" value="78"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="88" name="78" x="2176" y="512">
+   <properties>
+    <property name="next" type="int" value="79"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="89" name="79" x="1664" y="512">
+   <properties>
+    <property name="next" type="int" value="80"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="90" name="80" x="1664" y="768">
+   <properties>
+    <property name="next" type="int" value="81"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="91" name="81" x="1600" y="768">
+   <properties>
+    <property name="next" type="int" value="82"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="92" name="82" x="1600" y="640">
+   <properties>
+    <property name="next" type="int" value="71"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="93" name="83" x="1344" y="1024">
+   <properties>
+    <property name="next" type="int" value="84"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="94" name="84" x="1344" y="960">
+   <properties>
+    <property name="next" type="int" value="85"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="95" name="85" x="1920" y="960">
+   <properties>
+    <property name="next" type="int" value="86"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="96" name="86" x="1920" y="1024">
+   <properties>
+    <property name="next" type="int" value="83"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="97" name="87" x="2368" y="1536">
+   <properties>
+    <property name="next" type="int" value="88"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="98" name="88" x="2368" y="1344">
+   <properties>
+    <property name="next" type="int" value="89"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="99" name="89" x="2432" y="1344">
+   <properties>
+    <property name="next" type="int" value="90"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="100" name="90" x="2432" y="1536">
+   <properties>
+    <property name="next" type="int" value="87"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="101" name="91" x="2624" y="1472">
+   <properties>
+    <property name="next" type="int" value="92"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="102" name="92" x="2624" y="1408">
+   <properties>
+    <property name="next" type="int" value="93"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="103" name="93" x="2752" y="1408">
+   <properties>
+    <property name="next" type="int" value="94"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="104" name="94" x="2752" y="1216">
+   <properties>
+    <property name="next" type="int" value="95"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="105" name="95" x="2816" y="1216">
+   <properties>
+    <property name="next" type="int" value="96"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="106" name="96" x="2816" y="1408">
+   <properties>
+    <property name="next" type="int" value="97"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="107" name="97" x="2944" y="1408">
+   <properties>
+    <property name="next" type="int" value="98"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="108" name="98" x="2944" y="1472">
+   <properties>
+    <property name="next" type="int" value="99"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="109" name="99" x="2816" y="1472">
+   <properties>
+    <property name="next" type="int" value="100"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="110" name="100" x="2816" y="1664">
+   <properties>
+    <property name="next" type="int" value="101"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="111" name="101" x="2752" y="1664">
+   <properties>
+    <property name="next" type="int" value="102"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="112" name="102" x="2752" y="1472">
+   <properties>
+    <property name="next" type="int" value="91"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="113" name="103" x="2112" y="1024">
+   <properties>
+    <property name="next" type="int" value="104"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="114" name="104" x="2112" y="960">
+   <properties>
+    <property name="next" type="int" value="105"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="115" name="105" x="2368" y="960">
+   <properties>
+    <property name="next" type="int" value="106"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="116" name="106" x="2368" y="832">
+   <properties>
+    <property name="next" type="int" value="107"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="117" name="107" x="2432" y="832">
+   <properties>
+    <property name="next" type="int" value="108"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="118" name="108" x="2432" y="960">
+   <properties>
+    <property name="next" type="int" value="109"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="119" name="109" x="2816" y="960">
+   <properties>
+    <property name="next" value="110"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="120" name="110" x="2816" y="1024">
+   <properties>
+    <property name="next" type="int" value="111"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="121" name="111" x="2432" y="1024">
+   <properties>
+    <property name="next" type="int" value="112"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="122" name="112" x="2432" y="1152">
+   <properties>
+    <property name="next" type="int" value="113"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="123" name="113" x="2368" y="1152">
+   <properties>
+    <property name="next" type="int" value="114"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="124" name="114" x="2368" y="1024">
+   <properties>
+    <property name="next" type="int" value="103"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="125" name="115" x="2368" y="640">
+   <properties>
+    <property name="next" type="int" value="116"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="126" name="116" x="2368" y="448">
+   <properties>
+    <property name="next" type="int" value="117"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="127" name="117" x="2432" y="448">
+   <properties>
+    <property name="next" type="int" value="118"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="128" name="118" x="2432" y="640">
+   <properties>
+    <property name="next" type="int" value="115"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="129" name="119" x="2624" y="576">
+   <properties>
+    <property name="next" type="int" value="120"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="130" name="120" x="2624" y="512">
+   <properties>
+    <property name="next" type="int" value="121"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="131" name="121" x="2752" y="512">
+   <properties>
+    <property name="next" type="int" value="122"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="132" name="122" x="2752" y="256">
+   <properties>
+    <property name="next" type="int" value="123"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="133" name="123" x="2816" y="256">
+   <properties>
+    <property name="next" type="int" value="124"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="134" name="124" x="2816" y="512">
+   <properties>
+    <property name="next" type="int" value="125"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="135" name="125" x="2944" y="512">
+   <properties>
+    <property name="next" type="int" value="126"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="136" name="126" x="2944" y="576">
+   <properties>
+    <property name="next" type="int" value="127"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="137" name="127" x="2816" y="576">
+   <properties>
+    <property name="next" type="int" value="128"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="138" name="128" x="2816" y="768">
+   <properties>
+    <property name="next" type="int" value="129"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="139" name="129" x="2752" y="768">
+   <properties>
+    <property name="next" type="int" value="130"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="140" name="130" x="2752" y="576">
+   <properties>
+    <property name="next" type="int" value="119"/>
    </properties>
    <point/>
   </object>
