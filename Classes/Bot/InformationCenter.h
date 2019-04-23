@@ -14,6 +14,8 @@ class InformationCenter : public pattern::Singleton<InformationCenter>
 #if DEBUG_GRAHP
 	DrawNode* _draw;
 #endif
+    
+    Vec2 getRandomVec(const float& speed);
 public:
     InformationCenter();
     ~InformationCenter();

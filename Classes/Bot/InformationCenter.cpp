@@ -45,7 +45,7 @@ void InformationCenter::initGraph(TMXTiledMap * tileMap)
 			float x = pointInTile1.at("x").asFloat();
 			float y = pointInTile1.at("y").asFloat();
 
-			_graph.emplace_back(x, y);
+			//_graph.emplace_back(x, y);
 		}
 	}
 
@@ -74,10 +74,30 @@ void InformationCenter::update(float dt)
 			continue;
 		}
 		
-		float speedBot = bot->getSpeedMove();
-		shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(speedBot, _graph[0]);
-		bot->pushCommand(cmd);
+//        float speedBot = bot->getSpeedMove();
+//        Vec2 velocity = getRandomVec(speedBot);
+//        //shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(speedBot, _graph[0]);
+//        shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(velocity, 100.f);
+//        bot->pushCommand(cmd);
+        
+        float dimention = 300.f;
+        float rotationBot = bot->_sprite->getRotation();
+        auto boundingBox = bot->_sprite->getBoundingBox();
+        Vec2 startPoint[3]{
+            bot->_sprite->getPosition(),
+            Vec2(boundingBox.getMinX(), boundingBox.getMaxY()),
+            Vec2(boundingBox.getMaxX(), boundingBox.getMaxY())
+        };
+        Vec2 endPoint[3];
+        for (int i = 0; i < 3; i++)
+        {
+            float x = sin(CC_DEGREES_TO_RADIANS(rotationBot) * dimention);
+            float y = cos(CC_DEGREES_TO_RADIANS(rotationBot) * dimention);
+            
+        }
 
+        auto listLine = Game::getInstance()->getRigidWord()->getListLines();
+        
 
 		++begin;
 	}
@@ -97,7 +117,7 @@ list<Vec2> InformationCenter::findAroundPoint(const Vec2 & point, shared_ptr<Bot
 		Vec2(boundingBox.getMaxX(), boundingBox.getMaxY())
 	};
 
-	auto listLine = Game::getInstance()->
+    auto listLine = Game::getInstance()->getRigidWord()->getListLines();
 
 	for (auto& point : startPoint)
 	{
@@ -119,3 +139,14 @@ void InformationCenter::clear()
 	_graph.clear();
 }
 
+Vec2 InformationCenter::getRandomVec(const float& speed)
+{
+    Vec2 listVec[]{
+        Vec2(0, speed),
+        Vec2(0, -speed),
+        Vec2(speed, 0),
+        Vec2(-speed, 0)
+    };
+    
+    return listVec[random(0, 3)];
+}
