@@ -5,7 +5,7 @@ class Character;
 
 class VisionEnemy : public Vision
 {
-
+	mutex _m;
 public:
 	VisionEnemy();
 	VisionEnemy(shared_ptr<Character> obj);

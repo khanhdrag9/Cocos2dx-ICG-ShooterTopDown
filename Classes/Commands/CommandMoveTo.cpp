@@ -42,18 +42,17 @@ void CommandMoveTo::update(float dt)
         }
         else
         {
-			Vec2 oldOffSet = _target - currentPos;
-            Vec2 offset = oldOffSet.getNormalized();
-            //Vec2 newoffset = offset* _speed * dt;
-			Vec2 newoffset = offset * _speed;
-			if (abs(newoffset.x) >= abs(oldOffSet.x) || abs(newoffset.y) >= abs(oldOffSet.y))
+			Vec2 offset = _target - currentPos;
+			offset.normalize();
+			offset = offset * _speed;
+			if((_target - currentPos).length() <= (offset * dt).length())
 			{
 				object->_sprite->setPosition(_target);
 				_isFinished = true;
-				newoffset = Vec2(0,0);
+				offset = Vec2(0,0);
 			}
 
-            object->_rigidBody->_velocity = newoffset;
+            object->_rigidBody->_velocity = offset;
         }
     }
 }

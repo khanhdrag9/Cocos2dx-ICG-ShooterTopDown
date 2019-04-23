@@ -6,6 +6,7 @@ class Character;
 class Vision
 {
 protected:
+	mutex _m;
     shared_ptr<Character> _obj;
     bool _isDraw;
 	vector<Vec2> _points;

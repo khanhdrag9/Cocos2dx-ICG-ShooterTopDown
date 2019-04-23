@@ -53,8 +53,16 @@ void Vision::threadGetPoint()
 	while(!_isStop)
 	{ 
 		if (!_threadRun)continue;
+
 		getPointIntersect();
+
+		//while (!_m.try_lock());
+		_m.lock();
 		_points2.swap(_points);
+		_m.unlock();
+
+		float timeSleep = Director::getInstance()->getDeltaTime();
+		std::this_thread::sleep_for(0.02s);
 	}
 
 	_avaiableToDelete = true;
@@ -79,6 +87,7 @@ _vision(origin_vision)
 {
 	_threadVision = thread(&Vision::threadGetPoint, this);
 	//_threadVision.detach();
+	_threadRun = true;
 }
 
 Vision::~Vision()
@@ -106,6 +115,7 @@ void Vision::stop()
 {
 	if (_avaiableToDelete)return;
 
+	_threadRun = false;
 	_isStop = true;
 	while (_threadVision.joinable() == false || _avaiableToDelete == false);
 	_threadVision.join();
@@ -143,36 +153,6 @@ void Vision::getPointIntersect()
 				Vec2 intersect = Vec2::getIntersectPoint(objPos, pointTemp, checkline.start, checkline.end);
 				if ((pointTemp - objPos).length() > (intersect - objPos).length())
 					pointTemp = intersect;
-			}
-		}
-
-		if (point == pointTemp)
-		{
-			float offsetX = abs(point.x - objPos.x);
-			float offsetY = abs(point.y - objPos.y);
-			float ratioOk = 1.f;
-
-			Vec2 direct = Vec2::ZERO;
-			if (offsetX < ratioOk)
-			{
-				if (point.y - objPos.y > 0)
-					direct.y = 1;
-				else
-					direct.y = -1;
-			}
-
-			if (offsetY < ratioOk)
-			{
-				if (point.x - objPos.x > 0)
-					direct.x = 1;
-				else
-					direct.x = -1;
-			}
-
-			if (direct != Vec2::ZERO)
-			{
-				auto des = make_shared<des_detect_new_road>(direct);
-				//InformationCenter::getInstance()->pushInformation(_obj, make_shared<InformationMoveAround>(des));
 			}
 		}
 

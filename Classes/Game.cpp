@@ -76,7 +76,8 @@ void Game::initGamePlay()
     BotManager::getInstance()->initBots();
     createSight();
 	createStartCameraView();
-    InformationCenter::getInstance()->start();
+
+	InformationCenter::getInstance()->initGraph(_tileMap);
 }
 
 void Game::update(float dt)
@@ -123,12 +124,9 @@ void Game::update(float dt)
 			_sightNode->drawCircle(obj->_sprite->getPosition(), circleBody->getRadius(), 0, 360, false, Color4F::RED);
 	}
 #endif
-    
+	InformationCenter::getInstance()->update(dt);
+
     ObjectsPool::getInstance()->update();
-    
-    InformationCenter::getInstance()->update();
-    InformationCenter::getInstance()->clear(false);
-    
 }
 
 void Game::setCurrentState(Layer* layer)
@@ -239,6 +237,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
                 }
 
 				_objIsFollow = BotManager::getInstance()->getBot(0);
+				_currentIndexFollow = 0;
             }
             
             break;
@@ -249,6 +248,17 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
                     vision->setDraw(!vision->isDraw());
             }
             break;
+
+		case cocos2d::EventKeyboard::KeyCode::KEY_F5:
+		{
+			int countBots = BotManager::getInstance()->countBots();
+			++_currentIndexFollow;
+			if (_currentIndexFollow >= countBots)_currentIndexFollow = -1;
+
+			if (_currentIndexFollow == -1)setObjectFollowByCam(_player);
+			else setObjectFollowByCam(BotManager::getInstance()->getBot(_currentIndexFollow));
+		}
+		break;
 #endif
         default:
             break;
@@ -321,7 +331,6 @@ void Game::releaseGamePlay()
     _isHoldKey = false;
     _keyIsHolds.clear();
     
-    InformationCenter::getInstance()->stop();
     
     if(_tileMap)
     {
@@ -383,8 +392,8 @@ void Game::releaseGamePlay()
 		if (gameplayLayer->getUILayer())
 			gameplayLayer->getUILayer()->clear();
 	}
-    
-    InformationCenter::getInstance()->clear(true);
+
+	InformationCenter::getInstance()->clear();
 }
 
 TMXTiledMap * Game::getTileMap() const
@@ -588,8 +597,10 @@ void Game::createStartCameraView()
 {
 #if DEBUG_ENEMY
     auto character = BotManager::getInstance()->getBot(0);
+	_currentIndexFollow = 0;
 #else
 	auto character = (shared_ptr<Character>)_player;
+	_currentIndexFollow = -1;	
 #endif
     if(GS_GamePlay* gameplayLayer = dynamic_cast<GS_GamePlay*>(_currentState))
     {

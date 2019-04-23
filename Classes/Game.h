@@ -50,6 +50,9 @@ private:
     GameMap* _linkMap;
 
 	shared_ptr<Character> _objIsFollow;
+#if CHEAT
+	int _currentIndexFollow;
+#endif
 
 	unique_ptr<RigidWorld> _rigidWorld;
     

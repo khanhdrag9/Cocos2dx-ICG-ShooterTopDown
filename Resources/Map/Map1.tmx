@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="141">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="6" nextobjectid="206">
  <tileset firstgid="1" name="collision" tilewidth="64" tileheight="64" tilecount="1" columns="1">
   <image source="collision.png" width="64" height="64"/>
  </tileset>
@@ -74,33 +74,33 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <objectgroup id="3" name="RevivalPosition" visible="0">
-  <object id="1" name="1" x="182.013" y="1734.48">
+ <objectgroup id="3" name="RevivalPosition" locked="1">
+  <object id="1" name="1" x="192" y="1728">
    <point/>
   </object>
-  <object id="2" name="2" x="196.288" y="185.582">
+  <object id="2" name="2" x="192" y="192">
    <point/>
   </object>
-  <object id="3" name="3" x="1788.01" y="628.123">
+  <object id="3" name="3" x="1792" y="640">
    <point/>
   </object>
-  <object id="5" name="4" x="1481.08" y="485.368">
+  <object id="5" name="4" x="1472" y="448">
    <point/>
   </object>
-  <object id="6" name="5" x="3026.41" y="164.168">
+  <object id="6" name="5" x="3008" y="192">
    <point/>
   </object>
-  <object id="7" name="6" x="2915.77" y="1584.58">
+  <object id="7" name="6" x="2944" y="1600">
    <point/>
   </object>
-  <object id="8" name="7" x="1777.3" y="1523.91">
+  <object id="8" name="7" x="1792" y="1536">
    <point/>
   </object>
-  <object id="9" name="8" x="1470.38" y="1513.2">
+  <object id="9" name="8" x="1503.71" y="1518.53">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="4" name="Lines">
+ <objectgroup id="4" name="Lines" visible="0" locked="1">
   <object id="11" name="1" x="64" y="1856">
    <properties>
     <property name="next" type="int" value="2"/>
@@ -879,6 +879,44 @@
    <properties>
     <property name="next" type="int" value="119"/>
    </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Graph">
+  <object id="193" name="1" x="720" y="1782">
+   <point/>
+  </object>
+  <object id="195" name="2" x="854" y="1768">
+   <point/>
+  </object>
+  <object id="196" name="3" x="996" y="1768">
+   <point/>
+  </object>
+  <object id="197" name="4" x="1636" y="1770">
+   <point/>
+  </object>
+  <object id="198" name="5" x="1794" y="1758">
+   <point/>
+  </object>
+  <object id="199" name="6" x="2262" y="1758">
+   <point/>
+  </object>
+  <object id="200" name="7" x="2260" y="1644">
+   <point/>
+  </object>
+  <object id="201" name="8" x="2392" y="1640">
+   <point/>
+  </object>
+  <object id="202" name="9" x="2524" y="1630">
+   <point/>
+  </object>
+  <object id="203" name="10" x="2528" y="1760">
+   <point/>
+  </object>
+  <object id="204" name="11" x="2778" y="1754">
+   <point/>
+  </object>
+  <object id="205" name="12" x="3022" y="1744">
    <point/>
   </object>
  </objectgroup>

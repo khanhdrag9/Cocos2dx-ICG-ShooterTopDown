@@ -39,9 +39,7 @@ void Bot::update(float dt)
     
     if(containStatus(Status::WALK))
     {
-        shared_ptr<description> des = make_shared<des_walk>(_rigidBody->_velocity);
-        shared_ptr<InformationMoveAround> information = make_shared<InformationMoveAround>(des);
-        InformationCenter::getInstance()->pushInformation(shared_from_this(), information);
+        
 //        if (_commandQueue.empty())
 //        {
 //            auto nextlink = BotManager::getInstance()->getNextLinkPosition(dynamic_pointer_cast<Bot>(shared_from_this()), true);

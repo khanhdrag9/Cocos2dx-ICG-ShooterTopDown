@@ -57,8 +57,6 @@ void BotManager::update(float dt)
 
 void BotManager::initBots()
 {
-	//TMXObjectGroup* objg = Game::getInstance()->getTileMap()->getObjectGroup("Enemy");
-	//int countEnemies = (int)objg->getObjects().size();
 	int countEnemies = 1;
 
 	//get position to init bots
@@ -77,16 +75,12 @@ void BotManager::initBots()
 
 	for (int i = 1; i <= countEnemies; i++)
 	{
-		/*auto pos = objg->getObject("enemyPos" + to_string(i));
-		float x = pos.at("x").asFloat();
-		float y = pos.at("y").asFloat();*/
-
 		auto bot = createBot(); //create bot here, use player for test, use Bot instead of
 		Game::getInstance()->getRigidWord()->createRigidBodyCircle(bot);
 		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
-		//bot->_sprite->setPosition(x, y);
-		bot->_sprite->setPosition(history[i-1]);
-        
+		//bot->_sprite->setPosition(history[i-1]);
+		bot->_sprite->setPosition(Vec2(192, 192));
+
         bot->setWalk(true);
 
 		Game::getInstance()->getCurrentState()->addChild(bot->_sprite);
@@ -98,10 +92,8 @@ shared_ptr<Bot> BotManager::createBot()
 	auto bot = make_shared<Bot>();
 	bot->init();
 	_listBots.push_back(bot);
-    
-    shared_ptr<description> des = make_shared<des_init>();
-    shared_ptr<InformationMoveAround> information = make_shared<InformationMoveAround>(des);
-    InformationCenter::getInstance()->pushInformation(bot, information);
+
+	InformationCenter::getInstance()->pushBot(bot);
 
 	return bot;
 }
