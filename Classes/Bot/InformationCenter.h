@@ -20,6 +20,7 @@ class InformationCenter : public pattern::Singleton<InformationCenter>
 	thread _threadDetectAround;
 	mutex _m;
 
+    void threadAI();
 public:
     InformationCenter();
     ~InformationCenter();
@@ -27,7 +28,8 @@ public:
 	void initGraph(TMXTiledMap* tileMap);
 	void startThreads();
 	void update(float dt);
+    queue<Vec2> findWayToPoint(const Vec2& target);
+    
 	void pushBot(shared_ptr<Bot> bot);
-
 	void clear();
 };

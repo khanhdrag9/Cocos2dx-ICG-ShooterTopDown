@@ -59,11 +59,27 @@ void InformationCenter::initGraph(TMXTiledMap * tileMap)
 
 void InformationCenter::startThreads()
 {
-	_threadDetectAround = thread();
+    _threadDetectAround = thread(&InformationCenter::threadAI, this);
+}
+
+void InformationCenter::threadAI()
+{
+    while(!_isStop)
+    {
+        
+    }
+    
+    _listBot.clear();
+    _graph.clear();
 }
 
 void InformationCenter::update(float dt)
 {
+}
+
+queue<Vec2> InformationCenter::findWayToPoint(const Vec2& target)
+{
+    
 }
 
 void InformationCenter::pushBot(shared_ptr<Bot> bot)
