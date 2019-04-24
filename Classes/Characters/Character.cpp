@@ -45,26 +45,14 @@ void Character::update(float dt)
 {
     if(_destroy || _currentHP <= 0)return;
         
-    queue<shared_ptr<Command>> tempCommand;
-    while (_commandQueue.size() > 0)
-    {
-        shared_ptr<Command> cmd = _commandQueue.front();
-        cmd->update(dt);
-        
-        if(!cmd->isFinished())
-            tempCommand.push(cmd);
-        
-        _commandQueue.pop();
-    }
-    
-    _commandQueue.swap(tempCommand);
+	for (auto cmd : _commandQueue)
+		cmd->update(dt);
 }
 
 
 void Character::releaseCommands()
 {
-    while(_commandQueue.size() > 0)
-        _commandQueue.pop();
+	_commandQueue.clear();
 }
 
 
@@ -73,7 +61,19 @@ void Character::pushCommand(shared_ptr<Command>& command, bool replace)
     if(_destroy || _currentHP <= 0)return;
     
    // command->registAnObject(shared_from_this(), _commandQueue);
-	queue<shared_ptr<Command>> queueTemp;
+	//release cmd has finished
+	for (auto begin = _commandQueue.begin(); begin != _commandQueue.end();)
+	{
+		shared_ptr<Command> cmd = *begin;
+		if (cmd->isFinished())
+		{
+			begin = _commandQueue.erase(begin);
+		}
+		else
+			++begin;
+	}
+
+	list<shared_ptr<Command>> queueTemp;
 	bool isUsed = false;
 
 	while (_commandQueue.size() > 0)
@@ -86,14 +86,14 @@ void Character::pushCommand(shared_ptr<Command>& command, bool replace)
             }
 
             if (!isUsed)
-                queueTemp.push(_commandQueue.front());
+                queueTemp.push_back(_commandQueue.front());
             else if (!replace)
-                queueTemp.push(_commandQueue.front());
+                queueTemp.push_back(_commandQueue.front());
             else
                 isUsed = false;
         }
 
-		_commandQueue.pop();
+		_commandQueue.pop_front();
 	}
 
 	_commandQueue.swap(queueTemp);

@@ -33,7 +33,7 @@ public:
     void destroy();
     bool isDestroyed();
 protected:
-    queue<shared_ptr<Command>> _commandQueue;
+    list<shared_ptr<Command>> _commandQueue;
     bool _destroy;
     
     int _maxHP;

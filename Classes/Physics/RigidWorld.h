@@ -30,7 +30,8 @@ struct Line
 
     float lenght() const
     {
-        return sqrt( (start.x - end.x)*(start.x - end.x) + (start.y - end.y)*(start.y - end.y) );
+        //return sqrt( (start.x - end.x)*(start.x - end.x) + (start.y - end.y)*(start.y - end.y) );
+		return (end - start).length();
     }
 };
 

@@ -52,6 +52,7 @@ Game::~Game()
 	/*CC_SAFE_DELETE(_tileMap);
 
 	_keyIsHolds.clear();*/
+	releaseGamePlay();
 }
 
 void Game::init()
@@ -78,6 +79,7 @@ void Game::initGamePlay()
 	createStartCameraView();
 
 	InformationCenter::getInstance()->initGraph(_tileMap);
+	InformationCenter::getInstance()->startThreads();
 }
 
 void Game::update(float dt)
@@ -322,15 +324,18 @@ const unique_ptr<RigidWorld>& Game::getRigidWord() const
 
 void Game::releaseGamePlay()
 {
-//    if(_player)
-//    {
-//        _player->destroy();
-//        _player = nullptr;
-//    }
     _playerShoot = false;
     _isHoldKey = false;
     _keyIsHolds.clear();
     
+	try
+	{
+		InformationCenter::getInstance()->clear();
+	}
+	catch (std::system_error e)
+	{
+		int a = 4;
+	}
     
     if(_tileMap)
     {
@@ -377,6 +382,7 @@ void Game::releaseGamePlay()
 #else
     _isMouseDown = false;
 #endif
+
     auto botMgr = BotManager::getInstance();
     botMgr->clear();
     
@@ -392,8 +398,6 @@ void Game::releaseGamePlay()
 		if (gameplayLayer->getUILayer())
 			gameplayLayer->getUILayer()->clear();
 	}
-
-	InformationCenter::getInstance()->clear();
 }
 
 TMXTiledMap * Game::getTileMap() const

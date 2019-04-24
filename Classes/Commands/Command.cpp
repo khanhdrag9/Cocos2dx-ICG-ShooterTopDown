@@ -23,11 +23,11 @@ const string& Command::getName() const
     return _name;
 }
 
-void Command::registAnObject(shared_ptr<Character> object, queue<shared_ptr<Command>>& queueOfObject)
+void Command::registAnObject(shared_ptr<Character> object, list<shared_ptr<Command>>& queueOfObject)
 {
     _object = object;
     shared_ptr<Command> cmd = shared_from_this();
-    queueOfObject.push(cmd);
+    queueOfObject.push_back(cmd);
     _isFinished = false;
 }
 

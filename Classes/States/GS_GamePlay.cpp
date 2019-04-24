@@ -4,6 +4,17 @@
 #include "GS_GamePlayUI.h"
 
 
+GS_GamePlay::GS_GamePlay():
+	_aim(nullptr),
+	_uilayer(nullptr)
+{
+}
+
+GS_GamePlay::~GS_GamePlay()
+{
+	Game::getInstance()->releaseGamePlay();
+}
+
 cocos2d::Scene *GS_GamePlay::createScene()
 {
 	Scene* scene = Scene::create();

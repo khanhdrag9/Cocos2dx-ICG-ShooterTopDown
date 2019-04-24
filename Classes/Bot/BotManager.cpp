@@ -78,8 +78,8 @@ void BotManager::initBots()
 		auto bot = createBot(); //create bot here, use player for test, use Bot instead of
 		Game::getInstance()->getRigidWord()->createRigidBodyCircle(bot);
 		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
-		//bot->_sprite->setPosition(history[i-1]);
-		bot->_sprite->setPosition(Vec2(192, 192));
+		bot->_sprite->setPosition(history[i-1]);
+		//bot->_sprite->setPosition(Vec2(192, 192));
 
         bot->setWalk(true);
 

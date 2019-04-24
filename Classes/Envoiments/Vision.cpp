@@ -61,8 +61,9 @@ void Vision::threadGetPoint()
 		_points2.swap(_points);
 		_m.unlock();
 
-		float timeSleep = Director::getInstance()->getDeltaTime();
-        std::this_thread::sleep_for(std::chrono::duration<float>(timeSleep));
+		int dt = int(Director::getInstance()->getDeltaTime() * 1000.f);
+		std::chrono::milliseconds ms(dt);
+		std::this_thread::sleep_for(ms);
         
 	}
 

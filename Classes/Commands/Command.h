@@ -13,7 +13,7 @@ public:
     void setFinished(bool finished);
     bool isFinished();
     
-    void registAnObject(shared_ptr<Character> object, queue<shared_ptr<Command>>& queueOfObject);
+    void registAnObject(shared_ptr<Character> object, list<shared_ptr<Command>>& queueOfObject);
     
     const string& getName() const;
     

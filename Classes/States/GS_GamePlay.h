@@ -6,6 +6,9 @@ class GS_GamePlayUI;
 class GS_GamePlay : public Layer
 {
 public:
+	GS_GamePlay();
+	~GS_GamePlay();
+
     static Scene* createScene();
     
     GS_GamePlayUI* getUILayer() const;
