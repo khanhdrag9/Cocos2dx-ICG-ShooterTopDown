@@ -328,14 +328,7 @@ void Game::releaseGamePlay()
     _isHoldKey = false;
     _keyIsHolds.clear();
     
-	try
-	{
-		InformationCenter::getInstance()->clear();
-	}
-	catch (std::system_error e)
-	{
-		int a = 4;
-	}
+	InformationCenter::getInstance()->clear();
     
     if(_tileMap)
     {
