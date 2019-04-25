@@ -117,6 +117,9 @@ void InformationCenter::update(float dt)
 			bot.isReady = false;
 			auto lamda = [this](Vec2 position, Vec2 target, BotFindWay* bf) -> queue<Vec2>
 			{
+#if DEBUG_GRAHP
+                _canMovePointDrawer->clear();
+#endif
 				auto way = findWayToPoint(position, target);
 				
 				if (bf)
@@ -153,7 +156,6 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, const list<V
 
 	for (auto& line : lines)
 	{
-		bool isAvaiable = true;
 		for (auto& pointGrahp : grahpAvaiable)
 		{
 			if (!Vec2::isSegmentIntersect(position, pointGrahp, line.start, line.end) &&
@@ -181,7 +183,11 @@ queue<Vec2> InformationCenter::findWayToPoint(Vec2 start, Vec2 target)
 	list<Vec2> aroud = findPointAvaiableAroud(start, unless);
 
 	for (auto& point : aroud)
+    {
+#if DEBUG_GRAHP
 		_canMovePointDrawer->drawPoint(point, 10, Color4F::GREEN);
+#endif
+    }
 
 	return queue<Vec2>();
 }
