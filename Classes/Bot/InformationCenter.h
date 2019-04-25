@@ -36,6 +36,7 @@ class InformationCenter : public pattern::Singleton<InformationCenter>
 	
 #if DEBUG_GRAHP
 	DrawNode* _draw;
+	DrawNode* _canMovePointDrawer;
 #endif
 
 	bool _isStop;
@@ -51,7 +52,7 @@ public:
 	void startThreads();
 	void update(float dt);
 
-	list<Vec2> findPointAvaiableAroud(Vec2 position, list<Vec2> unless);
+	list<Vec2> findPointAvaiableAroud(Vec2 position, const list<Vec2>& unless);
     queue<Vec2> findWayToPoint(Vec2 start, Vec2 target);
     
 	void pushBot(shared_ptr<Bot> bot);
