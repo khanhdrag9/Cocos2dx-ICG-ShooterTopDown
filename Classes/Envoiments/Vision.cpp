@@ -64,7 +64,6 @@ void Vision::threadGetPoint()
 		int dt = int(Director::getInstance()->getDeltaTime() * 1000.f);
 		std::chrono::milliseconds ms(dt);
 		std::this_thread::sleep_for(ms);
-        
 	}
 
 	_avaiableToDelete = true;

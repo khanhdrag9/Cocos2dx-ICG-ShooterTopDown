@@ -6,6 +6,7 @@
 #include <queue>
 #include <vector>
 #include <iterator>
+#include <future>
 
 using namespace std;
 

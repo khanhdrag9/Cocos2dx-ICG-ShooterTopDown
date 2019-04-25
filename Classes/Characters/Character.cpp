@@ -45,7 +45,7 @@ void Character::update(float dt)
 {
     if(_destroy || _currentHP <= 0)return;
         
-	for (auto cmd : _commandQueue)
+	for (auto& cmd : _commandQueue)
 		cmd->update(dt);
 }
 
