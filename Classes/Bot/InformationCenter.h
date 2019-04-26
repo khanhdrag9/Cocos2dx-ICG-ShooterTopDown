@@ -52,8 +52,8 @@ public:
 	void startThreads();
 	void update(float dt);
 
-	list<Vec2> findPointAvaiableAroud(Vec2 position, const list<Vec2>& unless);
-    queue<Vec2> findWayToPoint(Vec2 start, Vec2 target);
+	list<Vec2> findPointAvaiableAroud(Vec2 position, vector<Vec2>& arrayFind);
+    bool findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, queue<Vec2>& result);
     
 	void pushBot(shared_ptr<Bot> bot);
 	void clear();

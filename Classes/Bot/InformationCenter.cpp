@@ -120,7 +120,10 @@ void InformationCenter::update(float dt)
 #if DEBUG_GRAHP
                 _canMovePointDrawer->clear();
 #endif
-				auto way = findWayToPoint(position, target);
+				vector<Vec2> grahpAvaiable = _graph;
+				grahpAvaiable.push_back(target);
+				queue<Vec2> way;
+				findWayToPoint(position, target, grahpAvaiable, way);
 				
 				if (bf)
 				{
@@ -131,19 +134,31 @@ void InformationCenter::update(float dt)
 				return way;
 			};
 
-			bot.task = std::async(launch::async, lamda, botPosition, _graph[9], &bot);
+			bot.task = std::async(launch::async, lamda, botPosition, _graph[11], &bot);
 		}
 
 		if (bot.isFinish && bot.isThreadAvaiable)
 		{
 			auto way = bot.task.get();
+
+#if DEBUG_GRAHP
+			queue<Vec2> wayDraw = way;
+			while (wayDraw.size() > 1)
+			{
+				Vec2 point1 = wayDraw.front();
+				wayDraw.pop();
+				Vec2 point2 = wayDraw.front();
+				_canMovePointDrawer->drawLine(point1, point2, Color4F::GREEN);
+			}
+			wayDraw.pop();
+#endif
 			bot.isThreadAvaiable = false;
-			bot.isReady = true;	//for test
+			//bot.isReady = true;	//for test
 		}
 	}
 }
 
-list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, const list<Vec2>& unless)
+list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>& arrayFind)
 {
 	vector<Line> lines;
 	{
@@ -151,45 +166,65 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, const list<V
 		lines = Game::getInstance()->getRigidWord()->getListLines();
 	}
 
-	vector<Vec2> grahpTemp;
-	vector<Vec2> grahpAvaiable = _graph;
-
-	for (auto& line : lines)
+	for (auto begin = arrayFind.begin(); begin != arrayFind.end();)
 	{
-		for (auto& pointGrahp : grahpAvaiable)
-		{
-			if (!Vec2::isSegmentIntersect(position, pointGrahp, line.start, line.end) &&
-				std::find(unless.begin(), unless.end(), pointGrahp) == unless.end())
-			{
-				grahpTemp.push_back(pointGrahp);
-
-			}
-		}
-
-		grahpTemp.swap(grahpAvaiable);
-		grahpTemp.clear();
+		if (*begin == position)
+			begin = arrayFind.erase(begin);
+		else
+			++begin;
 	}
 
 	list<Vec2> result;
-	for (auto point : grahpAvaiable)
-		result.push_back(point);
+	for (auto begin = arrayFind.begin(); begin != arrayFind.end(); ++begin)
+	{
+		auto& pointGrahp = *begin;
+
+		if ((pointGrahp - position).length() > 1000.f)
+			continue;
+
+		bool isIntersect = false;
+		for (auto& line : lines)
+		{
+			if (Vec2::isSegmentIntersect(position, pointGrahp, line.start, line.end))
+			{
+				isIntersect = true;
+				break;;
+			}
+			
+		}
+
+		if(!isIntersect)result.push_back(Vec2(pointGrahp));
+	}
+
 
 	return result;
 }
 
-queue<Vec2> InformationCenter::findWayToPoint(Vec2 start, Vec2 target)
+bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, queue<Vec2>& result)
 {
-	list<Vec2> unless;
-	list<Vec2> aroud = findPointAvaiableAroud(start, unless);
+	result.push(start);
 
-	for (auto& point : aroud)
-    {
-#if DEBUG_GRAHP
-		_canMovePointDrawer->drawPoint(point, 10, Color4F::GREEN);
-#endif
-    }
+	list<Vec2> around = findPointAvaiableAroud(start, grahp);
+	if (around.size() == 0)return false;
 
-	return queue<Vec2>();
+	auto findTarget = std::find(around.begin(), around.end(), target);
+	if (findTarget != around.end())
+	{
+		result.push(Vec2(*findTarget));
+		return true;
+	}
+	else
+	{
+		for (auto& point : around)
+		{
+			if (findWayToPoint(point, target, grahp, result))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void InformationCenter::pushBot(shared_ptr<Bot> bot)
