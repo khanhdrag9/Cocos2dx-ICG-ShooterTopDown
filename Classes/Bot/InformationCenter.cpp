@@ -15,6 +15,7 @@
 #include "../Physics/RigidBodyCircle.h"
 #include "BotManager.h"
 #include "Game.h"
+#include "../Defines/constants.h"
 //#include "../Physics/RigidWorld.h"
 
 
@@ -120,10 +121,17 @@ void InformationCenter::update(float dt)
 #if DEBUG_GRAHP
                 _canMovePointDrawer->clear();
 #endif
+				float radius = 0.f;
+				if (bf)
+				{
+					if (auto body = dynamic_pointer_cast<RigidBodyCircle>(bf->bot->_rigidBody))
+						radius = body->getRadius();
+				}
+
 				vector<Vec2> grahpAvaiable = _graph;
 				grahpAvaiable.push_back(target);
 				queue<Vec2> way;
-				findWayToPoint(position, target, grahpAvaiable, way);
+				findWayToPoint(position, target, grahpAvaiable, way, radius);
 				
 				if (bf)
 				{
@@ -137,10 +145,11 @@ void InformationCenter::update(float dt)
 			bot.task = std::async(launch::async, lamda, botPosition, _graph[11], &bot);
 		}
 
+		
 		if (bot.isFinish && bot.isThreadAvaiable)
 		{
 			auto way = bot.task.get();
-
+			bot.isThreadAvaiable = false;
 #if DEBUG_GRAHP
 			queue<Vec2> wayDraw = way;
 			while (wayDraw.size() > 1)
@@ -152,13 +161,39 @@ void InformationCenter::update(float dt)
 			}
 			wayDraw.pop();
 #endif
-			bot.isThreadAvaiable = false;
+			
+			//Move Bot
+			while (way.size() > 0)
+			{
+				shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(bot.bot->getSpeedMove(), way.front());
+				bot.commands.push(cmd);
+				way.pop();
+			}
+
+			bot.status = statusBot::WALK;
 			//bot.isReady = true;	//for test
+		}
+
+		if (bot.status == statusBot::WALK)
+		{
+			std::lock_guard<mutex> guard(_m);
+
+			if (bot.commands.size() > 0)
+			{
+				auto cmd = bot.commands.front();
+				if (cmd->getName() == constants::command_move_to)
+				{
+					if (bot.bot->pushCommand(bot.commands.front()))
+					{
+						bot.commands.pop();
+					}
+				}
+			}
 		}
 	}
 }
 
-list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>& arrayFind)
+list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>& arrayFind, float radius)
 {
 	vector<Line> lines;
 	{
@@ -174,6 +209,7 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>
 			++begin;
 	}
 
+	radius += 5.f;
 	list<Vec2> result;
 	for (auto begin = arrayFind.begin(); begin != arrayFind.end(); ++begin)
 	{
@@ -182,15 +218,26 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>
 		if ((pointGrahp - position).length() > 1000.f)
 			continue;
 
+		pair<Vec2, Vec2> checkAvaiable[]
+		{
+			pair<Vec2, Vec2>(Vec2(position.x - radius, position.y),Vec2(pointGrahp.x - radius, pointGrahp.y)),	//left
+			pair<Vec2, Vec2>(Vec2(position.x + radius, position.y),Vec2(pointGrahp.x + radius, pointGrahp.y)),	//right
+			pair<Vec2, Vec2>(Vec2(position.x, position.y + radius),Vec2(pointGrahp.x, pointGrahp.y + radius)),	//top
+			pair<Vec2, Vec2>(Vec2(position.x, position.y - radius),Vec2(pointGrahp.x, pointGrahp.y - radius))	//bot
+		};
+
 		bool isIntersect = false;
 		for (auto& line : lines)
 		{
-			if (Vec2::isSegmentIntersect(position, pointGrahp, line.start, line.end))
+			for (auto& pair : checkAvaiable)
 			{
-				isIntersect = true;
-				break;;
+				if (Vec2::isSegmentIntersect(pair.first, pair.second, line.start, line.end))
+				{
+					isIntersect = true;
+					break;
+				}
 			}
-			
+			if (isIntersect)break;
 		}
 
 		if(!isIntersect)result.push_back(Vec2(pointGrahp));
@@ -200,11 +247,11 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>
 	return result;
 }
 
-bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, queue<Vec2>& result)
+bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, queue<Vec2>& result, float radius)
 {
 	result.push(start);
 
-	list<Vec2> around = findPointAvaiableAroud(start, grahp);
+	list<Vec2> around = findPointAvaiableAroud(start, grahp, radius);
 	if (around.size() == 0)return false;
 
 	auto findTarget = std::find(around.begin(), around.end(), target);
@@ -217,7 +264,7 @@ bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& gr
 	{
 		for (auto& point : around)
 		{
-			if (findWayToPoint(point, target, grahp, result))
+			if (findWayToPoint(point, target, grahp, result, radius))
 			{
 				return true;
 			}

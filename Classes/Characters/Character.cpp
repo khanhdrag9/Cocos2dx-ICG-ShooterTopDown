@@ -56,9 +56,9 @@ void Character::releaseCommands()
 }
 
 
-void Character::pushCommand(shared_ptr<Command>& command, bool replace)
+bool Character::pushCommand(shared_ptr<Command>& command, bool replace)
 {
-    if(_destroy || _currentHP <= 0)return;
+	if (_destroy || _currentHP <= 0)return false;
     
    // command->registAnObject(shared_from_this(), _commandQueue);
 	//release cmd has finished
@@ -99,7 +99,12 @@ void Character::pushCommand(shared_ptr<Command>& command, bool replace)
 	_commandQueue.swap(queueTemp);
 
 	if (!isUsed)
+	{
 		command->registAnObject(shared_from_this(), _commandQueue);
+		return true;
+	}
+
+	return false;
 }
 
 

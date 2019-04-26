@@ -48,8 +48,9 @@ const unique_ptr<Mag>& Player::getMag() const
     return _bulletMag;
 }
 
-void Player::pushCommand(shared_ptr<Command>& command, bool replace)
+bool Player::pushCommand(shared_ptr<Command>& command, bool replace)
 {
-	Character::pushCommand(command, replace);
+	bool r = Character::pushCommand(command, replace);
+	return r;
 }
 

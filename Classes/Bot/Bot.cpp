@@ -67,10 +67,10 @@ void Bot::update(float dt)
 	_currentStatus.clear();
 }
 
-void Bot::pushCommand(shared_ptr<Command>& command, bool replace)
+bool Bot::pushCommand(shared_ptr<Command>& command, bool replace)
 {
-	Character::pushCommand(command, replace);
-
+	bool r = Character::pushCommand(command, replace);
+	return r;
 }
 
 

@@ -10,21 +10,27 @@ class Command;
 
 class InformationCenter : public pattern::Singleton<InformationCenter>
 {
+	enum class statusBot : int
+	{
+		NONE,
+		WALK
+	};
 	struct BotFindWay
 	{
 		bool isFinish;
 		bool isReady;
 		bool isThreadAvaiable;
+		statusBot status;
 		shared_ptr<Bot> bot;
 		future<queue<Vec2>> task;
-		//std::packaged_task<queue<Vec2>(Vec2, list<Vec2>)> task;
+		queue<shared_ptr<Command>> commands;
 
 		BotFindWay(shared_ptr<Bot> b):
 			bot(b),
 			isFinish(true),
 			isReady(true)
 			, isThreadAvaiable(false)
-			//,task(nullptr)
+			, status(statusBot::NONE)
 		{}
 
 
@@ -52,8 +58,8 @@ public:
 	void startThreads();
 	void update(float dt);
 
-	list<Vec2> findPointAvaiableAroud(Vec2 position, vector<Vec2>& arrayFind);
-    bool findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, queue<Vec2>& result);
+	list<Vec2> findPointAvaiableAroud(Vec2 position, vector<Vec2>& arrayFind, float radius = 0);
+    bool findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, queue<Vec2>& result, float radius = 0);
     
 	void pushBot(shared_ptr<Bot> bot);
 	void clear();
