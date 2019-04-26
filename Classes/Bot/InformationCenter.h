@@ -10,10 +10,12 @@ class Command;
 
 class InformationCenter : public pattern::Singleton<InformationCenter>
 {
+public:
 	enum class statusBot : int
 	{
 		NONE,
-		WALK
+		WALK,
+		COLLISION
 	};
 	struct BotFindWay
 	{
@@ -23,19 +25,35 @@ class InformationCenter : public pattern::Singleton<InformationCenter>
 		statusBot status;
 		shared_ptr<Bot> bot;
 		future<queue<Vec2>> task;
+		pair<float, float> countDetect;
 		queue<shared_ptr<Command>> commands;
-
+		BotFindWay() {}
 		BotFindWay(shared_ptr<Bot> b):
 			bot(b),
 			isFinish(true),
 			isReady(true)
 			, isThreadAvaiable(false)
 			, status(statusBot::NONE)
+			, countDetect(0.f, 10.f)
 		{}
 
+		void clear()
+		{
+			if (isThreadAvaiable)
+				task.get();
+			while (commands.size() > 0)
+				commands.pop();
+			bot = nullptr;
+		}
 
+		bool countDetectOK()
+		{
+			countDetect.first = countDetect.first > countDetect.second ? 0.f : countDetect.first;
+			return countDetect.first == 0.f;
+		}
 	};
 
+private:
 	//vector<shared_ptr<Bot>> _listBot;
 	vector<BotFindWay> _listBot;
 	vector<Vec2> _graph;
@@ -60,7 +78,8 @@ public:
 
 	list<Vec2> findPointAvaiableAroud(Vec2 position, vector<Vec2>& arrayFind, float radius = 0);
     bool findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, queue<Vec2>& result, float radius = 0);
-    
+	float getRotateForwardAPoint(shared_ptr<Character> character, const Vec2& point) const;
 	void pushBot(shared_ptr<Bot> bot);
+	BotFindWay& findBotWayByBot(const shared_ptr<Character>& character);
 	void clear();
 };

@@ -16,6 +16,7 @@
 #include "BotManager.h"
 #include "Game.h"
 #include "../Defines/constants.h"
+#include "../Characters/Player.h"
 //#include "../Physics/RigidWorld.h"
 
 
@@ -107,9 +108,15 @@ void InformationCenter::threadAI()
 
 void InformationCenter::update(float dt)
 {
-	for (auto begin = _listBot.begin(); begin != _listBot.end(); ++begin)
+	for (auto begin = _listBot.begin(); begin != _listBot.end();)
 	{
 		BotFindWay& bot = *begin;
+		if (bot.bot->isDestroyed())
+		{
+			bot.clear();
+			begin = _listBot.erase(begin);
+			continue;
+		}
 
 		if (bot.isFinish && bot.isReady)	//start thread
 		{
@@ -119,7 +126,7 @@ void InformationCenter::update(float dt)
 			auto lamda = [this](Vec2 position, Vec2 target, BotFindWay* bf) -> queue<Vec2>
 			{
 #if DEBUG_GRAHP
-                _canMovePointDrawer->clear();
+                //_canMovePointDrawer->clear();
 #endif
 				float radius = 0.f;
 				if (bf)
@@ -130,6 +137,7 @@ void InformationCenter::update(float dt)
 
 				vector<Vec2> grahpAvaiable = _graph;
 				grahpAvaiable.push_back(target);
+				std::random_shuffle(grahpAvaiable.begin(), grahpAvaiable.end());
 				queue<Vec2> way;
 				findWayToPoint(position, target, grahpAvaiable, way, radius);
 				
@@ -142,35 +150,30 @@ void InformationCenter::update(float dt)
 				return way;
 			};
 
-			bot.task = std::async(launch::async, lamda, botPosition, _graph[11], &bot);
+			Vec2 target = _graph.at(random(0, (int)_graph.size() - 1));
+			bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
 		}
 
-		
 		if (bot.isFinish && bot.isThreadAvaiable)
 		{
 			auto way = bot.task.get();
 			bot.isThreadAvaiable = false;
-#if DEBUG_GRAHP
-			queue<Vec2> wayDraw = way;
-			while (wayDraw.size() > 1)
-			{
-				Vec2 point1 = wayDraw.front();
-				wayDraw.pop();
-				Vec2 point2 = wayDraw.front();
-				_canMovePointDrawer->drawLine(point1, point2, Color4F::GREEN);
-			}
-			wayDraw.pop();
-#endif
-			
 			//Move Bot
-			while (way.size() > 0)
+			if (way.size() == 0)
 			{
-				shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(bot.bot->getSpeedMove(), way.front());
-				bot.commands.push(cmd);
-				way.pop();
+				bot.isReady = true;
 			}
+			else
+			{
+				while (way.size() > 0)
+				{
+					shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(bot.bot->getSpeedMove(), way.front());
+					bot.commands.push(cmd);
+					way.pop();
+				}
 
-			bot.status = statusBot::WALK;
+				bot.status = statusBot::WALK;
+			}
 			//bot.isReady = true;	//for test
 		}
 
@@ -183,13 +186,35 @@ void InformationCenter::update(float dt)
 				auto cmd = bot.commands.front();
 				if (cmd->getName() == constants::command_move_to)
 				{
-					if (bot.bot->pushCommand(bot.commands.front()))
+					if (bot.bot->pushCommand(cmd))
 					{
+						if (auto moveTo = dynamic_pointer_cast<CommandMoveTo>(cmd))
+						{
+							bot.bot->_sprite->setRotation(getRotateForwardAPoint(bot.bot, moveTo->getTarget()));
+						}
 						bot.commands.pop();
 					}
 				}
 			}
+			else if(bot.bot->_rigidBody->_velocity == Vec2::ZERO)
+			{
+				bot.status = statusBot::NONE;
+				bot.isReady = true;
+			}
 		}
+
+		if (bot.status == statusBot::COLLISION)
+		{
+			bot.status = statusBot::NONE;
+			bot.isReady = true;
+			while (bot.commands.size() > 0)
+				bot.commands.pop();
+			bot.bot->releaseCommands();
+		}
+
+		bot.bot->update(dt);
+		bot.countDetect.first += dt;
+		++begin;
 	}
 }
 
@@ -209,7 +234,7 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>
 			++begin;
 	}
 
-	radius += 5.f;
+	radius *= 1.5f;
 	list<Vec2> result;
 	for (auto begin = arrayFind.begin(); begin != arrayFind.end(); ++begin)
 	{
@@ -220,6 +245,7 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>
 
 		pair<Vec2, Vec2> checkAvaiable[]
 		{
+			pair<Vec2, Vec2>(position, pointGrahp),
 			pair<Vec2, Vec2>(Vec2(position.x - radius, position.y),Vec2(pointGrahp.x - radius, pointGrahp.y)),	//left
 			pair<Vec2, Vec2>(Vec2(position.x + radius, position.y),Vec2(pointGrahp.x + radius, pointGrahp.y)),	//right
 			pair<Vec2, Vec2>(Vec2(position.x, position.y + radius),Vec2(pointGrahp.x, pointGrahp.y + radius)),	//top
@@ -274,9 +300,26 @@ bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& gr
 	return false;
 }
 
+float InformationCenter::getRotateForwardAPoint(shared_ptr<Character> character, const Vec2& point) const
+{
+	Vec2 vectorAngle = point - character->_sprite->getPosition();
+	float angle = atan2(vectorAngle.y, vectorAngle.x);
+	return CC_RADIANS_TO_DEGREES(-angle) + 90;
+}
+
 void InformationCenter::pushBot(shared_ptr<Bot> bot)
 {
 	_listBot.emplace_back(bot);
+}
+
+InformationCenter::BotFindWay & InformationCenter::findBotWayByBot(const shared_ptr<Character>& character)
+{
+	for (auto& bot : _listBot)
+	{
+		if (&(*bot.bot) == &(*character))
+			return bot;
+	}
+	return BotFindWay();
 }
 
 void InformationCenter::clear()
@@ -285,6 +328,8 @@ void InformationCenter::clear()
 	//_threadDetectAround.join();
 
 	/*_listBot.clear();*/
+	for (auto& bot : _listBot)
+		bot.clear();
 	_listBot.clear();
 	_graph.clear();
 }

@@ -24,6 +24,7 @@ void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
     if(_isDraw)
     {
         //chieu sang
+		std::lock_guard<mutex> guard(_m);
 		vector<Vec2> temp = _points2;
 		int sizePointToDraw = (int)temp.size();
         Color4F light(0, 0, 0, 0);
@@ -57,9 +58,10 @@ void Vision::threadGetPoint()
 		getPointIntersect();
 
 		//while (!_m.try_lock());
-		_m.lock();
-		_points2.swap(_points);
-		_m.unlock();
+		{
+			std::lock_guard<mutex> guard(_m);
+			_points2.swap(_points);
+		}
 
 		int dt = int(Director::getInstance()->getDeltaTime() * 1000.f);
 		std::chrono::milliseconds ms(dt);

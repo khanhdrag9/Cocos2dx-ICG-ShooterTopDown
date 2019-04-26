@@ -30,6 +30,7 @@ class Game : public pattern::Singleton<Game>
         string name;
         string linkMap;
         string linkImage;
+	
         GameMap(const string& n, const string& lm, const string& li):
         name(n), linkMap(lm), linkImage(li)
         {}
@@ -70,6 +71,7 @@ private:
     bool _isPopupInGameVisible;
     bool _isPopupKDAVisible;
     bool _enableVolumn;
+
 public:
     Game();
     ~Game();

@@ -196,11 +196,19 @@ bool RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
 
 	if (body1->getTag() == RigidBody::tag::WALL && obj2)
 	{
-    
+		auto& bot = InformationCenter::getInstance()->findBotWayByBot(obj2);
+		if (bot.bot && bot.status == InformationCenter::statusBot::WALK && bot.countDetectOK())
+		{
+			bot.status = InformationCenter::statusBot::COLLISION;
+		}
 	}
 	else if (body2->getTag() == RigidBody::tag::WALL && obj1)
 	{
-	
+		auto& bot = InformationCenter::getInstance()->findBotWayByBot(obj1);
+		if (bot.bot && bot.status == InformationCenter::statusBot::WALK && bot.countDetectOK())
+		{
+			bot.status = InformationCenter::statusBot::COLLISION;
+		}
 	}
 
 	return true;

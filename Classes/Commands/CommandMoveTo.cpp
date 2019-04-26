@@ -56,3 +56,8 @@ void CommandMoveTo::update(float dt)
         }
     }
 }
+
+Vec2 CommandMoveTo::getTarget() const
+{
+	return _target;
+}

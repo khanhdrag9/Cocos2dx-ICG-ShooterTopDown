@@ -13,5 +13,6 @@ public:
     
     void update(float dt) override;
     
+	Vec2 getTarget() const;
 };
 

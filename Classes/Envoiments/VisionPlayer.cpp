@@ -22,6 +22,7 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 	Vec2 objPos = _obj->_sprite->getPosition();
 
 	//visible Enemy
+	std::lock_guard<mutex> guard(_m);
 	vector<Vec2> temp = _points2;
 	for (auto body : Game::getInstance()->getRigidWord()->getListBodies())
 	{

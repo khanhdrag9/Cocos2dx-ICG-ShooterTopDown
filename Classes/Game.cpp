@@ -110,9 +110,9 @@ void Game::update(float dt)
     }
 	//end player
 
-    updatePhysics(dt);
     
-	BotManager::getInstance()->update(dt);
+	InformationCenter::getInstance()->update(dt);
+	//BotManager::getInstance()->update(dt);
     
 	updateCameraView();
 
@@ -126,8 +126,8 @@ void Game::update(float dt)
 			_sightNode->drawCircle(obj->_sprite->getPosition(), circleBody->getRadius(), 0, 360, false, Color4F::RED);
 	}
 #endif
-	InformationCenter::getInstance()->update(dt);
 
+	updatePhysics(dt);
     ObjectsPool::getInstance()->update();
 }
 
