@@ -41,7 +41,7 @@ bool GS_GamePlayUI::init()
     this->addChild(_playerBullet);
     
     //player properties
-    _propertiesPlayer = Label::createWithTTF("0%", font, 30);
+    _propertiesPlayer = Label::createWithTTF("0", font, 30);
     _propertiesPlayer->setColor(Color3B::RED);
     _propertiesPlayer->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
     _propertiesPlayer->setPosition(origin.x + sz.width - 10, origin.y + 10);
@@ -97,7 +97,7 @@ void GS_GamePlayUI::update(float)
 
 			//for HP
 			int currentHP = character->getCurrentHP();
-			string formatHP = "HP:" + to_string(currentHP) + "%";
+			string formatHP = "HP:" + to_string(currentHP);
 			_propertiesPlayer->setString(formatHP);
 		}
     }
