@@ -92,14 +92,15 @@ bool GS_PickMap::init()
 	_pageViewCharacter->removeAllItems();
 	_pageViewCharacter->setIndicatorEnabled(false);
 
-	_countCharacter = 3;
+    auto listChaCreate = resMgr->getListCharacterCreation();
+	_countCharacter = (int)listChaCreate.size();
 
 	for (int i = 0; i < _countCharacter; ++i)
 	{
 		Layout* layout = Layout::create();
 		layout->setContentSize(pageSizeCharacter);
 
-		ImageView* imageView = ImageView::create("Test.jpg");
+		ImageView* imageView = ImageView::create(listChaCreate[i].getImage());
 		imageView->setScale9Enabled(true);
 		imageView->setContentSize(pageSizeCharacter);
 		imageView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -177,9 +178,10 @@ bool GS_PickMap::init()
         if(type == Widget::TouchEventType::ENDED)
         {
             int currentMap = (int)_pageView->getCurrentPageIndex();
+            int playerSelect = (int)_pageViewCharacter->getCurrentPageIndex();
             if(currentMap >= _countMap)return;
             
-            GoToMap(currentMap);
+            GoToMap(currentMap, playerSelect);
         }
     });
     play->setPosition(Vec2(center.x, screenSize.height * 0.1f));
@@ -198,9 +200,10 @@ bool GS_PickMap::init()
     return true;
 }
 
-void GS_PickMap::GoToMap(const int& index)
+void GS_PickMap::GoToMap(const int& index, const int& character)
 {
     Game::getInstance()->setMap(index);
+    Game::getInstance()->setPlayerCreation(character);
     Scene* gameplay = GS_GamePlay::createScene();
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     Director::getInstance()->replaceScene(TransitionFade::create(1.f, gameplay));

@@ -11,13 +11,14 @@ protected:
 public:
     BulletBasic();
     virtual ~BulletBasic();
-    static shared_ptr<BulletBasic> createBulletBasic(const Vec2& position, const float& angle, const Vec2& speed = Vec2(0,0), bool forceShoot = false);
+    static shared_ptr<BulletBasic> createBulletBasic(const string& sprite, const Vec2& position, const float& angle, const Vec2& speed = Vec2(0,0), bool forceShoot = false);
     void Shoot(const Vec2& velocity);
     void Shoot();
     
-    void init() override;
+    void init(CharacterCreation*) override;
     void update(float dt) override;
     
     Vec2 getSpeed() const;
+    void setDamege(int damge);
     int getDamge() const;
 };

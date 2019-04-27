@@ -4,6 +4,32 @@
 class Command;
 class RigidBody;
 
+class CharacterCreation
+{
+    string _sprite;
+    CC_SYNTHESIZE_READONLY(string, _image, Image);
+    string _bullet;
+    int _maxHP;
+    float _speed;
+    int _maxBullet;
+    float _timeReload;
+    int _damgeBullet;
+public:
+    CharacterCreation(const string& sprite,
+                      const string& image,
+                      const string& bullet,
+                      const int& maxHP,
+                      const float& speed,
+                      const int& maxBullet,
+                      const float& timeReload,
+                      const int& damge);
+    
+    
+    friend class Character;
+    friend class Player;
+    friend class Bot;
+};
+
 class Character : public enable_shared_from_this<Character>
 {
 public:
@@ -19,7 +45,7 @@ public:
     Character();
     virtual ~Character();
     
-    virtual void init();
+    virtual void init(CharacterCreation* creation);
     virtual void update(float dt);
     void releaseCommands();
     
@@ -32,12 +58,15 @@ public:
     void heal(int heal);
     void destroy();
     bool isDestroyed();
+    const string& getBulletSprite() const;
+    CC_SYNTHESIZE_READONLY(int, _bulletDamge, BulletDamge);
 protected:
     list<shared_ptr<Command>> _commandQueue;
     bool _destroy;
     
     int _maxHP;
     int _currentHP;
+    string _bulletSprite;
 public:
     Sprite* _sprite;
     shared_ptr<RigidBody> _rigidBody;

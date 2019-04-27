@@ -15,7 +15,7 @@
 BulletBasic::BulletBasic(): Character(),
     _speed(Vec2(0,0)),
     _isDestroy(false),
-    _damge(20)
+    _damge(0)
 {
 }
 
@@ -24,9 +24,9 @@ BulletBasic::~BulletBasic()
     
 }
 
-void BulletBasic::init()
+void BulletBasic::init(CharacterCreation* creation)
 {
-    Character::init();
+    Character::init(creation);
 }
 
 void BulletBasic::update(float dt)
@@ -34,13 +34,12 @@ void BulletBasic::update(float dt)
     
 }
 
-shared_ptr<BulletBasic> BulletBasic::createBulletBasic(const Vec2& position, const float& angle, const Vec2& speed, bool forceShoot)
+shared_ptr<BulletBasic> BulletBasic::createBulletBasic(const string& sprite, const Vec2& position, const float& angle, const Vec2& speed, bool forceShoot)
 {
     shared_ptr<BulletBasic> obj = make_shared<BulletBasic>();
     obj->_name = constants::object_bullet_basic;
     
-    res::define asset = res::define::BULLET_RED_1;
-    obj->_sprite = Sprite::create(ResourceManager::getInstance()->at(asset));
+    obj->_sprite = Sprite::create(sprite);
     
     //physics - note*:set to player before set character's rotation
     obj->_rigidBody = Game::getInstance()->getRigidWord()->createRigidBodyPolygon(obj);
@@ -72,6 +71,11 @@ void BulletBasic::Shoot()
 Vec2 BulletBasic::getSpeed() const
 {
     return _speed;
+}
+
+void BulletBasic::setDamege(int damge)
+{
+    _damge = damge;
 }
 
 int BulletBasic::getDamge() const

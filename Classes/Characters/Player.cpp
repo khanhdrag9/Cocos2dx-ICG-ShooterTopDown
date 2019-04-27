@@ -21,19 +21,18 @@ Player::~Player()
     
 }
 
-void Player::init()
+void Player::init(CharacterCreation* creation)
 {
-    Character::init();
+    Character::init(creation);
     
     _type = Character::type::PLAYER;
     _name = constants::character_player;
     
-    res::define asset = res::define::PLAYER_1_RED;
-    _sprite = Sprite::create(ResourceManager::getInstance()->at(asset).c_str());
+//    res::define asset = res::define::PLAYER_1_RED;
+//    _sprite = Sprite::create(ResourceManager::getInstance()->at(asset).c_str());
     
-    _speedMove = 300.f;
-    
-    _bulletMag = make_unique<Mag>(0.2, 30, 1.5f);
+    _speedMove = creation->_speed;
+    _bulletMag = make_unique<Mag>(creation->_timeReload, creation->_maxBullet, 1.5f);
 }
 void Player::update(float dt)
 {

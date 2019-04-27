@@ -82,6 +82,39 @@ ResourceManager::ResourceManager()
     _resMap[res::define::BULLET_BLUE_1] = "Assets/PNG/Lasers/laserBlue01.png";
     _resMap[res::define::BULLET_GREEN_1] = "Assets/PNG/Lasers/laserGreen01.png";
     _resMap[res::define::BULLET_RED_1] = "Assets/PNG/Lasers/laserRed01.png";
+    
+    
+    _listCharacterCreations.clear();
+    
+    _listCharacterCreations = vector<CharacterCreation>{
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
+        CharacterCreation("CharacterAssets/CircleCharacter.png",
+                          "CharacterAssets/CircleImage.jpg",
+                          "CharacterAssets/CircleBullet.png",
+                          100, 250, 30, 0.25, 20),
+        CharacterCreation("CharacterAssets/TriangleCharacter.png",
+                          "CharacterAssets/TriangleImage.jpg",
+                          "CharacterAssets/TriangleBullet.png",
+                          70, 350, 45, 0.15, 10),
+        CharacterCreation("CharacterAssets/RectCharacter.png",
+                          "CharacterAssets/RectImage.jpg",
+                          "CharacterAssets/RectBullet.png",
+                          200, 200, 15, 0.35, 40),
+#else
+        CharacterCreation("CircleCharacter.png",
+                          "CircleImage.jpg",
+                          "CircleBullet.png",
+                          100, 250, 30, 0.25, 20),
+        CharacterCreation("TriangleCharacter.png",
+                          "TriangleImage.jpg",
+                          "TriangleBullet.png",
+                          70, 350, 45, 0.15, 10),
+        CharacterCreation("RectCharacter.png",
+                          "RectImage.jpg",
+                          "RectBullet.png",
+                          200, 200, 15, 0.35, 40),
+#endif
+    };
 }
 
 ResourceManager::~ResourceManager()
@@ -92,4 +125,9 @@ ResourceManager::~ResourceManager()
 const std::string& ResourceManager::at(const res::define& name) const
 {
     return _resMap.at(name);
+}
+
+vector<CharacterCreation>& ResourceManager::getListCharacterCreation()
+{
+    return _listCharacterCreations;
 }

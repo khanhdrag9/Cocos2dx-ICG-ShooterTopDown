@@ -19,6 +19,93 @@
 #include "../Characters/Player.h"
 //#include "../Physics/RigidWorld.h"
 
+void SolutionWay::push(Vec2 first, Vec2 second)
+{
+    if(_ways.size() == 0)
+    {
+        //list<Vec2> w = {first, second};
+        list<Vec2> w{first, second};
+        _ways.push_back(w);
+        return;
+    }
+    
+    list<Vec2> newList;
+    for(auto& way : _ways)
+    {
+        if(way.back() == first)
+        {
+            way.push_back(second);
+            break;
+        }
+        else
+        {
+            Vec2 back = way.back();
+            way.pop_back();
+            if(way.back() == first)
+            {
+                way.push_back(second);
+                for(auto& point : way)newList.push_back(point);
+                
+                way.pop_back(); //revert origin
+                way.push_back(back);
+                break;
+            }
+            else
+                way.push_back(back);
+        }
+    }
+
+    if(newList.size() > 0)
+        _ways.emplace_back(newList);
+}
+void SolutionWay::clear()
+{
+    _ways.clear();
+    _ways.shrink_to_fit();
+}
+list<Vec2> SolutionWay::findWayMin(const Vec2& target) const
+{
+    vector<list<Vec2>> avaiable;
+    for(auto& way : _ways)
+    {
+        if(way.back() == target)
+            avaiable.push_back(way);
+    }
+    
+    float length1 = 0.f;
+    list<Vec2> result;
+    for(auto& way : avaiable)
+    {
+        float length2 = 0.f;
+        for(auto begin = way.begin(); begin != way.end(); ++begin)
+        {
+            Vec2 point1 = *begin;
+            ++begin;
+            Vec2 point2 = *begin;
+            length2 += (point1 - point2).length();
+        }
+        
+        if(length1==0.f)
+        {
+            length1 = length2;
+            result = way;
+        }
+        else if(length2 < length1)
+        {
+            length1 = length2;
+            result = way;
+        }
+    }
+    return result;
+}
+int SolutionWay::size() const
+{
+    return (int)_ways.size();
+}
+const vector<list<Vec2>>& SolutionWay::getWays() const
+{
+    return _ways;
+}
 
 InformationCenter::InformationCenter():
 	_isStop(false)
@@ -135,29 +222,63 @@ void InformationCenter::update(float dt)
 						radius = body->getRadius();
 				}
 
-				vector<Vec2> grahpAvaiable = _graph;
+                vector<Vec2> grahpAvaiable;
+                for(auto p : _graph){grahpAvaiable.push_back(p);}
 				grahpAvaiable.push_back(target);
-				std::random_shuffle(grahpAvaiable.begin(), grahpAvaiable.end());
-				queue<Vec2> way;
-				findWayToPoint(position, target, grahpAvaiable, way, radius);
-				
+				//std::random_shuffle(grahpAvaiable.begin(), grahpAvaiable.end());
+				SolutionWay solutions;
+				findWayToPoint(position, target, grahpAvaiable, solutions, radius);
+                auto listPoints = solutions.findWayMin(target);
+                queue<Vec2> way;
+                for(auto p : listPoints)
+                    way.push(p);
+                
 				if (bf)
 				{
 					std::lock_guard<mutex> gruard(_m);
 					bf->isFinish = true;
 					bf->isThreadAvaiable = true;
 				}
+                
+//#if DEBUG_GRAHP
+//                auto debugWays = solutions.getWays();
+//                for(auto& way : debugWays)
+//                {
+//                    while(way.size() > 1)
+//                    {
+//                        Vec2 point1 = way.front();
+//                        way.pop_front();
+//                        Vec2 point2 = way.front();
+//                        _canMovePointDrawer->drawLine(point1, point2, Color4F::GREEN);
+//                    }
+//                }
+//#endif
 				return way;
 			};
 
-			Vec2 target = _graph.at(random(0, (int)_graph.size() - 1));
-			bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
+//            Vec2 target = _graph.at(random(0, (int)_graph.size() - 1));
+            Vec2 target = _graph.at(7);
+            bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
+//            lamda(botPosition, target, &bot);
 		}
 
 		if (bot.isFinish && bot.isThreadAvaiable)
 		{
 			auto way = bot.task.get();
-			bot.isThreadAvaiable = false;
+            bot.isThreadAvaiable = false;
+            
+#if DEBUG_GRAHP
+            queue<Vec2> queue = way;
+            while (queue.size() > 0)
+            {
+                Vec2 point1 = queue.front();
+                queue.pop();
+                if(queue.size() > 0)
+                {
+                    _canMovePointDrawer->drawLine(point1, queue.front(), Color4F::GREEN);
+                }
+            }
+#endif
 			//Move Bot
 			if (way.size() == 0)
 			{
@@ -199,7 +320,7 @@ void InformationCenter::update(float dt)
 			else if(bot.bot->_rigidBody->_velocity == Vec2::ZERO)
 			{
 				bot.status = statusBot::NONE;
-				bot.isReady = true;
+				//bot.isReady = true;
 			}
 		}
 
@@ -218,7 +339,7 @@ void InformationCenter::update(float dt)
 	}
 }
 
-list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>& arrayFind, float radius)
+list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, const vector<Vec2>& arrayFind, float radius)
 {
 	vector<Line> lines;
 	{
@@ -226,19 +347,13 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>
 		lines = Game::getInstance()->getRigidWord()->getListLines();
 	}
 
-	for (auto begin = arrayFind.begin(); begin != arrayFind.end();)
-	{
-		if (*begin == position)
-			begin = arrayFind.erase(begin);
-		else
-			++begin;
-	}
-
-	radius *= 1.5f;
+	radius *= 1.2f;
 	list<Vec2> result;
 	for (auto begin = arrayFind.begin(); begin != arrayFind.end(); ++begin)
 	{
 		auto& pointGrahp = *begin;
+        if(pointGrahp == position)
+            continue;
 
 		if ((pointGrahp - position).length() > 1000.f)
 			continue;
@@ -273,31 +388,45 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, vector<Vec2>
 	return result;
 }
 
-bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, queue<Vec2>& result, float radius)
+bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, SolutionWay& result, float radius)
 {
-	result.push(start);
-
+    if(grahp.size() == 0)return false;
 	list<Vec2> around = findPointAvaiableAroud(start, grahp, radius);
 	if (around.size() == 0)return false;
 
-	auto findTarget = std::find(around.begin(), around.end(), target);
-	if (findTarget != around.end())
-	{
-		result.push(Vec2(*findTarget));
-		return true;
-	}
-	else
-	{
-		for (auto& point : around)
-		{
-			if (findWayToPoint(point, target, grahp, result, radius))
-			{
-				return true;
-			}
-		}
-	}
+    for(auto& point : around)
+    {
+        result.push(start, point);
+#if DEBUG_GRAHP
+        //_canMovePointDrawer->drawLine(start, point, Color4F::YELLOW);
+#endif
+    }
+    
+    if(std::find(around.begin(), around.end(), target) != around.end())
+        return true;
+    
+    for(auto begin = grahp.begin(); begin != grahp.end();)
+    {
+        Vec2 point = *begin;
+        if(std::find(around.begin(), around.end(), point) != around.end() || point == start)
+            begin = grahp.erase(begin);
+        else
+            ++begin;
+    }
+    
+    bool findResult = false;
+    for(auto point : around)
+    {
+        vector<Vec2> nextGrahp;
+        for(auto p : grahp)nextGrahp.push_back(p);
+        if(findWayToPoint(point, target, nextGrahp, result, radius))
+        {
+            findResult = true;
+            //return true;
+        }
+    }
 
-	return false;
+    return findResult;
 }
 
 float InformationCenter::getRotateForwardAPoint(shared_ptr<Character> character, const Vec2& point) const
@@ -312,14 +441,14 @@ void InformationCenter::pushBot(shared_ptr<Bot> bot)
 	_listBot.emplace_back(bot);
 }
 
-InformationCenter::BotFindWay & InformationCenter::findBotWayByBot(const shared_ptr<Character>& character)
+InformationCenter::BotFindWay*  InformationCenter::findBotWayByBot(const shared_ptr<Character>& character)
 {
 	for (auto& bot : _listBot)
 	{
 		if (&(*bot.bot) == &(*character))
-			return bot;
+			return &bot;
 	}
-	return BotFindWay();
+	return nullptr;
 }
 
 void InformationCenter::clear()

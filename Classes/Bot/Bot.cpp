@@ -16,18 +16,18 @@ _ableShoot(false)
 {
 }
 
-void Bot::init()
+void Bot::init(CharacterCreation* creation)
 {
-	Character::init();
+	Character::init(creation);
 
 	_type = Character::type::ENEMY;
 	_name = constants::character_enemy;
     
-    _sprite = Sprite::create(ResourceManager::getInstance()->at(res::define::ENEMY_1_YELLOW));
+//    _sprite = Sprite::create(ResourceManager::getInstance()->at(res::define::ENEMY_1_YELLOW));
     
-	_speedMove = 200.f;
+	_speedMove = creation->_speed;
     
-    _bulletMag = make_unique<Mag>(0.2, 30, 1.5f);
+    _bulletMag = make_unique<Mag>(creation->_timeReload, creation->_maxBullet, 1.5f);
 }
 
 void Bot::update(float dt)

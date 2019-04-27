@@ -10,11 +10,31 @@
 #include "../Defines/constants.h"
 #include "../Physics/RigidBody.h"
 
+
+CharacterCreation::CharacterCreation(const string& sprite,
+                  const string& image,
+                  const string& bullet,
+                  const int& maxHP,
+                  const float& speed,
+                  const int& maxBullet,
+                  const float& timeReload,
+                  const int& damge)
+:
+_sprite(sprite)
+,_image(image)
+,_bullet(bullet)
+,_maxHP(maxHP)
+,_speed(speed)
+,_maxBullet(maxBullet)
+,_timeReload(timeReload)
+,_damgeBullet(damge)
+{}
+
 Character::Character():
 _sprite(nullptr),
 _rigidBody(nullptr),
 _destroy(false),
-_maxHP(100),
+_maxHP(0),
 _currentHP(_maxHP)
 {
 }
@@ -32,12 +52,20 @@ Character::~Character()
 }
 
 
-void Character::init()
+void Character::init(CharacterCreation* creation)
 {
     _destroy = false;
     _type = Character::type::NONE;
     _name = constants::character_none;
-
+    
+    if(creation)
+    {
+        _sprite = Sprite::create(creation->_sprite);
+        _maxHP = creation->_maxHP;
+        _currentHP = _maxHP;
+        _bulletSprite = creation->_bullet;
+        _bulletDamge = creation->_damgeBullet;
+    }
 }
 
 
@@ -156,4 +184,9 @@ void Character::destroy()
 bool Character::isDestroyed()
 {
     return _destroy;
+}
+
+const string& Character::getBulletSprite() const
+{
+    return _bulletSprite;
 }

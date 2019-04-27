@@ -10,7 +10,7 @@ public:
     Player();
     ~Player();
     
-    void init() override;
+    void init(CharacterCreation* creation) override;
     void update(float dt) override;
     bool pushCommand(shared_ptr<Command>& command, bool replace = false) override;
     const unique_ptr<Mag>& getMag() const;

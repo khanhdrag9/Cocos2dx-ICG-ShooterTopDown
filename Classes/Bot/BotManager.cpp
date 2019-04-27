@@ -7,6 +7,7 @@
 #include "BotMoveMap.h"
 #include "../Commands/CommandMoveTo.h"
 #include "InformationCenter.h"
+#include "../Resource/ResourceManager.h"
 
 BotManager::BotManager()
 {
@@ -57,7 +58,7 @@ void BotManager::update(float dt)
 
 void BotManager::initBots()
 {
-	int countEnemies = 5;
+	int countEnemies = 1;
 
 	//get position to init bots
 	Vec2 playerPosition = Game::getInstance()->getPlayer()->_sprite->getPosition();
@@ -78,8 +79,8 @@ void BotManager::initBots()
 		auto bot = createBot(); //create bot here, use player for test, use Bot instead of
 		Game::getInstance()->getRigidWord()->createRigidBodyCircle(bot);
 		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
-		bot->_sprite->setPosition(history[i-1]);
-		//bot->_sprite->setPosition(Vec2(192, 192));
+//        bot->_sprite->setPosition(history[i-1]);
+        bot->_sprite->setPosition(Vec2(192, 192));
 
         bot->setWalk(true);
 
@@ -90,7 +91,8 @@ void BotManager::initBots()
 shared_ptr<Bot> BotManager::createBot()
 {
 	auto bot = make_shared<Bot>();
-	bot->init();
+    auto creation = ResourceManager::getInstance()->getListCharacterCreation();
+	bot->init(&creation[random(0, (int)creation.size() - 1)]);
 	_listBots.push_back(bot);
 
 	InformationCenter::getInstance()->pushBot(bot);

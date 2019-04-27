@@ -27,6 +27,6 @@ public:
     static Scene* createScene();
     
     bool init() override;
-    void GoToMap(const int& index);
+    void GoToMap(const int& index, const int& character);
 	void GoToSidePage(const int& index);
 };

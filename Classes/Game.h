@@ -2,6 +2,7 @@
 #include "Defines/Templates.h"
 #include "Headers.h"
 
+class CharacterCreation;
 class Character;
 class Player;
 class Bot;
@@ -49,6 +50,7 @@ private:
     
 	TMXTiledMap* _tileMap;
     GameMap* _linkMap;
+    CharacterCreation* _playerCreation;
 
 	shared_ptr<Character> _objIsFollow;
 #if CHEAT
@@ -117,6 +119,7 @@ public:
 
     const vector<GameMap>& getGameMaps() const;
     void setMap(const int& index);
+    void setPlayerCreation(const int& index);
 private:
     shared_ptr<Player> createAPlayer();
     

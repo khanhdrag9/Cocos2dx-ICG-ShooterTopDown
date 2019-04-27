@@ -43,6 +43,7 @@ _isPopupInGameVisible(false),
 _isPopupKDAVisible(false),
 _linkMap(nullptr),
 _enableVolumn(true)
+, _playerCreation(nullptr)
 {
     
 }
@@ -67,6 +68,7 @@ void Game::init()
         , GameMap("MAP2", resMgr->at(res::define::MAP2), resMgr->at(res::define::IMG_MAP2))
 //        , GameMap("MAP3", resMgr->at(res::define::MAP3), resMgr->at(res::define::IMG_MAP3))
     };
+    
 }
 
 void Game::initGamePlay()
@@ -401,7 +403,7 @@ TMXTiledMap * Game::getTileMap() const
 shared_ptr<Player> Game::createAPlayer()
 {
     auto character = make_shared<Player>();
-    character->init();
+    character->init(_playerCreation);
     _rigidWorld->createRigidBodyCircle(character);
     
     _currentState->addChild(character->_sprite);
@@ -829,4 +831,9 @@ const vector<Game::GameMap>& Game::getGameMaps() const
 void Game::setMap(const int& index)
 {
     _linkMap = &_listMaps[index];
+}
+
+void Game::setPlayerCreation(const int& index)
+{
+    _playerCreation = &ResourceManager::getInstance()->getListCharacterCreation().at(index);
 }

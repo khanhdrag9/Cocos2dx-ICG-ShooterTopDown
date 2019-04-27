@@ -8,6 +8,18 @@ class Character;
 class Bot;
 class Command;
 
+class SolutionWay
+{
+    vector<list<Vec2>> _ways;
+    
+public:
+    void push(Vec2 first, Vec2 second);
+    void clear();
+    list<Vec2> findWayMin(const Vec2& target) const;
+    int size() const;
+    const vector<list<Vec2>>& getWays() const;
+};
+
 class InformationCenter : public pattern::Singleton<InformationCenter>
 {
 public:
@@ -76,10 +88,10 @@ public:
 	void startThreads();
 	void update(float dt);
 
-	list<Vec2> findPointAvaiableAroud(Vec2 position, vector<Vec2>& arrayFind, float radius = 0);
-    bool findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, queue<Vec2>& result, float radius = 0);
+	list<Vec2> findPointAvaiableAroud(Vec2 position, const vector<Vec2>& arrayFind, float radius = 0);
+    bool findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, SolutionWay& result, float radius = 0);
 	float getRotateForwardAPoint(shared_ptr<Character> character, const Vec2& point) const;
 	void pushBot(shared_ptr<Bot> bot);
-	BotFindWay& findBotWayByBot(const shared_ptr<Character>& character);
+	BotFindWay* findBotWayByBot(const shared_ptr<Character>& character);
 	void clear();
 };
