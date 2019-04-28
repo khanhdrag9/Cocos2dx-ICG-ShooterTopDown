@@ -27,6 +27,7 @@ void BotManager::clear()
     for(auto& bot : _listBots)
         bot->destroy();
 	_listBots.clear();
+    _botCreations.clear();
 }
 
 void BotManager::addBot(shared_ptr<Bot> bot)
@@ -58,7 +59,7 @@ void BotManager::update(float dt)
 
 void BotManager::initBots()
 {
-	int countEnemies = 1;
+	int countEnemies = (int)_botCreations.size();
 
 	//get position to init bots
 	Vec2 playerPosition = Game::getInstance()->getPlayer()->_sprite->getPosition();
@@ -74,13 +75,13 @@ void BotManager::initBots()
 		}
 	}
 
-	for (int i = 1; i <= countEnemies; i++)
+	for (int i = 0; i < countEnemies; i++)
 	{
-		auto bot = createBot(); //create bot here, use player for test, use Bot instead of
+		auto bot = createBot(&_botCreations[i]); //create bot here, use player for test, use Bot instead of
 		Game::getInstance()->getRigidWord()->createRigidBodyCircle(bot);
 		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
-//        bot->_sprite->setPosition(history[i-1]);
-        bot->_sprite->setPosition(Vec2(192, 192));
+        bot->_sprite->setPosition(history[i-1]);
+//        bot->_sprite->setPosition(Vec2(192, 192));
 
         bot->setWalk(true);
 
@@ -88,11 +89,10 @@ void BotManager::initBots()
 	}
 }
 
-shared_ptr<Bot> BotManager::createBot()
+shared_ptr<Bot> BotManager::createBot(CharacterCreation* creation)
 {
 	auto bot = make_shared<Bot>();
-    auto creation = ResourceManager::getInstance()->getListCharacterCreation();
-	bot->init(&creation[random(0, (int)creation.size() - 1)]);
+	bot->init(creation);
 	_listBots.push_back(bot);
 
 	InformationCenter::getInstance()->pushBot(bot);
@@ -106,4 +106,10 @@ shared_ptr<Bot> BotManager::getBot(const int & index)
 		return nullptr;
 
 	return _listBots[index];
+}
+
+void BotManager::setBotCreations(const vector<CharacterCreation>& creations)
+{
+    for(auto& c : creations)
+        _botCreations.emplace_back(c);
 }

@@ -38,7 +38,9 @@ _rigidWorld(nullptr),
 _sightNode(nullptr),
 _fogSprite(nullptr),
 _fogClip(nullptr),
+#if !USE_TOUCH
 _isMouseDown(false),
+#endif
 _isPopupInGameVisible(false),
 _isPopupKDAVisible(false),
 _linkMap(nullptr),
@@ -833,7 +835,17 @@ void Game::setMap(const int& index)
     _linkMap = &_listMaps[index];
 }
 
+Game::GameMap* Game::getCurrentMap()
+{
+    return _linkMap;
+}
+
 void Game::setPlayerCreation(const int& index)
 {
     _playerCreation = &ResourceManager::getInstance()->getListCharacterCreation().at(index);
+}
+
+CharacterCreation* Game::getPlayerCreation()
+{
+    return _playerCreation;
 }

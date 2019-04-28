@@ -1,8 +1,8 @@
 #include "GS_PickMap.h"
 #include "../Game.h"
 #include "../Resource/ResourceManager.h"
-#include "GS_GamePlay.h"
 #include "GS_GameMenu.h"
+#include "GS_LoadToGamePlay.h"
 
 using namespace ui;
 
@@ -204,9 +204,9 @@ void GS_PickMap::GoToMap(const int& index, const int& character)
 {
     Game::getInstance()->setMap(index);
     Game::getInstance()->setPlayerCreation(character);
-    Scene* gameplay = GS_GamePlay::createScene();
+    Scene* gameplay = GS_LoadToGamePlay::createScene();
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-    Director::getInstance()->replaceScene(TransitionFade::create(1.f, gameplay));
+    Director::getInstance()->replaceScene(TransitionMoveInL::create(1.f, gameplay));
 }
 
 void GS_PickMap::GoToSidePage(const int& index)

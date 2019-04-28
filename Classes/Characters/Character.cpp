@@ -13,6 +13,7 @@
 
 CharacterCreation::CharacterCreation(const string& sprite,
                   const string& image,
+                  const string& loadImage,
                   const string& bullet,
                   const int& maxHP,
                   const float& speed,
@@ -22,6 +23,7 @@ CharacterCreation::CharacterCreation(const string& sprite,
 :
 _sprite(sprite)
 ,_image(image)
+,_loadImage(loadImage)
 ,_bullet(bullet)
 ,_maxHP(maxHP)
 ,_speed(speed)

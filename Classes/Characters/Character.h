@@ -8,6 +8,7 @@ class CharacterCreation
 {
     string _sprite;
     CC_SYNTHESIZE_READONLY(string, _image, Image);
+    CC_SYNTHESIZE_READONLY(string, _loadImage, LoadImage);
     string _bullet;
     int _maxHP;
     float _speed;
@@ -17,6 +18,7 @@ class CharacterCreation
 public:
     CharacterCreation(const string& sprite,
                       const string& image,
+                      const string& loadImage,
                       const string& bullet,
                       const int& maxHP,
                       const float& speed,

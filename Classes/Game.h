@@ -119,7 +119,9 @@ public:
 
     const vector<GameMap>& getGameMaps() const;
     void setMap(const int& index);
+    GameMap* getCurrentMap();
     void setPlayerCreation(const int& index);
+    CharacterCreation* getPlayerCreation();
 private:
     shared_ptr<Player> createAPlayer();
     
