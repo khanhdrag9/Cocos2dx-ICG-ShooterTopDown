@@ -10,16 +10,9 @@ public:
     GS_GameMenu();
     static Scene* createScene();
     
-    enum layer
-    {
-        GAMELABEL = 2,
-        PICKMAP = 3,
-        OPTION = 100
-    };
 private:
     bool init() override;
     
-    void GoToGamePlay();
     void GoToPickMap();
 private:
 

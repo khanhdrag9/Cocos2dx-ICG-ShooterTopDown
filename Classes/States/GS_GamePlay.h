@@ -2,6 +2,7 @@
 #include "../Headers.h"
 
 class GS_GamePlayUI;
+class GS_OptionPage;
 
 class GS_GamePlay : public Layer
 {
@@ -19,6 +20,7 @@ private:
     
     Sprite* _aim;
     GS_GamePlayUI* _uilayer;
+    
     
     CREATE_FUNC(GS_GamePlay);
 };

@@ -8,6 +8,7 @@
 #include "PopupInGame.h"
 #include "../Resource/ResourceManager.h"
 #include "../Game.h"
+#include "GS_OptionPage.h"
 
 PopupInGame::PopupInGame()
 {

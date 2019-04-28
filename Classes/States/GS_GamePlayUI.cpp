@@ -11,6 +11,7 @@
 #include "../Characters/Player.h"
 #include "../Bot/Bot.h"
 #include "../Bot/BotManager.h"
+#include "GS_OptionPage.h"
 
 GS_GamePlayUI::GS_GamePlayUI():
 _playerBullet(nullptr),
@@ -62,6 +63,13 @@ bool GS_GamePlayUI::init()
     
     initKDA(BotManager::getInstance()->countBots() + 1);
     
+    //option
+    _optionPage = GS_OptionPage::create();
+    _optionPage->setColorUI(Color3B::WHITE);
+    _optionPage->setOpacity(0);
+    this->addChild(_optionPage, Game::layer::OPTION);
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+    
     return true;
 }
 
@@ -110,6 +118,12 @@ void GS_GamePlayUI::update(float)
     //update KDA
     if(_menuKDA)
         _menuKDA->setOpacity(_kdaTab->getOpacity());
+    
+    if(_optionPage)
+    {
+        _optionPage->setVisible(true);
+        if(_optionPage->getOpacity() == 0)_optionPage->setVisible(false);
+    }
 }
 
 void GS_GamePlayUI::setCharacter(const shared_ptr<Character>& character)
@@ -158,7 +172,12 @@ void GS_GamePlayUI::useKDATab(bool show)
         action = FadeTo::create(0.25f, 0);
     
     if(_kdaTab)
-        _kdaTab->runAction(action);
+        _kdaTab->runAction(action->clone());
+    if(_optionPage)
+    {
+        _optionPage->setVisible(true);
+        _optionPage->runAction(action->clone());
+    }
 }
 
 void GS_GamePlayUI::clear()

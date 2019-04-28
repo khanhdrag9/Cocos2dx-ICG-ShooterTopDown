@@ -11,6 +11,7 @@ class Vision;
 
 class Game : public pattern::Singleton<Game>
 {
+public:
     enum class direction : int
     {
         NONE,
@@ -35,6 +36,14 @@ class Game : public pattern::Singleton<Game>
         GameMap(const string& n, const string& lm, const string& li):
         name(n), linkMap(lm), linkImage(li)
         {}
+    };
+    
+    enum layer
+    {
+        GAMELABEL = 2,
+        PICKMAP = 3,
+        GAMEPLAY,
+        OPTION = 100
     };
     
 private:

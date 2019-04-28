@@ -80,6 +80,7 @@ bool GS_LoadToGamePlay::init()
     
     //_loadGame = thread(&GS_LoadToGamePlay::loadGame, this);
     this->scheduleUpdate();
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     
     return true;
 }

@@ -18,7 +18,11 @@ using namespace CocosDenshion;
 
 using namespace NS_CC;
 
-#define USE_TOUCH 0
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+    #define USE_TOUCH 1
+#else
+    #define USE_TOUCH 0
+#endif
 #define DEBUG_SIGHT 0
 #define DEBUG_ENEMY 0
 #define DEBUG_GRAHP 1

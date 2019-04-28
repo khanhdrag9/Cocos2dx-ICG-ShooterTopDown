@@ -792,7 +792,7 @@ void Game::resetGame()
 void Game::backToHomeMenu()
 {
     releaseGamePlay();
-    auto home = GS_GameMenu::createScene();
+//    auto home = GS_GameMenu::createScene();
     //Director::getInstance()->replaceScene(TransitionFade::create(0.5, home));
     Director::getInstance()->popScene();
 }

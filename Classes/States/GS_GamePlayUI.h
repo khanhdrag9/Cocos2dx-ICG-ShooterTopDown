@@ -2,6 +2,7 @@
 #include "../Headers.h"
 
 class Character;
+class GS_OptionPage;
 
 class GS_GamePlayUI : public Layer
 {
@@ -13,6 +14,8 @@ class GS_GamePlayUI : public Layer
     Vector<MenuItem*> _listKDA;
     
     shared_ptr<Character> _characterProfile;
+    
+    GS_OptionPage* _optionPage;
 public:
     GS_GamePlayUI();
     ~GS_GamePlayUI();

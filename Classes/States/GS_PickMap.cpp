@@ -37,7 +37,8 @@ bool GS_PickMap::init()
 
 	Game::getInstance()->setCurrentState(this);
 
-	Size screenSize = Director::getInstance()->getVisibleSize();
+    Size screenSize = Director::getInstance()->getVisibleSize();
+//    Size screenSize = Size(1024,768);
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	Vec2 center = Vec2(screenSize.width / 2.f + origin.x, screenSize.height / 2.f + origin.y);
 
@@ -144,7 +145,7 @@ bool GS_PickMap::init()
 	Button* btnNextPage[2];
 	for (int i = 0; i < 2; i++)
 	{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 		btnNextPage[i] = Button::create("OptionAssets/nextPage.png");
 #else
         btnNextPage[i] = Button::create("nextPage.png");
@@ -209,8 +210,8 @@ void GS_PickMap::GoToMap(const int& index, const int& character)
     Game::getInstance()->setMap(index);
     Game::getInstance()->setPlayerCreation(character);
     Scene* gameplay = GS_LoadToGamePlay::createScene();
-    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-    Director::getInstance()->replaceScene(TransitionMoveInL::create(0.5f, gameplay));
+    this->setVisible(false);
+    Director::getInstance()->pushScene(TransitionMoveInL::create(0.5f, gameplay));
 }
 
 void GS_PickMap::GoToSidePage(const int& index)

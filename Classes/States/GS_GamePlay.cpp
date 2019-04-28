@@ -2,7 +2,7 @@
 #include "../Game.h"
 #include "../Objects/ObjectsPool.h"
 #include "GS_GamePlayUI.h"
-
+#include "GS_OptionPage.h"
 
 GS_GamePlay::GS_GamePlay():
 	_aim(nullptr),
@@ -19,9 +19,11 @@ cocos2d::Scene *GS_GamePlay::createScene()
 {
 	Scene* scene = Scene::create();
     GS_GamePlay* layer = GS_GamePlay::create();
+    layer->setTag(Game::layer::GAMEPLAY);
     layer->_uilayer = GS_GamePlayUI::create();
     scene->addChild(layer);
     scene->addChild(layer->_uilayer);
+    
     return scene;
 }
 
@@ -50,6 +52,7 @@ bool GS_GamePlay::init()
     controller();
     
     scheduleUpdate();
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     
     return true;
 }

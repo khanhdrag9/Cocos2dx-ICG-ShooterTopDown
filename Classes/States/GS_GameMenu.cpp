@@ -15,11 +15,11 @@ cocos2d::Scene *GS_GameMenu::createScene()
 {
 	Scene* scene = Scene::create();
 	GS_GameMenu* layer = GS_GameMenu::create();
-    layer->setTag(layer::GAMELABEL);
+    layer->setTag(Game::layer::GAMELABEL);
     layer->_optionPage = GS_OptionPage::create();
-    layer->_optionPage->setTag(layer::OPTION);
-    scene->addChild(layer, (int)layer::GAMELABEL);
-    scene->addChild(layer->_optionPage, (int)layer::OPTION);
+    layer->_optionPage->setTag(Game::layer::OPTION);
+    scene->addChild(layer, (int)Game::layer::GAMELABEL);
+    scene->addChild(layer->_optionPage, (int)Game::layer::OPTION);
 
 //    UIPageView* pageView = UIPageView::create();
     //scene->addChild(pageView, 1);
@@ -36,7 +36,9 @@ bool GS_GameMenu::init()
     Game::getInstance()->setCurrentState(this);
     
     Size screenSize = Director::getInstance()->getVisibleSize();
+    CCLOG("khanh getVisibleSize %f - %f", screenSize.width, screenSize.height);
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    CCLOG("khanh getVisibleOrigin %f - %f", origin.x, origin.y);
     Vec2 center = Vec2(screenSize.width / 2.f + origin.x, screenSize.height / 2.f + origin.y);
             
     auto resMgr = ResourceManager::getInstance();
@@ -68,12 +70,6 @@ bool GS_GameMenu::init()
     return true;
 }
 
-void GS_GameMenu::GoToGamePlay()
-{
-    Scene* gameplay = GS_GamePlay::createScene();
-    Director::getInstance()->pushScene(TransitionFade::create(0.5, gameplay));
-}
-
 void GS_GameMenu::GoToPickMap()
 {
         if(_pickMapPage)
@@ -84,9 +80,9 @@ void GS_GameMenu::GoToPickMap()
         else
         {
             _pickMapPage = GS_PickMap::create();
-            _pickMapPage->setTag(layer::PICKMAP);
+            _pickMapPage->setTag(Game::layer::PICKMAP);
             _pickMapPage->_optionPage = _optionPage;
             _optionPage->setColorUI(Color3B::WHITE);
-            this->addChild(_pickMapPage, layer::PICKMAP);
+            this->addChild(_pickMapPage, Game::layer::PICKMAP);
         }
 }

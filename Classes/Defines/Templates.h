@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 namespace pattern
 {
@@ -48,7 +49,7 @@ namespace pattern
     
 }
 
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     template<typename T, typename... Args>
     std::unique_ptr<T> make_unique(Args&&... args) {
         return std::unique_ptr<T>(new T(std::forward<Args>(args)...));

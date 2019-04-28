@@ -24,7 +24,7 @@ bool GS_OptionPage::init()
     
     _colorUI = Color3B::BLACK;
     //option
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _option = ui::Button::create("OptionAssets/optionFill.png");
 #else
     _option = ui::Button::create("optionFill.png");
@@ -41,7 +41,7 @@ bool GS_OptionPage::init()
     
     bool volumnIsEnable = game->isEnableVolumn();
     game->setEnableVolunm(volumnIsEnable);
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _volumn = ui::Button::create("OptionAssets/volumnOn.png");
 #else
     _volumn = ui::Button::create("volumnOn.png");
@@ -55,8 +55,8 @@ bool GS_OptionPage::init()
             this->modifyVolumn();
     });
     this->addChild(_volumn);
-    
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _disbleVolumn = Sprite::create("OptionAssets/volumnOff.png");
 #else
     _disbleVolumn = Sprite::create("volumnOff.png");
@@ -66,8 +66,8 @@ bool GS_OptionPage::init()
     _disbleVolumn->setVisible(!game->isEnableVolumn());
     _volumn->addChild(_disbleVolumn);
     _volumn->setVisible(!volumnIsEnable);
-    
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _about = ui::Button::create("OptionAssets/about.png");
 #else
     _about = ui::Button::create("about.png");
@@ -84,7 +84,7 @@ bool GS_OptionPage::init()
     _about->setVisible(_volumn->isVisible());
     
     //Back btn
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _back = ui::Button::create("OptionAssets/back.png");
 #else
     _back = ui::Button::create("back.png");
@@ -123,12 +123,17 @@ void GS_OptionPage::GoToAbout()
 void GS_OptionPage::Back()
 {
     Layer* currentState = Game::getInstance()->getCurrentState();
-    if(currentState->getTag() == GS_GameMenu::layer::PICKMAP)
+    int tag = currentState->getTag();
+    if(tag == Game::layer::PICKMAP)
     {
         currentState->setVisible(false);
-        Layer* labelMenu = dynamic_cast<Layer*>(this->getScene()->getChildByTag(GS_GameMenu::GAMELABEL));\
+        Layer* labelMenu = dynamic_cast<Layer*>(this->getScene()->getChildByTag(Game::layer::GAMELABEL));\
         if(labelMenu)
             Game::getInstance()->setCurrentState(labelMenu);
+    }
+    else if(tag == Game::layer::GAMEPLAY)
+    {
+        Game::getInstance()->backToHomeMenu();
     }
 }
 
