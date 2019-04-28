@@ -206,7 +206,7 @@ void GS_PickMap::GoToMap(const int& index, const int& character)
     Game::getInstance()->setPlayerCreation(character);
     Scene* gameplay = GS_LoadToGamePlay::createScene();
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-    Director::getInstance()->replaceScene(TransitionMoveInL::create(1.f, gameplay));
+    Director::getInstance()->replaceScene(TransitionMoveInL::create(0.5f, gameplay));
 }
 
 void GS_PickMap::GoToSidePage(const int& index)
