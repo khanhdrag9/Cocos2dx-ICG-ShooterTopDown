@@ -1,6 +1,7 @@
 #pragma once
 #include "Headers.h"
 
+class GS_OptionPage;
 
 class GS_PickMap : public Layer
 {
@@ -13,6 +14,7 @@ class GS_PickMap : public Layer
 
 	ui::Button* _nextPageLeft;
 	ui::Button* _nextPageRight;
+    
 public:
 	enum page : int
 	{
@@ -24,9 +26,10 @@ public:
     CREATE_FUNC(GS_PickMap);
     
     GS_PickMap();
-    static Scene* createScene();
+//    static Scene* createScene();
     
     bool init() override;
     void GoToMap(const int& index, const int& character);
 	void GoToSidePage(const int& index);
+    GS_OptionPage* _optionPage;
 };

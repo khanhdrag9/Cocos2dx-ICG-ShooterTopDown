@@ -3,6 +3,7 @@
 #include "../Resource/ResourceManager.h"
 #include "GS_GameMenu.h"
 #include "GS_LoadToGamePlay.h"
+#include "GS_OptionPage.h"
 
 using namespace ui;
 
@@ -14,19 +15,20 @@ _pageView(nullptr),
 _pageViewCharacter(nullptr),
 _pageViewGlobal(nullptr),
 _nextPageLeft(nullptr),
-_nextPageRight(nullptr)
+_nextPageRight(nullptr),
+_optionPage(nullptr)
 {
     
 }
 
-Scene* GS_PickMap::createScene()
-{
-    Scene* scene = Scene::create();
-    GS_PickMap* layer = GS_PickMap::create();
-    scene->addChild(layer);
-    
-    return scene;
-}
+//Scene* GS_PickMap::createScene()
+//{
+//    Scene* scene = Scene::create();
+//    GS_PickMap* layer = GS_PickMap::create();
+//    scene->addChild(layer);
+//
+//    return scene;
+//}
 
 bool GS_PickMap::init()
 {
@@ -161,14 +163,16 @@ bool GS_PickMap::init()
 
 	{
 		_nextPageLeft = btnNextPage[0];
+        _nextPageLeft->setColor(Color3B::BLACK);
 		Size left = _nextPageLeft->getBoundingBox().size;
-		_nextPageLeft->setPosition(Vec2(origin.x + left.width * 0.4f, origin.y + center.y));
+		_nextPageLeft->setPosition(Vec2(origin.x + left.width * 0.4f, origin.y + screenSize.height * 0.15));
 		_nextPageLeft->setFlippedX(true);
 		_nextPageLeft->setVisible(false);
 
 		_nextPageRight = btnNextPage[1];
+        _nextPageRight->setColor(Color3B::WHITE);
 		Size right = _nextPageRight->getBoundingBox().size;
-		_nextPageRight->setPosition(Vec2(origin.x + screenSize.width - left.width * 0.4f, center.y));
+		_nextPageRight->setPosition(Vec2(origin.x + screenSize.width - left.width * 0.4f, _nextPageLeft->getPositionY()));
 	}
 	
 
@@ -215,9 +219,16 @@ void GS_PickMap::GoToSidePage(const int& index)
 	_nextPageRight->setVisible(true);
 
 	if (index == 0)
+    {
 		_nextPageLeft->setVisible(false);
+        _optionPage->setColorUI(Color3B::WHITE);
+        
+    }
 	else if (index == _countPages - 1)
+    {
 		_nextPageRight->setVisible(false);
+        _optionPage->setColorUI(Color3B::BLACK);
+    }
 
 	_pageViewGlobal->scrollToItem(index);
 }
