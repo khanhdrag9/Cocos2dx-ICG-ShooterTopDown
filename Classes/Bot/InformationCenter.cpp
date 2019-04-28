@@ -257,8 +257,8 @@ void InformationCenter::update(float dt)
 			};
 
 //            Vec2 target = _graph.at(random(0, (int)_graph.size() - 1));
-            Vec2 target = _graph.at(7);
-            bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
+//            Vec2 target = _graph.at(7);
+//            bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
 //            lamda(botPosition, target, &bot);
 		}
 

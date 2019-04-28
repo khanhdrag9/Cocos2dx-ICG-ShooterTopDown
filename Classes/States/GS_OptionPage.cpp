@@ -122,18 +122,21 @@ void GS_OptionPage::GoToAbout()
 
 void GS_OptionPage::Back()
 {
-    Layer* currentState = Game::getInstance()->getCurrentState();
+    Game* game = Game::getInstance();
+    Layer* currentState = game->getCurrentState();
     int tag = currentState->getTag();
     if(tag == Game::layer::PICKMAP)
     {
         currentState->setVisible(false);
         Layer* labelMenu = dynamic_cast<Layer*>(this->getScene()->getChildByTag(Game::layer::GAMELABEL));\
         if(labelMenu)
-            Game::getInstance()->setCurrentState(labelMenu);
+            game->setCurrentState(labelMenu);
     }
     else if(tag == Game::layer::GAMEPLAY)
     {
-        Game::getInstance()->backToHomeMenu();
+        game->backToHomeMenu();
+        if(game->isEnableVolumn())
+            game->setEnableVolunm(true);
     }
 }
 

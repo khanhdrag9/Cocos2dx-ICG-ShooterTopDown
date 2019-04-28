@@ -154,7 +154,7 @@ void Game::handleKeyboardPress(EventKeyboard::KeyCode keycode, Event*)  //used i
 {
     if(keycode == EventKeyboard::KeyCode::KEY_TAB)
     {
-        useKDATab(!_isPopupKDAVisible);
+        useKDATab(true);
     }
     _isHoldKey = true;
     _keyIsHolds.push_back(keycode);
@@ -188,7 +188,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
             usePopupInGame(!_isPopupInGameVisible);
             break;
         case cocos2d::EventKeyboard::KeyCode::KEY_TAB:
-            useKDATab(!_isPopupKDAVisible);
+            useKDATab(false);
             break;
 #if CHEAT
         case cocos2d::EventKeyboard::KeyCode::KEY_F1:

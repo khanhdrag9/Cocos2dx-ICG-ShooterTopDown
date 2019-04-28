@@ -90,7 +90,7 @@ void GS_LoadToGamePlay::update(float dt)
 //    if(_countTime == 0.f)
 //        loadGame();
     
-    if(_countTime > 5.f && !_gameplay)
+    if(_countTime > 3.f && !_gameplay)
     {
         loadGame();
     }
