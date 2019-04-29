@@ -9,28 +9,7 @@
 #include "../Commands/Command.h"
 #include "../Defines/constants.h"
 #include "../Physics/RigidBody.h"
-
-
-CharacterCreation::CharacterCreation(const string& sprite,
-                  const string& image,
-                  const string& loadImage,
-                  const string& bullet,
-                  const int& maxHP,
-                  const float& speed,
-                  const int& maxBullet,
-                  const float& timeReload,
-                  const int& damge)
-:
-_sprite(sprite)
-,_image(image)
-,_loadImage(loadImage)
-,_bullet(bullet)
-,_maxHP(maxHP)
-,_speed(speed)
-,_maxBullet(maxBullet)
-,_timeReload(timeReload)
-,_damgeBullet(damge)
-{}
+#include "../Resource/Creations.h"
 
 Character::Character():
 _sprite(nullptr),
@@ -65,8 +44,8 @@ void Character::init(CharacterCreation* creation)
         _sprite = Sprite::create(creation->_sprite);
         _maxHP = creation->_maxHP;
         _currentHP = _maxHP;
-        _bulletSprite = creation->_bullet;
-        _bulletDamge = creation->_damgeBullet;
+        _bulletSprite = creation->_bullet.getBulletSprite();
+        _bulletDamge = creation->_bullet.getDamgeBullet();
     }
 }
 

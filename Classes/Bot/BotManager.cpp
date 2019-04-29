@@ -8,6 +8,7 @@
 #include "../Commands/CommandMoveTo.h"
 #include "InformationCenter.h"
 #include "../Resource/ResourceManager.h"
+#include "../Resource/Creations.h"
 
 BotManager::BotManager()
 {

@@ -4,6 +4,7 @@
 #include "GS_GameMenu.h"
 #include "GS_LoadToGamePlay.h"
 #include "GS_OptionPage.h"
+#include "../Resource/Creations.h"
 
 using namespace ui;
 

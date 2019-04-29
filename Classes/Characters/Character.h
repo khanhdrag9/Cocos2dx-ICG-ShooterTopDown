@@ -4,33 +4,7 @@
 class Command;
 class RigidBody;
 
-class CharacterCreation
-{
-    string _sprite;
-    CC_SYNTHESIZE_READONLY(string, _image, Image);
-    CC_SYNTHESIZE_READONLY(string, _loadImage, LoadImage);
-    string _bullet;
-    int _maxHP;
-    float _speed;
-    int _maxBullet;
-    float _timeReload;
-    int _damgeBullet;
-public:
-    CharacterCreation(const string& sprite,
-                      const string& image,
-                      const string& loadImage,
-                      const string& bullet,
-                      const int& maxHP,
-                      const float& speed,
-                      const int& maxBullet,
-                      const float& timeReload,
-                      const int& damge);
-    
-    
-    friend class Character;
-    friend class Player;
-    friend class Bot;
-};
+class CharacterCreation;
 
 class Character : public enable_shared_from_this<Character>
 {

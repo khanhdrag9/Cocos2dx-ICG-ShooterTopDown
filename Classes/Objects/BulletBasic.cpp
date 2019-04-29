@@ -49,6 +49,9 @@ shared_ptr<BulletBasic> BulletBasic::createBulletBasic(const string& sprite, con
     obj->_sprite->setRotation(angle);
     obj->_speed = speed;
     
+    //particle
+    
+    
     if(forceShoot)
         obj->_rigidBody->_velocity = obj->_speed;
     

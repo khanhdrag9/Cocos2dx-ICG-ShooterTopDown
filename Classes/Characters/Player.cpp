@@ -11,6 +11,7 @@
 #include "../Resource/ResourceManager.h"
 #include "../Resource/Resources.h"
 #include "../Defines/Templates.h"
+#include "../Resource/Creations.h"
 
 Player::Player() : Character()
 {
