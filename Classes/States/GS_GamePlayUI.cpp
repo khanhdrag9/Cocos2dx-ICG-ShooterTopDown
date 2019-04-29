@@ -15,7 +15,8 @@
 
 GS_GamePlayUI::GS_GamePlayUI():
 _playerBullet(nullptr),
-_menuKDA(nullptr)
+_menuKDA(nullptr),
+_optionPage(nullptr)
 {}
 
 GS_GamePlayUI::~GS_GamePlayUI()
@@ -70,10 +71,11 @@ bool GS_GamePlayUI::init()
     this->addChild(_optionPage, Game::layer::OPTION);
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     
+    
     return true;
 }
 
-void GS_GamePlayUI::update(float)
+void GS_GamePlayUI::update(float dt)
 {
     //if(auto character = _characterProfile.lock())
     if(auto character = _characterProfile)
@@ -86,23 +88,34 @@ void GS_GamePlayUI::update(float)
 			//for Mag bullet
 			int maxbullet = 0;
 			int currentbullet = 0;
+            bool isReloading = false;
 
 			if (auto player = dynamic_pointer_cast<Player>(character))
 			{
 				auto& mag = player->getMag();
 				maxbullet = mag->getMaxBullet();
 				currentbullet = mag->getCurrentBullet();
+                isReloading = mag->isReloading();
 			}
 			else if (auto bot = dynamic_pointer_cast<Bot>(character))
 			{
 				auto& mag = bot->getMag();
 				maxbullet = mag->getMaxBullet();
 				currentbullet = mag->getCurrentBullet();
+                isReloading = mag->isReloading();
 			}
 
-			string formatMag = to_string(currentbullet) + "/" + to_string(maxbullet);
-			_playerBullet->setString(formatMag);
-
+            if(!isReloading)
+            {
+                string formatMag = to_string(currentbullet) + "/" + to_string(maxbullet);
+                _playerBullet->setString(formatMag);
+                _playerBullet->setColor(Color3B::YELLOW);
+            }
+            else
+            {
+                _playerBullet->setString("Reloading....");
+                _playerBullet->setColor(Color3B::YELLOW);
+            }
 			//for HP
 			int currentHP = character->getCurrentHP();
 			string formatHP = "HP:" + to_string(currentHP);

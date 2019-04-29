@@ -156,6 +156,11 @@ void Game::handleKeyboardPress(EventKeyboard::KeyCode keycode, Event*)  //used i
     {
         useKDATab(true);
     }
+    else if(keycode == EventKeyboard::KeyCode::KEY_R)
+    {
+        _player->getMag()->reload();
+        
+    }
     _isHoldKey = true;
     _keyIsHolds.push_back(keycode);
 }

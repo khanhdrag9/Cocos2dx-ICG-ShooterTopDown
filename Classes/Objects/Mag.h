@@ -9,7 +9,7 @@ class Mag
     int _maxBullet;
     
     float _timeReload;
-    
+    bool _isReload;
 public:
     Mag(const float& timeReshoot, const int& maxbullet, const float& timeReload);
     virtual ~Mag(){}
@@ -18,6 +18,7 @@ public:
     void resetCountTime();
     void decreBullet(int decre = 1);
     float reload();
+    bool isReloading() const;
     
     const int& getMaxBullet() const;
     const int& getCurrentBullet() const;
