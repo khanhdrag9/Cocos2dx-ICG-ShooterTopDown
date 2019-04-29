@@ -44,8 +44,7 @@ void Character::init(CharacterCreation* creation)
         _sprite = Sprite::create(creation->_sprite);
         _maxHP = creation->_maxHP;
         _currentHP = _maxHP;
-        _bulletSprite = creation->_bullet.getBulletSprite();
-        _bulletDamge = creation->_bullet.getDamgeBullet();
+        _bullet = &creation->_bullet;
     }
 }
 
@@ -167,7 +166,7 @@ bool Character::isDestroyed()
     return _destroy;
 }
 
-const string& Character::getBulletSprite() const
+BulletCreation* Character::getBullet() const
 {
-    return _bulletSprite;
+    return _bullet;
 }

@@ -49,9 +49,6 @@ shared_ptr<BulletBasic> BulletBasic::createBulletBasic(const string& sprite, con
     obj->_sprite->setRotation(angle);
     obj->_speed = speed;
     
-    //particle
-    
-    
     if(forceShoot)
         obj->_rigidBody->_velocity = obj->_speed;
     
@@ -84,4 +81,17 @@ void BulletBasic::setDamege(int damge)
 int BulletBasic::getDamge() const
 {
     return _damge;
+}
+
+void BulletBasic::setParticle(const string& particleStr)
+{
+    ParticleSystemQuad* particle = ParticleSystemQuad::create(particleStr.c_str());
+    if(particle)
+    {
+        Size objSize = _sprite->getContentSize();
+        particle->setPosition(objSize.width / 2.f, objSize.height / 2.f);
+        particle->setOpacity(200.f);
+        particle->setScale(0.7f);
+        _sprite->addChild(particle);
+    }
 }

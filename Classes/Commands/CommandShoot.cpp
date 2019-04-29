@@ -13,6 +13,7 @@
 #include "../Physics/RigidBody.h"
 #include "../Characters/Player.h"
 #include "../Bot/Bot.h"
+#include "../Resource/Creations.h"
 
 CommandShoot::CommandShoot():
     _speed(Vec2(0,0))
@@ -33,8 +34,11 @@ void CommandShoot::update(float dt)
     auto object = _object.lock();
     if(!_isFinished && object)
     {
-        auto bullet = BulletBasic::createBulletBasic(object->getBulletSprite(),object->_sprite->getPosition(), object->_sprite->getRotation(), _speed, true);
-        bullet->setDamege(object->getBulletDamge());
+        auto bulletCreation = object->getBullet();
+        auto bullet = BulletBasic::createBulletBasic(bulletCreation->getBulletSprite(),object->_sprite->getPosition(), object->_sprite->getRotation(), _speed, true);
+        bullet->setDamege(bulletCreation->getDamgeBullet());
+        bullet->setParticle(bulletCreation->getParticle());
+        
 		if (object->getType() == Character::type::PLAYER)
 		{
             bullet->_rigidBody->setTag(RigidBody::tag::BULLET_PLAYER);

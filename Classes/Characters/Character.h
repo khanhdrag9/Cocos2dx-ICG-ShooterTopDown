@@ -5,6 +5,7 @@ class Command;
 class RigidBody;
 
 class CharacterCreation;
+class BulletCreation;
 
 class Character : public enable_shared_from_this<Character>
 {
@@ -34,17 +35,18 @@ public:
     void heal(int heal);
     void destroy();
     bool isDestroyed();
-    const string& getBulletSprite() const;
-    CC_SYNTHESIZE_READONLY(int, _bulletDamge, BulletDamge);
+    BulletCreation* getBullet() const;
+    
 protected:
     list<shared_ptr<Command>> _commandQueue;
     bool _destroy;
     
     int _maxHP;
     int _currentHP;
-    string _bulletSprite;
+    BulletCreation* _bullet;
 public:
     Sprite* _sprite;
+//    ParticleSystemQuad* _particle;
     shared_ptr<RigidBody> _rigidBody;
     
     string _name;

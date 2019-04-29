@@ -50,15 +50,13 @@ ResourceManager::ResourceManager()
     
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     
-
-    
     
     _listBulletCreations.clear();
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
 #else
-    _listBulletCreations[res::define::BULLET_TRIANGLE] = BulletCreation("TriangleBullet.png", 10);
-    _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("RectBullet.png", 40);
-    _listBulletCreations[res::define::BULLET_CIRCLE] = BulletCreation("CircleBullet.png", 20);
+    _listBulletCreations[res::define::BULLET_TRIANGLE] = BulletCreation("TriangleBullet.png", 10, "VFX/polygonGreen.plist");
+    _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("RectBullet.png", 40, "VFX/rectFire.plist");
+    _listBulletCreations[res::define::BULLET_CIRCLE] = BulletCreation("CircleBullet.png", 20, "VFX/circleBlue.plist");
 #endif
     
     _listCharacterCreations.clear();

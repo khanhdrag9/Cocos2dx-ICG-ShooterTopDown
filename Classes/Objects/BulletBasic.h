@@ -21,4 +21,5 @@ public:
     Vec2 getSpeed() const;
     void setDamege(int damge);
     int getDamge() const;
+    void setParticle(const string& particle);
 };
