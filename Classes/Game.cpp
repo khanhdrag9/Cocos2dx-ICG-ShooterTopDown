@@ -189,9 +189,6 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
    
     
     switch (keycode) {
-        case cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE:
-            usePopupInGame(!_isPopupInGameVisible);
-            break;
         case cocos2d::EventKeyboard::KeyCode::KEY_TAB:
             useKDATab(false);
             break;

@@ -38,6 +38,7 @@ void CommandShoot::update(float dt)
         auto bullet = BulletBasic::createBulletBasic(bulletCreation->getBulletSprite(),object->_sprite->getPosition(), object->_sprite->getRotation(), _speed, true);
         bullet->setDamege(bulletCreation->getDamgeBullet());
         bullet->setParticle(bulletCreation->getParticle());
+        bullet->setDieEffect(bulletCreation->getExplosion());
         
 		if (object->getType() == Character::type::PLAYER)
 		{

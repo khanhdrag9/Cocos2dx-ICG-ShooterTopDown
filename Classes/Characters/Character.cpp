@@ -10,13 +10,15 @@
 #include "../Defines/constants.h"
 #include "../Physics/RigidBody.h"
 #include "../Resource/Creations.h"
+#include "../Game.h"
 
 Character::Character():
 _sprite(nullptr),
 _rigidBody(nullptr),
 _destroy(false),
 _maxHP(0),
-_currentHP(_maxHP)
+_currentHP(_maxHP),
+_dieEffect("")
 {
 }
 
@@ -45,6 +47,7 @@ void Character::init(CharacterCreation* creation)
         _maxHP = creation->_maxHP;
         _currentHP = _maxHP;
         _bullet = &creation->_bullet;
+        _dieEffect = creation->getDieEffect();
     }
 }
 
@@ -159,6 +162,20 @@ void Character::destroy()
         _rigidBody->_object = nullptr;
     _rigidBody = nullptr;
     _destroy = true;
+    
+    //particle
+    if(_dieEffect != "")
+    {
+        ParticleSystemQuad* par = ParticleSystemQuad::create(_dieEffect);
+        if(par)
+        {
+            Size size = _sprite->getContentSize();
+            Vec2 position = _sprite->getPosition();
+            par->setPosition(position.x + size.width / 2.f, position.y + size.height / 2.f);
+            par->setRotation(_sprite->getRotation());
+            Game::getInstance()->getCurrentState()->addChild(par, 10);
+        }
+    }
 }
 
 bool Character::isDestroyed()
@@ -169,4 +186,9 @@ bool Character::isDestroyed()
 BulletCreation* Character::getBullet() const
 {
     return _bullet;
+}
+
+void Character::setDieEffect(const string& effect)
+{
+    _dieEffect = effect;
 }

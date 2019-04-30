@@ -54,9 +54,9 @@ ResourceManager::ResourceManager()
     _listBulletCreations.clear();
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
 #else
-    _listBulletCreations[res::define::BULLET_TRIANGLE] = BulletCreation("TriangleBullet.png", 10, "VFX/polygonGreen.plist");
-    _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("RectBullet.png", 40, "VFX/rectFire.plist");
-    _listBulletCreations[res::define::BULLET_CIRCLE] = BulletCreation("CircleBullet.png", 20, "VFX/circleBlue.plist");
+    _listBulletCreations[res::define::BULLET_TRIANGLE] = BulletCreation("TriangleBullet.png", 10, "VFX/polygonGreen.plist", "VFX/expGreen.plist");
+    _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("RectBullet.png", 40, "VFX/rectFire.plist", "VFX/expFire.plist");
+    _listBulletCreations[res::define::BULLET_CIRCLE] = BulletCreation("CircleBullet.png", 20, "VFX/circleBlue.plist", "VFX/expBlue.plist");
 #endif
     
     _listCharacterCreations.clear();
@@ -65,16 +65,19 @@ ResourceManager::ResourceManager()
     _listCharacterCreations.push_back(CharacterCreation("CircleCharacter.png",
                                                                                 "CircleImage.jpg",
                                                                                 "CircleLoad.png",
+                                                                                "",
                                                                                 100, 250, 30, 0.25,
                                                                                 _listBulletCreations[res::define::BULLET_CIRCLE]));
     _listCharacterCreations.push_back(CharacterCreation("RectCharacter.png",
                                                                             "RectImage.jpg",
                                                                             "RectLoad.png",
+                                                                            "",
                                                                             200, 200, 15, 0.35,
                                                                             _listBulletCreations[res::define::BULLET_RECT]));
     _listCharacterCreations.push_back(CharacterCreation("TriangleCharacter.png",
                                                                                 "TriangleImage.jpg",
                                                                                 "TriangleLoad.png",
+                                                                                "",
                                                                                 70, 350, 45, 0.15,
                                                                                 _listBulletCreations[res::define::BULLET_TRIANGLE]));
 #endif
