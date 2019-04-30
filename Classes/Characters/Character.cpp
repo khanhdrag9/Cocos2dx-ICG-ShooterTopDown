@@ -54,7 +54,9 @@ void Character::init(CharacterCreation* creation)
 
 void Character::update(float dt)
 {
-    if(_destroy || _currentHP <= 0)return;
+    if(_currentHP <= 0)
+        destroy();
+    if(_destroy)return;
         
 	for (auto& cmd : _commandQueue)
 		cmd->update(dt);

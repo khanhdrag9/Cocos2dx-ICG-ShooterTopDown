@@ -116,7 +116,7 @@ void Game::update(float dt)
 
     
 	InformationCenter::getInstance()->update(dt);
-	//BotManager::getInstance()->update(dt);
+    BotManager::getInstance()->update(dt);
     
 	updateCameraView();
 
@@ -510,7 +510,11 @@ void Game::createMap()
     _fogSprite = Sprite::create(ResourceManager::getInstance()->at(res::define::IMG_FOG));
     _fogSprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _fogSprite->setPosition(0,0);
+#if ENABLE_FOG
     _fogSprite->setOpacity(150.f);
+#else
+    _fogSprite->setOpacity(0);
+#endif
     //_currentState->addChild(_fogSprite, 10);
     
 

@@ -65,19 +65,19 @@ ResourceManager::ResourceManager()
     _listCharacterCreations.push_back(CharacterCreation("CircleCharacter.png",
                                                                                 "CircleImage.jpg",
                                                                                 "CircleLoad.png",
-                                                                                "",
-                                                                                100, 250, 30, 0.25,
+                                                                                "VFX/dieBlue.plist",
+                                                                                100, 250, 30, 0.35,
                                                                                 _listBulletCreations[res::define::BULLET_CIRCLE]));
     _listCharacterCreations.push_back(CharacterCreation("RectCharacter.png",
                                                                             "RectImage.jpg",
                                                                             "RectLoad.png",
-                                                                            "",
-                                                                            200, 200, 15, 0.35,
+                                                                            "VFX/dieFire.plist",
+                                                                            200, 200, 15, 0.6,
                                                                             _listBulletCreations[res::define::BULLET_RECT]));
     _listCharacterCreations.push_back(CharacterCreation("TriangleCharacter.png",
                                                                                 "TriangleImage.jpg",
                                                                                 "TriangleLoad.png",
-                                                                                "",
+                                                                                "VFX/dieGreen.plist",
                                                                                 70, 350, 45, 0.15,
                                                                                 _listBulletCreations[res::define::BULLET_TRIANGLE]));
 #endif

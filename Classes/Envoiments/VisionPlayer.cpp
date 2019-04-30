@@ -75,7 +75,9 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 #if DEBUG_ENEMY
                 body->getObject()->_sprite->setVisible(true);
 #else
+#if VISIBLE_ENEMY
                 body->getObject()->_sprite->setVisible(false);
+#endif
 #endif
             }
         }

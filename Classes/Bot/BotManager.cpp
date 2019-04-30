@@ -43,8 +43,15 @@ int BotManager::countBots() const
 
 void BotManager::update(float dt)
 {
-	for (auto& bot : _listBots)
+    for (auto begin = _listBots.begin(); begin != _listBots.end();)
 	{
+        shared_ptr<Bot> bot = *begin;
+        if(bot->isDestroyed())
+        {
+            begin = _listBots.erase(begin);
+            continue;
+        }
+        
 		if (bot->isCanTriggerShoot())
 			bot->setStatus(Bot::Status::SHOOT);
 
@@ -55,6 +62,7 @@ void BotManager::update(float dt)
 			bot->setStatus(Bot::Status::STOP);
 		
 		bot->update(dt);
+        ++begin;
 	}
 }
 
@@ -81,7 +89,7 @@ void BotManager::initBots()
 		auto bot = createBot(&_botCreations[i]); //create bot here, use player for test, use Bot instead of
 		Game::getInstance()->getRigidWord()->createRigidBodyCircle(bot);
 		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
-        bot->_sprite->setPosition(history[i-1]);
+        bot->_sprite->setPosition(history[i]);
 //        bot->_sprite->setPosition(Vec2(192, 192));
 
         bot->setWalk(true);
