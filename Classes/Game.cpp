@@ -179,6 +179,13 @@ void Game::setObjectFollowByCam(shared_ptr<Character> object)
 
 void Game::handleKeyboardPress(EventKeyboard::KeyCode keycode, Event*)  //used in gameplay
 {
+    if(_result != game_result::NONE)
+    {
+        _isHoldKey = false;
+        _keyIsHolds.clear();
+        return;
+    }
+    
     if(keycode == EventKeyboard::KeyCode::KEY_TAB)
     {
         useKDATab(true);
