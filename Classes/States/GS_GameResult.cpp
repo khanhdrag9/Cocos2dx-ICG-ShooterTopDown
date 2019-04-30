@@ -29,7 +29,7 @@ bool GS_GameResult::init()
     backgroud->setPosition(center);
     Size bgSize = Size(sz.width, sz.height * 0.98);
     backgroud->setContentSize(bgSize);
-    backgroud->setOpacity(225);
+    backgroud->setOpacity(180);
     this->addChild(backgroud, 0);
     
 //    float column0 = origin.x + sz.width * 0.12f
@@ -73,13 +73,23 @@ bool GS_GameResult::init()
         }
     }
     
-    Sprite* titleResult;
+//    Sprite* titleResult;
+//    if(result == Game::game_result::WIN)
+//        titleResult = Sprite::create("WinTitle.png");
+//    else titleResult = Sprite::create("LoseTitle.png");
+    ui::Button* titleResult;
     if(result == Game::game_result::WIN)
-        titleResult = Sprite::create("WinTitle.png");
-    else titleResult = Sprite::create("LoseTitle.png");
+        titleResult = ui::Button::create("WinTitle.png");
+    else titleResult = ui::Button::create("LoseTitle.png");
     
     titleResult->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
-    titleResult->setPosition(center.x, origin.y + sz.height * 0.99);
+    titleResult->setPosition(Vec2(center.x, origin.y + sz.height * 0.99));
+    titleResult->addTouchEventListener([](Ref*, ui::Widget::TouchEventType type){
+        if(type == ui::Widget::TouchEventType::ENDED)
+        {
+            Game::getInstance()->backToHomeMenu();
+        }
+    });
     this->addChild(titleResult, 1);
     
     
