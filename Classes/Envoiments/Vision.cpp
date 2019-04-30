@@ -18,8 +18,8 @@ const float Vision::origin_vision = 500.f;
 
 void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
 {
-	//getPointIntersect();
-	_threadRun = true;
+	threadGetPoint();
+//    _threadRun = true;
 	Vec2 objPos = _obj->_sprite->getPosition();
     if(_isDraw)
     {
@@ -46,14 +46,14 @@ void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
         if(clipper)
             clipper->setStencil(draw);
     }
-	_threadRun = false;
+//    _threadRun = false;
 }
 
 void Vision::threadGetPoint()
 {
-	while(!_isStop)
-	{ 
-		if (!_threadRun)continue;
+//    while(!_isStop)
+	{
+//        if (!_threadRun)continue;
 
 		getPointIntersect();
 
@@ -61,15 +61,15 @@ void Vision::threadGetPoint()
 		{
 			std::lock_guard<mutex> guard(_m);
 			_points2.swap(_points);
-            if(_isStop)break;
+//            if(_isStop)break;
 		}
 
-		int dt = int(Director::getInstance()->getDeltaTime() * 1000.f);
-		std::chrono::milliseconds ms(dt);
-		std::this_thread::sleep_for(ms);
+//        int dt = int(Director::getInstance()->getDeltaTime() * 1000.f);
+//        std::chrono::milliseconds ms(dt);
+//        std::this_thread::sleep_for(ms);
 	}
 
-	_avaiableToDelete = true;
+//    _avaiableToDelete = true;
 }
 
 Vision::Vision():
@@ -89,7 +89,7 @@ _threadRun(false),
 _avaiableToDelete(false),
 _vision(origin_vision)
 {
-	_threadVision = thread(&Vision::threadGetPoint, this);
+//    _threadVision = thread(&Vision::threadGetPoint, this);
 	//_threadVision.detach();
 	_threadRun = true;
 }
@@ -112,18 +112,19 @@ bool Vision::isDraw()
 
 bool Vision::avaibleToDelete() const
 {
-	return _avaiableToDelete;
+    return _avaiableToDelete;
+//    return false;
 }
 
 void Vision::stop()
 {
-    if (_avaiableToDelete)return;
-
+//    if (_avaiableToDelete)return;
+    _avaiableToDelete = true;
 	_threadRun = false;
 	_isStop = true;
-	while (_avaiableToDelete == false);
-    if(_threadVision.joinable())
-        _threadVision.join();
+//    while (_avaiableToDelete == false);
+//    if(_threadVision.joinable())
+//        _threadVision.join();
 	
 }
 

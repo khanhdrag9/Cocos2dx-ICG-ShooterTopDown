@@ -115,6 +115,10 @@ void Game::update(float dt)
     
     handleKeyboardHold();
     
+    thread sight([this](){
+        this->updateSight(0);
+    });
+    
     //update properties ui
     if(auto gameplayer = dynamic_cast<GS_GamePlay*>(_currentState))
     {
@@ -147,7 +151,7 @@ void Game::update(float dt)
     
 	updateCameraView();
 
-    updateSight(dt);
+//    updateSight(dt);
 #if DEBUG_ENEMY
 	for (int i = 0; i < BotManager::getInstance()->countBots(); i++)
 	{
@@ -160,6 +164,7 @@ void Game::update(float dt)
 
 	updatePhysics(dt);
     ObjectsPool::getInstance()->update();
+    sight.join();
 }
 
 void Game::setCurrentState(Layer* layer)
@@ -724,15 +729,18 @@ Vec2 Game::getRandomPosition() const
 void Game::updateSight(float dt)
 {
     //delete vision is marked delete
-    for (auto i = _listVision.begin(); i != _listVision.end();)
     {
-        auto& vision = (*i);
-        if (vision->getObject()->isDestroyed())
-            vision->stop();
-        if (vision->avaibleToDelete())
-            i = _listVision.erase(i);
-        else
-            ++i;
+        std::lock_guard<mutex> lock(_m);
+        for (auto i = _listVision.begin(); i != _listVision.end();)
+        {
+            auto& vision = (*i);
+            if (vision->getObject()->isDestroyed())
+                vision->stop();
+            if (vision->avaibleToDelete())
+                i = _listVision.erase(i);
+            else
+                ++i;
+        }
     }
     
     if(!_sightNode)return;

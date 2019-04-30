@@ -93,6 +93,7 @@ private:
     game_result _result;
     bool _isEndGame;
     float _countTime = 0.f;
+    mutex _m;
 public:
     Game();
     ~Game();
