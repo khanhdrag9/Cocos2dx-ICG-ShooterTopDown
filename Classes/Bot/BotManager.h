@@ -25,4 +25,5 @@ public:
 	shared_ptr<Bot> createBot(CharacterCreation* creation);
 	shared_ptr<Bot> getBot(const int& index);
     void setBotCreations(const vector<CharacterCreation>& creations);
+    const vector<CharacterCreation>& getBotCreations() const;
 };

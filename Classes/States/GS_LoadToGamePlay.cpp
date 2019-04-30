@@ -60,13 +60,7 @@ bool GS_LoadToGamePlay::init()
     player->setPosition(center.x, row1);
     
     //Bot
-    auto listCreations = res->getListCharacterCreation();
-    vector<CharacterCreation> creationsBot{
-        listCreations[random(0, (int)listCreations.size() - 1)],
-        listCreations[random(0, (int)listCreations.size() - 1)]
-    };
-    BotManager::getInstance()->setBotCreations(listCreations);
-    
+    auto listCreations = BotManager::getInstance()->getBotCreations();
     const int sizeBot = (int)listCreations.size();
     for(int i = 0; i <sizeBot; i++)
     {

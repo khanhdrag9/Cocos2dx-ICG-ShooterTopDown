@@ -122,3 +122,8 @@ void BotManager::setBotCreations(const vector<CharacterCreation>& creations)
     for(auto& c : creations)
         _botCreations.emplace_back(c);
 }
+
+const vector<CharacterCreation>& BotManager::getBotCreations() const
+{
+    return _botCreations;
+}

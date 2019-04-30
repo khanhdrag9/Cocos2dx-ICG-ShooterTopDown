@@ -46,6 +46,8 @@ _isPopupKDAVisible(false),
 _linkMap(nullptr),
 _enableVolumn(true)
 , _playerCreation(nullptr)
+, _result(game_result::NONE)
+, _isEndGame(true)
 {
     
 }
@@ -84,10 +86,33 @@ void Game::initGamePlay()
 
 	InformationCenter::getInstance()->initGraph(_tileMap);
 	InformationCenter::getInstance()->startThreads();
+    _result = game_result::NONE;
+    _isEndGame = false;
 }
 
 void Game::update(float dt)
 {
+    if(_player == nullptr)
+    {
+        _result = game_result::LOSE;
+    }
+    else if (BotManager::getInstance()->countBots() == 0)
+    {
+        _result = game_result::WIN;
+    }
+    
+    if(_result != game_result::NONE)
+    {
+        _countTime+=dt;
+        if(!_isEndGame && _countTime > 1.2f)
+        {
+            setResultGame();
+            _isEndGame = true;
+        }
+        if(_countTime > 1.2f)
+            return;
+    }
+    
     handleKeyboardHold();
     
     //update properties ui
@@ -101,6 +126,8 @@ void Game::update(float dt)
     {
         if(_player->isDestroyed())
         {
+            if(&(*_objIsFollow) == &(*_player))
+                _objIsFollow = nullptr;
             _player = nullptr;
         }
         else
@@ -223,7 +250,11 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
             //_listVision.clear();    //disble vision
 			if (BotManager::getInstance()->countBots() > 0)
 			{
-				BotManager::getInstance()->clear();
+//                BotManager::getInstance()->clear();
+                auto botMgr = BotManager::getInstance();
+                int countBots = botMgr->countBots();
+                for(int i = 0; i < countBots; i++)
+                    botMgr->getBot(i)->destroy();
 
 				if (auto bot = dynamic_pointer_cast<Bot>(_objIsFollow))
 				{
@@ -267,6 +298,9 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
 			else setObjectFollowByCam(BotManager::getInstance()->getBot(_currentIndexFollow));
 		}
 		break;
+        case cocos2d::EventKeyboard::KeyCode::KEY_F6:
+            _player->destroy();
+            break;
 #endif
         default:
             break;
@@ -854,4 +888,22 @@ void Game::setPlayerCreation(const int& index)
 CharacterCreation* Game::getPlayerCreation()
 {
     return _playerCreation;
+}
+
+const vector<CharacterCreation>& Game::getBotCreations() const
+{
+    return _botCreations;
+}
+
+Game::game_result Game::getGameResult() const
+{
+    return _result;
+}
+
+void Game::setResultGame()
+{
+    if(auto gameplayer = dynamic_cast<GS_GamePlay*>(_currentState))
+    {
+        gameplayer->getUILayer()->showResult();
+    }
 }

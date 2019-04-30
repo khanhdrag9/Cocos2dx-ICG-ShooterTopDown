@@ -5,6 +5,7 @@
 #include "GS_LoadToGamePlay.h"
 #include "GS_OptionPage.h"
 #include "../Resource/Creations.h"
+#include "../Bot/BotManager.h"
 
 using namespace ui;
 
@@ -210,6 +211,13 @@ void GS_PickMap::GoToMap(const int& index, const int& character)
 {
     Game::getInstance()->setMap(index);
     Game::getInstance()->setPlayerCreation(character);
+    auto listCreations = ResourceManager::getInstance()->getListCharacterCreation();
+    vector<CharacterCreation> botCreations{
+        listCreations[random(0, (int)listCreations.size() - 1)],
+        listCreations[random(0, (int)listCreations.size() - 1)]
+    };
+    BotManager::getInstance()->setBotCreations(listCreations);
+    
     Scene* gameplay = GS_LoadToGamePlay::createScene();
     this->setVisible(false);
     Director::getInstance()->pushScene(TransitionMoveInL::create(0.5f, gameplay));

@@ -26,8 +26,9 @@ public:
     void setCharacter(const shared_ptr<Character>& character);
     void initKDA(const int& number);
     void useKDATab(bool show);
+    void showResult();
     
-	void clear();
+    void clear();
     CREATE_FUNC(GS_GamePlayUI);
 };
 

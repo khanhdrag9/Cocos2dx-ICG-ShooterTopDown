@@ -61,6 +61,7 @@ void Vision::threadGetPoint()
 		{
 			std::lock_guard<mutex> guard(_m);
 			_points2.swap(_points);
+            if(_isStop)break;
 		}
 
 		int dt = int(Director::getInstance()->getDeltaTime() * 1000.f);
@@ -116,12 +117,13 @@ bool Vision::avaibleToDelete() const
 
 void Vision::stop()
 {
-	if (_avaiableToDelete)return;
+    if (_avaiableToDelete)return;
 
 	_threadRun = false;
 	_isStop = true;
-	while (_threadVision.joinable() == false || _avaiableToDelete == false);
-	_threadVision.join();
+	while (_avaiableToDelete == false);
+    if(_threadVision.joinable())
+        _threadVision.join();
 	
 }
 

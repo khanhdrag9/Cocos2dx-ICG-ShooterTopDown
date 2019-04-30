@@ -46,6 +46,13 @@ public:
         OPTION = 100
     };
     
+    enum game_result
+    {
+        NONE,
+        WIN,
+        LOSE
+    };
+    
 private:
     Layer* _currentState;
     
@@ -60,6 +67,7 @@ private:
 	TMXTiledMap* _tileMap;
     GameMap* _linkMap;
     CharacterCreation* _playerCreation;
+    vector<CharacterCreation> _botCreations;
 
 	shared_ptr<Character> _objIsFollow;
 #if CHEAT
@@ -82,7 +90,9 @@ private:
     bool _isPopupInGameVisible;
     bool _isPopupKDAVisible;
     bool _enableVolumn;
-
+    game_result _result;
+    bool _isEndGame;
+    float _countTime = 0.f;
 public:
     Game();
     ~Game();
@@ -131,6 +141,9 @@ public:
     GameMap* getCurrentMap();
     void setPlayerCreation(const int& index);
     CharacterCreation* getPlayerCreation();
+    const vector<CharacterCreation>& getBotCreations() const;
+    game_result getGameResult() const;
+    
 private:
     shared_ptr<Player> createAPlayer();
     
@@ -150,6 +163,7 @@ private:
     
 	void usePopupInGame(bool push);
     void useKDATab(bool show);
+    void setResultGame();
 public:
 	Vec2 getRandomPosition() const;
    

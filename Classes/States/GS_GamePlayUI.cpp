@@ -6,6 +6,7 @@
 //
 
 #include "GS_GamePlayUI.h"
+#include "GS_GameResult.h"
 #include "Game.h"
 #include "../Resource/ResourceManager.h"
 #include "../Characters/Player.h"
@@ -71,6 +72,21 @@ bool GS_GamePlayUI::init()
     this->addChild(_optionPage, Game::layer::OPTION);
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     
+#if CHEAT
+    string F1 = "F1: jump to revival position\n";
+    string F2 = "F2: destroy visions\n";
+    string F3 = "F3: kill all enemy\n";
+    string F4 = "F4: enable/disible light of vision\n";
+    string F5 = "F5: change camera to anthor character\n";
+    string F6 = "F6: kill player";
+    string text = F1 + F2 + F3 + F4 + F5 + F6;
+    
+    Label* cheat = Label::createWithTTF(text.c_str(), font, 20);
+    cheat->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
+    cheat->setPosition(origin.x, origin.y + sz.height);
+    cheat->setColor(Color3B::RED);
+    this->addChild(cheat, 10);
+#endif
     
     return true;
 }
@@ -191,6 +207,12 @@ void GS_GamePlayUI::useKDATab(bool show)
         _optionPage->setVisible(true);
         _optionPage->runAction(action->clone());
     }
+}
+
+void GS_GamePlayUI::showResult()
+{
+    GS_GameResult* gameresult = GS_GameResult::create();
+    this->getScene()->addChild(gameresult, 10);
 }
 
 void GS_GamePlayUI::clear()
