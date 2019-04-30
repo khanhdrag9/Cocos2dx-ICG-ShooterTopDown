@@ -9,9 +9,9 @@ class GS_GamePlayUI : public Layer
     Label* _playerBullet;
     Label* _propertiesPlayer;
     
-    Sprite* _kdaTab;
-    Menu* _menuKDA;
-    Vector<MenuItem*> _listKDA;
+//    Sprite* _kdaTab;
+//    Menu* _menuKDA;
+//    Vector<MenuItem*> _listKDA;
     
     shared_ptr<Character> _characterProfile;
     
