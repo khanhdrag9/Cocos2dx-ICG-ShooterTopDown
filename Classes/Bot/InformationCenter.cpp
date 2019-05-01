@@ -77,11 +77,11 @@ list<Vec2> SolutionWay::findWayMin(const Vec2& target) const
     for(auto& way : avaiable)
     {
         float length2 = 0.f;
-        for(auto begin = way.begin(); begin != way.end(); ++begin)
+        for(auto begin = way.begin(); begin != way.end();)
         {
-            Vec2 point1 = *begin;
+            Vec2& point1 = *begin;
             ++begin;
-            Vec2 point2 = *begin;
+            Vec2& point2 = *begin;
             length2 += (point1 - point2).length();
         }
         
@@ -213,7 +213,7 @@ void InformationCenter::update(float dt)
 			auto lamda = [this](Vec2 position, Vec2 target, BotFindWay* bf) -> queue<Vec2>
 			{
 #if DEBUG_GRAHP
-                //_canMovePointDrawer->clear();
+                _canMovePointDrawer->clear();
 #endif
 				float radius = 0.f;
 				if (bf)
@@ -239,27 +239,13 @@ void InformationCenter::update(float dt)
 					bf->isFinish = true;
 					bf->isThreadAvaiable = true;
 				}
-                
-//#if DEBUG_GRAHP
-//                auto debugWays = solutions.getWays();
-//                for(auto& way : debugWays)
-//                {
-//                    while(way.size() > 1)
-//                    {
-//                        Vec2 point1 = way.front();
-//                        way.pop_front();
-//                        Vec2 point2 = way.front();
-//                        _canMovePointDrawer->drawLine(point1, point2, Color4F::GREEN);
-//                    }
-//                }
-//#endif
 				return way;
 			};
 
-//            Vec2 target = _graph.at(random(0, (int)_graph.size() - 1));
-//            Vec2 target = _graph.at(7);
-//            bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
-//            lamda(botPosition, target, &bot);
+            Vec2 target = _graph.at(random(0, (int)_graph.size() - 1));
+//            Vec2 target = _graph.at(86);
+            bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
+            lamda(botPosition, target, &bot);
 		}
 
 		if (bot.isFinish && bot.isThreadAvaiable)
@@ -282,7 +268,7 @@ void InformationCenter::update(float dt)
 			//Move Bot
 			if (way.size() == 0)
 			{
-				bot.isReady = true;
+                bot.isReady = true;
 			}
 			else
 			{
@@ -320,14 +306,14 @@ void InformationCenter::update(float dt)
 			else if(bot.bot->_rigidBody->_velocity == Vec2::ZERO)
 			{
 				bot.status = statusBot::NONE;
-				//bot.isReady = true;
+                bot.isReady = true;
 			}
 		}
 
 		if (bot.status == statusBot::COLLISION)
 		{
 			bot.status = statusBot::NONE;
-			bot.isReady = true;
+            bot.isReady = true;
 			while (bot.commands.size() > 0)
 				bot.commands.pop();
 			bot.bot->releaseCommands();
@@ -347,7 +333,7 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, const vector
 		lines = Game::getInstance()->getRigidWord()->getListLines();
 	}
 
-	radius *= 1.2f;
+	radius *= 1.5f;
 	list<Vec2> result;
 	for (auto begin = arrayFind.begin(); begin != arrayFind.end(); ++begin)
 	{
@@ -398,7 +384,7 @@ bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& gr
     {
         result.push(start, point);
 #if DEBUG_GRAHP
-        //_canMovePointDrawer->drawLine(start, point, Color4F::YELLOW);
+        _canMovePointDrawer->drawLine(start, point, Color4F::YELLOW);
 #endif
     }
     
@@ -415,15 +401,46 @@ bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& gr
     }
     
     bool findResult = false;
-    for(auto point : around)
+    
+    while (true)
     {
-        vector<Vec2> nextGrahp;
-        for(auto p : grahp)nextGrahp.push_back(p);
-        if(findWayToPoint(point, target, nextGrahp, result, radius))
+        list<Vec2> unless;
+        list<Vec2> tempAround = around;
+        around.clear();
+        for(auto& point : tempAround)
         {
-            findResult = true;
-            //return true;
+            list<Vec2> aroundIn = findPointAvaiableAroud(point, grahp, radius);
+            if(std::find(aroundIn.begin(), aroundIn.end(), target) != aroundIn.end())
+            {
+                result.push(point, target);
+//                for(auto& destroyP : aroundIn)
+//                    unless.push_back(destroyP);
+//                unless.push_back(point);
+                findResult = true;
+            }
+//            else
+            {
+                for(auto& p : aroundIn)
+                {
+                    if(std::find(around.begin(), around.end(), p) == around.end())
+                        around.push_back(p);
+                    result.push(point, p);
+                }
+            }
+                
+            unless.push_back(point);
         }
+        
+        for(auto begin = grahp.begin(); begin != grahp.end();)
+        {
+            Vec2 point = *begin;
+            if(std::find(unless.begin(), unless.end(), point) != unless.end())
+                begin = grahp.erase(begin);
+            else
+                ++begin;
+        }
+        
+        if(around.size() == 0)break;
     }
 
     return findResult;

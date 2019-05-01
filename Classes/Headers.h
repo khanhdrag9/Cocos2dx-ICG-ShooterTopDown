@@ -24,8 +24,8 @@ using namespace NS_CC;
     #define USE_TOUCH 0
 #endif
 #define DEBUG_SIGHT 0
-#define DEBUG_ENEMY 0
+#define DEBUG_ENEMY 1
 #define DEBUG_GRAHP 1
 #define ENABLE_FOG 1
-#define VISIBLE_ENEMY 1
+#define VISIBLE_ENEMY 0
 #define CHEAT 1

@@ -650,10 +650,14 @@ void Game::createStartCameraView()
 {
 #if DEBUG_ENEMY
     auto character = BotManager::getInstance()->getBot(0);
+#if CHEAT
 	_currentIndexFollow = 0;
+#endif
 #else
 	auto character = (shared_ptr<Character>)_player;
-	_currentIndexFollow = -1;	
+#if CHEAT
+	_currentIndexFollow = -1;
+#endif
 #endif
     if(GS_GamePlay* gameplayLayer = dynamic_cast<GS_GamePlay*>(_currentState))
     {
