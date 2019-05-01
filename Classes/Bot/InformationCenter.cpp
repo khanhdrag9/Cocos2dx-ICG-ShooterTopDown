@@ -17,6 +17,8 @@
 #include "Game.h"
 #include "../Defines/constants.h"
 #include "../Characters/Player.h"
+#include "../Envoiments/Vision.h"
+#include "../Objects/Mag.h"
 //#include "../Physics/RigidWorld.h"
 
 void SolutionWay::push(Vec2 first, Vec2 second)
@@ -168,6 +170,11 @@ void InformationCenter::threadAI()
 
 void InformationCenter::update(float dt)
 {
+    auto player = Game::getInstance()->getPlayer();
+    if(!player)return;  //Won
+    
+    Vec2 playerPosition = player->_sprite->getPosition();
+    
 	for (auto begin = _listBot.begin(); begin != _listBot.end();)
 	{
 		BotFindWay& bot = *begin;
@@ -177,6 +184,23 @@ void InformationCenter::update(float dt)
 			begin = _listBot.erase(begin);
 			continue;
 		}
+        
+        if(auto body = dynamic_pointer_cast<RigidBodyCircle>(bot.bot->_rigidBody))
+        {
+            vector<Vec2> arrayFind {playerPosition};
+            auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision, body->getRadius() / 2.f);
+            if(checkPlayerAround.size() > 0)    //detect player in vision
+            {
+                bot.status = statusBot::SHOOT;
+                float rotation = getRotateForwardAPoint(bot.bot, checkPlayerAround.front());
+                bot.bot->_sprite->setRotation(rotation);
+                if(bot.bot->getMag()->canShoot())
+                {
+                    Game::getInstance()->handleShootCharacter(bot.bot, 1000.f);
+                }
+            }
+        }
+        
 
 		if (bot.isFinish && bot.isReady)	//start thread
 		{
@@ -319,7 +343,7 @@ void InformationCenter::update(float dt)
 	}
 }
 
-list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, const vector<Vec2>& arrayFind, float radius)
+list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, const vector<Vec2>& arrayFind, float vision, float radius)
 {
 	vector<Line> lines;
 	{
@@ -335,7 +359,7 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, const vector
         if(pointGrahp == position)
             continue;
 
-		if ((pointGrahp - position).length() > 1000.f)
+		if ((pointGrahp - position).length() > vision)
 			continue;
 
 		pair<Vec2, Vec2> checkAvaiable[]
@@ -371,7 +395,7 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, const vector
 bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& grahp, SolutionWay& result, float radius)
 {
     if(grahp.size() == 0)return false;
-	list<Vec2> around = findPointAvaiableAroud(start, grahp, radius);
+	list<Vec2> around = findPointAvaiableAroud(start, grahp, 1000.f, radius);
 	if (around.size() == 0)return false;
 
     for(auto& point : around)
@@ -403,7 +427,7 @@ bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& gr
         around.clear();
         for(auto& point : tempAround)
         {
-            list<Vec2> aroundIn = findPointAvaiableAroud(point, grahp, radius);
+            list<Vec2> aroundIn = findPointAvaiableAroud(point, grahp, 1000.f, radius);
             if(std::find(aroundIn.begin(), aroundIn.end(), target) != aroundIn.end())
             {
                 result.push(point, target);

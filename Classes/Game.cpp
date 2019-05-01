@@ -482,6 +482,8 @@ shared_ptr<Player> Game::createAPlayer()
 
 void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
 {
+    if(!_player)return;
+    
     switch (keycode) {
         case cocos2d::EventKeyboard::KeyCode::KEY_W:
             handleMovePlayer(_player, Game::direction::UP);
