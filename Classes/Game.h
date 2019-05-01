@@ -67,7 +67,6 @@ private:
 	TMXTiledMap* _tileMap;
     GameMap* _linkMap;
     CharacterCreation* _playerCreation;
-    vector<CharacterCreation> _botCreations;
 
 	shared_ptr<Character> _objIsFollow;
 #if CHEAT
@@ -145,7 +144,6 @@ public:
     GameMap* getCurrentMap();
     void setPlayerCreation(const int& index);
     CharacterCreation* getPlayerCreation();
-    const vector<CharacterCreation>& getBotCreations() const;
     game_result getGameResult() const;
     
 private:

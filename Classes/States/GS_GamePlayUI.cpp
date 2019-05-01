@@ -69,8 +69,10 @@ bool GS_GamePlayUI::init()
     _optionPage = GS_OptionPage::create();
     _optionPage->setColorUI(Color3B::WHITE);
     _optionPage->setOpacity(0);
+    _optionPage->setBarVisible(true);
     this->addChild(_optionPage, Game::layer::OPTION);
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+
     
 #if CHEAT
     string F1 = "F1: jump to revival position\n";

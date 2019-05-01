@@ -30,6 +30,7 @@ public:
     
     bool init() override;
     void GoToMap(const int& index, const int& character);
-	void GoToSidePage(const int& index);
+    void GoToSidePage(const int& index);
+    int getIndexPageViewGlobal() const;
     GS_OptionPage* _optionPage;
 };

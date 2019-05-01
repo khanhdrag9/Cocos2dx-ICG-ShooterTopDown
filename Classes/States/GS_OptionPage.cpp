@@ -10,6 +10,7 @@
 #include "../Game.h"
 #include "../Resource/ResourceManager.h"
 #include "../Characters/Player.h"
+#include "PopupInGame.h"
 
 bool GS_OptionPage::init()
 {
@@ -25,11 +26,7 @@ bool GS_OptionPage::init()
     
     _colorUI = Color3B::BLACK;
     //option
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _option = ui::Button::create("OptionAssets/optionFill.png");
-#else
-    _option = ui::Button::create("optionFill.png");
-#endif
     _option->setColor(_colorUI);
     _option->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     _option->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height));
@@ -38,15 +35,11 @@ bool GS_OptionPage::init()
         if(type == ui::Widget::TouchEventType::ENDED)
             GoToOption();
     });
-    this->addChild(_option);
+    this->addChild(_option, 3);
     
     bool volumnIsEnable = game->isEnableVolumn();
     game->setEnableVolunm(volumnIsEnable);
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _volumn = ui::Button::create("OptionAssets/volumnOn.png");
-#else
-    _volumn = ui::Button::create("volumnOn.png");
-#endif
     _volumn->setColor(_colorUI);
     _volumn->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     _volumn->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height * 0.9));
@@ -55,24 +48,16 @@ bool GS_OptionPage::init()
         if(type == ui::Widget::TouchEventType::ENDED)
             this->modifyVolumn();
     });
-    this->addChild(_volumn);
+    this->addChild(_volumn, 3);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _disbleVolumn = Sprite::create("OptionAssets/volumnOff.png");
-#else
-    _disbleVolumn = Sprite::create("volumnOff.png");
-#endif
     _disbleVolumn->setColor(_colorUI);
     _disbleVolumn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _disbleVolumn->setVisible(!game->isEnableVolumn());
     _volumn->addChild(_disbleVolumn);
     _volumn->setVisible(!volumnIsEnable);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _about = ui::Button::create("OptionAssets/about.png");
-#else
-    _about = ui::Button::create("about.png");
-#endif
     _about->setColor(_colorUI);
     _about->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     _about->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height * 0.8));
@@ -81,15 +66,11 @@ bool GS_OptionPage::init()
         if(type == ui::Widget::TouchEventType::ENDED)
             GoToAbout();
     });
-    this->addChild(_about);
+    this->addChild(_about, 3);
     _about->setVisible(_volumn->isVisible());
     
     //Back btn
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _back = ui::Button::create("OptionAssets/back.png");
-#else
-    _back = ui::Button::create("back.png");
-#endif
     _back->setColor(_colorUI);
     _back->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
     _back->setPosition(Vec2(origin.x, origin.y + screenSize.height));
@@ -98,7 +79,67 @@ bool GS_OptionPage::init()
         if(type == ui::Widget::TouchEventType::ENDED)
             Back();
     });
-    this->addChild(_back);
+    this->addChild(_back, 3);
+    
+    //Bar
+    _bar = Sprite::create("OptionAssets/Bar.png");
+    _bar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+    _bar->setPosition(center.x, origin.y + screenSize.height);
+    _bar->setScale(1, 0.5);
+    _bar->setOpacity(225);
+    _bar->setColor(Color3B(7, 71, 45));
+    _bar->setVisible(false);
+    this->addChild(_bar, 0);
+    
+    //Popup exit
+    _popupExit = Sprite::create("OptionAssets/Popup.png");
+    _popupExit->setPosition(center.x, origin.y + screenSize.height * 0.6f);
+    _popupExit->setOpacity(235);
+    _popupExit->setVisible(false);
+    this->addChild(_popupExit);
+    
+    string font = resMgr->at(res::define::FONT_KENVECTOR_FUTURE_THIN);
+    Size popupSize = _popupExit->getContentSize();
+    _contentExit = Label::createWithTTF("", font, 30);
+    _contentExit->setPosition(popupSize.width * 0.5f, popupSize.height * 0.6);
+    _popupExit->addChild(_contentExit, 1);
+    
+    ui::Button* okBtn = ui::Button::create(resMgr->at(res::define::BTN));
+    okBtn->setPosition(Vec2(popupSize.width * 0.95, 0));
+    okBtn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+    okBtn->setScale(0.6);
+    okBtn->addTouchEventListener([](Ref*, ui::Widget::TouchEventType type){
+        if(type == ui::Widget::TouchEventType::ENDED)
+        {
+            Director::getInstance()->end();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+            exit(0);
+#endif
+        }
+    });
+    okBtn->setTitleText("YES");
+    okBtn->setTitleFontName(font);
+    okBtn->setTitleFontSize(60);
+    okBtn->setColor(Color3B(146, 153, 163));
+    _popupExit->addChild(okBtn);
+    
+    ui::Button* cancelBtn = ui::Button::create(resMgr->at(res::define::BTN));
+    cancelBtn->setPosition(Vec2(popupSize.width * 0.05, 0));
+    cancelBtn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    cancelBtn->setScale(0.6);
+    cancelBtn->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
+        if(type == ui::Widget::TouchEventType::ENDED)
+        {
+            this->_popupVisible = false;
+            this->_popupExit->setVisible(_popupVisible);
+        }
+    });
+    cancelBtn->setTitleText("NO");
+    cancelBtn->setTitleFontName(font);
+    cancelBtn->setTitleFontSize(60);
+    _popupExit->addChild(cancelBtn);
+    
+    _popupVisible = false;
     
     return true;
 }
@@ -132,6 +173,7 @@ void GS_OptionPage::Back()
         Layer* labelMenu = dynamic_cast<Layer*>(this->getScene()->getChildByTag(Game::layer::GAMELABEL));\
         if(labelMenu)
             game->setCurrentState(labelMenu);
+        this->setColorUI(Color3B::BLACK);
     }
     else if(tag == Game::layer::GAMEPLAY)
     {
@@ -139,6 +181,12 @@ void GS_OptionPage::Back()
 //        if(game->isEnableVolumn())
 //            game->setEnableVolunm(true);
         game->getPlayer()->destroy();
+    }
+    else if(tag == Game::layer::GAMELABEL)
+    {
+        _contentExit->setString("Are you sure you want to exit?");
+        _popupVisible = true;
+        _popupExit->setVisible(_popupVisible);
     }
 }
 
@@ -150,4 +198,11 @@ void GS_OptionPage::setColorUI(Color3B color)
     _disbleVolumn->setColor(_colorUI);
     _about->setColor(_colorUI);
     _back->setColor(_colorUI);
+}
+
+void GS_OptionPage::setBarVisible(bool visible, Color3B color)
+{
+    _bar->setVisible(visible);
+    if(color != Color3B(0,0,0))
+        _bar->setColor(color);
 }

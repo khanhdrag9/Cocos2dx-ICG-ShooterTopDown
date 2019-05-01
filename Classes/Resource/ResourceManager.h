@@ -19,4 +19,5 @@ public:
     const std::string& at(const res::define& name) const;
     vector<CharacterCreation>& getListCharacterCreation();
     map<res::define, BulletCreation>& getListBulletCreation();
+    void clear();
 };

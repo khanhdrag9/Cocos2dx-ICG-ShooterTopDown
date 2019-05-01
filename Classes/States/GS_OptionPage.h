@@ -9,6 +9,12 @@ class GS_OptionPage : public Layer
     ui::Button* _about;
     ui::Button* _back;
     Color3B _colorUI;
+    Sprite* _bar;
+    
+    Sprite* _popupExit;
+    Label* _contentExit;
+    
+    CC_SYNTHESIZE_READONLY(bool, _popupVisible, PopupVisible);
 private:
     bool init() override;
     
@@ -19,4 +25,5 @@ private:
 public:
     CREATE_FUNC(GS_OptionPage);
     void setColorUI(Color3B color);
+    void setBarVisible(bool visible, Color3B color = Color3B(0,0,0));
 };

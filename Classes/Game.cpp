@@ -61,6 +61,9 @@ Game::~Game()
 
 	_keyIsHolds.clear();*/
 	releaseGamePlay();
+    _currentState = nullptr;
+    _listMaps.clear();
+    ResourceManager::getInstance()->clear();
 }
 
 void Game::init()
@@ -923,11 +926,6 @@ void Game::setPlayerCreation(const int& index)
 CharacterCreation* Game::getPlayerCreation()
 {
     return _playerCreation;
-}
-
-const vector<CharacterCreation>& Game::getBotCreations() const
-{
-    return _botCreations;
 }
 
 Game::game_result Game::getGameResult() const

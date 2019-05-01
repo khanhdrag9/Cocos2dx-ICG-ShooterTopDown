@@ -30,7 +30,7 @@ ResourceManager::ResourceManager()
     _resMap[res::define::MAP3] = "Map/Map3.tmx";
     
     //UI
-    _resMap[res::define::BTN_PLAY] = "Map/MapImage/ButtonPlay.png";
+    _resMap[res::define::BTN] = "OptionAssets/Button.png";
     _resMap[res::define::FONT_KENVECTOR_FUTURE_THIN] = "Assets/Bonus/kenvector_future_thin.ttf";
     _resMap[res::define::FONT_ARIAL] = "fonts/arial.ttf";
     
@@ -85,7 +85,7 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
-    _resMap.clear();
+    clear();
 }
 
 const std::string& ResourceManager::at(const res::define& name) const
@@ -101,4 +101,11 @@ vector<CharacterCreation>& ResourceManager::getListCharacterCreation()
 map<res::define, BulletCreation>& ResourceManager::getListBulletCreation()
 {
     return _listBulletCreations;
+}
+
+void ResourceManager::clear()
+{
+    _resMap.clear();
+    _listBulletCreations.clear();
+    _listCharacterCreations.clear();
 }

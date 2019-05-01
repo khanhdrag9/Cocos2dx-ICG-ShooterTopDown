@@ -62,7 +62,8 @@ bool GS_GameMenu::init()
     touchlistner->onTouchBegan = [this](Touch* touch, Event*){ return true;};
     touchlistner->onTouchEnded = [this](Touch* touch, Event*)
     {
-        this->GoToPickMap();
+        if(!_optionPage->getPopupVisible())
+            this->GoToPickMap();
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchlistner, this);
 
@@ -75,6 +76,10 @@ void GS_GameMenu::GoToPickMap()
         if(_pickMapPage)
         {
             _pickMapPage->setVisible(true);
+            if(_pickMapPage->getIndexPageViewGlobal() == 0)
+                _optionPage->setColorUI(Color3B::WHITE);
+            else
+                _optionPage->setColorUI(Color3B::BLACK);
             Game::getInstance()->setCurrentState(_pickMapPage);
         }
         else

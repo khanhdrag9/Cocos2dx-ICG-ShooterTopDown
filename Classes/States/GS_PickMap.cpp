@@ -147,11 +147,7 @@ bool GS_PickMap::init()
 	Button* btnNextPage[2];
 	for (int i = 0; i < 2; i++)
 	{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 		btnNextPage[i] = Button::create("OptionAssets/nextPage.png");
-#else
-        btnNextPage[i] = Button::create("nextPage.png");
-#endif
 		btnNextPage[i]->setScale(0.25f);
 		btnNextPage[i]->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type) {
 			if (type == Widget::TouchEventType::ENDED)
@@ -180,7 +176,7 @@ bool GS_PickMap::init()
 	
 
     //Play btn
-    Button* play = Button::create(resMgr->at(res::define::BTN_PLAY));
+    Button* play = Button::create(resMgr->at(res::define::BTN));
     play->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
         if(type == Widget::TouchEventType::ENDED)
         {
@@ -194,6 +190,11 @@ bool GS_PickMap::init()
     play->setPosition(Vec2(center.x, screenSize.height * 0.1f));
     play->setScale(1, 0.8);
     this->addChild(play);
+    
+    Label* playLabel = Label::createWithTTF("PLAY", fontTitle, 60);
+    Size playBtnSize = play->getContentSize();
+    playLabel->setPosition(playBtnSize.width / 2.f, playBtnSize.height / 2.f);
+    play->addChild(playLabel);
     
     
     auto tileMap = TMXTiledMap::create("Map/Map2.tmx");
@@ -243,4 +244,9 @@ void GS_PickMap::GoToSidePage(const int& index)
     }
 
 	_pageViewGlobal->scrollToItem(index);
+}
+
+int GS_PickMap::getIndexPageViewGlobal() const
+{
+    return (int)_pageViewGlobal->getCurrentPageIndex();
 }

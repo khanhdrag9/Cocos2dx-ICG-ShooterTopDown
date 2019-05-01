@@ -19,19 +19,20 @@ bool PopupInGame::init()
     if(!Layer::init())
         return false;
     
-    auto resMgr = ResourceManager::getInstance();
+    Size sz = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    Vec2 center = Vec2(sz.width / 2.f + origin.x, sz.height / 2.f + origin.y);
     
-    auto bg = Sprite::create(resMgr->at(res::define::IMG_BLACK));
-    bg->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
-    bg->setOpacity(150);
-    this->addChild(bg);
-    
-    //popup here
-    auto backtoHomeMenu = MenuItemFont::create("Home", CC_CALLBACK_0(Game::backToHomeMenu, Game::getInstance()));
-    
-    auto menu = Menu::create(backtoHomeMenu, NULL);
-    
-    this->addChild(menu);
+    auto sprite = Sprite::create("OptionAssets/Popup.png");
+    sprite->setPosition(center);
+    sprite->setOpacityModifyRGB(200);
+//    sprite->setColor(Color3B(61, 37,38));
+    this->addChild(sprite);
     
     return true;
+}
+
+void PopupInGame::setText(const string &text)
+{
+    
 }
