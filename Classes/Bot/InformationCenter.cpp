@@ -207,14 +207,19 @@ void InformationCenter::update(float dt)
 
 		if (bot.isFinish && bot.isReady)	//start thread
 		{
+#if DEBUG_GRAHP
+            auto characterIsViewed = Game::getInstance()->getCurrentTargetView();
+            if(&(*characterIsViewed) == &(*bot.bot))
+            {
+                _canMovePointDrawer->clear();
+            }
+#endif
+            
 			Vec2 botPosition = bot.bot->_sprite->getPosition();
 			bot.isFinish = false;
 			bot.isReady = false;
-			auto lamda = [this](Vec2 position, Vec2 target, BotFindWay* bf) -> queue<Vec2>
+			auto lamda = [&](Vec2 position, Vec2 target, BotFindWay* bf) -> queue<Vec2>
 			{
-#if DEBUG_GRAHP
-                _canMovePointDrawer->clear();
-#endif
 				float radius = 0.f;
 				if (bf)
 				{
@@ -225,7 +230,7 @@ void InformationCenter::update(float dt)
                 vector<Vec2> grahpAvaiable;
                 for(auto p : _graph){grahpAvaiable.push_back(p);}
 				grahpAvaiable.push_back(target);
-				//std::random_shuffle(grahpAvaiable.begin(), grahpAvaiable.end());
+				
 				SolutionWay solutions;
 				findWayToPoint(position, target, grahpAvaiable, solutions, radius);
                 auto listPoints = solutions.findWayMin(target);
@@ -242,7 +247,8 @@ void InformationCenter::update(float dt)
 				return way;
 			};
 
-            Vec2 target = _graph.at(random(0, (int)_graph.size() - 1));
+            std::random_shuffle(_graph.begin(), _graph.end());
+            Vec2 target = *_graph.begin();
 //            Vec2 target = _graph.at(86);
             bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
             lamda(botPosition, target, &bot);
@@ -252,19 +258,7 @@ void InformationCenter::update(float dt)
 		{
 			auto way = bot.task.get();
             bot.isThreadAvaiable = false;
-            
-#if DEBUG_GRAHP
-            queue<Vec2> queue = way;
-            while (queue.size() > 0)
-            {
-                Vec2 point1 = queue.front();
-                queue.pop();
-                if(queue.size() > 0)
-                {
-                    _canMovePointDrawer->drawLine(point1, queue.front(), Color4F::GREEN);
-                }
-            }
-#endif
+
 			//Move Bot
 			if (way.size() == 0)
 			{
@@ -287,6 +281,30 @@ void InformationCenter::update(float dt)
 		if (bot.status == statusBot::WALK)
 		{
 			std::lock_guard<mutex> guard(_m);
+            
+#if DEBUG_GRAHP
+            auto characterIsViewed = Game::getInstance()->getCurrentTargetView();
+            if(&(*characterIsViewed) == &(*bot.bot))
+            {
+//                _canMovePointDrawer->clear();
+                auto queue = bot.commands;
+                
+                while (queue.size() > 1)
+                {
+                    if(auto moveTo = dynamic_pointer_cast<CommandMoveTo>(queue.front()))
+                    {
+                        Vec2 point1 = moveTo->getTarget();
+                        queue.pop();
+                        if(auto moveTo2 = dynamic_pointer_cast<CommandMoveTo>(queue.front()))
+                        {
+                            Vec2 point2 = moveTo2->getTarget();
+                            _canMovePointDrawer->drawLine(point1, point2, Color4F::GREEN);
+                        }
+                    }
+     
+                }
+            }
+#endif
 
 			if (bot.commands.size() > 0)
 			{

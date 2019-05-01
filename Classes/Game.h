@@ -92,7 +92,10 @@ private:
     bool _enableVolumn;
     game_result _result;
     bool _isEndGame;
+    bool _outGame;
     float _countTime = 0.f;
+    condition_variable _threadSightAvaiable;
+    bool _threadSightReady;
     mutex _m;
 public:
     Game();
@@ -160,6 +163,7 @@ private:
     void createSight();
     
     void updatePhysics(float dt);
+    void updateAvaiableSight();
 	void updateSight(float dt);
     
 	void usePopupInGame(bool push);

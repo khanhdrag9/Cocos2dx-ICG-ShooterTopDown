@@ -214,9 +214,11 @@ void GS_PickMap::GoToMap(const int& index, const int& character)
     auto listCreations = ResourceManager::getInstance()->getListCharacterCreation();
     vector<CharacterCreation> botCreations{
         listCreations[random(0, (int)listCreations.size() - 1)],
+        listCreations[random(0, (int)listCreations.size() - 1)],
+        listCreations[random(0, (int)listCreations.size() - 1)],
         listCreations[random(0, (int)listCreations.size() - 1)]
     };
-    BotManager::getInstance()->setBotCreations(listCreations);
+    BotManager::getInstance()->setBotCreations(botCreations);
     
     Scene* gameplay = GS_LoadToGamePlay::createScene();
     this->setVisible(false);

@@ -84,6 +84,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         glview = GLViewImpl::createWithRect("ShooterTopDown", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+//        glview = GLViewImpl::createWithFullScreen("ShooterTopDown");
 #else
         glview = GLViewImpl::create("ShooterTopDown");
 #endif

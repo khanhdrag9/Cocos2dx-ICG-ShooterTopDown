@@ -48,6 +48,9 @@ _enableVolumn(true)
 , _playerCreation(nullptr)
 , _result(game_result::NONE)
 , _isEndGame(true)
+, _outGame(true)
+, _threadSightReady(false)
+, _countTime(0.f)
 {
     
 }
@@ -88,10 +91,18 @@ void Game::initGamePlay()
 	InformationCenter::getInstance()->startThreads();
     _result = game_result::NONE;
     _isEndGame = false;
+    _outGame = false;
+    _countTime = 0.f;
 }
 
 void Game::update(float dt)
 {
+    if(_outGame)
+    {
+        releaseGamePlay();
+        Director::getInstance()->popScene();
+    }
+    
     if(_player == nullptr)
     {
         _result = game_result::LOSE;
@@ -114,7 +125,8 @@ void Game::update(float dt)
     }
     
     handleKeyboardHold();
-    
+
+    updateAvaiableSight();
     thread sight([this](){
         this->updateSight(0);
     });
@@ -153,18 +165,25 @@ void Game::update(float dt)
 
 //    updateSight(dt);
 #if DEBUG_ENEMY
-	for (int i = 0; i < BotManager::getInstance()->countBots(); i++)
-	{
-		auto obj = BotManager::getInstance()->getBot(i);
-		_sightNode->drawLine(obj->_sprite->getPosition(), _player->_sprite->getPosition(), Color4F::RED);
-		if (auto circleBody = dynamic_pointer_cast<RigidBodyCircle>(obj->_rigidBody))
-			_sightNode->drawCircle(obj->_sprite->getPosition(), circleBody->getRadius(), 0, 360, false, Color4F::RED);
-	}
+    if(_player)
+        for (int i = 0; i < BotManager::getInstance()->countBots(); i++)
+        {
+            auto obj = BotManager::getInstance()->getBot(i);
+            _sightNode->drawLine(obj->_sprite->getPosition(), _player->_sprite->getPosition(), Color4F::RED);
+            if (auto circleBody = dynamic_pointer_cast<RigidBodyCircle>(obj->_rigidBody))
+                _sightNode->drawCircle(obj->_sprite->getPosition(), circleBody->getRadius(), 0, 360, false, Color4F::RED);
+        }
 #endif
 
 	updatePhysics(dt);
     ObjectsPool::getInstance()->update();
-    sight.join();
+
+    {
+        std::unique_lock<mutex> lock(_m);
+        _threadSightAvaiable.wait(lock, [this](){return _threadSightReady;});
+        sight.join();
+    }
+    
 }
 
 void Game::setCurrentState(Layer* layer)
@@ -239,8 +258,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
             //_listVision.clear();    //disble vision
             if(_listVision.size() > 0)
             {
-                for (auto& vision : _listVision)
-                    vision->stop();
+                _listVision.clear();
             }
             else
             {
@@ -414,10 +432,8 @@ void Game::releaseGamePlay()
         _fogClip->removeFromParentAndCleanup(true);
         _fogClip = nullptr;
     }
-    
-    for(auto& vision : _listVision)
-        vision->stop();
-    //_listVision.clear();
+
+    _listVision.clear();
     
     _revivalPosition.clear();
     _isPopupInGameVisible = false;
@@ -435,7 +451,7 @@ void Game::releaseGamePlay()
     {
         _player->releaseCommands();
         _player->destroy();
-        //_player = nullptr;
+        _player = nullptr;
     }
 	
 	if (GS_GamePlay* gameplayLayer = dynamic_cast<GS_GamePlay*>(_currentState))
@@ -730,23 +746,23 @@ Vec2 Game::getRandomPosition() const
 	return _revivalPosition.at(ranIndex);
 }
 
-void Game::updateSight(float dt)
+void Game::updateAvaiableSight()
 {
     //delete vision is marked delete
+    std::lock_guard<mutex> lock(_m);
+    _threadSightReady = false;
+    for (auto i = _listVision.begin(); i != _listVision.end();)
     {
-        std::lock_guard<mutex> lock(_m);
-        for (auto i = _listVision.begin(); i != _listVision.end();)
-        {
-            auto& vision = (*i);
-            if (vision->getObject()->isDestroyed())
-                vision->stop();
-            if (vision->avaibleToDelete())
-                i = _listVision.erase(i);
-            else
-                ++i;
-        }
+        auto& vision = (*i);
+        if (vision->getObject()->isDestroyed())
+            i = _listVision.erase(i);
+        else
+            ++i;
     }
-    
+}
+
+void Game::updateSight(float dt)
+{
     if(!_sightNode)return;
     
 #if DEBUG_SIGHT
@@ -768,6 +784,9 @@ void Game::updateSight(float dt)
         vision->update(_sightNode);
     }
     
+    std::lock_guard<mutex> lock(_m);
+     _threadSightReady = true;
+    _threadSightAvaiable.notify_one();
 }
 
 void Game::pushView(shared_ptr<Vision> vision)
@@ -850,10 +869,7 @@ void Game::resetGame()
 
 void Game::backToHomeMenu()
 {
-    releaseGamePlay();
-//    auto home = GS_GameMenu::createScene();
-    //Director::getInstance()->replaceScene(TransitionFade::create(0.5, home));
-    Director::getInstance()->popScene();
+    _outGame = true;
 }
 
 void Game::setEnableVolunm(bool enable)

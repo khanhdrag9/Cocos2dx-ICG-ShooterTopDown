@@ -19,7 +19,6 @@ const float Vision::origin_vision = 500.f;
 void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
 {
 	threadGetPoint();
-//    _threadRun = true;
 	Vec2 objPos = _obj->_sprite->getPosition();
     if(_isDraw)
     {
@@ -46,57 +45,29 @@ void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
         if(clipper)
             clipper->setStencil(draw);
     }
-//    _threadRun = false;
 }
 
 void Vision::threadGetPoint()
 {
-//    while(!_isStop)
-	{
-//        if (!_threadRun)continue;
-
-		getPointIntersect();
-
-		//while (!_m.try_lock());
-		{
-			std::lock_guard<mutex> guard(_m);
-			_points2.swap(_points);
-//            if(_isStop)break;
-		}
-
-//        int dt = int(Director::getInstance()->getDeltaTime() * 1000.f);
-//        std::chrono::milliseconds ms(dt);
-//        std::this_thread::sleep_for(ms);
-	}
-
-//    _avaiableToDelete = true;
+    getPointIntersect();
+    _points2.swap(_points);
 }
 
 Vision::Vision():
 	_obj(nullptr),
 	_isDraw(false),
-	_isStop(false),
-	_threadRun(false),
-	_avaiableToDelete(false),
 	_vision(origin_vision)
 {}
 
 Vision::Vision(shared_ptr<Character> obj):
 _obj(obj),
 _isDraw(false),
-_isStop(false),
-_threadRun(false),
-_avaiableToDelete(false),
 _vision(origin_vision)
 {
-//    _threadVision = thread(&Vision::threadGetPoint, this);
-	//_threadVision.detach();
-	_threadRun = true;
 }
 
 Vision::~Vision()
 {
-	_threadRun = false;
 	_obj = nullptr;
 }
 
@@ -108,24 +79,6 @@ void Vision::setDraw(bool draw)
 bool Vision::isDraw()
 {
     return _isDraw;
-}
-
-bool Vision::avaibleToDelete() const
-{
-    return _avaiableToDelete;
-//    return false;
-}
-
-void Vision::stop()
-{
-//    if (_avaiableToDelete)return;
-    _avaiableToDelete = true;
-	_threadRun = false;
-	_isStop = true;
-//    while (_avaiableToDelete == false);
-//    if(_threadVision.joinable())
-//        _threadVision.join();
-	
 }
 
 shared_ptr<Character> Vision::getObject()

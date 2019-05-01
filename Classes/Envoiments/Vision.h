@@ -12,10 +12,6 @@ protected:
 	vector<Vec2> _points;
 	vector<Vec2> _points2;
 	virtual void threadGetPoint();
-	bool _isStop;
-	bool _avaiableToDelete;
-	atomic_bool _threadRun;
-	thread _threadVision;
 	void getPointIntersect();
 	float _vision;
 public:
@@ -25,8 +21,6 @@ public:
     virtual void update(DrawNode* draw, ClippingNode* clipper = nullptr);
     void setDraw(bool draw);
     bool isDraw();
-	bool avaibleToDelete() const;
-	void stop();
 	shared_ptr<Character> getObject();
 
 	static const float origin_vision;
