@@ -111,10 +111,18 @@ bool GS_OptionPage::init()
     okBtn->addTouchEventListener([](Ref*, ui::Widget::TouchEventType type){
         if(type == ui::Widget::TouchEventType::ENDED)
         {
-            Director::getInstance()->end();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-            exit(0);
-#endif
+            auto tagCurrentState = Game::getInstance()->getCurrentState()->getTag();
+            if(tagCurrentState == Game::layer::GAMEPLAY)
+            {
+                Game::getInstance()->getPlayer()->destroy();
+            }
+            else if(tagCurrentState == Game::layer::GAMELABEL)
+            {
+                Director::getInstance()->end();
+    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+                exit(0);
+    #endif
+            }
         }
     });
     okBtn->setTitleText("YES");
@@ -180,7 +188,10 @@ void GS_OptionPage::Back()
 //        game->backToHomeMenu();
 //        if(game->isEnableVolumn())
 //            game->setEnableVolunm(true);
-        game->getPlayer()->destroy();
+//        game->getPlayer()->destroy();
+        _contentExit->setString("You will lose if you leave now!\nAre you sure?");
+        _popupVisible = true;
+        _popupExit->setVisible(_popupVisible);
     }
     else if(tag == Game::layer::GAMELABEL)
     {
