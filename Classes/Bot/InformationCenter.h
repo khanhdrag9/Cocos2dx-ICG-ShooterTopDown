@@ -30,6 +30,20 @@ public:
 		COLLISION,
         SHOOT
 	};
+    
+    struct DetectPlayer
+    {
+        Vec2 position;
+        bool isDetected;
+        bool statedGo;
+        
+        DetectPlayer():
+        isDetected(false),
+        statedGo(false),
+        position(Vec2::ZERO)
+        {}
+    };
+
 	struct BotFindWay
 	{
 		bool isFinish;
@@ -40,6 +54,8 @@ public:
 		future<queue<Vec2>> task;
 		pair<float, float> countDetect;
 		queue<shared_ptr<Command>> commands;
+        Vec2 targetGo;
+        DetectPlayer detectPlayer;
 		BotFindWay() {}
 		BotFindWay(shared_ptr<Bot> b):
 			bot(b),
@@ -48,6 +64,7 @@ public:
 			, isThreadAvaiable(false)
 			, status(statusBot::NONE)
 			, countDetect(0.f, 10.f)
+            , targetGo(Vec2::ZERO)
 		{}
 
 		void clear()
@@ -67,7 +84,6 @@ public:
 	};
 
 private:
-	//vector<shared_ptr<Bot>> _listBot;
 	vector<BotFindWay> _listBot;
 	vector<Vec2> _graph;
 	
@@ -77,8 +93,8 @@ private:
 #endif
 
 	bool _isStop;
-	//thread _threadDetectAround;
 	mutex _m;
+    DetectPlayer _detectPlayer;
 
     void threadAI();
 public:

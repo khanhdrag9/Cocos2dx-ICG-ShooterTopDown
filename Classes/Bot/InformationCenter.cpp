@@ -112,6 +112,7 @@ const vector<list<Vec2>>& SolutionWay::getWays() const
 InformationCenter::InformationCenter():
 	_isStop(false)
 {
+    _detectPlayer = DetectPlayer();
 #if DEBUG_GRAHP
 	_draw = DrawNode::create();
 	_draw->retain();
@@ -185,13 +186,28 @@ void InformationCenter::update(float dt)
 			continue;
 		}
         
-        if(auto body = dynamic_pointer_cast<RigidBodyCircle>(bot.bot->_rigidBody))
+        if(bot.detectPlayer.isDetected && !bot.detectPlayer.statedGo)
+        {
+            bot.targetGo = bot.detectPlayer.position;
+            bot.detectPlayer.statedGo = true;
+            bot.isReady = true;
+        }
+        else if(auto body = dynamic_pointer_cast<RigidBodyCircle>(bot.bot->_rigidBody))  //check player
         {
             vector<Vec2> arrayFind {playerPosition};
             auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision, body->getRadius() / 2.f);
             if(checkPlayerAround.size() > 0)    //detect player in vision
             {
+                //notify for allbot
+                for(auto& botF : _listBot)
+                {
+                    botF.detectPlayer.isDetected = true;
+                    botF.detectPlayer.position = playerPosition;
+                }
+                
                 bot.status = statusBot::SHOOT;
+                _detectPlayer.isDetected = true;
+                _detectPlayer.position = playerPosition;
                 float rotation = getRotateForwardAPoint(bot.bot, checkPlayerAround.front());
                 bot.bot->_sprite->setRotation(rotation);
                 if(bot.bot->getMag()->canShoot())
@@ -200,6 +216,17 @@ void InformationCenter::update(float dt)
                 }
             }
         }
+        else if(bot.detectPlayer.statedGo)
+        {
+            bot.detectPlayer.statedGo = false;
+        }
+        else
+        {
+            bot.detectPlayer.isDetected = false;
+            bot.targetGo = Vec2::ZERO;
+            bot.status = statusBot::WALK;
+        }
+        
         
 
 		if (bot.isFinish && bot.isReady)	//start thread
@@ -245,8 +272,14 @@ void InformationCenter::update(float dt)
 				return way;
 			};
 
-            std::random_shuffle(_graph.begin(), _graph.end());
-            Vec2 target = *_graph.begin();
+            Vec2 target;
+            if(bot.targetGo == Vec2::ZERO)
+            {
+                std::random_shuffle(_graph.begin(), _graph.end());
+                target = *_graph.begin();
+            }
+            else
+                target = bot.targetGo;
 //            Vec2 target = _graph.at(86);
             bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
             lamda(botPosition, target, &bot);
@@ -261,6 +294,7 @@ void InformationCenter::update(float dt)
 			if (way.size() == 0)
 			{
                 bot.isReady = true;
+                bot.detectPlayer.position = Vec2::ZERO;
 			}
 			else
 			{
@@ -323,6 +357,7 @@ void InformationCenter::update(float dt)
 			{
 				bot.status = statusBot::NONE;
                 bot.isReady = true;
+                bot.detectPlayer.statedGo = false;
 			}
 		}
 

@@ -81,7 +81,8 @@ bool GS_GamePlayUI::init()
     string F4 = "F4: enable/disible light of vision\n";
     string F5 = "F5: change camera to anthor character\n";
     string F6 = "F6: kill player";
-    string text = F1 + F2 + F3 + F4 + F5 + F6;
+    string F7 = "F7: player becomes un/immortal";
+    string text = F1 + F2 + F3 + F4 + F5 + F6 + F7;
     
     Label* cheat = Label::createWithTTF(text.c_str(), font, 20);
     cheat->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);

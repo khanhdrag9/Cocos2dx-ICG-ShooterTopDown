@@ -45,6 +45,7 @@ protected:
     int _currentHP;
     BulletCreation* _bullet;
     string _dieEffect;
+    
 public:
     Sprite* _sprite;
 //    ParticleSystemQuad* _particle;
@@ -52,4 +53,8 @@ public:
     
     string _name;
     Character::type _type;
+    
+#if CHEAT
+    bool _isBatTu = false;
+#endif
 };

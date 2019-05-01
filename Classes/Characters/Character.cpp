@@ -144,6 +144,13 @@ int Character::getCurrentHP()
 
 void Character::decreHP(int decre)
 {
+#if CHEAT
+    if(_isBatTu)
+    {
+        _currentHP = _maxHP;
+        return;
+    }
+#endif
     _currentHP -= decre;
     if(_currentHP < 0)
     {

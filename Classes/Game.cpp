@@ -334,6 +334,9 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
         case cocos2d::EventKeyboard::KeyCode::KEY_F6:
             _player->destroy();
             break;
+        case cocos2d::EventKeyboard::KeyCode::KEY_F7:
+            _player->_isBatTu = !_player->_isBatTu;
+            break;
 #endif
         default:
             break;
