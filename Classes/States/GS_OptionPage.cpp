@@ -9,6 +9,7 @@
 #include "GS_GameMenu.h"
 #include "../Game.h"
 #include "../Resource/ResourceManager.h"
+#include "../Characters/Player.h"
 
 bool GS_OptionPage::init()
 {
@@ -134,9 +135,10 @@ void GS_OptionPage::Back()
     }
     else if(tag == Game::layer::GAMEPLAY)
     {
-        game->backToHomeMenu();
-        if(game->isEnableVolumn())
-            game->setEnableVolunm(true);
+//        game->backToHomeMenu();
+//        if(game->isEnableVolumn())
+//            game->setEnableVolunm(true);
+        game->getPlayer()->destroy();
     }
 }
 

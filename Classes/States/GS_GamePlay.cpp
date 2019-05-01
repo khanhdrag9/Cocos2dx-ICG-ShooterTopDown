@@ -13,6 +13,8 @@ GS_GamePlay::GS_GamePlay():
 GS_GamePlay::~GS_GamePlay()
 {
 	Game::getInstance()->releaseGamePlay();
+    if(Game::getInstance()->isEnableVolumn())
+        Game::getInstance()->setEnableVolunm(true);
 }
 
 cocos2d::Scene *GS_GamePlay::createScene()
@@ -59,16 +61,7 @@ bool GS_GamePlay::init()
 
 void GS_GamePlay::update(float dt)
 {
-   /* for (int i = 0; i < 5; ++i)
-    {
-        this->getScene()->getPhysicsWorld()->step(1 / 180.0f);
-    }*/
-    
     Game::getInstance()->update(dt);
-
-	/*if (test->get_id);
-	test = make_unique<thread>(&Game::updateSight, Game::getInstance(), dt);
-	test->join();*/
 }
 
 GS_GamePlayUI* GS_GamePlay::getUILayer() const

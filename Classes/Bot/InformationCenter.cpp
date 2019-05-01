@@ -164,33 +164,6 @@ void InformationCenter::startThreads()
 
 void InformationCenter::threadAI()
 {
-    while(!_isStop)
-    {
-
-		//for (auto begin = _listBot.begin(); begin != _listBot.end(); )
-		//{
-		//	shared_ptr<Bot> bot = *begin;
-		//	if (bot->isDestroyed() || !bot->_sprite)
-		//	{
-		//		begin = _listBot.erase(begin);
-		//		continue;
-		//	}
-
-		//	Vec2 botPosition = bot->_sprite->getPosition();
-		//	auto pointAround = findPointAvaiableAroud(botPosition, list<Vec2>());
-
-
-		//}
-
-
-		////sleep thread base on dt
-		//int dt = int(Director::getInstance()->getDeltaTime() * 1000.f);
-		//std::chrono::milliseconds ms(dt);
-		//std::this_thread::sleep_for(ms);
-    }
-    
-    //_listBot.clear();
-    //_graph.clear();
 }
 
 void InformationCenter::update(float dt)
@@ -220,6 +193,7 @@ void InformationCenter::update(float dt)
 			bot.isReady = false;
 			auto lamda = [&](Vec2 position, Vec2 target, BotFindWay* bf) -> queue<Vec2>
 			{
+                bf->isThreadAvaiable = true;
 				float radius = 0.f;
 				if (bf)
 				{
@@ -254,7 +228,7 @@ void InformationCenter::update(float dt)
             lamda(botPosition, target, &bot);
 		}
 
-		if (bot.isFinish && bot.isThreadAvaiable)
+		if (bot.isFinish && bot.isThreadAvaiable && bot.status != statusBot::WALK)
 		{
 			auto way = bot.task.get();
             bot.isThreadAvaiable = false;
@@ -336,6 +310,8 @@ void InformationCenter::update(float dt)
 				bot.commands.pop();
 			bot.bot->releaseCommands();
 		}
+        
+        
 
 		bot.bot->update(dt);
 		bot.countDetect.first += dt;
