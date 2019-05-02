@@ -95,6 +95,7 @@ private:
     float _countTime = 0.f;
     condition_variable _threadSightAvaiable;
     bool _threadSightReady;
+	thread _sight;
     mutex _m;
 public:
     Game();

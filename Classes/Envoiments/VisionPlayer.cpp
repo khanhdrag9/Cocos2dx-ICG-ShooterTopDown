@@ -26,6 +26,7 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 	vector<Vec2> temp = _points2;
 	for (auto body : Game::getInstance()->getRigidWord()->getListBodies())
 	{
+		if (!body)continue;
         if (body->getTag() != RigidBody::tag::ENEMY)continue;
         if (!body->getObject())continue;
         if (body->_object->getName() == constants::object_bullet_basic)continue;
@@ -74,10 +75,10 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
             {
 #if DEBUG_ENEMY
                 body->getObject()->_sprite->setVisible(true);
-#else
-#if VISIBLE_ENEMY
+#elif VISIBLE_ENEMY
                 body->getObject()->_sprite->setVisible(false);
-#endif
+#else
+				body->getObject()->_sprite->setVisible(true);
 #endif
             }
         }

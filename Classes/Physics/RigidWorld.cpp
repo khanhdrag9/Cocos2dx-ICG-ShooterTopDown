@@ -61,8 +61,12 @@ void RigidWorld::update(float dt)
             
             if(checkCollisionOther(x))
             {
-                if(x->_object)
-                    x->_object->_sprite->setPosition(currentObjPos);
+				if (x->_object)
+				{
+					x->_object->_sprite->setPosition(currentObjPos + (-1 * x->_velocity));
+					//x->_object->_sprite->setPosition(nextObjPos - x->_velocity * dt);
+					x->_velocity = Vec2::ZERO;
+				}
             }
             else
             {
@@ -95,7 +99,7 @@ bool RigidWorld::checkCollisionOther(shared_ptr<RigidBody> body)
                 {
                     shared_ptr<RigidBodyCircle> bodyCircle = dynamic_pointer_cast<RigidBodyCircle>(x);
                     Vec2 circlePos = bodyCircle->_object->_sprite->getPosition();
-                    if(body1->_rect.intersectsCircle(circlePos, bodyCircle->_radius))
+                    if(body1->_rect.intersectsCircle(circlePos, bodyCircle->_radius * 1.1f))
                     {
                         return onCollision(body1, bodyCircle);
                         //return true;
@@ -201,6 +205,7 @@ bool RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
 		{
 			bot->status = InformationCenter::statusBot::COLLISION;
 		}
+		obj2->releaseMoveCommands();
 	}
 	else if (body2->getTag() == RigidBody::tag::WALL && obj1)
 	{
@@ -209,6 +214,7 @@ bool RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
 		{
 			bot->status = InformationCenter::statusBot::COLLISION;
 		}
+		obj2->releaseMoveCommands();
 	}
 
 	return true;

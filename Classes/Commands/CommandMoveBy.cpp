@@ -60,4 +60,7 @@ void CommandMoveBy::update(float dt)
             _counttime+=dt;
         }
     }
+
+	if (_isFinished && object)
+		_velocity = Vec2(0, 0);
 }

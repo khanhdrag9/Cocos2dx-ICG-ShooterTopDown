@@ -130,9 +130,10 @@ void Game::update(float dt)
     handleKeyboardHold();
 
     updateAvaiableSight();
-    thread sight([this](){
+    /*_sight = thread([this](){
         this->updateSight(0);
-    });
+    });*/
+	updateSight(dt);
     
     //update properties ui
     if(auto gameplayer = dynamic_cast<GS_GamePlay*>(_currentState))
@@ -172,21 +173,22 @@ void Game::update(float dt)
         for (int i = 0; i < BotManager::getInstance()->countBots(); i++)
         {
             auto obj = BotManager::getInstance()->getBot(i);
-            _sightNode->drawLine(obj->_sprite->getPosition(), _player->_sprite->getPosition(), Color4F::RED);
-            if (auto circleBody = dynamic_pointer_cast<RigidBodyCircle>(obj->_rigidBody))
-                _sightNode->drawCircle(obj->_sprite->getPosition(), circleBody->getRadius(), 0, 360, false, Color4F::RED);
+            //_sightNode->drawLine(obj->_sprite->getPosition(), _player->_sprite->getPosition(), Color4F::RED);
+			if (auto circleBody = dynamic_pointer_cast<RigidBodyCircle>(obj->_rigidBody))
+				//  _sightNode->drawCircle(obj->_sprite->getPosition(), circleBody->getRadius(), 0, 360, false, Color4F::RED)
+			{
+			}
         }
 #endif
 
 	updatePhysics(dt);
     ObjectsPool::getInstance()->update();
 
-    {
+    /*{
         std::unique_lock<mutex> lock(_m);
         _threadSightAvaiable.wait(lock, [this](){return _threadSightReady;});
-        sight.join();
-    }
-    
+        _sight.join();
+    }*/
 }
 
 void Game::setCurrentState(Layer* layer)
@@ -253,6 +255,11 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
         case cocos2d::EventKeyboard::KeyCode::KEY_TAB:
             useKDATab(false);
             break;
+#if USE_TOUCH
+		case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
+			//_playerShoot = false;
+			break;
+#endif
 #if CHEAT
         case cocos2d::EventKeyboard::KeyCode::KEY_F1:
             _player->_sprite->setPosition(getRandomPosition());        //random rivavel position
@@ -268,7 +275,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
                 shared_ptr<Vision> playerVision = createView(_player, type_vision::VISION_PLAYER);
                 playerVision->setDraw(true);
                 
-                for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
+                /*for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
                 {
                     shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
 #if DEBUG_ENEMY
@@ -276,7 +283,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
 #else
                     botVision->setDraw(false);
 #endif
-                }
+                }*/
             }
             break;
         case cocos2d::EventKeyboard::KeyCode::KEY_F3:
@@ -298,7 +305,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
             else
             {
                 BotManager::getInstance()->initBots();
-                for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
+                /*for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
                 {
                     shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
 #if DEBUG_ENEMY
@@ -306,7 +313,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
 #else
 					botVision->setDraw(false);
 #endif
-                }
+                }*/
 
 				_objIsFollow = BotManager::getInstance()->getBot(0);
 				_currentIndexFollow = 0;
@@ -347,6 +354,15 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
 #if USE_TOUCH
 bool Game::handleTouchBegan(Touch* touch, Event* event)
 {
+	//for player
+	Vec2 point = touch->getLocation();
+	point = _currentState->convertToNodeSpace(point);
+	shared_ptr<Character> obj = _player;
+
+	if (obj)
+		updateAngle(obj, point);
+
+	_playerShoot = true;
     return true;
 }
 
@@ -359,11 +375,13 @@ void Game::handleTouchMoved(Touch* touch, Event* event)
     
     if(obj)
         updateAngle(obj, point);
+
+	_playerShoot = true;
 }
 
 void Game::handleTouchRelease(Touch* touch, Event* event)
 {
-    
+	_playerShoot = false;
 }
 #else
 bool Game::handleMouseBegan(EventMouse* event)
@@ -465,6 +483,7 @@ void Game::releaseGamePlay()
 		if (gameplayLayer->getUILayer())
 			gameplayLayer->getUILayer()->clear();
 	}
+
 }
 
 TMXTiledMap * Game::getTileMap() const
@@ -502,7 +521,7 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
             break;
 #if USE_TOUCH
         case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
-			_playerShoot = true;
+			//_playerShoot = true;
             break;
 #endif
         default:
@@ -726,7 +745,7 @@ void Game::createSight()
     shared_ptr<Vision> playerVision = createView(_player, type_vision::VISION_PLAYER);
     playerVision->setDraw(true);
     
-    for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
+    /*for(int i = 0; i < BotManager::getInstance()->countBots(); i++)
     {
         shared_ptr<Vision> botVision = createView(BotManager::getInstance()->getBot(i), type_vision::VISION_ENEMY);
 #if DEBUG_ENEMY
@@ -734,7 +753,7 @@ void Game::createSight()
 #else
 		botVision->setDraw(false);
 #endif
-    }
+    }*/
     
 #if DEBUG_SIGHT
     _debugWall = DrawNode::create();
@@ -787,7 +806,14 @@ void Game::updateSight(float dt)
     _sightNode->clear();
     
 	//update vision
-    for(auto& vision : _listVision)
+	list<shared_ptr<Vision>> visionTemp;
+	{
+		lock_guard<mutex> lock(_m);
+		for (auto vision : _listVision)visionTemp.push_back(vision);
+	}
+
+    //for(auto& vision : _listVision)
+	for (auto& vision : visionTemp)
     {
         vision->update(_sightNode);
     }
@@ -810,16 +836,17 @@ shared_ptr<Vision> Game::createView(shared_ptr<Character> object, type_vision ty
 	{
 	case type_vision::VISION_PLAYER:
 		vision = make_shared<VisionPlayer>(object);
+		_listVision.push_back(vision);
 		break;
 	case type_vision::VISION_ENEMY:
-		vision = make_shared<VisionEnemy>(object);
+		//vision = make_shared<VisionEnemy>(object);
 		break;
 	default:
 		vision = make_shared<Vision>(object);
 		break;
 	}
 	
-    _listVision.push_back(vision);
+    //_listVision.push_back(vision);
     return _listVision.back();
 }
 

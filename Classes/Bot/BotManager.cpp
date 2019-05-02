@@ -69,7 +69,7 @@ void BotManager::update(float dt)
 void BotManager::initBots()
 {
 	int countEnemies = (int)_botCreations.size();
-
+	//int countEnemies = 1;
 	//get position to init bots
 	Vec2 playerPosition = Game::getInstance()->getPlayer()->_sprite->getPosition();
 	vector<Vec2> history;
@@ -90,7 +90,7 @@ void BotManager::initBots()
 		Game::getInstance()->getRigidWord()->createRigidBodyCircle(bot);
 		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
         bot->_sprite->setPosition(history[i]);
-//        bot->_sprite->setPosition(Vec2(192, 192));
+        //bot->_sprite->setPosition(Vec2(192, 192));
 
         bot->setWalk(true);
 

@@ -25,6 +25,7 @@ public:
     virtual void init(CharacterCreation* creation);
     virtual void update(float dt);
     void releaseCommands();
+	void releaseMoveCommands();
     
     virtual bool pushCommand(shared_ptr<Command>& command, bool replace = false);
     const string& getName() const;

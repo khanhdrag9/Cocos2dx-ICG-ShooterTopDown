@@ -46,7 +46,7 @@ bool GS_GameResult::init()
     player->setPosition(column1, yaxis);
     if(result == Game::game_result::LOSE)
     {
-        Sprite* x = Sprite::create("XLose.png");
+        Sprite* x = Sprite::create("CharacterAssets/XLose.png");
         x->setPosition(playerSize.width / 2.f, playerSize.height / 2.f);
         player->addChild(x, 3);
     }
@@ -66,7 +66,7 @@ bool GS_GameResult::init()
         
         if(result == Game::game_result::WIN)
         {
-            Sprite* x = Sprite::create("XLose.png");
+            Sprite* x = Sprite::create("CharacterAssets/XLose.png");
             Size enemySize = sprite->getContentSize();
             x->setPosition(enemySize.width / 2.f, enemySize.height / 2.f);
             sprite->addChild(x, 3);

@@ -58,23 +58,6 @@ void Character::update(float dt)
         destroy();
     if(_destroy)return;
         
-	for (auto& cmd : _commandQueue)
-		cmd->update(dt);
-}
-
-
-void Character::releaseCommands()
-{
-	_commandQueue.clear();
-}
-
-
-bool Character::pushCommand(shared_ptr<Command>& command, bool replace)
-{
-	if (_destroy || _currentHP <= 0)return false;
-    
-   // command->registAnObject(shared_from_this(), _commandQueue);
-	//release cmd has finished
 	for (auto begin = _commandQueue.begin(); begin != _commandQueue.end();)
 	{
 		shared_ptr<Command> cmd = *begin;
@@ -85,6 +68,56 @@ bool Character::pushCommand(shared_ptr<Command>& command, bool replace)
 		else
 			++begin;
 	}
+
+	for (auto& cmd : _commandQueue)
+		cmd->update(dt);
+}
+
+
+void Character::releaseCommands()
+{
+	_commandQueue.clear();
+}
+
+void Character::releaseMoveCommands()
+{
+	for (auto begin = _commandQueue.begin(); begin != _commandQueue.end(); ++begin)
+	{
+		shared_ptr<Command> cmd = *begin;
+		string cmdName = cmd->getName();
+		if (cmdName == constants::command_move_by_down ||
+			cmdName == constants::command_move_by_left ||
+			cmdName == constants::command_move_by_right ||
+			cmdName == constants::command_move_by_up ||
+			cmdName == constants::command_move_by_none ||
+			cmdName == constants::command_move_to)
+		{
+			//begin = _commandQueue.erase(begin);
+			cmd->setFinished(true);
+			_rigidBody->_velocity = Vec2::ZERO;
+		}
+		/*else
+			++begin;*/
+	}
+}
+
+
+bool Character::pushCommand(shared_ptr<Command>& command, bool replace)
+{
+	if (_destroy || _currentHP <= 0)return false;
+    
+   // command->registAnObject(shared_from_this(), _commandQueue);
+	//release cmd has finished
+	/*for (auto begin = _commandQueue.begin(); begin != _commandQueue.end();)
+	{
+		shared_ptr<Command> cmd = *begin;
+		if (cmd->isFinished())
+		{
+			begin = _commandQueue.erase(begin);
+		}
+		else
+			++begin;
+	}*/
 
 	list<shared_ptr<Command>> queueTemp;
 	bool isUsed = false;

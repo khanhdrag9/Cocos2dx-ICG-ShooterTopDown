@@ -83,8 +83,11 @@ list<Vec2> SolutionWay::findWayMin(const Vec2& target) const
         {
             Vec2& point1 = *begin;
             ++begin;
-            Vec2& point2 = *begin;
-            length2 += (point1 - point2).length();
+			if (begin != way.end())
+			{
+				Vec2& point2 = *begin;
+				length2 += (point1 - point2).length();
+			}
         }
         
         if(length1==0.f)
@@ -112,7 +115,6 @@ const vector<list<Vec2>>& SolutionWay::getWays() const
 InformationCenter::InformationCenter():
 	_isStop(false)
 {
-    _detectPlayer = DetectPlayer();
 #if DEBUG_GRAHP
 	_draw = DrawNode::create();
 	_draw->retain();
@@ -186,28 +188,35 @@ void InformationCenter::update(float dt)
 			continue;
 		}
         
-        if(bot.detectPlayer.isDetected && !bot.detectPlayer.statedGo)
-        {
-            bot.targetGo = bot.detectPlayer.position;
-            bot.detectPlayer.statedGo = true;
-            bot.isReady = true;
-        }
-        else if(auto body = dynamic_pointer_cast<RigidBodyCircle>(bot.bot->_rigidBody))  //check player
+		//check player
+        if(auto body = dynamic_pointer_cast<RigidBodyCircle>(bot.bot->_rigidBody))  
         {
             vector<Vec2> arrayFind {playerPosition};
-            auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision, body->getRadius() / 2.f);
+            auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision + body->getRadius(), body->getRadius() * 0.5f);
             if(checkPlayerAround.size() > 0)    //detect player in vision
             {
+				if (bot.isFinish && bot.isThreadAvaiable)
+				{
+					bot.task.get();
+					bot.isThreadAvaiable = false;
+				}
+				bot.isReady = false;
+				bot.detectPlayer.isDetected = true;
+				bot.detectPlayer.position = playerPosition;
+				bot.detectPlayer.isCalled = false;
                 //notify for allbot
                 for(auto& botF : _listBot)
                 {
-                    botF.detectPlayer.isDetected = true;
+					if (botF.detectPlayer.isDetected)continue;
+                    botF.detectPlayer.isCalled = true;
                     botF.detectPlayer.position = playerPosition;
                 }
-                
+
+				while (bot.commands.size() > 0)
+					bot.commands.pop();
+				bot.bot->releaseMoveCommands();
+
                 bot.status = statusBot::SHOOT;
-                _detectPlayer.isDetected = true;
-                _detectPlayer.position = playerPosition;
                 float rotation = getRotateForwardAPoint(bot.bot, checkPlayerAround.front());
                 bot.bot->_sprite->setRotation(rotation);
                 if(bot.bot->getMag()->canShoot())
@@ -215,19 +224,38 @@ void InformationCenter::update(float dt)
                     Game::getInstance()->handleShootCharacter(bot.bot, 1000.f);
                 }
             }
+			else if (bot.detectPlayer.isDetected)
+			{
+				//bot.detectPlayer.isDetected = false;
+				bot.targetGo = bot.detectPlayer.position;
+				bot.isReady = true;
+				//bot.isFinish = true;
+				bot.status = statusBot::NONE;
+				
+			}
+			else if (bot.detectPlayer.isCalled)
+			{
+				if ((bot.targetGo - bot.detectPlayer.position).length() > 64.f)
+				{
+					bot.targetGo = bot.detectPlayer.position;
+					bot.isReady = true;
+					//bot.isFinish = true;
+					bot.status = statusBot::NONE;
+					bot.bot->releaseCommands();
+					while (bot.commands.size() > 0)
+						bot.commands.pop();
+				}
+			}
+			else if(bot.isFinish && !bot.isThreadAvaiable)
+			{
+				bot.detectPlayer.isDetected = false;
+				bot.detectPlayer.isCalled = false;
+				bot.detectPlayer.position = Vec2::ZERO;
+				bot.targetGo = Vec2::ZERO;
+			}
         }
-        else if(bot.detectPlayer.statedGo)
-        {
-            bot.detectPlayer.statedGo = false;
-        }
-        else
-        {
-            bot.detectPlayer.isDetected = false;
-            bot.targetGo = Vec2::ZERO;
-            bot.status = statusBot::WALK;
-        }
-        
-        
+		
+	
 
 		if (bot.isFinish && bot.isReady)	//start thread
 		{
@@ -265,6 +293,11 @@ void InformationCenter::update(float dt)
                 
 				if (bf)
 				{
+					if (bf->detectPlayer.isDetected)
+						bf->detectPlayer.isDetected = false;
+					if (bf->detectPlayer.isCalled)
+						bf->detectPlayer.isCalled = false;
+
 					std::lock_guard<mutex> gruard(_m);
 					bf->isFinish = true;
 					bf->isThreadAvaiable = true;
@@ -273,27 +306,26 @@ void InformationCenter::update(float dt)
 			};
 
             Vec2 target;
-            if(bot.targetGo == Vec2::ZERO)
+            if(!bot.detectPlayer.isCalled && !bot.detectPlayer.isDetected)
             {
                 std::random_shuffle(_graph.begin(), _graph.end());
                 target = *_graph.begin();
             }
             else
                 target = bot.targetGo;
-//            Vec2 target = _graph.at(86);
+			//target = Game::getInstance()->getPlayer()->_sprite->getPosition();
             bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
-            lamda(botPosition, target, &bot);
 		}
 
-		if (bot.isFinish && bot.isThreadAvaiable && bot.status != statusBot::WALK)
+		if (bot.isFinish && bot.isThreadAvaiable && bot.status != statusBot::WALK && bot.status != statusBot::SHOOT)
 		{
 			auto way = bot.task.get();
             bot.isThreadAvaiable = false;
-
 			//Move Bot
 			if (way.size() == 0)
 			{
                 bot.isReady = true;
+				bot.targetGo = Vec2::ZERO;
                 bot.detectPlayer.position = Vec2::ZERO;
 			}
 			else
@@ -308,6 +340,10 @@ void InformationCenter::update(float dt)
 				bot.status = statusBot::WALK;
 			}
 			//bot.isReady = true;	//for test
+		}
+		
+		if (bot.status == statusBot::SHOOT)
+		{
 		}
 
 		if (bot.status == statusBot::WALK)
@@ -356,18 +392,22 @@ void InformationCenter::update(float dt)
 			else if(bot.bot->_rigidBody->_velocity == Vec2::ZERO)
 			{
 				bot.status = statusBot::NONE;
+				bot.targetGo = Vec2::ZERO;
                 bot.isReady = true;
-                bot.detectPlayer.statedGo = false;
+				if(bot.detectPlayer.isCalled)
+					bot.detectPlayer.isCalled = false;
 			}
 		}
-
+		
 		if (bot.status == statusBot::COLLISION)
 		{
 			bot.status = statusBot::NONE;
+			//bot.isFinish = true;
             bot.isReady = true;
+			bot.targetGo = Vec2::ZERO;
 			while (bot.commands.size() > 0)
 				bot.commands.pop();
-			bot.bot->releaseCommands();
+			bot.bot->releaseMoveCommands();
 		}
         
         
@@ -382,7 +422,7 @@ list<Vec2> InformationCenter::findPointAvaiableAroud(Vec2 position, const vector
 {
 	vector<Line> lines;
 	{
-		std::lock_guard<mutex> gruard(_m);
+		//std::lock_guard<mutex> gruard(_m);
 		lines = Game::getInstance()->getRigidWord()->getListLines();
 	}
 
@@ -436,9 +476,6 @@ bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& gr
     for(auto& point : around)
     {
         result.push(start, point);
-#if DEBUG_GRAHP
-        _canMovePointDrawer->drawLine(start, point, Color4F::YELLOW);
-#endif
     }
     
     if(std::find(around.begin(), around.end(), target) != around.end())
@@ -458,7 +495,8 @@ bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& gr
     while (true)
     {
         list<Vec2> unless;
-        list<Vec2> tempAround = around;
+		list<Vec2> tempAround;
+		for (auto& p : around)tempAround.emplace_back(p);
         around.clear();
         for(auto& point : tempAround)
         {
@@ -472,6 +510,9 @@ bool InformationCenter::findWayToPoint(Vec2 start, Vec2 target, vector<Vec2>& gr
                 findResult = true;
             }
 //            else
+
+			if (findResult)
+				return true;
             {
                 for(auto& p : aroundIn)
                 {

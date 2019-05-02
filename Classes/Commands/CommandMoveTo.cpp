@@ -55,6 +55,8 @@ void CommandMoveTo::update(float dt)
             object->_rigidBody->_velocity = offset;
         }
     }
+
+	if (_isFinished && object)_velocity = Vec2(0, 0);
 }
 
 Vec2 CommandMoveTo::getTarget() const

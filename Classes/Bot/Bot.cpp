@@ -36,35 +36,6 @@ void Bot::update(float dt)
 
 	Character::update(dt);
     _bulletMag->update(dt);
-    
-    if(containStatus(Status::WALK))
-    {
-        
-//        if (_commandQueue.empty())
-//        {
-//            auto nextlink = BotManager::getInstance()->getNextLinkPosition(dynamic_pointer_cast<Bot>(shared_from_this()), true);
-//            if(&(*nextlink) != &(*_linkPos))isMoved = true;
-//
-//            if(nextlink->getName() != _linkPos->getName())
-//            {
-//                _linkPos = nextlink;
-//                if (_linkPos)
-//                {
-//                    shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(_speedMove, _linkPos->get());
-//                    pushCommand(cmd);
-//                }
-//            }
-//        }
-    }
-
-	if (containStatus(Status::SHOOT) && _bulletMag->canShoot())
-	{
-		Game::getInstance()->handleShootCharacter(shared_from_this(), 1000);
-	}
-    
-    //update rotation
-
-	_currentStatus.clear();
 }
 
 bool Bot::pushCommand(shared_ptr<Command>& command, bool replace)

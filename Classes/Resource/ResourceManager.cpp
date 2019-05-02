@@ -52,35 +52,30 @@ ResourceManager::ResourceManager()
     
     
     _listBulletCreations.clear();
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
-#else
-    _listBulletCreations[res::define::BULLET_TRIANGLE] = BulletCreation("TriangleBullet.png", 10, "VFX/polygonGreen.plist", "VFX/expGreen.plist");
-    _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("RectBullet.png", 40, "VFX/rectFire.plist", "VFX/expFire.plist");
-    _listBulletCreations[res::define::BULLET_CIRCLE] = BulletCreation("CircleBullet.png", 20, "VFX/circleBlue.plist", "VFX/expBlue.plist");
-#endif
+    _listBulletCreations[res::define::BULLET_TRIANGLE] = BulletCreation("CharacterAssets/TriangleBullet.png", 10, "VFX/polygonGreen.plist", "VFX/expGreen.plist");
+    _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("CharacterAssets/RectBullet.png", 40, "VFX/rectFire.plist", "VFX/expFire.plist");
+    _listBulletCreations[res::define::BULLET_CIRCLE] = BulletCreation("CharacterAssets/CircleBullet.png", 20, "VFX/circleBlue.plist", "VFX/expBlue.plist");
     
     _listCharacterCreations.clear();
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_MAC)
-#else
-    _listCharacterCreations.push_back(CharacterCreation("CircleCharacter.png",
-                                                                                "CircleImage.jpg",
-                                                                                "CircleLoad.png",
+    _listCharacterCreations.push_back(CharacterCreation("CharacterAssets/CircleCharacter.png",
+                                                                                "CharacterAssets/CircleImage.jpg",
+                                                                                "CharacterAssets/CircleLoad.png",
                                                                                 "VFX/dieBlue.plist",
                                                                                 100, 250, 30, 0.35,
                                                                                 _listBulletCreations[res::define::BULLET_CIRCLE]));
-    _listCharacterCreations.push_back(CharacterCreation("RectCharacter.png",
-                                                                            "RectImage.jpg",
-                                                                            "RectLoad.png",
+    _listCharacterCreations.push_back(CharacterCreation("CharacterAssets/RectCharacter.png",
+                                                                            "CharacterAssets/RectImage.jpg",
+                                                                            "CharacterAssets/RectLoad.png",
                                                                             "VFX/dieFire.plist",
                                                                             200, 200, 15, 0.6,
                                                                             _listBulletCreations[res::define::BULLET_RECT]));
-    _listCharacterCreations.push_back(CharacterCreation("TriangleCharacter.png",
-                                                                                "TriangleImage.jpg",
-                                                                                "TriangleLoad.png",
+    _listCharacterCreations.push_back(CharacterCreation("CharacterAssets/TriangleCharacter.png",
+                                                                                "CharacterAssets/TriangleImage.jpg",
+                                                                                "CharacterAssets/TriangleLoad.png",
                                                                                 "VFX/dieGreen.plist",
                                                                                 70, 350, 45, 0.15,
                                                                                 _listBulletCreations[res::define::BULLET_TRIANGLE]));
-#endif
+
 }
 
 ResourceManager::~ResourceManager()

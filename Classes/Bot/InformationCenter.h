@@ -35,11 +35,13 @@ public:
     {
         Vec2 position;
         bool isDetected;
+		bool isCalled;
         bool statedGo;
         
         DetectPlayer():
         isDetected(false),
         statedGo(false),
+		isCalled(false),
         position(Vec2::ZERO)
         {}
     };
@@ -56,7 +58,14 @@ public:
 		queue<shared_ptr<Command>> commands;
         Vec2 targetGo;
         DetectPlayer detectPlayer;
-		BotFindWay() {}
+		BotFindWay():
+			isFinish(true),
+			isReady(true)
+			, isThreadAvaiable(false)
+			, status(statusBot::NONE)
+			, countDetect(0.f, 10.f)
+			, targetGo(Vec2::ZERO) 
+		{}
 		BotFindWay(shared_ptr<Bot> b):
 			bot(b),
 			isFinish(true),
@@ -94,7 +103,6 @@ private:
 
 	bool _isStop;
 	mutex _m;
-    DetectPlayer _detectPlayer;
 
     void threadAI();
 public:
