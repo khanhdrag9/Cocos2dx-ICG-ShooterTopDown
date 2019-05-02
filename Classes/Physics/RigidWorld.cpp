@@ -63,9 +63,9 @@ void RigidWorld::update(float dt)
             {
 				if (x->_object)
 				{
-					x->_object->_sprite->setPosition(currentObjPos + (-1 * x->_velocity));
+					x->_object->_sprite->setPosition(currentObjPos + (-1 * x->_velocity * dt));
 					//x->_object->_sprite->setPosition(nextObjPos - x->_velocity * dt);
-					x->_velocity = Vec2::ZERO;
+					//x->_velocity = Vec2::ZERO;
 				}
             }
             else
@@ -160,6 +160,26 @@ bool RigidWorld::onCollision(shared_ptr<RigidBody> body1, shared_ptr<RigidBody> 
 {
     shared_ptr<Character> obj1 = body1->_object;
     shared_ptr<Character> obj2 = body2->_object;
+    
+    if(obj1 && obj2)
+    {
+        if(obj1->getName() == constants::object_bullet_basic && obj2->getName() == obj1->getName())
+        {
+            shared_ptr<BulletBasic> bullet1 = dynamic_pointer_cast<BulletBasic>(obj1);
+            shared_ptr<BulletBasic> bullet2 = dynamic_pointer_cast<BulletBasic>(obj2);
+            int damge1 = bullet1->getDamge();
+            int damge2 = bullet2->getDamge();
+            bullet1->setDamege(damge1 - damge2);
+            bullet2->setDamege(damge2 - damge1);
+            
+            if(bullet1->getDamge() <= 0)
+                bullet1->destroy();
+            if(bullet2->getDamge() <= 0)
+                bullet2->destroy();
+            
+            return false;
+        }
+    }
     
     //check bullet
     if(obj1)

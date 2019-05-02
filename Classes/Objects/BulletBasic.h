@@ -6,7 +6,6 @@ class BulletBasic : public Character
 {
 protected:
     Vec2 _speed;
-    bool _isDestroy;
     int _damge;
 public:
     BulletBasic();

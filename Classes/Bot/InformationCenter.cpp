@@ -192,7 +192,7 @@ void InformationCenter::update(float dt)
         if(auto body = dynamic_pointer_cast<RigidBodyCircle>(bot.bot->_rigidBody))  
         {
             vector<Vec2> arrayFind {playerPosition};
-            auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision + body->getRadius(), body->getRadius() * 0.5f);
+            auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision + body->getRadius(), body->getRadius() * 0.75f);
             if(checkPlayerAround.size() > 0)    //detect player in vision
             {
 				if (bot.isFinish && bot.isThreadAvaiable)

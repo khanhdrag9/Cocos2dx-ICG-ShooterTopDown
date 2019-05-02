@@ -14,7 +14,6 @@
 
 BulletBasic::BulletBasic(): Character(),
     _speed(Vec2(0,0)),
-    _isDestroy(false),
     _damge(0)
 {
 }
