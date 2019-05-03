@@ -153,7 +153,7 @@ void Game::update(float dt)
         {
             if (_playerShoot && _player->getMag()->canShoot())
             {
-                handleShootCharacter((shared_ptr<Character>)_player, 1000);
+                handleShootCharacter((shared_ptr<Character>)_player, _player->getBullet()->getSpeed());
             }
             _player->update(dt);
         }

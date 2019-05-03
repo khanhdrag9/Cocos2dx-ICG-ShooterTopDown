@@ -20,6 +20,7 @@
 #include "../Envoiments/Vision.h"
 #include "../Objects/Mag.h"
 //#include "../Physics/RigidWorld.h"
+#include "../Resource/Creations.h"
 
 void SolutionWay::push(Vec2 first, Vec2 second)
 {
@@ -165,6 +166,7 @@ void InformationCenter::initGraph(TMXTiledMap * tileMap)
 
 void InformationCenter::update(float dt)
 {
+    return;
     auto player = Game::getInstance()->getPlayer();
     if(!player)return;  //Won
     
@@ -184,7 +186,7 @@ void InformationCenter::update(float dt)
         if(auto body = dynamic_pointer_cast<RigidBodyCircle>(bot.bot->_rigidBody))  
         {
             vector<Vec2> arrayFind {playerPosition};
-            auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision + body->getRadius(), body->getRadius() / 2.f);
+            auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision * 0.75 + body->getRadius(), body->getRadius() / 2.f);
             if(checkPlayerAround.size() > 0)    //detect player in vision
             {
 				if (bot.isFinish && bot.isThreadAvaiable)
@@ -220,7 +222,7 @@ void InformationCenter::update(float dt)
                 bot.bot->_sprite->setRotation(rotation);
                 if(bot.bot->getMag()->canShoot())
                 {
-                    Game::getInstance()->handleShootCharacter(bot.bot, 1000.f);
+                    Game::getInstance()->handleShootCharacter(bot.bot, bot.bot->getBullet()->getSpeed());
                 }
             }	
 			else if (bot.detectPlayer.isDetected && !bot.detectPlayer.isReceived)	//duoi theo player

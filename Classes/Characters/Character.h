@@ -38,6 +38,7 @@ public:
     bool isDestroyed();
     BulletCreation* getBullet() const;
     void setDieEffect(const string& effect);
+    void setDieSound(const string& effect);
 protected:
     list<shared_ptr<Command>> _commandQueue;
     bool _destroy;
@@ -46,7 +47,7 @@ protected:
     int _currentHP;
     BulletCreation* _bullet;
     string _dieEffect;
-    
+    string _soundDie;
 public:
     Sprite* _sprite;
 //    ParticleSystemQuad* _particle;

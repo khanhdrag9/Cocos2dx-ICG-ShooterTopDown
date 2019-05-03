@@ -14,6 +14,7 @@
 #include "../Characters/Player.h"
 #include "../Bot/Bot.h"
 #include "../Resource/Creations.h"
+#include "../Resource/ResourceManager.h"
 
 CommandShoot::CommandShoot():
     _speed(Vec2(0,0))
@@ -39,6 +40,7 @@ void CommandShoot::update(float dt)
         bullet->setDamege(bulletCreation->getDamgeBullet());
         bullet->setParticle(bulletCreation->getParticle());
         bullet->setDieEffect(bulletCreation->getExplosion());
+        bullet->setDieSound(bulletCreation->getExplosionSound());
         
 		if (object->getType() == Character::type::PLAYER)
 		{
@@ -59,5 +61,8 @@ void CommandShoot::update(float dt)
 
         ObjectsPool::getInstance()->pushBulletBasic(bullet);
         _isFinished = true;
+        
+        //load sound
+        SimpleAudioEngine::getInstance()->playEffect(bulletCreation->getShootSound().c_str());
     }
 }

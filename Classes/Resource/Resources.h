@@ -35,6 +35,10 @@ namespace res
         MUSIC_READY_TO_FIGHT,
         MUSIC_BOSS_FIGHT,
         
+        //sound
+        SOUND_SHOOT_1,
+        SOUND_SHOOT_2,
+        
 
 		//character
 		CHARACTER_TRIANGLE,

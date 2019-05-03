@@ -35,46 +35,72 @@ ResourceManager::ResourceManager()
     _resMap[res::define::FONT_ARIAL] = "fonts/arial.ttf";
     
     //musics
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _resMap[res::define::MUSIC_ACTION_FIGHT] = "SFX/action_fight.mp3";
     _resMap[res::define::MUSIC_READY_TO_FIGHT] = "SFX/ready_to_fight.mp3";
     _resMap[res::define::MUSIC_BOSS_FIGHT] = "SFX/boss_fight.mp3";
-#else
-    _resMap[res::define::MUSIC_ACTION_FIGHT] = "action_fight.mp3";
-    _resMap[res::define::MUSIC_READY_TO_FIGHT] = "ready_to_fight.mp3";
-    _resMap[res::define::MUSIC_BOSS_FIGHT] = "boss_fight.mp3";
-#endif
-    SimpleAudioEngine::getInstance()->preloadBackgroundMusic(at(res::define::MUSIC_ACTION_FIGHT).c_str());
-    SimpleAudioEngine::getInstance()->preloadBackgroundMusic(at(res::define::MUSIC_READY_TO_FIGHT).c_str());
-    SimpleAudioEngine::getInstance()->preloadBackgroundMusic(at(res::define::MUSIC_BOSS_FIGHT).c_str());
     
-    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+    SimpleAudioEngine* audio = SimpleAudioEngine::getInstance();
     
+    audio->preloadBackgroundMusic(at(res::define::MUSIC_ACTION_FIGHT).c_str());
+    audio->preloadBackgroundMusic(at(res::define::MUSIC_READY_TO_FIGHT).c_str());
+    audio->preloadBackgroundMusic(at(res::define::MUSIC_BOSS_FIGHT).c_str());
     
+    audio->stopBackgroundMusic();
+    
+    //sounds   
     _listBulletCreations.clear();
-    _listBulletCreations[res::define::BULLET_TRIANGLE] = BulletCreation("CharacterAssets/TriangleBullet.png", 10, "VFX/polygonGreen.plist", "VFX/expGreen.plist");
-    _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("CharacterAssets/RectBullet.png", 40, "VFX/rectFire.plist", "VFX/expFire.plist");
-    _listBulletCreations[res::define::BULLET_CIRCLE] = BulletCreation("CharacterAssets/CircleBullet.png", 20, "VFX/circleBlue.plist", "VFX/expBlue.plist");
+    _listBulletCreations[res::define::BULLET_TRIANGLE] = BulletCreation("CharacterAssets/TriangleBullet.png",
+                                                                        10, 750.f, "VFX/polygonGreen.plist",
+                                                                        "VFX/expGreen.plist",
+                                                                        "SFX/Digital_SFX_Set/laser6.mp3",
+                                                                        "SFX/laser_exp.mp3");
+    
+    _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("CharacterAssets/RectBullet.png",
+                                                                    40, 500.f,
+                                                                    "VFX/rectFire.plist",
+                                                                    "VFX/expFire.plist",
+                                                                    "SFX/Fire_shoot.mp3",
+                                                                    "SFX/Fire_exp.mp3");
+    
+    _listBulletCreations[res::define::BULLET_CIRCLE] = BulletCreation("CharacterAssets/CircleBullet.png",
+                                                                      20, 625.f,
+                                                                      "VFX/circleBlue.plist",
+                                                                      "VFX/expBlue.plist",
+                                                                      "SFX/Digital_SFX_Set/laser2.mp3",
+                                                                      "SFX/Digital_SFX_Set/lowDown.mp3");
     
     _listCharacterCreations.clear();
     _listCharacterCreations.push_back(CharacterCreation("CharacterAssets/CircleCharacter.png",
                                                                                 "CharacterAssets/CircleImage.jpg",
                                                                                 "CharacterAssets/CircleLoad.png",
                                                                                 "VFX/dieBlue.plist",
+                                                                                "SFX/Lose.mp3",
                                                                                 100, 250, 30, 0.35,
                                                                                 _listBulletCreations[res::define::BULLET_CIRCLE]));
     _listCharacterCreations.push_back(CharacterCreation("CharacterAssets/RectCharacter.png",
                                                                             "CharacterAssets/RectImage.jpg",
                                                                             "CharacterAssets/RectLoad.png",
                                                                             "VFX/dieFire.plist",
+                                                                            "SFX/Lose.mp3",
                                                                             200, 200, 15, 0.6,
                                                                             _listBulletCreations[res::define::BULLET_RECT]));
     _listCharacterCreations.push_back(CharacterCreation("CharacterAssets/TriangleCharacter.png",
                                                                                 "CharacterAssets/TriangleImage.jpg",
                                                                                 "CharacterAssets/TriangleLoad.png",
                                                                                 "VFX/dieGreen.plist",
+                                                                                "SFX/Lose.mp3",
                                                                                 70, 350, 45, 0.15,
                                                                                 _listBulletCreations[res::define::BULLET_TRIANGLE]));
+    
+    
+    //preload sounds
+    for(auto& creation : _listCharacterCreations)
+    {
+        audio->preloadEffect(creation.getDieSound().c_str());
+        audio->preloadEffect(creation._bullet.getShootSound().c_str());
+        audio->preloadEffect(creation._bullet.getExplosionSound().c_str());
+    }
+    audio->setEffectsVolume(100);
 
 }
 

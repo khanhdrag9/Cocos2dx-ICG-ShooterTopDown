@@ -47,6 +47,7 @@ void Character::init(CharacterCreation* creation)
         _currentHP = _maxHP;
         _bullet = &creation->_bullet;
         _dieEffect = creation->getDieEffect();
+        //_soundDie = creation->
     }
 }
 
@@ -218,6 +219,8 @@ void Character::destroy()
             Game::getInstance()->getCurrentState()->addChild(par, 10);
         }
     }
+    if(_soundDie != "")
+        SimpleAudioEngine::getInstance()->playEffect(_soundDie.c_str());
 }
 
 bool Character::isDestroyed()
@@ -233,4 +236,9 @@ BulletCreation* Character::getBullet() const
 void Character::setDieEffect(const string& effect)
 {
     _dieEffect = effect;
+}
+
+void Character::setDieSound(const string& effect)
+{
+    _soundDie = effect;
 }
