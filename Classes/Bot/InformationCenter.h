@@ -104,13 +104,11 @@ private:
 	bool _isStop;
 	mutex _m;
 
-    void threadAI();
 public:
     InformationCenter();
     ~InformationCenter();
     
 	void initGraph(TMXTiledMap* tileMap);
-	void startThreads();
 	void update(float dt);
 
 	list<Vec2> findPointAvaiableAroud(Vec2 position, const vector<Vec2>& arrayFind, float vision, float radius = 0);

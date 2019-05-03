@@ -23,7 +23,7 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 
 	//visible Enemy
 	std::lock_guard<mutex> guard(_m);
-	vector<Vec2> temp = _points2;
+	//vector<Vec2> temp = _points2;
 	for (auto body : Game::getInstance()->getRigidWord()->getListBodies())
 	{
 		if (!body)continue;
@@ -48,7 +48,8 @@ void VisionPlayer::update(DrawNode * draw, ClippingNode * clipper)
 
 			for (auto& checkline : lines)
 			{
-				for (auto& point : temp)
+				//for (auto& point : temp)
+				for (auto& point : _points)
 				{
 					if (Vec2::isSegmentIntersect(objPos, point, checkline.start, checkline.end))
 					{

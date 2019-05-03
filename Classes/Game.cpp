@@ -91,7 +91,6 @@ void Game::initGamePlay()
 	createStartCameraView();
 
 	InformationCenter::getInstance()->initGraph(_tileMap);
-	InformationCenter::getInstance()->startThreads();
     _result = game_result::NONE;
     _isEndGame = false;
     _outGame = false;
@@ -892,7 +891,7 @@ void Game::useKDATab(bool show)
 {
     if(auto gameplay = dynamic_cast<GS_GamePlay*>(_currentState))
     {
-        gameplay->getUILayer()->useKDATab(show);
+        gameplay->getUILayer()->useTab(show);
         _isPopupKDAVisible = show;
     }
 }

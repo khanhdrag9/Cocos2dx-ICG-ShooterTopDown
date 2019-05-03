@@ -5,7 +5,7 @@ class GS_LoadToGamePlay : public Layer
 {
     bool _loadfinish;
     float _countTime;
-    thread _loadGame;
+    //thread _loadGame;
     
     Scene* _gameplay;
     void loadGame();

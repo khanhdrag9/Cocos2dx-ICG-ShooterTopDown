@@ -25,7 +25,7 @@ public:
     
     void setCharacter(const shared_ptr<Character>& character);
     void initKDA(const int& number);
-    void useKDATab(bool show);
+    void useTab(bool show);
     void showResult();
     
     void clear();

@@ -195,7 +195,7 @@ void GS_GamePlayUI::initKDA(const int& number)
 //    _menuKDA->setPosition(sizeTab.width / 2.f, sizeTab.height / 2.f);
 }
 
-void GS_GamePlayUI::useKDATab(bool show)
+void GS_GamePlayUI::useTab(bool show)
 {
     Action* action;
     if(show)

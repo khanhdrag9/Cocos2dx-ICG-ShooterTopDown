@@ -5,7 +5,6 @@ class CommandMoveBy : public Command
 {
     float _counttime;
     float _duration;
-    int _numberRun;
     
     Vec2 _velocity;
     

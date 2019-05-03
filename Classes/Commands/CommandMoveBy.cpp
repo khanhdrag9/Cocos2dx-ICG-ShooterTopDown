@@ -12,7 +12,6 @@
 
 CommandMoveBy::CommandMoveBy():
 	_counttime(0.f),
-	_numberRun(0),
 	_duration(0.f)
 {
 }

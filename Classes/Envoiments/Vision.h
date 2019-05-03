@@ -10,8 +10,8 @@ protected:
     shared_ptr<Character> _obj;
     bool _isDraw;
 	vector<Vec2> _points;
-	vector<Vec2> _points2;
-	virtual void threadGetPoint();
+	//vector<Vec2> _points2;
+	//virtual void threadGetPoint();
 	void getPointIntersect();
 	float _vision;
 public:

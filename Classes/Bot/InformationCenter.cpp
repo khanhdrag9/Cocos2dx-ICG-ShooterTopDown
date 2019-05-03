@@ -162,14 +162,6 @@ void InformationCenter::initGraph(TMXTiledMap * tileMap)
 #endif
 }
 
-void InformationCenter::startThreads()
-{
-    //_threadDetectAround = thread(&InformationCenter::threadAI, this);
-}
-
-void InformationCenter::threadAI()
-{
-}
 
 void InformationCenter::update(float dt)
 {
