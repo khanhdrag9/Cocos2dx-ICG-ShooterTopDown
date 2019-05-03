@@ -51,16 +51,6 @@ void BotManager::update(float dt)
             begin = _listBots.erase(begin);
             continue;
         }
-        
-		if (bot->isCanTriggerShoot())
-			bot->setStatus(Bot::Status::SHOOT);
-
-		if (bot->isCanTriggerWalk())
-			bot->setStatus(Bot::Status::WALK);
-		
-		if(!bot->isCanTriggerWalk() && !bot->isCanTriggerShoot())
-			bot->setStatus(Bot::Status::STOP);
-		
 //        bot->update(dt);
         ++begin;
 	}
@@ -68,8 +58,8 @@ void BotManager::update(float dt)
 
 void BotManager::initBots()
 {
-	//int countEnemies = (int)_botCreations.size();
-	int countEnemies = 1;
+	int countEnemies = (int)_botCreations.size();
+	//countEnemies = 1;
 	//get position to init bots
 	Vec2 playerPosition = Game::getInstance()->getPlayer()->_sprite->getPosition();
 	vector<Vec2> history;
@@ -91,8 +81,6 @@ void BotManager::initBots()
 		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
         bot->_sprite->setPosition(history[i]);
         //bot->_sprite->setPosition(Vec2(192, 192));
-
-        bot->setWalk(true);
 
 		Game::getInstance()->getCurrentState()->addChild(bot->_sprite);
 	}

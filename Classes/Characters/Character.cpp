@@ -25,7 +25,6 @@ _dieEffect("")
 
 Character::~Character()
 {
-    CCLOG("Delete Character");
     //_commandHandle = nullptr;
     if(_sprite)
     {
@@ -94,6 +93,7 @@ void Character::releaseMoveCommands()
 		{
 			//begin = _commandQueue.erase(begin);
 			cmd->setFinished(true);
+
 			_rigidBody->_velocity = Vec2::ZERO;
 		}
 		/*else

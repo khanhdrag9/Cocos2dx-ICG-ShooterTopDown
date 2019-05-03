@@ -10,9 +10,7 @@
 #include "InformationCenter.h"
 
 Bot::Bot() : Character(),
-_speedMove(0),
-_ableWalk(false),
-_ableShoot(false)
+_speedMove(0)
 {
 }
 
@@ -32,7 +30,7 @@ void Bot::init(CharacterCreation* creation)
 
 void Bot::update(float dt)
 {
-    if(containStatus(Status::STOP) || _destroy)return;
+    if(_destroy)return;
 
 	Character::update(dt);
     _bulletMag->update(dt);
@@ -42,43 +40,6 @@ bool Bot::pushCommand(shared_ptr<Command>& command, bool replace)
 {
 	bool r = Character::pushCommand(command, replace);
 	return r;
-}
-
-
-void Bot::setStatus(Status status)
-{
-	_currentStatus.push_back(status);
-}
-
-list<Bot::Status>& Bot::getStatus()
-{
-    return _currentStatus;
-}
-
-bool Bot::containStatus(Status status)
-{
-	auto check = std::find(_currentStatus.begin(), _currentStatus.end(), status);
-	return check != _currentStatus.end();
-}
-
-bool Bot::isCanTriggerWalk()
-{
-	return _ableWalk;
-}
-
-bool Bot::isCanTriggerShoot()
-{
-	return _ableShoot;
-}
-
-void Bot::setWalk(bool enable)
-{
-	_ableWalk = enable;
-}
-
-void Bot::setShoot(bool enable)
-{
-	_ableShoot = enable;
 }
 
 const unique_ptr<Mag>& Bot::getMag() const

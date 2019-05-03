@@ -36,11 +36,11 @@ public:
         Vec2 position;
         bool isDetected;
 		bool isCalled;
-        bool statedGo;
+        bool isReceived;
         
         DetectPlayer():
         isDetected(false),
-        statedGo(false),
+		isReceived(false),
 		isCalled(false),
         position(Vec2::ZERO)
         {}
@@ -53,7 +53,7 @@ public:
 		bool isThreadAvaiable;
 		statusBot status;
 		shared_ptr<Bot> bot;
-		future<queue<Vec2>> task;
+		future<pair<Vec2, queue<Vec2>>> task;
 		pair<float, float> countDetect;
 		queue<shared_ptr<Command>> commands;
         Vec2 targetGo;

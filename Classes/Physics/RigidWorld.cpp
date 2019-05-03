@@ -54,7 +54,7 @@ void RigidWorld::update(float dt)
     {
         if(x->_object != nullptr)
         {
-            Vec2 currentObjPos = x->_object->_sprite->getPosition();
+            Vec2 currentObjPos = Vec2(x->_object->_sprite->getPosition());
             Vec2 nextObjPos = currentObjPos + x->_velocity * dt;
             x->_object->_sprite->setPosition(nextObjPos);
             x->update(dt);
@@ -63,9 +63,9 @@ void RigidWorld::update(float dt)
             {
 				if (x->_object)
 				{
-					x->_object->_sprite->setPosition(currentObjPos + (-1 * x->_velocity * dt));
+					x->_object->_sprite->setPosition(currentObjPos);
 					//x->_object->_sprite->setPosition(nextObjPos - x->_velocity * dt);
-					//x->_velocity = Vec2::ZERO;
+					x->_velocity = Vec2::ZERO;
 				}
             }
             else
@@ -99,7 +99,7 @@ bool RigidWorld::checkCollisionOther(shared_ptr<RigidBody> body)
                 {
                     shared_ptr<RigidBodyCircle> bodyCircle = dynamic_pointer_cast<RigidBodyCircle>(x);
                     Vec2 circlePos = bodyCircle->_object->_sprite->getPosition();
-                    if(body1->_rect.intersectsCircle(circlePos, bodyCircle->_radius * 1.1f))
+                    if(body1->_rect.intersectsCircle(circlePos, bodyCircle->_radius))
                     {
                         return onCollision(body1, bodyCircle);
                         //return true;

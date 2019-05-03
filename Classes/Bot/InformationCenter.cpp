@@ -177,7 +177,7 @@ void InformationCenter::update(float dt)
     if(!player)return;  //Won
     
     Vec2 playerPosition = player->_sprite->getPosition();
-    
+	int i = 0;
 	for (auto begin = _listBot.begin(); begin != _listBot.end();)
 	{
 		BotFindWay& bot = *begin;
@@ -192,29 +192,36 @@ void InformationCenter::update(float dt)
         if(auto body = dynamic_pointer_cast<RigidBodyCircle>(bot.bot->_rigidBody))  
         {
             vector<Vec2> arrayFind {playerPosition};
-            auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision + body->getRadius(), body->getRadius() * 0.75f);
+            auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision + body->getRadius(), body->getRadius() / 2.f);
             if(checkPlayerAround.size() > 0)    //detect player in vision
             {
 				if (bot.isFinish && bot.isThreadAvaiable)
 				{
-					bot.task.get();
-					bot.isThreadAvaiable = false;
+					//bot.task.get();
+					//bot.isThreadAvaiable = false;
 				}
 				bot.isReady = false;
 				bot.detectPlayer.isDetected = true;
 				bot.detectPlayer.position = playerPosition;
 				bot.detectPlayer.isCalled = false;
+				bot.detectPlayer.isReceived = false;
                 //notify for allbot
                 for(auto& botF : _listBot)
                 {
 					if (botF.detectPlayer.isDetected)continue;
-                    botF.detectPlayer.isCalled = true;
-                    botF.detectPlayer.position = playerPosition;
+					if (!botF.detectPlayer.isCalled)
+					{
+						botF.detectPlayer.isCalled = true;
+						botF.detectPlayer.position = playerPosition;
+						bot.detectPlayer.isReceived = false;
+						CCLOG("%d call to other", i);
+					}
                 }
 
 				while (bot.commands.size() > 0)
 					bot.commands.pop();
 				bot.bot->releaseMoveCommands();
+				
 
                 bot.status = statusBot::SHOOT;
                 float rotation = getRotateForwardAPoint(bot.bot, checkPlayerAround.front());
@@ -223,35 +230,42 @@ void InformationCenter::update(float dt)
                 {
                     Game::getInstance()->handleShootCharacter(bot.bot, 1000.f);
                 }
-            }
-			else if (bot.detectPlayer.isDetected)
+            }	
+			else if (bot.detectPlayer.isDetected && !bot.detectPlayer.isReceived)	//duoi theo player
 			{
 				//bot.detectPlayer.isDetected = false;
 				bot.targetGo = bot.detectPlayer.position;
+				bot.detectPlayer.isReceived = true;
 				bot.isReady = true;
 				//bot.isFinish = true;
 				bot.status = statusBot::NONE;
+				CCLOG("%d follow player", i);
 				
 			}
-			else if (bot.detectPlayer.isCalled)
+			else if (bot.detectPlayer.isCalled && !bot.detectPlayer.isReceived)	//di ra vi tri player bi phat hien khi dc nghe call tu team
 			{
-				if ((bot.targetGo - bot.detectPlayer.position).length() > 64.f)
+				//if ((bot.targetGo - bot.detectPlayer.position).length() > 64.f)
 				{
 					bot.targetGo = bot.detectPlayer.position;
 					bot.isReady = true;
 					//bot.isFinish = true;
 					bot.status = statusBot::NONE;
-					bot.bot->releaseCommands();
+					bot.bot->releaseMoveCommands();
 					while (bot.commands.size() > 0)
 						bot.commands.pop();
+					CCLOG("%d Called", i);
+					bot.detectPlayer.isReceived = true; 
 				}
 			}
-			else if(bot.isFinish && !bot.isThreadAvaiable)
+			else if(bot.isFinish && !bot.isThreadAvaiable && !bot.detectPlayer.isCalled && !bot.detectPlayer.isDetected)	//khi ra vi tri va ko thay player
 			{
 				bot.detectPlayer.isDetected = false;
 				bot.detectPlayer.isCalled = false;
 				bot.detectPlayer.position = Vec2::ZERO;
+				bot.detectPlayer.isReceived = false;
 				bot.targetGo = Vec2::ZERO;
+				if(bot.status != statusBot::WALK)bot.status = statusBot::NONE;
+				CCLOG("%d Not Found", i);
 			}
         }
 		
@@ -266,11 +280,11 @@ void InformationCenter::update(float dt)
                 _canMovePointDrawer->clear();
             }
 #endif
-            
+			CCLOG("%d Find Way", i);
 			Vec2 botPosition = bot.bot->_sprite->getPosition();
 			bot.isFinish = false;
 			bot.isReady = false;
-			auto lamda = [&](Vec2 position, Vec2 target, BotFindWay* bf) -> queue<Vec2>
+			auto lamda = [&](Vec2 position, Vec2 target, BotFindWay* bf) -> pair<Vec2, queue<Vec2>>
 			{
                 bf->isThreadAvaiable = true;
 				float radius = 0.f;
@@ -302,11 +316,11 @@ void InformationCenter::update(float dt)
 					bf->isFinish = true;
 					bf->isThreadAvaiable = true;
 				}
-				return way;
+				return pair<Vec2, queue<Vec2>>(target, way);
 			};
 
             Vec2 target;
-            if(!bot.detectPlayer.isCalled && !bot.detectPlayer.isDetected)
+            if(!bot.detectPlayer.isCalled && !bot.detectPlayer.isDetected && bot.targetGo == Vec2::ZERO)
             {
                 std::random_shuffle(_graph.begin(), _graph.end());
                 target = *_graph.begin();
@@ -317,29 +331,38 @@ void InformationCenter::update(float dt)
             bot.task = std::async(launch::async, lamda, botPosition, target, &bot);
 		}
 
-		if (bot.isFinish && bot.isThreadAvaiable && bot.status != statusBot::WALK && bot.status != statusBot::SHOOT)
+		if (bot.isFinish && bot.isThreadAvaiable)
 		{
 			auto way = bot.task.get();
             bot.isThreadAvaiable = false;
-			//Move Bot
-			if (way.size() == 0)
+			if (bot.status == statusBot::NONE)
 			{
-                bot.isReady = true;
-				bot.targetGo = Vec2::ZERO;
-                bot.detectPlayer.position = Vec2::ZERO;
-			}
-			else
-			{
-				while (way.size() > 0)
+				
+				//Move Bot
+				if (way.second.size() == 0)
 				{
-					shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(bot.bot->getSpeedMove(), way.front());
-					bot.commands.push(cmd);
-					way.pop();
+					CCLOG("%d set Way size = 0", i);
+					bot.isReady = true;
+					if (way.first == bot.targetGo)
+						bot.targetGo = Vec2::ZERO;
+					bot.detectPlayer.isDetected = false;
+					bot.detectPlayer.isCalled = false;
+					bot.detectPlayer.isReceived = false;
+					//bot.detectPlayer.position = Vec2::ZERO;
 				}
-
-				bot.status = statusBot::WALK;
+				else
+				{
+					while (way.second.size() > 0)
+					{
+						shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(bot.bot->getSpeedMove(), way.second.front());
+						bot.commands.push(cmd);
+						way.second.pop();
+					}
+					CCLOG("%d set Way size > 0", i);
+					bot.status = statusBot::WALK;
+				}
+				//bot.isReady = true;	//for test
 			}
-			//bot.isReady = true;	//for test
 		}
 		
 		if (bot.status == statusBot::SHOOT)
@@ -415,6 +438,7 @@ void InformationCenter::update(float dt)
 		bot.bot->update(dt);
 		bot.countDetect.first += dt;
 		++begin;
+		++i;
 	}
 }
 
