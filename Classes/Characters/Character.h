@@ -45,6 +45,8 @@ protected:
     
     int _maxHP;
     int _currentHP;
+    ui::LoadingBar* _hpRepresent;
+    Sprite* _hpBGRepresent;
     BulletCreation* _bullet;
     string _dieEffect;
     string _soundDie;

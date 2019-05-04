@@ -387,6 +387,11 @@ bool Game::handleMouseBegan(EventMouse* event)
 {
     _playerShoot = true;
     _isMouseDown = true;
+    Vec2 point = event->getLocation() + Director::getInstance()->getVisibleOrigin();
+    point = _currentState->convertToNodeSpace(point);
+    shared_ptr<Character> obj = _player;
+    if(obj)
+        updateAngle(obj, point);
     return true;
 }
 
@@ -395,10 +400,11 @@ void Game::handleMouseMoved(EventMouse* event)
     //for player
     if(_isMouseDown) _playerShoot = true;
     
-    Vec2 point = event->getLocation() + Director::getInstance()->getVisibleOrigin();
+    Vec2 point = Vec2(event->getCursorX(), event->getCursorY());
     point = _currentState->convertToNodeSpace(point);
     shared_ptr<Character> obj = _player;
-    
+    CCLOG("Mouse position : %f - %f", point.x, point.y);
+    CCLOG("Player : %f - %f", _player->_sprite->getPosition().x, _player->_sprite->getPosition().y);
     if(obj)
         updateAngle(obj, point);
 }
@@ -564,7 +570,7 @@ void Game::updateAngle(shared_ptr<Character> object, const Vec2& point)
 #if USE_TOUCH
     object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
 #else
-    object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(angle) + 90);
+    object->_sprite->setRotation(CC_RADIANS_TO_DEGREES(-angle) + 90);
 #endif
 }
 

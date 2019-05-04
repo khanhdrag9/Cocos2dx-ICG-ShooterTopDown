@@ -15,6 +15,7 @@
 #include "../Bot/Bot.h"
 #include "../Resource/Creations.h"
 #include "../Resource/ResourceManager.h"
+#include "../Game.h"
 
 CommandShoot::CommandShoot():
     _speed(Vec2(0,0))
@@ -63,6 +64,7 @@ void CommandShoot::update(float dt)
         _isFinished = true;
         
         //load sound
-        SimpleAudioEngine::getInstance()->playEffect(bulletCreation->getShootSound().c_str());
+        if(Game::getInstance()->isEnableVolumn())
+            SimpleAudioEngine::getInstance()->playEffect(bulletCreation->getShootSound().c_str());
     }
 }

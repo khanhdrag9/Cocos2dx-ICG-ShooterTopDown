@@ -18,7 +18,9 @@ _rigidBody(nullptr),
 _destroy(false),
 _maxHP(0),
 _currentHP(_maxHP),
-_dieEffect("")
+_dieEffect(""),
+_hpRepresent(nullptr),
+_hpBGRepresent(nullptr)
 {
 }
 
@@ -31,6 +33,8 @@ Character::~Character()
         //_sprite->removeFromParent();
         _sprite->removeFromParentAndCleanup(true);
     }
+    if(_hpRepresent)_hpRepresent->removeFromParentAndCleanup(true);
+    if(_hpBGRepresent)_hpBGRepresent->removeFromParentAndCleanup(true);
 }
 
 
@@ -48,6 +52,22 @@ void Character::init(CharacterCreation* creation)
         _bullet = &creation->_bullet;
         _dieEffect = creation->getDieEffect();
         //_soundDie = creation->
+        
+        if(_maxHP > 0)
+        {
+            _hpBGRepresent = Sprite::create("CharacterAssets/HPLoadingBG.png");
+            Size spriteSize = _sprite->getContentSize();
+            Vec2 spritePos = _sprite->getPosition();
+            Game::getInstance()->getCurrentState()->addChild(_hpBGRepresent, 10);
+            _hpBGRepresent->setOpacity(200);
+            _hpBGRepresent->setPosition(Vec2(spritePos.x, spritePos.y + spriteSize.height * 1.05f));
+            
+            _hpRepresent = ui::LoadingBar::create("CharacterAssets/HPLoadingUpdate.png");
+            _hpBGRepresent->addChild(_hpRepresent);
+            _hpRepresent->setPercent(_currentHP /(float)_maxHP * 100.f);
+            _hpRepresent->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+            _hpRepresent->setDirection(ui::LoadingBar::Direction::LEFT);
+        }
     }
 }
 
@@ -57,6 +77,15 @@ void Character::update(float dt)
     if(_currentHP <= 0)
         destroy();
     if(_destroy)return;
+    
+    //update hp
+    if(_hpRepresent)
+    {
+        Size spriteSize = _sprite->getContentSize();
+        Vec2 spritePos = _sprite->getPosition();
+        _hpBGRepresent->setPosition(Vec2(spritePos.x, spritePos.y + spriteSize.height * 0.6));
+        _hpBGRepresent->setVisible(_sprite->isVisible());
+    }
         
 	for (auto begin = _commandQueue.begin(); begin != _commandQueue.end();)
 	{
@@ -190,6 +219,9 @@ void Character::decreHP(int decre)
     {
         _currentHP = 0;
     }
+    
+    if(_hpRepresent)
+        _hpRepresent->setPercent(_currentHP /(float)_maxHP * 100.f);
 }
 
 void Character::heal(int heal)
@@ -219,7 +251,7 @@ void Character::destroy()
             Game::getInstance()->getCurrentState()->addChild(par, 10);
         }
     }
-    if(_soundDie != "")
+    if(_soundDie != "" && Game::getInstance()->isEnableVolumn())
         SimpleAudioEngine::getInstance()->playEffect(_soundDie.c_str());
 }
 
