@@ -25,7 +25,9 @@ cocos2d::Scene *GS_GamePlay::createScene()
     layer->_uilayer = GS_GamePlayUI::create();
     scene->addChild(layer);
     scene->addChild(layer->_uilayer);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     scene->addChild(CustomMouse::create(), 100);
+#endif
     
     return scene;
 }
@@ -59,10 +61,12 @@ GS_GamePlayUI* GS_GamePlay::getUILayer() const
 
 void GS_GamePlay::controller()
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     auto keyboardlistener = EventListenerKeyboard::create();
     keyboardlistener->onKeyPressed = CC_CALLBACK_2(Game::handleKeyboardPress, Game::getInstance());
     keyboardlistener->onKeyReleased = CC_CALLBACK_2(Game::handleKeyboardRelease, Game::getInstance());
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardlistener, this);
+#endif
     
 #if USE_TOUCH
     auto touchlistener = EventListenerTouchOneByOne::create();

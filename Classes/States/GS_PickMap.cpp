@@ -71,10 +71,10 @@ bool GS_PickMap::init()
 		layout->setContentSize(pageSize);
 
 		ImageView* imageView = ImageView::create(listmap[i].linkImage);
-		imageView->setScale9Enabled(true);
+//		imageView->setScale9Enabled(true);
 		imageView->setContentSize(pageSize);
-		imageView->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-		imageView->setPosition(Vec2(pageSize.width / 2.f, 0));
+		imageView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+		imageView->setPosition(Vec2(pageSize.width / 2.f, pageSize.height / 2.f));
 		layout->addChild(imageView);
 
 		//        Label* title = Label::createWithTTF(listmap[i].name, fontTitle, 120);
@@ -106,7 +106,7 @@ bool GS_PickMap::init()
 		layout->setContentSize(pageSizeCharacter);
 
 		ImageView* imageView = ImageView::create(listChaCreate[i].getImage());
-		imageView->setScale9Enabled(true);
+//		imageView->setScale9Enabled(true);
 		imageView->setContentSize(pageSizeCharacter);
 		imageView->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		imageView->setPosition(Vec2(pageSize.width / 2.f, pageSize.height / 2.f));

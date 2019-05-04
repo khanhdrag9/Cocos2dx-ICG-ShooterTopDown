@@ -60,8 +60,10 @@ private:
     CC_SYNTHESIZE(int, _playerKills, PlayerKills);
 	bool _playerShoot;
     
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     bool _isHoldKey;
     vector<EventKeyboard::KeyCode> _keyIsHolds;
+#endif
     
     vector<GameMap> _listMaps;
     
@@ -109,9 +111,11 @@ public:
     Layer* getCurrentState();
 	void setObjectFollowByCam(shared_ptr<Character> object);
     
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     void handleKeyboardPress(EventKeyboard::KeyCode, Event*);   //used in gameplay
     void handleKeyboardHold();
     void handleKeyboardRelease(EventKeyboard::KeyCode, Event*); //used in gameplay
+#endif
     
 #if USE_TOUCH
     bool handleTouchBegan(Touch* touch, Event* event);

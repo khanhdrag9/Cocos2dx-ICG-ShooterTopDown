@@ -31,7 +31,9 @@ Game::Game():
 _currentState(nullptr),
 _player(nullptr),
 _playerShoot(false),
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 _isHoldKey(false),
+#endif
 _tileMap(nullptr),
 _objIsFollow(nullptr),
 _rigidWorld(nullptr),
@@ -57,9 +59,6 @@ _enableVolumn(true)
 
 Game::~Game()
 {
-	/*CC_SAFE_DELETE(_tileMap);
-
-	_keyIsHolds.clear();*/
 	releaseGamePlay();
     _currentState = nullptr;
     _listMaps.clear();
@@ -127,8 +126,10 @@ void Game::update(float dt)
         if(_countTime > 2.f)
             return;
     }
-    
+
+    #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     handleKeyboardHold();
+    #endif
 
     updateAvaiableSight();
     /*_sight = thread([this](){
@@ -207,6 +208,7 @@ void Game::setObjectFollowByCam(shared_ptr<Character> object)
 	_objIsFollow = object;
 }
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 void Game::handleKeyboardPress(EventKeyboard::KeyCode keycode, Event*)  //used in gameplay
 {
     if(_result != game_result::NONE)
@@ -351,6 +353,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
     }
     
 }
+#endif
 
 #if USE_TOUCH
 bool Game::handleTouchBegan(Touch* touch, Event* event)
@@ -424,8 +427,10 @@ const unique_ptr<RigidWorld>& Game::getRigidWord() const
 void Game::releaseGamePlay()
 {
     _playerShoot = false;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     _isHoldKey = false;
     _keyIsHolds.clear();
+#endif
     
 	InformationCenter::getInstance()->clear();
     
@@ -559,7 +564,7 @@ void Game::handleMovePlayer(shared_ptr<Player> player, const Game::direction& di
     }
     
     cmd = CommandMoveBy::createCommandMoveBy(movespeed, 0.1);
-    player->pushCommand(cmd);
+    player->pushCommand(cmd, true);
 }
 
 void Game::updateAngle(shared_ptr<Character> object, const Vec2& point)

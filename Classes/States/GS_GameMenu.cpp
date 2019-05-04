@@ -22,7 +22,9 @@ cocos2d::Scene *GS_GameMenu::createScene()
     layer->_optionPage->setPopupExitColor(Color3B(8, 70, 90), Color4B::WHITE);
     scene->addChild(layer, (int)Game::layer::GAMELABEL);
     scene->addChild(layer->_optionPage, (int)Game::layer::OPTION);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     scene->addChild(CustomMouse::create(), 100);
+#endif
 
 //    UIPageView* pageView = UIPageView::create();
     //scene->addChild(pageView, 1);

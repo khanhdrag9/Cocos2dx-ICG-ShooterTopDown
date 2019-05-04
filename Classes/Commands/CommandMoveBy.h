@@ -6,7 +6,7 @@ class CommandMoveBy : public Command
     float _counttime;
     float _duration;
     
-    Vec2 _velocity;
+     CC_SYNTHESIZE(Vec2, _velocity, Velocity);
     
 public:
     CommandMoveBy();

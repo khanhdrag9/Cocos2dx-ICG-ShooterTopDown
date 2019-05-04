@@ -93,6 +93,7 @@ bool GS_OptionPage::init()
     _bar->setOpacity(225);
     _bar->setColor(Color3B(7, 71, 45));
     _bar->setVisible(false);
+    _bar->setContentSize(Size(screenSize.width, _bar->getContentSize().height));
     this->addChild(_bar, 0);
     
     //Popup exit

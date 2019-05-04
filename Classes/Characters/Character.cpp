@@ -7,6 +7,7 @@
 
 #include "Character.h"
 #include "../Commands/Command.h"
+#include "../Commands/CommandMoveBy.h"
 #include "../Defines/constants.h"
 #include "../Physics/RigidBody.h"
 #include "../Resource/Creations.h"
