@@ -118,7 +118,7 @@ ResourceManager::ResourceManager()
         audio->preloadEffect(creation._bullet.getShootSound().c_str());
         audio->preloadEffect(creation._bullet.getExplosionSound().c_str());
     }
-    audio->setEffectsVolume(100);
+    audio->setEffectsVolume(75);
 
 }
 

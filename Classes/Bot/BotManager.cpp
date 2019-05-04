@@ -43,6 +43,7 @@ int BotManager::countBots() const
 
 void BotManager::update(float dt)
 {
+    Game* game = Game::getInstance();
     bool isDestroy = false;
     for (auto begin = _listBots.begin(); begin != _listBots.end();)
 	{
@@ -51,6 +52,7 @@ void BotManager::update(float dt)
         {
             begin = _listBots.erase(begin);
             isDestroy = true;
+            game->setPlayerKills(game->getPlayerKills() + 1);
             continue;
         }
 #if DISIBLE_AI
@@ -59,10 +61,10 @@ void BotManager::update(float dt)
         ++begin;
 	}
     
-    if(isDestroy && Game::getInstance()->isEnableVolumn())
+    if(isDestroy && game->isEnableVolumn())
     {
         ResourceManager* resMgr = ResourceManager::getInstance();
-        int playerKills = Game::getInstance()->getPlayerKills();
+        int playerKills = game->getPlayerKills();
         switch (playerKills)
         {
             case 1:

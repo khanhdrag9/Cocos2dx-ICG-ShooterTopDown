@@ -16,8 +16,6 @@ _speedMove(0)
 
 Bot::~Bot()
 {
-    Game* game = Game::getInstance();
-    game->setPlayerKills(game->getPlayerKills() + 1);
 }
 
 void Bot::init(CharacterCreation* creation)
