@@ -13,6 +13,7 @@
 #include "../Bot/Bot.h"
 #include "../Bot/BotManager.h"
 #include "GS_OptionPage.h"
+#include "Joystick.h"
 
 GS_GamePlayUI::GS_GamePlayUI():
 _playerBullet(nullptr),
@@ -74,6 +75,11 @@ bool GS_GamePlayUI::init()
     this->addChild(_optionPage, Game::layer::OPTION);
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 
+    //joystick
+#if USE_JOYSTICK
+    _leftJoystick = Joystick::create();
+    this->addChild(_leftJoystick, 50);
+#endif
     
 #if CHEAT
     string F1 = "F1: jump to revival position\n";

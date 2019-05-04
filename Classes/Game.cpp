@@ -26,9 +26,13 @@
 #include "Envoiments/VisionPlayer.h"
 #include "Envoiments/VisionEnemy.h"
 #include "Bot/InformationCenter.h"
+#include "States/Joystick.h"
 
 Game::Game():
 _currentState(nullptr),
+//#if USE_JOYSTICK
+//_leftJoystick(nullptr),
+//#endif
 _player(nullptr),
 _playerShoot(false),
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
@@ -90,6 +94,7 @@ void Game::initGamePlay()
 	createStartCameraView();
 
 	InformationCenter::getInstance()->initGraph(_tileMap);
+    
     _result = game_result::NONE;
     _isEndGame = false;
     _outGame = false;
@@ -130,6 +135,9 @@ void Game::update(float dt)
     #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     handleKeyboardHold();
     #endif
+#if USE_JOYSTICK
+    handleJoystickMove();
+#endif
 
     updateAvaiableSight();
     /*_sight = thread([this](){
@@ -353,6 +361,57 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
     }
     
 }
+
+void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
+{
+    if(!_player)return;
+    
+    float speedPlayer = _player->getSpeedMove();
+    switch (keycode) {
+        case cocos2d::EventKeyboard::KeyCode::KEY_W:
+            handleMovePlayer(_player, Vec2(0,speedPlayer));
+            break;
+        case cocos2d::EventKeyboard::KeyCode::KEY_S:
+            handleMovePlayer(_player, Vec2(0,-speedPlayer));
+            break;
+        case cocos2d::EventKeyboard::KeyCode::KEY_A:
+            handleMovePlayer(_player, Vec2(-speedPlayer, 0));
+            break;
+        case cocos2d::EventKeyboard::KeyCode::KEY_D:
+            handleMovePlayer(_player, Vec2(speedPlayer, 0));
+            break;
+#if USE_TOUCH
+        case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
+            //_playerShoot = true;
+            break;
+#endif
+        default:
+            break;
+    }
+}
+#endif
+
+#if USE_JOYSTICK
+void Game::handleJoystickMove()
+{
+    if(auto gameplay = dynamic_cast<GS_GamePlay*>(_currentState))
+    {
+        auto joystick = gameplay->getUILayer()->getLeftJoystick();
+        if(joystick)
+        {
+            if(joystick->getPress())
+            {
+                float angle = joystick->getAngle();
+                _player->_sprite->setRotation(angle);
+                float speedPlayer = _player->getSpeedMove();
+                Vec2 joystickVec = joystick->getVelocity();
+                joystickVec.normalize();
+                joystickVec *= speedPlayer;
+                this->handleMovePlayer(_player, joystickVec);
+            }
+        }
+    }
+}
 #endif
 
 #if USE_TOUCH
@@ -512,58 +571,9 @@ shared_ptr<Player> Game::createAPlayer()
     return character;
 }
 
-void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
+void Game::handleMovePlayer(shared_ptr<Player> player,  const Vec2& direct)
 {
-    if(!_player)return;
-    
-    switch (keycode) {
-        case cocos2d::EventKeyboard::KeyCode::KEY_W:
-            handleMovePlayer(_player, Game::direction::UP);
-            break;
-        case cocos2d::EventKeyboard::KeyCode::KEY_S:
-            handleMovePlayer(_player, Game::direction::DOWN);
-            break;
-        case cocos2d::EventKeyboard::KeyCode::KEY_A:
-            handleMovePlayer(_player, Game::direction::LEFT);
-            break;
-        case cocos2d::EventKeyboard::KeyCode::KEY_D:
-            handleMovePlayer(_player, Game::direction::RIGHT);
-            break;
-#if USE_TOUCH
-        case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
-			//_playerShoot = true;
-            break;
-#endif
-        default:
-            break;
-    }
-}
-
-void Game::handleMovePlayer(shared_ptr<Player> player, const Game::direction& direct)
-{
-    Vec2 movespeed = Vec2(0,0);
-    shared_ptr<Command> cmd;
-    
-    switch (direct) {
-        case direction::UP:
-            movespeed.y = player->getSpeedMove();
-            break;
-        case direction::DOWN:
-            movespeed.y = -player->getSpeedMove();
-            break;
-        case direction::LEFT:
-            movespeed.x = -player->getSpeedMove();
-            break;
-        case direction::RIGHT:
-            movespeed.x = player->getSpeedMove();
-            break;
-        case direction::NONE:
-            break;
-        default:
-            break;
-    }
-    
-    cmd = CommandMoveBy::createCommandMoveBy(movespeed, 0.1);
+    shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(direct, 0.1);
     player->pushCommand(cmd, true);
 }
 

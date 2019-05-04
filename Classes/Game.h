@@ -8,19 +8,11 @@ class Player;
 class Bot;
 class RigidWorld;
 class Vision;
+//class Joystick;
 
 class Game : public pattern::Singleton<Game>
 {
 public:
-    enum class direction : int
-    {
-        NONE,
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
-    };
-
 	enum type_vision
 	{
 		VISION_PLAYER,
@@ -55,6 +47,9 @@ public:
     
 private:
     Layer* _currentState;
+//#if USE_JOYSTICK
+//    Joystick* _leftJoystick;
+//#endif
     
     shared_ptr<Player> _player;
     CC_SYNTHESIZE(int, _playerKills, PlayerKills);
@@ -115,6 +110,11 @@ public:
     void handleKeyboardPress(EventKeyboard::KeyCode, Event*);   //used in gameplay
     void handleKeyboardHold();
     void handleKeyboardRelease(EventKeyboard::KeyCode, Event*); //used in gameplay
+    void handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode);
+#endif
+    
+#if USE_JOYSTICK
+    void handleJoystickMove();
 #endif
     
 #if USE_TOUCH
@@ -155,8 +155,7 @@ public:
 private:
     shared_ptr<Player> createAPlayer();
     
-    void handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode);
-    void handleMovePlayer(shared_ptr<Player> player, const direction& direct);
+    void handleMovePlayer(shared_ptr<Player> player, const Vec2& direct);
     void updateAngle(shared_ptr<Character> object, const Vec2& point);
 
 	void createPhysicsWorld();

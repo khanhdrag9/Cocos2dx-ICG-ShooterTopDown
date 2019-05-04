@@ -12,6 +12,6 @@ public:
     bool init() override;
     void setText(const string& text);
     
-    CREATE_FUNC(PopupInGame);
+    //CREATE_FUNC(PopupInGame);
 };
 

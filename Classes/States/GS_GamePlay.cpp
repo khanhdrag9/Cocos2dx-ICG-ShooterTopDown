@@ -4,6 +4,7 @@
 #include "GS_GamePlayUI.h"
 #include "GS_OptionPage.h"
 #include "CustomMouse.h"
+#include "Joystick.h"
 
 GS_GamePlay::GS_GamePlay():
 	_uilayer(nullptr)
@@ -41,7 +42,7 @@ bool GS_GamePlay::init()
     Game::getInstance()->setCurrentState(this);
     Game::getInstance()->initGamePlay();
     
-    controller();
+//    controller();
     
     scheduleUpdate();
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();

@@ -3,6 +3,7 @@
 
 class Character;
 class GS_OptionPage;
+class Joystick;
 
 class GS_GamePlayUI : public Layer
 {
@@ -30,5 +31,9 @@ public:
     
     void clear();
     CREATE_FUNC(GS_GamePlayUI);
+    
+#if USE_JOYSTICK
+    CC_SYNTHESIZE_READONLY(Joystick*, _leftJoystick, LeftJoystick);
+#endif
 };
 

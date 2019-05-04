@@ -3,6 +3,7 @@
 
 class GS_GamePlayUI;
 class GS_OptionPage;
+class Joystick;
 
 class GS_GamePlay : public Layer
 {
