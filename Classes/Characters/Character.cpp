@@ -11,6 +11,7 @@
 #include "../Physics/RigidBody.h"
 #include "../Resource/Creations.h"
 #include "../Game.h"
+#include "../Resource/ResourceManager.h"
 
 Character::Character():
 _sprite(nullptr),
@@ -54,15 +55,15 @@ void Character::init(CharacterCreation* creation)
         //_soundDie = creation->
         
         if(_maxHP > 0)
-        {
-            _hpBGRepresent = Sprite::create("CharacterAssets/HPLoadingBG.png");
+        {   
+            _hpBGRepresent = Sprite::create(ResourceManager::getInstance()->at(res::define::LOADINGBAR_BG_HP));
             Size spriteSize = _sprite->getContentSize();
             Vec2 spritePos = _sprite->getPosition();
             Game::getInstance()->getCurrentState()->addChild(_hpBGRepresent, 10);
             _hpBGRepresent->setOpacity(200);
             _hpBGRepresent->setPosition(Vec2(spritePos.x, spritePos.y + spriteSize.height * 1.05f));
             
-            _hpRepresent = ui::LoadingBar::create("CharacterAssets/HPLoadingUpdate.png");
+            _hpRepresent = ui::LoadingBar::create(ResourceManager::getInstance()->at(res::define::LOADINGBAR_HP));
             _hpBGRepresent->addChild(_hpRepresent);
             _hpRepresent->setPercent(_currentHP /(float)_maxHP * 100.f);
             _hpRepresent->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);

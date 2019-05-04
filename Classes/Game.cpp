@@ -403,8 +403,6 @@ void Game::handleMouseMoved(EventMouse* event)
     Vec2 point = Vec2(event->getCursorX(), event->getCursorY());
     point = _currentState->convertToNodeSpace(point);
     shared_ptr<Character> obj = _player;
-    CCLOG("Mouse position : %f - %f", point.x, point.y);
-    CCLOG("Player : %f - %f", _player->_sprite->getPosition().x, _player->_sprite->getPosition().y);
     if(obj)
         updateAngle(obj, point);
 }

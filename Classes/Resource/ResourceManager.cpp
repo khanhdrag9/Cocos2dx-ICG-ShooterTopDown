@@ -33,6 +33,8 @@ ResourceManager::ResourceManager()
     _resMap[res::define::BTN] = "OptionAssets/Button.png";
     _resMap[res::define::FONT_KENVECTOR_FUTURE_THIN] = "Assets/Bonus/kenvector_future_thin.ttf";
     _resMap[res::define::FONT_ARIAL] = "fonts/arial.ttf";
+    _resMap[res::define::LOADINGBAR_HP] = "CharacterAssets/HPLoadingUpdate.png";
+    _resMap[res::define::LOADINGBAR_BG_HP] = "CharacterAssets/HPLoadingBG.png";
     
     //musics
     _resMap[res::define::MUSIC_ACTION_FIGHT] = "SFX/action_fight.mp3";

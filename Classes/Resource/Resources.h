@@ -24,6 +24,8 @@ namespace res
         BTN,
 		BTN_OPTION,
         CURSOR_UI,
+        LOADINGBAR_HP,
+        LOADINGBAR_BG_HP,
         
         
         //Font
