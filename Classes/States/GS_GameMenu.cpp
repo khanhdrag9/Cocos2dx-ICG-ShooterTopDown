@@ -74,6 +74,13 @@ bool GS_GameMenu::init()
     return true;
 }
 
+void GS_GameMenu::resume()
+{
+    Layer::resume();
+    Game::getInstance()->setCurrentState(this);
+    _optionPage->setColorUI(Color3B::BLACK);
+}
+
 void GS_GameMenu::GoToPickMap()
 {
         if(_pickMapPage)

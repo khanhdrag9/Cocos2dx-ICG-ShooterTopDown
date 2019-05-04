@@ -118,12 +118,12 @@ void Game::update(float dt)
     if(_result != game_result::NONE)
     {
         _countTime+=dt;
-        if(!_isEndGame && _countTime > 1.2f)
+        if(!_isEndGame && _countTime > 2.f)
         {
             setResultGame();
             _isEndGame = true;
         }
-        if(_countTime > 1.2f)
+        if(_countTime > 2.f)
             return;
     }
     

@@ -12,6 +12,10 @@
 #include "../Characters/Player.h"
 #include "PopupInGame.h"
 
+GS_OptionPage::~GS_OptionPage()
+{
+}
+
 bool GS_OptionPage::init()
 {
     if(!Layer::init())
@@ -150,6 +154,15 @@ bool GS_OptionPage::init()
     _popupVisible = false;
     
     return true;
+}
+
+void GS_OptionPage::resume()
+{
+    Layer::resume();
+    
+    Game* game = Game::getInstance();
+    bool volumnIsEnable = game->isEnableVolumn();
+    game->setEnableVolunm(volumnIsEnable);
 }
 
 void GS_OptionPage::GoToOption()

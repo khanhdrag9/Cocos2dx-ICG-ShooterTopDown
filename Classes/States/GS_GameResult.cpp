@@ -78,9 +78,24 @@ bool GS_GameResult::init()
 //        titleResult = Sprite::create("WinTitle.png");
 //    else titleResult = Sprite::create("LoseTitle.png");
     ui::Button* titleResult;
+    string soundEffect = "";
+    string musicsEffect = "";
     if(result == Game::game_result::WIN)
+    {
         titleResult = ui::Button::create("WinTitle.png");
-    else titleResult = ui::Button::create("LoseTitle.png");
+        soundEffect = resMgr->at(res::define::SOUND_VICTORY);
+        musicsEffect = resMgr->at(res::define::MUSIC_VICTORY);
+    }
+    else
+    {
+        titleResult = ui::Button::create("LoseTitle.png");
+        soundEffect = resMgr->at(res::define::SOUND_DEFEAT);
+        musicsEffect = resMgr->at(res::define::MUSIC_DEFEAT);
+    }
+    
+    SimpleAudioEngine* audio = SimpleAudioEngine::getInstance();
+    if(musicsEffect != "")audio->playBackgroundMusic(musicsEffect.c_str());
+    if(soundEffect != "")audio->playEffect(soundEffect.c_str());
     
     titleResult->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
     titleResult->setPosition(Vec2(center.x, origin.y + sz.height * 0.99));

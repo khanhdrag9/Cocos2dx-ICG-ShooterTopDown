@@ -12,6 +12,7 @@ public:
     
 private:
     bool init() override;
+    void resume() override;
     
     void GoToPickMap();
 private:

@@ -16,7 +16,9 @@ class GS_OptionPage : public Layer
     
     CC_SYNTHESIZE_READONLY(bool, _popupVisible, PopupVisible);
 private:
+    ~GS_OptionPage();
     bool init() override;
+    void resume() override;
     
     void GoToOption();
     void modifyVolumn();
