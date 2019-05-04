@@ -18,7 +18,6 @@ private:
     void update(float dt) override;
     void controller();
     
-    Sprite* _aim;
     GS_GamePlayUI* _uilayer;
     
     

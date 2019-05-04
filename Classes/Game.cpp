@@ -387,7 +387,7 @@ bool Game::handleMouseBegan(EventMouse* event)
 {
     _playerShoot = true;
     _isMouseDown = true;
-    Vec2 point = event->getLocation() + Director::getInstance()->getVisibleOrigin();
+    Vec2 point = Vec2(event->getCursorX(), event->getCursorY());
     point = _currentState->convertToNodeSpace(point);
     shared_ptr<Character> obj = _player;
     if(obj)

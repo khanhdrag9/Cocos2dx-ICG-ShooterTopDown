@@ -5,6 +5,7 @@
 #include "GS_OptionPage.h"
 #include "GS_PickMap.h"
 #include "GS_OptionPage.h"
+#include "CustomMouse.h"
 
 GS_GameMenu::GS_GameMenu():
     _optionPage(nullptr),
@@ -20,6 +21,7 @@ cocos2d::Scene *GS_GameMenu::createScene()
     layer->_optionPage->setTag(Game::layer::OPTION);
     scene->addChild(layer, (int)Game::layer::GAMELABEL);
     scene->addChild(layer->_optionPage, (int)Game::layer::OPTION);
+    scene->addChild(CustomMouse::create(), 100);
 
 //    UIPageView* pageView = UIPageView::create();
     //scene->addChild(pageView, 1);
