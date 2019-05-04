@@ -26,4 +26,5 @@ public:
     CREATE_FUNC(GS_OptionPage);
     void setColorUI(Color3B color);
     void setBarVisible(bool visible, Color3B color = Color3B(0,0,0));
+    void setPopupExitColor(Color3B colorBG, Color4B textColor);
 };

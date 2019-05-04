@@ -70,6 +70,7 @@ bool GS_GamePlayUI::init()
     _optionPage->setColorUI(Color3B::WHITE);
     _optionPage->setOpacity(0);
     _optionPage->setBarVisible(true);
+    _optionPage->setPopupExitColor(Color3B(7, 71, 45), Color4B::WHITE);
     this->addChild(_optionPage, Game::layer::OPTION);
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 

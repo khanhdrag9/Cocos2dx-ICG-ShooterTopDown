@@ -19,6 +19,7 @@ cocos2d::Scene *GS_GameMenu::createScene()
     layer->setTag(Game::layer::GAMELABEL);
     layer->_optionPage = GS_OptionPage::create();
     layer->_optionPage->setTag(Game::layer::OPTION);
+    layer->_optionPage->setPopupExitColor(Color3B(8, 70, 90), Color4B::WHITE);
     scene->addChild(layer, (int)Game::layer::GAMELABEL);
     scene->addChild(layer->_optionPage, (int)Game::layer::OPTION);
     scene->addChild(CustomMouse::create(), 100);
