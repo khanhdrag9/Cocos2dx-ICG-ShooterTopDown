@@ -40,8 +40,8 @@ ResourceManager::ResourceManager()
     _resMap[res::define::MUSIC_ACTION_FIGHT] = "SFX/action_fight.mp3";
     _resMap[res::define::MUSIC_READY_TO_FIGHT] = "SFX/ready_to_fight.mp3";
     _resMap[res::define::MUSIC_BOSS_FIGHT] = "SFX/boss_fight.mp3";
-    _resMap[res::define::MUSIC_VICTORY] = "";
-    _resMap[res::define::MUSIC_DEFEAT] = "";
+    _resMap[res::define::MUSIC_VICTORY] = "SFX/VictoryTheme.mp3";
+    _resMap[res::define::MUSIC_DEFEAT] = "SFX/DefeatTheme.mp3";
     
     _resMap[res::define::SOUND_VICTORY] = "SFX/Victory.mp3";
     _resMap[res::define::SOUND_DEFEAT] = "SFX/Defeat.mp3";

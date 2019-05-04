@@ -93,9 +93,12 @@ bool GS_GameResult::init()
         musicsEffect = resMgr->at(res::define::MUSIC_DEFEAT);
     }
     
-    SimpleAudioEngine* audio = SimpleAudioEngine::getInstance();
-    if(musicsEffect != "")audio->playBackgroundMusic(musicsEffect.c_str());
-    if(soundEffect != "")audio->playEffect(soundEffect.c_str());
+    if(Game::getInstance()->isEnableVolumn())
+    {
+        SimpleAudioEngine* audio = SimpleAudioEngine::getInstance();
+        if(musicsEffect != "")audio->playBackgroundMusic(musicsEffect.c_str());
+        if(soundEffect != "")audio->playEffect(soundEffect.c_str());
+    }
     
     titleResult->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
     titleResult->setPosition(Vec2(center.x, origin.y + sz.height * 0.99));

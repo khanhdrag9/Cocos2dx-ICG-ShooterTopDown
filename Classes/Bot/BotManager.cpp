@@ -59,7 +59,7 @@ void BotManager::update(float dt)
         ++begin;
 	}
     
-    if(isDestroy)
+    if(isDestroy && Game::getInstance()->isEnableVolumn())
     {
         ResourceManager* resMgr = ResourceManager::getInstance();
         int playerKills = Game::getInstance()->getPlayerKills();

@@ -103,6 +103,7 @@ void Game::update(float dt)
     if(_outGame)
     {
         releaseGamePlay();
+        SimpleAudioEngine::getInstance()->stopBackgroundMusic();
         Director::getInstance()->popScene();
     }
     
