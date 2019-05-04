@@ -57,6 +57,7 @@ private:
     Layer* _currentState;
     
     shared_ptr<Player> _player;
+    CC_SYNTHESIZE(int, _playerKills, PlayerKills);
 	bool _playerShoot;
     
     bool _isHoldKey;

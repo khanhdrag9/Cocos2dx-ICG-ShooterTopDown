@@ -43,17 +43,44 @@ int BotManager::countBots() const
 
 void BotManager::update(float dt)
 {
+    bool isDestroy = false;
     for (auto begin = _listBots.begin(); begin != _listBots.end();)
 	{
         shared_ptr<Bot> bot = *begin;
         if(bot->isDestroyed())
         {
             begin = _listBots.erase(begin);
+            isDestroy = true;
             continue;
         }
-//        bot->update(dt);
+#if DISIBLE_AI
+        bot->update(dt);
+#endif
         ++begin;
 	}
+    
+    if(isDestroy)
+    {
+        ResourceManager* resMgr = ResourceManager::getInstance();
+        int playerKills = Game::getInstance()->getPlayerKills();
+        switch (playerKills)
+        {
+            case 1:
+                SimpleAudioEngine::getInstance()->playEffect(resMgr->at(res::define::SOUND_FIRSTBLOOD).c_str());
+                break;
+            case 2:
+                SimpleAudioEngine::getInstance()->playEffect(resMgr->at(res::define::SOUND_DOUBLEKILL).c_str());
+                break;
+            case 3:
+                SimpleAudioEngine::getInstance()->playEffect(resMgr->at(res::define::SOUND_TRIPLEKILL).c_str());
+                break;
+            case 4:
+                SimpleAudioEngine::getInstance()->playEffect(resMgr->at(res::define::SOUND_QUADRAKILL).c_str());
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void BotManager::initBots()
@@ -92,7 +119,9 @@ shared_ptr<Bot> BotManager::createBot(CharacterCreation* creation)
 	bot->init(creation);
 	_listBots.push_back(bot);
 
-	InformationCenter::getInstance()->pushBot(bot);
+#if !DISIBLE_AI
+    InformationCenter::getInstance()->pushBot(bot);
+#endif
 
 	return bot;
 }

@@ -166,7 +166,7 @@ void InformationCenter::initGraph(TMXTiledMap * tileMap)
 
 void InformationCenter::update(float dt)
 {
-    return;
+//    return;
     auto player = Game::getInstance()->getPlayer();
     if(!player)return;  //Won
     

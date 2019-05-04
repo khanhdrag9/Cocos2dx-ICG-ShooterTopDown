@@ -41,13 +41,27 @@ ResourceManager::ResourceManager()
     _resMap[res::define::MUSIC_READY_TO_FIGHT] = "SFX/ready_to_fight.mp3";
     _resMap[res::define::MUSIC_BOSS_FIGHT] = "SFX/boss_fight.mp3";
     
+    _resMap[res::define::SOUND_VICTORY] = "SFX/Victory.mp3";
+    _resMap[res::define::SOUND_DEFEAT] = "SFX/Defeat.mp3";
+    _resMap[res::define::SOUND_FIRSTBLOOD] = "SFX/FirstBlood.mp3";
+    _resMap[res::define::SOUND_DOUBLEKILL] = "SFX/Doublekill.mp3";
+    _resMap[res::define::SOUND_TRIPLEKILL] = "SFX/Triplekill.mp3";
+    _resMap[res::define::SOUND_QUADRAKILL] = "SFX/Quadrakill.mp3";
+    
     SimpleAudioEngine* audio = SimpleAudioEngine::getInstance();
     
     audio->preloadBackgroundMusic(at(res::define::MUSIC_ACTION_FIGHT).c_str());
     audio->preloadBackgroundMusic(at(res::define::MUSIC_READY_TO_FIGHT).c_str());
     audio->preloadBackgroundMusic(at(res::define::MUSIC_BOSS_FIGHT).c_str());
+    audio->preloadEffect(at(res::define::SOUND_VICTORY).c_str());
+    audio->preloadEffect(at(res::define::SOUND_DEFEAT).c_str());
+    audio->preloadEffect(at(res::define::SOUND_FIRSTBLOOD).c_str());
+    audio->preloadEffect(at(res::define::SOUND_DOUBLEKILL).c_str());
+    audio->preloadEffect(at(res::define::SOUND_TRIPLEKILL).c_str());
+    audio->preloadEffect(at(res::define::SOUND_QUADRAKILL).c_str());
     
     audio->stopBackgroundMusic();
+    audio->stopAllEffects();
     
     //sounds   
     _listBulletCreations.clear();

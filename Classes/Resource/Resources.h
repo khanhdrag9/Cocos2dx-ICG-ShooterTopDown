@@ -36,10 +36,18 @@ namespace res
         MUSIC_ACTION_FIGHT,
         MUSIC_READY_TO_FIGHT,
         MUSIC_BOSS_FIGHT,
+        MUSIC_VICTORY,
+        MUSIC_DEFEAT,
         
         //sound
         SOUND_SHOOT_1,
         SOUND_SHOOT_2,
+        SOUND_VICTORY,
+        SOUND_DEFEAT,
+        SOUND_FIRSTBLOOD,
+        SOUND_DOUBLEKILL,
+        SOUND_TRIPLEKILL,
+        SOUND_QUADRAKILL,
         
 
 		//character

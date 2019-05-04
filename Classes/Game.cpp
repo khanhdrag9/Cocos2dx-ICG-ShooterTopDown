@@ -95,6 +95,7 @@ void Game::initGamePlay()
     _isEndGame = false;
     _outGame = false;
     _countTime = 0.f;
+    _playerKills = 0;
 }
 
 void Game::update(float dt)
@@ -914,7 +915,7 @@ void Game::setEnableVolunm(bool enable)
 {
     _enableVolumn = enable;
     auto audio = SimpleAudioEngine::getInstance();
-    if(_enableVolumn)
+    if(_enableVolumn && _currentState->getTag() != Game::layer::GAMEPLAY)
     {
         auto audio = SimpleAudioEngine::getInstance();
         res::define backgroundMusics[] = {
