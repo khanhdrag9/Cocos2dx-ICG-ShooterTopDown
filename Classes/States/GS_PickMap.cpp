@@ -186,7 +186,7 @@ bool GS_PickMap::init()
                 int currentPage = (int)_pageViewGlobal->getCurrentPageIndex();
                 if(currentPage == 0)
                 {
-                    _pageViewGlobal->scrollToItem(1);
+                    GoToSidePage(1);
                 }
                 _isFirstIn = false;
             }
