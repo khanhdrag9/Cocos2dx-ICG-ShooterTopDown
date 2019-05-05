@@ -29,8 +29,20 @@ cocos2d::Scene *GS_GamePlay::createScene()
     scene->addChild(layer->_uilayer);
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     scene->addChild(CustomMouse::create(), 100);
+    #if USE_JOYSTICK
+    layer->_uilayer->useTab(true);
+    layer->_uilayer->getOptionPage()->setBarOpacity(150.f);
+    layer->_uilayer->getOptionPage()->setBarVisible(true, Color3B::BLACK);
+    #endif
+#else
+    layer->_uilayer->useTab(true);
+    layer->_uilayer->getOptionPage()->setBarOpacity(150.f);
+    layer->_uilayer->getOptionPage()->setBarVisible(true, Color3B::BLACK);
+
 #endif
+
     layer->_uilayer->setCharacter(Game::getInstance()->getPlayer());
+
     
     return scene;
 }

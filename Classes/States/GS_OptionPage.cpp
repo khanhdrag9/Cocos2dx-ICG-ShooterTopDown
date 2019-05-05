@@ -228,8 +228,12 @@ void GS_OptionPage::setColorUI(Color3B color)
 void GS_OptionPage::setBarVisible(bool visible, Color3B color)
 {
     _bar->setVisible(visible);
-    if(color != Color3B(0,0,0))
-        _bar->setColor(color);
+    _bar->setColor(color);
+}
+
+void GS_OptionPage::setBarOpacity(float value)
+{
+    _bar->setOpacity(value);
 }
 
 void GS_OptionPage::setPopupExitColor(Color3B color, Color4B textColor)

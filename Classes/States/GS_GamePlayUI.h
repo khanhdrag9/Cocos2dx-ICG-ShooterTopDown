@@ -17,7 +17,7 @@ class GS_GamePlayUI : public Layer
     shared_ptr<Character> _characterProfile;
     vector<ui::Button*> _skillsCharacter;
     
-    GS_OptionPage* _optionPage;
+    CC_SYNTHESIZE_READONLY(GS_OptionPage*, _optionPage, OptionPage);
 public:
     GS_GamePlayUI();
     ~GS_GamePlayUI();
