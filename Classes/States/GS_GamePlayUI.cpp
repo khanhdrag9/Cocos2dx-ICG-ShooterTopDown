@@ -248,6 +248,7 @@ void GS_GamePlayUI::useTab(bool show)
 void GS_GamePlayUI::showResult()
 {
     GS_GameResult* gameresult = GS_GameResult::create();
+    useTab(false);
     this->getScene()->addChild(gameresult, 10);
 }
 

@@ -65,6 +65,10 @@ void CommandShoot::update(float dt)
         
         //load sound
         if(Game::getInstance()->isEnableVolumn())
-            SimpleAudioEngine::getInstance()->playEffect(bulletCreation->getShootSound().c_str());
+        {
+            auto audio = SimpleAudioEngine::getInstance();
+            if(!audio->isBackgroundMusicPlaying())
+                SimpleAudioEngine::getInstance()->playEffect(bulletCreation->getShootSound().c_str());
+        }
     }
 }

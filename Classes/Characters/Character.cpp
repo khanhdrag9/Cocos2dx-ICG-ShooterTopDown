@@ -254,7 +254,11 @@ void Character::destroy()
         }
     }
     if(_soundDie != "" && Game::getInstance()->isEnableVolumn())
-        SimpleAudioEngine::getInstance()->playEffect(_soundDie.c_str());
+    {
+        auto audio = SimpleAudioEngine::getInstance();
+        if(!audio->isBackgroundMusicPlaying())
+            SimpleAudioEngine::getInstance()->playEffect(_soundDie.c_str());
+    }
 }
 
 bool Character::isDestroyed()

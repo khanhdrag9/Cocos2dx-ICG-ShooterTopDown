@@ -27,7 +27,7 @@ private:
     bool init() override;
     void updateVelocity(Vec2 point, side s);
     void resetJoystick(side s);
-    bool handleLastTouch();
+    bool handleLastTouch(side s);
     
 //    bool touchBegan(Touch*, Event*);
 //    void touchMoved(Touch*, Event*);

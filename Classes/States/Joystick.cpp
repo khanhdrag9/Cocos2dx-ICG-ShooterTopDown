@@ -123,23 +123,17 @@ void Joystick::resetJoystick(side s)
     this->updateVelocity(center, s);
 }
 
-bool Joystick::handleLastTouch()
+bool Joystick::handleLastTouch(side s)
 {
-    bool wasPressedLeft = _isPressLeft;
-    if(wasPressedLeft)
+    bool wasPressed = (s == side::LEFT ? _isPressLeft : _isPressRight);
+    if(wasPressed)
     {
-        this->resetJoystick(side::LEFT);
-        _isPressLeft = false;
+        this->resetJoystick(s);
+        if(s == side::LEFT)_isPressLeft = false;
+        else if(s == side::RIGHT)_isPressRight = false;
     }
     
-    bool wasPressedRight = _isPressRight;
-    if(wasPressedRight)
-    {
-        this->resetJoystick(side::RIGHT);
-        _isPressRight = false;
-    }
-    
-    return wasPressedLeft || wasPressedRight;
+    return wasPressed;
 }
 
 bool isPointInCircle(const Vec2& point, const Vec2& center, const float& radius)
@@ -222,13 +216,25 @@ void Joystick::touchMoved(const vector<Touch*>& touches, Event*)
 //void Joystick::touchEnded(Touch* touch, Event*)
 void Joystick::touchEnded(const vector<Touch*>& touches, Event*)
 {
-    handleLastTouch();
+    Size sz = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    bool left = false, right = false;
+    for(auto& touch : touches)
+    {
+        float locationX = touch->getLocation().x;
+        float centerX = origin.x + sz.width / 2.f;
+        if(locationX <= centerX)left = true;
+        if(locationX >= centerX)right = true;
+    }
+    
+    if(left)handleLastTouch(side::LEFT);
+    if(right)handleLastTouch(side::RIGHT);
 }
 
 //void Joystick::touchCancelled(Touch* touch, Event*)
-void Joystick::touchCancelled(const vector<Touch*>& touches, Event*)
+void Joystick::touchCancelled(const vector<Touch*>& touches, Event* e)
 {
-    handleLastTouch();
+    touchEnded(touches, e);
 }
 
 #endif

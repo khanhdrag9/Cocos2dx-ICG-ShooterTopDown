@@ -63,6 +63,7 @@ void BotManager::update(float dt)
     
     if(isDestroy && game->isEnableVolumn())
     {
+        SimpleAudioEngine::getInstance()->stopAllEffects();
         ResourceManager* resMgr = ResourceManager::getInstance();
         int playerKills = game->getPlayerKills();
         switch (playerKills)
