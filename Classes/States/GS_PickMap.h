@@ -15,6 +15,7 @@ class GS_PickMap : public Layer
 	ui::Button* _nextPageLeft;
 	ui::Button* _nextPageRight;
     
+    bool _isFirstIn;
 public:
 	enum page : int
 	{

@@ -18,7 +18,8 @@ _pageViewCharacter(nullptr),
 _pageViewGlobal(nullptr),
 _nextPageLeft(nullptr),
 _nextPageRight(nullptr),
-_optionPage(nullptr)
+_optionPage(nullptr),
+_isFirstIn(true)
 {
     
 }
@@ -180,11 +181,22 @@ bool GS_PickMap::init()
     play->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
         if(type == Widget::TouchEventType::ENDED)
         {
-            int currentMap = (int)_pageView->getCurrentPageIndex();
-            int playerSelect = (int)_pageViewCharacter->getCurrentPageIndex();
-            if(currentMap >= _countMap)return;
-            
-            GoToMap(currentMap, playerSelect);
+            if(_isFirstIn)
+            {
+                int currentPage = (int)_pageViewGlobal->getCurrentPageIndex();
+                if(currentPage == 0)
+                {
+                    _pageViewGlobal->scrollToItem(1);
+                }
+                _isFirstIn = false;
+            }
+            else
+            {
+                int currentMap = (int)_pageView->getCurrentPageIndex();
+                int playerSelect = (int)_pageViewCharacter->getCurrentPageIndex();
+                if(currentMap >= _countMap)return;
+                GoToMap(currentMap, playerSelect);
+            }
         }
     });
     play->setPosition(Vec2(center.x, screenSize.height * 0.1f));

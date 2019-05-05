@@ -172,7 +172,8 @@ void GS_GamePlayUI::setCharacter(const shared_ptr<Character>& character)
     _characterProfile = character;
     for(auto& btn : _skillsCharacter)
     {
-        btn->removeFromParentAndCleanup(true);
+        if(btn)
+            btn->removeFromParentAndCleanup(true);
     }
     _skillsCharacter.clear();
     
@@ -195,6 +196,21 @@ void GS_GamePlayUI::setCharacter(const shared_ptr<Character>& character)
             Game::getInstance()->setShootOfPlayer(false);
     });
     this->addChild(button);
+    _skillsCharacter.push_back(button);
+    
+    auto reload = ui::Button::create(ResourceManager::getInstance()->at(res::define::BTN_RELOAD), "", "", ui::TextureResType::PLIST);
+    reload->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+    reload->setScale(0.4f);
+//    reload->setOpacity(225);
+    reload->setPosition(Vec2(origin.x + sz.width * 0.95, origin.y + Joystick::radius * 2 + Joystick::offset_y * 2));
+    reload->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
+        if(type == ui::Widget::TouchEventType::BEGAN)
+        {
+            Game::getInstance()->getPlayer()->getMag()->reload();
+        }
+    });
+    this->addChild(reload);
+    _skillsCharacter.push_back(reload);
 #endif
 }
 

@@ -28,6 +28,7 @@ namespace res
         CURSOR_UI,
         LOADINGBAR_HP,
         LOADINGBAR_BG_HP,
+        BTN_RELOAD,
         
         
         //Font

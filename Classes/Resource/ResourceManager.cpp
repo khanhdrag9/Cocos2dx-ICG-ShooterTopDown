@@ -32,6 +32,7 @@ ResourceManager::ResourceManager()
     
     //UI
     _resMap[res::define::BTN] = "Button.png";
+    _resMap[res::define::BTN_RELOAD] = "reload.png";
     _resMap[res::define::FONT_KENVECTOR_FUTURE_THIN] = "fonts/kenvector_future_thin.ttf";
     _resMap[res::define::FONT_ARIAL] = "fonts/arial.ttf";
     _resMap[res::define::LOADINGBAR_HP] = "CharacterAssets/HPLoadingUpdate.png";

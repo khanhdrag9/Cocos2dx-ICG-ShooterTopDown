@@ -169,6 +169,7 @@ void InformationCenter::update(float dt)
 //    return;
     auto player = Game::getInstance()->getPlayer();
     if(!player)return;  //Won
+    if(player->isDestroyed())return;
     
     Vec2 playerPosition = player->_sprite->getPosition();
 	int i = 0;

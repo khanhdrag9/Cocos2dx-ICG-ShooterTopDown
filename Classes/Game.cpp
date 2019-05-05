@@ -567,8 +567,11 @@ shared_ptr<Player> Game::createAPlayer()
 
 void Game::handleMovePlayer(shared_ptr<Player> player,  const Vec2& direct)
 {
-    shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(player->getSpeedMove() * direct, 0.1);
-    player->pushCommand(cmd, true);
+    if(player && !player->isDestroyed())
+    {
+        shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(player->getSpeedMove() * direct, 0.1);
+        player->pushCommand(cmd, true);
+    }
 }
 
 void Game::updateAngle(shared_ptr<Character> object, const Vec2& point)
