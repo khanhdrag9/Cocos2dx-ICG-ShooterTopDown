@@ -34,6 +34,7 @@ public:
     
 #if USE_JOYSTICK
     CC_SYNTHESIZE_READONLY(Joystick*, _leftJoystick, LeftJoystick);
+    CC_SYNTHESIZE_READONLY(Joystick*, _rightJoystick, RightJoystick);
 #endif
 };
 

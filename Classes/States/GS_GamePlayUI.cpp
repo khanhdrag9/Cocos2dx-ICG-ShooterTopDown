@@ -79,6 +79,10 @@ bool GS_GamePlayUI::init()
 #if USE_JOYSTICK
     _leftJoystick = Joystick::create();
     this->addChild(_leftJoystick, 50);
+    
+//    _rightJoystick = Joystick::create();
+//    _rightJoystick->setPositionX(sz.width - Joystick::radius * 2 - Joystick::offset_x);
+//    this->addChild(_rightJoystick, 50);
 #endif
     
 #if CHEAT

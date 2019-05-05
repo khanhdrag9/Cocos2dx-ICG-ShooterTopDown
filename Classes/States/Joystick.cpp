@@ -19,37 +19,72 @@ bool Joystick::init()
     if(!Layer::init())
         return false;
     
-    _velocity = Vec2::ZERO;
-    _angle = 0.f;
-    Sprite* bg = Sprite::create("OptionAssets/joystickBG.png");
-    bg->setScale(0.45f);
-    this->addChild(bg, 0);
+    Size sz = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    
+    float scaleBG = 0.5;
+    float scaleThumb = 1.1;
+    //Joystick Left
+    _velocityLeft = Vec2::ZERO;
+    _angleLeft = 0.f;
+    _isPressLeft = false;
+    
+    _bgLeft = Sprite::create("OptionAssets/joystickBG.png");
+    _bgLeft->setScale(scaleBG);
+    this->addChild(_bgLeft, 0);
         
-    _thumb = Sprite::create("OptionAssets/joystickThumb.png");
-//    _thumb->setScale(0.9f);
-    this->addChild(_thumb, 1);
+    _thumbLeft = Sprite::create("OptionAssets/joystickThumb.png");
+    _thumbLeft->setScale(scaleThumb);
+    this->addChild(_thumbLeft, 1);
     
-    Joystick::radius = bg->getBoundingBox().size.width / 2.f;
-    Joystick::thumb_radius = _thumb->getBoundingBox().size.width / 2.f;
-    _center = Vec2(Joystick::radius + Joystick::offset_x, Joystick::radius + Joystick::offset_y);
+    Joystick::radius = _bgLeft->getBoundingBox().size.width / 2.f;
+    Joystick::thumb_radius = _thumbLeft->getBoundingBox().size.width / 2.f;
+    _centerLeft = Vec2(origin.x + Joystick::radius + Joystick::offset_x, origin.y + Joystick::radius + Joystick::offset_y);
     
-    bg->setPosition(_center);
-    _thumb->setPosition(_center);
+    _bgLeft->setPosition(_centerLeft);
+    _thumbLeft->setPosition(_centerLeft);
     
-    auto touch = EventListenerTouchOneByOne::create();
-    touch->onTouchBegan = CC_CALLBACK_2(Joystick::touchBegan, this);
-    touch->onTouchMoved = CC_CALLBACK_2(Joystick::touchMoved, this);
-    touch->onTouchEnded = CC_CALLBACK_2(Joystick::touchEnded, this);
-    touch->onTouchCancelled = CC_CALLBACK_2(Joystick::onTouchCancelled, this);
+    //Joystick2
+    _velocityRight = Vec2::ZERO;
+    _angleRight = 0.f;
+    _isPressRight = false;
+    
+    _bgRight = Sprite::create("OptionAssets/joystickBG.png");
+    _bgRight->setScale(scaleBG);
+    this->addChild(_bgRight, 0);
+    
+    _thumbRight = Sprite::create("OptionAssets/joystickThumb.png");
+    _thumbRight->setScale(scaleThumb);
+    this->addChild(_thumbRight, 1);
+    
+    _centerRight = Vec2(origin.x + sz.width - Joystick::radius - Joystick::offset_x, _centerLeft.y);
+    
+    _bgRight->setPosition(_centerRight);
+    _thumbRight->setPosition(_centerRight);
+    
+    
+//    auto touch = EventListenerTouchOneByOne::create();
+//    touch->onTouchBegan = CC_CALLBACK_2(Joystick::touchBegan, this);
+//    touch->onTouchMoved = CC_CALLBACK_2(Joystick::touchMoved, this);
+//    touch->onTouchEnded = CC_CALLBACK_2(Joystick::touchEnded, this);
+//    touch->onTouchCancelled = CC_CALLBACK_2(Joystick::onTouchCancelled, this);
+    auto touch = EventListenerTouchAllAtOnce::create();
+    touch->onTouchesBegan = CC_CALLBACK_2(Joystick::touchBegan, this);
+    touch->onTouchesMoved = CC_CALLBACK_2(Joystick::touchMoved, this);
+    touch->onTouchesEnded = CC_CALLBACK_2(Joystick::touchEnded, this);
+    touch->onTouchesCancelled = CC_CALLBACK_2(Joystick::touchCancelled, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touch, this);
+    
     
     return true;
 }
 
-void Joystick::updateVelocity(Vec2 point)
+void Joystick::updateVelocity(Vec2 point, side s)
 {
     // calculate Angle and length
-    Vec2 offset = point - _center;
+    Vec2 center = (s == side::LEFT ? _centerLeft : _centerRight);
+    
+    Vec2 offset = point - center;
     
     float distance = offset.length();
     float angle = atan2(offset.y ,offset.x); // in radians
@@ -59,35 +94,52 @@ void Joystick::updateVelocity(Vec2 point)
         offset.y = sin(angle) * Joystick::radius;
     }
     
-    _velocity = Vec2(offset.x/(float)Joystick::radius, offset.y/(float)Joystick::radius);
-    _angle = atan2(_velocity.y, _velocity.x);
-    _angle = CC_RADIANS_TO_DEGREES(-angle) + 90.f;
-    CCLOG("angle : %f", _angle);
+    if(s == side::LEFT)
+    {
+        _velocityLeft = Vec2(offset.x/(float)Joystick::radius, offset.y/(float)Joystick::radius);
+        _angleLeft = atan2(_velocityLeft.y, _velocityLeft.x);
+        _angleLeft = CC_RADIANS_TO_DEGREES(-angle) + 90.f;
+    }
+    else if (s == side::RIGHT)
+    {
+        _velocityRight = Vec2(offset.x/(float)Joystick::radius, offset.y/(float)Joystick::radius);
+        _angleRight = atan2(_velocityRight.y, _velocityRight.x);
+        _angleRight = CC_RADIANS_TO_DEGREES(-angle) + 90.f;
+    }
     
     if(distance > Joystick::thumb_radius)
     {
-        point.x = _center.x + cos(angle) * Joystick::thumb_radius;
-        point.y = _center.y + sin(angle) * Joystick::thumb_radius;
+        point.x = center.x + cos(angle) * Joystick::thumb_radius;
+        point.y = center.y + sin(angle) * Joystick::thumb_radius;
     }
     
-    _thumb->setPosition(point);
+    if(s == side::LEFT)_thumbLeft->setPosition(point);
+    else if(s == side::RIGHT)_thumbRight->setPosition(point);
 }
 
-void Joystick::resetJoystick()
+void Joystick::resetJoystick(side s)
 {
-    this->updateVelocity(_center);
+    Vec2 center = (s == side::LEFT ? _centerLeft : _centerRight);
+    this->updateVelocity(center, s);
 }
 
 bool Joystick::handleLastTouch()
 {
-    bool wasPressed = _isPress;
-    if(wasPressed)
+    bool wasPressedLeft = _isPressLeft;
+    if(wasPressedLeft)
     {
-        this->resetJoystick();
-        _isPress = false;
+        this->resetJoystick(side::LEFT);
+        _isPressLeft = false;
     }
     
-    return wasPressed;
+    bool wasPressedRight = _isPressRight;
+    if(wasPressedRight)
+    {
+        this->resetJoystick(side::RIGHT);
+        _isPressRight = false;
+    }
+    
+    return wasPressedLeft || wasPressedRight;
 }
 
 bool isPointInCircle(const Vec2& point, const Vec2& center, const float& radius)
@@ -95,38 +147,88 @@ bool isPointInCircle(const Vec2& point, const Vec2& center, const float& radius)
     return (point - center).length() <= radius;
 }
 
-bool Joystick::touchBegan(Touch* touch, Event*)
+Vec2 convertPointTouchToGLView(Touch* touch)
 {
-    Vec2 touchPos = touch->getLocationInView();
-    touchPos = Director::getInstance()->convertToGL(touchPos);
-    
-    if(isPointInCircle(touchPos, _center, Joystick::radius))
+    return Director::getInstance()->convertToGL(touch->getLocationInView());
+}
+
+Touch* getTouchInJoystick(const vector<Touch*>& touches, const Rect& box)
+{
+    Touch* touchPos = nullptr;
+    for(auto& touch : touches)
     {
-        _isPress = true;
-        this->updateVelocity(touchPos);
+        Vec2 pos = touch->getLocation();
+        if(box.containsPoint(pos))
+        {
+            touchPos = touch;
+            break;
+        }
     }
     
-    return true;
+    return touchPos;
 }
 
-void Joystick::touchMoved(Touch* touch, Event*)
+//bool Joystick::touchBegan(Touch* touch, Event*)
+void Joystick::touchBegan(const vector<Touch*>& touches, Event*)
 {
-    if(_isPress)
+    auto touchLeft = getTouchInJoystick(touches, _bgLeft->getBoundingBox());
+    auto touchRight = getTouchInJoystick(touches, _bgRight->getBoundingBox());
+    
+    if(touchLeft)
     {
-        Vec2 touchPos = touch->getLocationInView();
-        touchPos = Director::getInstance()->convertToGL(touchPos);
-        this->updateVelocity(touchPos);
+        Vec2 touchPosLeft = convertPointTouchToGLView(touchLeft);
+        if(isPointInCircle(touchPosLeft, _centerLeft, Joystick::radius))
+        {
+            _isPressLeft = true;
+            this->updateVelocity(touchPosLeft, side::LEFT);
+        }
+    }
+    
+    if(touchRight)
+    {
+        Vec2 touchPosRight = convertPointTouchToGLView(touchRight);
+        if(isPointInCircle(touchPosRight, _centerRight, Joystick::radius))
+        {
+            _isPressRight = true;
+            this->updateVelocity(touchPosRight, side::RIGHT);
+        }
     }
 }
 
-void Joystick::touchEnded(Touch* touch, Event*)
+//void Joystick::touchMoved(Touch* touch, Event*)
+void Joystick::touchMoved(const vector<Touch*>& touches, Event*)
 {
-    this->handleLastTouch();
+    if(_isPressLeft)
+    {
+        auto touch = getTouchInJoystick(touches, _bgLeft->getBoundingBox());
+        if(touch)
+        {
+            Vec2 touchPos = convertPointTouchToGLView(touch);
+            this->updateVelocity(touchPos, side::LEFT);
+        }
+    }
+    
+    if(_isPressRight)
+    {
+        auto touch = getTouchInJoystick(touches, _bgRight->getBoundingBox());
+        if(touch)
+        {
+            Vec2 touchPos = convertPointTouchToGLView(touch);
+            this->updateVelocity(touchPos, side::RIGHT);
+        }
+    }
 }
 
-void Joystick::touchCancelled(Touch* touch, Event*)
+//void Joystick::touchEnded(Touch* touch, Event*)
+void Joystick::touchEnded(const vector<Touch*>& touches, Event*)
 {
-    this->handleLastTouch();
+    handleLastTouch();
+}
+
+//void Joystick::touchCancelled(Touch* touch, Event*)
+void Joystick::touchCancelled(const vector<Touch*>& touches, Event*)
+{
+    handleLastTouch();
 }
 
 #endif

@@ -266,11 +266,6 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
         case cocos2d::EventKeyboard::KeyCode::KEY_TAB:
             useKDATab(false);
             break;
-#if USE_TOUCH
-		case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
-			//_playerShoot = false;
-			break;
-#endif
 #if CHEAT
         case cocos2d::EventKeyboard::KeyCode::KEY_F1:
             _player->_sprite->setPosition(getRandomPosition());        //random rivavel position
@@ -380,11 +375,6 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
         case cocos2d::EventKeyboard::KeyCode::KEY_D:
             handleMovePlayer(_player, Vec2(speedPlayer, 0));
             break;
-#if USE_TOUCH
-        case cocos2d::EventKeyboard::KeyCode::KEY_SPACE:
-            //_playerShoot = true;
-            break;
-#endif
         default:
             break;
     }
@@ -399,15 +389,19 @@ void Game::handleJoystickMove()
         auto joystick = gameplay->getUILayer()->getLeftJoystick();
         if(joystick)
         {
-            if(joystick->getPress())
+            if(joystick->getPressLeft())
             {
-                float angle = joystick->getAngle();
-                _player->_sprite->setRotation(angle);
                 float speedPlayer = _player->getSpeedMove();
-                Vec2 joystickVec = joystick->getVelocity();
+                Vec2 joystickVec = joystick->getVelocityLeft();
                 joystickVec.normalize();
                 joystickVec *= speedPlayer;
                 this->handleMovePlayer(_player, joystickVec);
+            }
+            
+            if(joystick->getPressRight())
+            {
+                float angle = joystick->getAngleRight();
+                _player->_sprite->setRotation(angle);
             }
         }
     }
@@ -532,8 +526,7 @@ void Game::releaseGamePlay()
     _isPopupInGameVisible = false;
     ObjectsPool::getInstance()->clear();
     
-#if USE_TOUCH
-#else
+#if !USE_TOUCH
     _isMouseDown = false;
 #endif
 
