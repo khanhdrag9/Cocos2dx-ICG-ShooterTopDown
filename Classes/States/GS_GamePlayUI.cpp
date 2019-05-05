@@ -174,6 +174,7 @@ void GS_GamePlayUI::setCharacter(const shared_ptr<Character>& character)
     }
     _skillsCharacter.clear();
     
+#if USE_JOYSTICK
     auto sz = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
     
@@ -192,6 +193,7 @@ void GS_GamePlayUI::setCharacter(const shared_ptr<Character>& character)
             Game::getInstance()->setShootOfPlayer(false);
     });
     this->addChild(button);
+#endif
 }
 
 void GS_GamePlayUI::initKDA(const int& number)
