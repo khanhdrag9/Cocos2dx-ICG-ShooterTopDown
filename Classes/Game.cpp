@@ -731,18 +731,23 @@ void Game::updateCameraView()
 {
 	if (_objIsFollow)
 	{
-		Size winSize = Director::getInstance()->getWinSize();
-		Vec2 position = _objIsFollow->_sprite->getPosition();
+        if(_objIsFollow->isDestroyed())
+            _objIsFollow = nullptr;
+        else
+        {
+            Size winSize = Director::getInstance()->getWinSize();
+            Vec2 position = _objIsFollow->_sprite->getPosition();
 
-		int x = MAX(position.x, winSize.width / 2);
-		int y = MAX(position.y, winSize.height / 2);
-		x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
-		y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
-		Vec2 actualPosition = Vec2(x, y);
+            int x = MAX(position.x, winSize.width / 2);
+            int y = MAX(position.y, winSize.height / 2);
+            x = MIN(x, (_tileMap->getMapSize().width * this->_tileMap->getTileSize().width) - winSize.width / 2);
+            y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height) - winSize.height / 2);
+            Vec2 actualPosition = Vec2(x, y);
 
-		Vec2 centerOfView = Vec2(winSize.width / 2, winSize.height / 2);
-		Vec2 viewPoint = Vec2(centerOfView - actualPosition);
-		_currentState->setPosition(viewPoint);
+            Vec2 centerOfView = Vec2(winSize.width / 2, winSize.height / 2);
+            Vec2 viewPoint = Vec2(centerOfView - actualPosition);
+            _currentState->setPosition(viewPoint);
+        }
 	}
 }
 

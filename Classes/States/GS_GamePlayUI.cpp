@@ -147,6 +147,8 @@ void GS_GamePlayUI::update(float dt)
 			string formatHP = "HP:" + to_string(currentHP);
 			_propertiesPlayer->setString(formatHP);
 		}
+        else
+            _characterProfile = nullptr;
     }
     else
     {
