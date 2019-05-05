@@ -73,22 +73,18 @@ bool GS_GameResult::init()
         }
     }
     
-//    Sprite* titleResult;
-//    if(result == Game::game_result::WIN)
-//        titleResult = Sprite::create("WinTitle.png");
-//    else titleResult = Sprite::create("LoseTitle.png");
     ui::Button* titleResult;
     string soundEffect = "";
     string musicsEffect = "";
     if(result == Game::game_result::WIN)
     {
-        titleResult = ui::Button::create("WinTitle.png");
+        titleResult = ui::Button::create("WinTitle.png", "", "", ui::TextureResType::PLIST);    //1 for plist data
         soundEffect = resMgr->at(res::define::SOUND_VICTORY);
         musicsEffect = resMgr->at(res::define::MUSIC_VICTORY);
     }
     else
     {
-        titleResult = ui::Button::create("LoseTitle.png");
+        titleResult = ui::Button::create("LoseTitle.png", "", "", ui::TextureResType::PLIST);
         soundEffect = resMgr->at(res::define::SOUND_DEFEAT);
         musicsEffect = resMgr->at(res::define::MUSIC_DEFEAT);
     }

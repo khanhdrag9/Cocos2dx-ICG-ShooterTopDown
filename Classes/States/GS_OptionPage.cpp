@@ -30,7 +30,8 @@ bool GS_OptionPage::init()
     
     _colorUI = Color3B::BLACK;
     //option
-    _option = ui::Button::create("OptionAssets/optionFill.png");
+//    _option = ui::Button::create("OptionAssets/optionFill.png");
+    _option = ui::Button::create("optionFill.png", "", "", ui::TextureResType::PLIST);
     _option->setColor(_colorUI);
     _option->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     _option->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height));
@@ -43,7 +44,8 @@ bool GS_OptionPage::init()
     
     bool volumnIsEnable = game->isEnableVolumn();
     game->setEnableVolunm(volumnIsEnable);
-    _volumn = ui::Button::create("OptionAssets/volumnOn.png");
+//    _volumn = ui::Button::create("OptionAssets/volumnOn.png");
+    _volumn = ui::Button::create("volumnOn.png", "", "", ui::TextureResType::PLIST);
     _volumn->setColor(_colorUI);
     _volumn->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     _volumn->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height * 0.9));
@@ -54,14 +56,16 @@ bool GS_OptionPage::init()
     });
     this->addChild(_volumn, 3);
 
-    _disbleVolumn = Sprite::create("OptionAssets/volumnOff.png");
+//    _disbleVolumn = Sprite::create("OptionAssets/volumnOff.png");
+    _disbleVolumn = Sprite::createWithSpriteFrameName("volumnOff.png");
     _disbleVolumn->setColor(_colorUI);
     _disbleVolumn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _disbleVolumn->setVisible(!game->isEnableVolumn());
     _volumn->addChild(_disbleVolumn);
     _volumn->setVisible(!volumnIsEnable);
 
-    _about = ui::Button::create("OptionAssets/about.png");
+//    _about = ui::Button::create("OptionAssets/about.png");
+    _about = ui::Button::create("about.png", "", "", ui::TextureResType::PLIST);
     _about->setColor(_colorUI);
     _about->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     _about->setPosition(Vec2(origin.x + screenSize.width, origin.y + screenSize.height * 0.8));
@@ -74,7 +78,8 @@ bool GS_OptionPage::init()
     _about->setVisible(_volumn->isVisible());
     
     //Back btn
-    _back = ui::Button::create("OptionAssets/back.png");
+//    _back = ui::Button::create("OptionAssets/back.png");
+    _back = ui::Button::create("back.png", "", "", ui::TextureResType::PLIST);
     _back->setColor(_colorUI);
     _back->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
     _back->setPosition(Vec2(origin.x, origin.y + screenSize.height));
@@ -86,7 +91,8 @@ bool GS_OptionPage::init()
     this->addChild(_back, 3);
     
     //Bar
-    _bar = Sprite::create("OptionAssets/Bar.png");
+//    _bar = Sprite::create("OptionAssets/Bar.png");
+    _bar = Sprite::createWithSpriteFrameName("Bar.png");
     _bar->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
     _bar->setPosition(center.x, origin.y + screenSize.height);
     _bar->setScale(1, 0.5);
@@ -97,7 +103,8 @@ bool GS_OptionPage::init()
     this->addChild(_bar, 0);
     
     //Popup exit
-    _popupExit = Sprite::create("OptionAssets/Popup.png");
+//    _popupExit = Sprite::create("OptionAssets/Popup.png");
+    _popupExit = Sprite::createWithSpriteFrameName("Popup.png");
     _popupExit->setPosition(center.x, origin.y + screenSize.height * 0.6f);
     _popupExit->setOpacity(235);
     _popupExit->setVisible(false);
@@ -109,7 +116,7 @@ bool GS_OptionPage::init()
     _contentExit->setPosition(popupSize.width * 0.5f, popupSize.height * 0.6);
     _popupExit->addChild(_contentExit, 1);
     
-    ui::Button* okBtn = ui::Button::create(resMgr->at(res::define::BTN));
+    ui::Button* okBtn = ui::Button::create(resMgr->at(res::define::BTN), "", "", ui::TextureResType::PLIST);
     okBtn->setPosition(Vec2(popupSize.width * 0.95, 0));
     okBtn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
     okBtn->setScale(0.6);
@@ -136,7 +143,7 @@ bool GS_OptionPage::init()
     okBtn->setColor(Color3B(146, 153, 163));
     _popupExit->addChild(okBtn);
     
-    ui::Button* cancelBtn = ui::Button::create(resMgr->at(res::define::BTN));
+    ui::Button* cancelBtn = ui::Button::create(resMgr->at(res::define::BTN), "", "", ui::TextureResType::PLIST);
     cancelBtn->setPosition(Vec2(popupSize.width * 0.05, 0));
     cancelBtn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     cancelBtn->setScale(0.6);

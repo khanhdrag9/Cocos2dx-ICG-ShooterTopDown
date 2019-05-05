@@ -23,7 +23,7 @@ bool PopupInGame::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     Vec2 center = Vec2(sz.width / 2.f + origin.x, sz.height / 2.f + origin.y);
     
-    auto sprite = Sprite::create("OptionAssets/Popup.png");
+    auto sprite = Sprite::createWithSpriteFrameName("Popup.png");
     sprite->setPosition(center);
     sprite->setOpacityModifyRGB(200);
 //    sprite->setColor(Color3B(61, 37,38));

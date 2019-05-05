@@ -147,7 +147,7 @@ bool GS_PickMap::init()
 	Button* btnNextPage[2];
 	for (int i = 0; i < 2; i++)
 	{
-		btnNextPage[i] = Button::create("OptionAssets/nextPage.png");
+        btnNextPage[i] = Button::create("nextPage.png", "", "", ui::TextureResType::PLIST);
 		btnNextPage[i]->setScale(0.25f);
 		btnNextPage[i]->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type) {
 			if (type == Widget::TouchEventType::ENDED)
@@ -176,7 +176,7 @@ bool GS_PickMap::init()
 	
 
     //Play btn
-    Button* play = Button::create(resMgr->at(res::define::BTN));
+    Button* play = Button::create(resMgr->at(res::define::BTN), "", "", ui::TextureResType::PLIST);
     play->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
         if(type == Widget::TouchEventType::ENDED)
         {

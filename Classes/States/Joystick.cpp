@@ -29,11 +29,11 @@ bool Joystick::init()
     _angleLeft = 0.f;
     _isPressLeft = false;
     
-    _bgLeft = Sprite::create("OptionAssets/joystickBG.png");
+    _bgLeft = Sprite::createWithSpriteFrameName("joystickBG.png");
     _bgLeft->setScale(scaleBG);
     this->addChild(_bgLeft, 0);
         
-    _thumbLeft = Sprite::create("OptionAssets/joystickThumb.png");
+    _thumbLeft = Sprite::createWithSpriteFrameName("joystickThumb.png");
     _thumbLeft->setScale(scaleThumb);
     this->addChild(_thumbLeft, 1);
     
@@ -49,11 +49,11 @@ bool Joystick::init()
     _angleRight = 0.f;
     _isPressRight = false;
     
-    _bgRight = Sprite::create("OptionAssets/joystickBG.png");
+    _bgRight = Sprite::createWithSpriteFrameName("joystickBG.png");
     _bgRight->setScale(scaleBG);
     this->addChild(_bgRight, 0);
     
-    _thumbRight = Sprite::create("OptionAssets/joystickThumb.png");
+    _thumbRight = Sprite::createWithSpriteFrameName("joystickThumb.png");
     _thumbRight->setScale(scaleThumb);
     this->addChild(_thumbRight, 1);
     

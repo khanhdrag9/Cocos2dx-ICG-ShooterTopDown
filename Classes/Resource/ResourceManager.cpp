@@ -17,7 +17,10 @@ ResourceManager::ResourceManager()
     _resMap[res::define::IMG_BG_1] = "BG.jpg";
     _resMap[res::define::IMG_FOG] = "Fog.jpg";
 	_resMap[res::define::IMG_BLACK] = "Black.jpg";
-    
+    _resMap[res::define::IMG_WIN_TITLE] = "WinTitle.png";
+    _resMap[res::define::IMG_LOSE_TITLE] = "LoseTitle.png";
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Titles.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("OptionAssets/Options.plist");
 
 	//image Map
 	_resMap[res::define::IMG_MAP1] = "Map/MapImage/MapImage1.jpg";
@@ -30,8 +33,8 @@ ResourceManager::ResourceManager()
     _resMap[res::define::MAP3] = "Map/Map3.tmx";
     
     //UI
-    _resMap[res::define::BTN] = "OptionAssets/Button.png";
-    _resMap[res::define::FONT_KENVECTOR_FUTURE_THIN] = "Assets/Bonus/kenvector_future_thin.ttf";
+    _resMap[res::define::BTN] = "Button.png";
+    _resMap[res::define::FONT_KENVECTOR_FUTURE_THIN] = "fonts/kenvector_future_thin.ttf";
     _resMap[res::define::FONT_ARIAL] = "fonts/arial.ttf";
     _resMap[res::define::LOADINGBAR_HP] = "CharacterAssets/HPLoadingUpdate.png";
     _resMap[res::define::LOADINGBAR_BG_HP] = "CharacterAssets/HPLoadingBG.png";
@@ -71,7 +74,7 @@ ResourceManager::ResourceManager()
                                                                         "CharacterAssets/TriBasicBullet.png",
                                                                         10, 750.f, "VFX/polygonGreen.plist",
                                                                         "VFX/expGreen.plist",
-                                                                        "SFX/Digital_SFX_Set/laser6.mp3",
+                                                                        "SFX/laser6.mp3",
                                                                         "SFX/laser_exp.mp3");
     
     _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("CharacterAssets/RectBullet.png",
@@ -87,8 +90,8 @@ ResourceManager::ResourceManager()
                                                                       20, 625.f,
                                                                       "VFX/circleBlue.plist",
                                                                       "VFX/expBlue.plist",
-                                                                      "SFX/Digital_SFX_Set/laser2.mp3",
-                                                                      "SFX/Digital_SFX_Set/lowDown.mp3");
+                                                                      "SFX/laser2.mp3",
+                                                                      "SFX/lowDown.mp3");
     
     _listCharacterCreations.clear();
     _listCharacterCreations.push_back(CharacterCreation("CharacterAssets/CircleCharacter.png",

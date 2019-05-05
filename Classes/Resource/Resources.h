@@ -14,6 +14,8 @@ namespace res
 		IMG_MAP1,
 		IMG_MAP2,
 		IMG_MAP3,
+        IMG_WIN_TITLE,
+        IMG_LOSE_TITLE,
         
         //Map link
         MAP1,
