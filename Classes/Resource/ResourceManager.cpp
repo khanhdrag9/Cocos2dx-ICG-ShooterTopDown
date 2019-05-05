@@ -19,8 +19,6 @@ ResourceManager::ResourceManager()
 	_resMap[res::define::IMG_BLACK] = "Black.jpg";
     _resMap[res::define::IMG_WIN_TITLE] = "WinTitle.png";
     _resMap[res::define::IMG_LOSE_TITLE] = "LoseTitle.png";
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Titles.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("OptionAssets/Options.plist");
 
 	//image Map
 	_resMap[res::define::IMG_MAP1] = "Map/MapImage/MapImage1.jpg";
@@ -38,6 +36,9 @@ ResourceManager::ResourceManager()
     _resMap[res::define::FONT_ARIAL] = "fonts/arial.ttf";
     _resMap[res::define::LOADINGBAR_HP] = "CharacterAssets/HPLoadingUpdate.png";
     _resMap[res::define::LOADINGBAR_BG_HP] = "CharacterAssets/HPLoadingBG.png";
+    
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Titles.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("OptionAssets/Options.plist");
     
     //musics
     _resMap[res::define::MUSIC_ACTION_FIGHT] = "SFX/action_fight.mp3";
