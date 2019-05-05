@@ -77,12 +77,8 @@ bool GS_GamePlayUI::init()
 
     //joystick
 #if USE_JOYSTICK
-    _leftJoystick = Joystick::create();
-    this->addChild(_leftJoystick, 50);
-    
-//    _rightJoystick = Joystick::create();
-//    _rightJoystick->setPositionX(sz.width - Joystick::radius * 2 - Joystick::offset_x);
-//    this->addChild(_rightJoystick, 50);
+    _joystick = Joystick::create();
+    this->addChild(_joystick, 50);
 #endif
     
 #if CHEAT
@@ -172,6 +168,30 @@ void GS_GamePlayUI::update(float dt)
 void GS_GamePlayUI::setCharacter(const shared_ptr<Character>& character)
 {
     _characterProfile = character;
+    for(auto& btn : _skillsCharacter)
+    {
+        btn->removeFromParentAndCleanup(true);
+    }
+    _skillsCharacter.clear();
+    
+    auto sz = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+    
+    auto button = ui::Button::create(_characterProfile->getBullet()->getBulletImage());
+    button->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+    button->setScale(0.5f);
+    button->setOpacity(225);
+    button->setPosition(Vec2(origin.x + sz.width * 0.7f, origin.y + sz.height * 0.1f));
+    button->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
+        if(type == ui::Widget::TouchEventType::BEGAN || type == ui::Widget::TouchEventType::MOVED)
+        {
+//            Game::getInstance()->handleShootCharacter(_characterProfile, _characterProfile->getBullet()->getSpeed());
+            Game::getInstance()->setShootOfPlayer(true);
+        }
+        else
+            Game::getInstance()->setShootOfPlayer(false);
+    });
+    this->addChild(button);
 }
 
 void GS_GamePlayUI::initKDA(const int& number)
@@ -233,4 +253,5 @@ void GS_GamePlayUI::clear()
 {
 //    _listKDA.clear();
 	_characterProfile = nullptr;
+    _skillsCharacter.clear();
 }

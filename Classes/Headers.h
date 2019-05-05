@@ -22,7 +22,7 @@ using namespace NS_CC;
     #define USE_TOUCH 1
     #define USE_JOYSTICK 1
 #else
-    #define USE_TOUCH 0
+    #define USE_TOUCH 1
     #define USE_JOYSTICK 1
 #endif
 #define DEBUG_SIGHT 0

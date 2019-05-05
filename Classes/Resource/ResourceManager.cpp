@@ -68,12 +68,14 @@ ResourceManager::ResourceManager()
     //sounds   
     _listBulletCreations.clear();
     _listBulletCreations[res::define::BULLET_TRIANGLE] = BulletCreation("CharacterAssets/TriangleBullet.png",
+                                                                        "CharacterAssets/TriBasicBullet.png",
                                                                         10, 750.f, "VFX/polygonGreen.plist",
                                                                         "VFX/expGreen.plist",
                                                                         "SFX/Digital_SFX_Set/laser6.mp3",
                                                                         "SFX/laser_exp.mp3");
     
     _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("CharacterAssets/RectBullet.png",
+                                                                    "CharacterAssets/RectBasicBullet.png",
                                                                     40, 500.f,
                                                                     "VFX/rectFire.plist",
                                                                     "VFX/expFire.plist",
@@ -81,6 +83,7 @@ ResourceManager::ResourceManager()
                                                                     "SFX/Fire_exp.mp3");
     
     _listBulletCreations[res::define::BULLET_CIRCLE] = BulletCreation("CharacterAssets/CircleBullet.png",
+                                                                      "CharacterAssets/CircleBasicBullet.png",
                                                                       20, 625.f,
                                                                       "VFX/circleBlue.plist",
                                                                       "VFX/expBlue.plist",

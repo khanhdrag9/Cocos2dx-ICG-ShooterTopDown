@@ -4,6 +4,7 @@
 class BulletCreation
 {
     CC_SYNTHESIZE_READONLY(string, _bulletSprite, BulletSprite);
+    CC_SYNTHESIZE_READONLY(string, _bulletImage, BulletImage);
     CC_SYNTHESIZE_READONLY(int,_damgeBullet, DamgeBullet);
     CC_SYNTHESIZE_READONLY(string, _particle, Particle);
     CC_SYNTHESIZE_READONLY(string, _explosion, Explosion);
@@ -13,7 +14,7 @@ class BulletCreation
 public:
     BulletCreation(){}
     BulletCreation(const BulletCreation& bullet);
-    BulletCreation(const string& sprite, const int& damge, const float& speed, const string& particel, const string& explosion, const string& shootSound, const string& expSound);
+    BulletCreation(const string& sprite, const string& image, const int& damge, const float& speed, const string& particel, const string& explosion, const string& shootSound, const string& expSound);
 };
 
 class CharacterCreation

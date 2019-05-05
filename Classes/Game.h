@@ -151,7 +151,7 @@ public:
     void setPlayerCreation(const int& index);
     CharacterCreation* getPlayerCreation();
     game_result getGameResult() const;
-    
+    void setShootOfPlayer(bool);
 private:
     shared_ptr<Player> createAPlayer();
     

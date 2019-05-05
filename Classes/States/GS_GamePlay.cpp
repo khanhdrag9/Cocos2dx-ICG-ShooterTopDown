@@ -5,6 +5,7 @@
 #include "GS_OptionPage.h"
 #include "CustomMouse.h"
 #include "Joystick.h"
+#include "../Characters/Player.h"
 
 GS_GamePlay::GS_GamePlay():
 	_uilayer(nullptr)
@@ -29,6 +30,7 @@ cocos2d::Scene *GS_GamePlay::createScene()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     scene->addChild(CustomMouse::create(), 100);
 #endif
+    layer->_uilayer->setCharacter(Game::getInstance()->getPlayer());
     
     return scene;
 }
@@ -42,7 +44,7 @@ bool GS_GamePlay::init()
     Game::getInstance()->setCurrentState(this);
     Game::getInstance()->initGamePlay();
     
-//    controller();
+    controller();
     
     scheduleUpdate();
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();

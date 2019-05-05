@@ -132,9 +132,9 @@ void Game::update(float dt)
             return;
     }
 
-    #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     handleKeyboardHold();
-    #endif
+#endif
 #if USE_JOYSTICK
     handleJoystickMove();
 #endif
@@ -145,11 +145,6 @@ void Game::update(float dt)
     });*/
 	updateSight(dt);
     
-    //update properties ui
-    if(auto gameplayer = dynamic_cast<GS_GamePlay*>(_currentState))
-    {
-        gameplayer->getUILayer()->setCharacter(_objIsFollow);
-    }
 
 	//player
     if(_player)
@@ -214,6 +209,12 @@ Layer* Game::getCurrentState()
 void Game::setObjectFollowByCam(shared_ptr<Character> object)
 {
 	_objIsFollow = object;
+    //update properties ui
+    if(auto gameplayer = dynamic_cast<GS_GamePlay*>(_currentState))
+    {
+        if(auto ui = gameplayer->getUILayer())
+            ui->setCharacter(_objIsFollow);
+    }
 }
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
@@ -304,8 +305,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
 
 				if (auto bot = dynamic_pointer_cast<Bot>(_objIsFollow))
 				{
-					_objIsFollow = nullptr;
-					_objIsFollow = _player;
+                    setObjectFollowByCam(_player);
 				}
 			}
             else
@@ -321,7 +321,7 @@ void Game::handleKeyboardRelease(EventKeyboard::KeyCode keycode, Event*)    //us
 #endif
                 }*/
 
-				_objIsFollow = BotManager::getInstance()->getBot(0);
+                setObjectFollowByCam(BotManager::getInstance()->getBot(0));
 				_currentIndexFollow = 0;
             }
             
@@ -361,19 +361,18 @@ void Game::handleMovePlayerKeyCode(EventKeyboard::KeyCode keycode)
 {
     if(!_player)return;
     
-    float speedPlayer = _player->getSpeedMove();
     switch (keycode) {
         case cocos2d::EventKeyboard::KeyCode::KEY_W:
-            handleMovePlayer(_player, Vec2(0,speedPlayer));
+            handleMovePlayer(_player, Vec2(0,1));
             break;
         case cocos2d::EventKeyboard::KeyCode::KEY_S:
-            handleMovePlayer(_player, Vec2(0,-speedPlayer));
+            handleMovePlayer(_player, Vec2(0,-1));
             break;
         case cocos2d::EventKeyboard::KeyCode::KEY_A:
-            handleMovePlayer(_player, Vec2(-speedPlayer, 0));
+            handleMovePlayer(_player, Vec2(-1, 0));
             break;
         case cocos2d::EventKeyboard::KeyCode::KEY_D:
-            handleMovePlayer(_player, Vec2(speedPlayer, 0));
+            handleMovePlayer(_player, Vec2(1, 0));
             break;
         default:
             break;
@@ -386,15 +385,13 @@ void Game::handleJoystickMove()
 {
     if(auto gameplay = dynamic_cast<GS_GamePlay*>(_currentState))
     {
-        auto joystick = gameplay->getUILayer()->getLeftJoystick();
+        auto joystick = gameplay->getUILayer()->getJoystick();
         if(joystick)
         {
             if(joystick->getPressLeft())
             {
-                float speedPlayer = _player->getSpeedMove();
                 Vec2 joystickVec = joystick->getVelocityLeft();
                 joystickVec.normalize();
-                joystickVec *= speedPlayer;
                 this->handleMovePlayer(_player, joystickVec);
             }
             
@@ -412,20 +409,23 @@ void Game::handleJoystickMove()
 bool Game::handleTouchBegan(Touch* touch, Event* event)
 {
 	//for player
+#if !USE_JOYSTICK
 	Vec2 point = touch->getLocation();
 	point = _currentState->convertToNodeSpace(point);
 	shared_ptr<Character> obj = _player;
 
 	if (obj)
 		updateAngle(obj, point);
-
 	_playerShoot = true;
+#endif
+    
     return true;
 }
 
 void Game::handleTouchMoved(Touch* touch, Event* event)
 {
     //for player
+#if !USE_JOYSTICK
     Vec2 point = touch->getLocation();
     point = _currentState->convertToNodeSpace(point);
     shared_ptr<Character> obj = _player;
@@ -434,6 +434,7 @@ void Game::handleTouchMoved(Touch* touch, Event* event)
         updateAngle(obj, point);
 
 	_playerShoot = true;
+#endif
 }
 
 void Game::handleTouchRelease(Touch* touch, Event* event)
@@ -566,7 +567,7 @@ shared_ptr<Player> Game::createAPlayer()
 
 void Game::handleMovePlayer(shared_ptr<Player> player,  const Vec2& direct)
 {
-    shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(direct, 0.1);
+    shared_ptr<Command> cmd = CommandMoveBy::createCommandMoveBy(player->getSpeedMove() * direct, 0.1);
     player->pushCommand(cmd, true);
 }
 
@@ -984,4 +985,9 @@ void Game::setResultGame()
     {
         gameplayer->getUILayer()->showResult();
     }
+}
+
+void Game::setShootOfPlayer(bool shoot)
+{
+    _playerShoot = shoot;
 }

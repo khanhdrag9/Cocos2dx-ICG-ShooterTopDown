@@ -10,6 +10,7 @@
 BulletCreation::BulletCreation(const BulletCreation& bullet)
 {
     _bulletSprite = bullet._bulletSprite;
+    _bulletImage = bullet._bulletImage;
     _damgeBullet = bullet._damgeBullet;
     _particle = bullet._particle;
     _explosion = bullet._explosion;
@@ -18,8 +19,9 @@ BulletCreation::BulletCreation(const BulletCreation& bullet)
     _explosionSound = bullet._explosionSound;
 }
 
-BulletCreation::BulletCreation(const string& sprite, const int& damge, const float& speed, const string& particle, const string& explosion, const string& shootSound, const string& expSound = ""):
+BulletCreation::BulletCreation(const string& sprite, const string& image, const int& damge, const float& speed, const string& particle, const string& explosion, const string& shootSound, const string& expSound = ""):
 _bulletSprite(sprite),
+_bulletImage(image),
 _damgeBullet(damge),
 _speed(speed),
 _particle(particle),

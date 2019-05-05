@@ -15,6 +15,7 @@ class GS_GamePlayUI : public Layer
 //    Vector<MenuItem*> _listKDA;
     
     shared_ptr<Character> _characterProfile;
+    vector<ui::Button*> _skillsCharacter;
     
     GS_OptionPage* _optionPage;
 public:
@@ -33,8 +34,7 @@ public:
     CREATE_FUNC(GS_GamePlayUI);
     
 #if USE_JOYSTICK
-    CC_SYNTHESIZE_READONLY(Joystick*, _leftJoystick, LeftJoystick);
-    CC_SYNTHESIZE_READONLY(Joystick*, _rightJoystick, RightJoystick);
+    CC_SYNTHESIZE_READONLY(Joystick*, _joystick, Joystick);
 #endif
 };
 
