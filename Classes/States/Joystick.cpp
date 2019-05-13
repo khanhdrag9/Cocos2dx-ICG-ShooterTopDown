@@ -63,6 +63,7 @@ bool Joystick::init()
     _thumbRight->setPosition(_centerRight);
     
     
+    
 //    auto touch = EventListenerTouchOneByOne::create();
 //    touch->onTouchBegan = CC_CALLBACK_2(Joystick::touchBegan, this);
 //    touch->onTouchMoved = CC_CALLBACK_2(Joystick::touchMoved, this);
