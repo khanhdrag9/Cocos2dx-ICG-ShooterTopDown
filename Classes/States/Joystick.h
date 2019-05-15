@@ -25,6 +25,8 @@ class Joystick : public Layer
     };
 private:
     bool init() override;
+    void setCenter(Vec2 newCenter, side s);
+    void visible(side s, bool visible);
     void updateVelocity(Vec2 point, side s);
     void resetJoystick(side s);
     bool handleLastTouch(side s);

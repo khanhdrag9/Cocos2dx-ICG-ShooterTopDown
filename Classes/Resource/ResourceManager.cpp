@@ -62,10 +62,11 @@ ResourceManager::ResourceManager()
     audio->preloadBackgroundMusic(at(res::define::MUSIC_BOSS_FIGHT).c_str());
     audio->preloadEffect(at(res::define::SOUND_VICTORY).c_str());
     audio->preloadEffect(at(res::define::SOUND_DEFEAT).c_str());
-    audio->preloadEffect(at(res::define::SOUND_FIRSTBLOOD).c_str());
-    audio->preloadEffect(at(res::define::SOUND_DOUBLEKILL).c_str());
-    audio->preloadEffect(at(res::define::SOUND_TRIPLEKILL).c_str());
-    audio->preloadEffect(at(res::define::SOUND_QUADRAKILL).c_str());
+    
+    audio->preloadBackgroundMusic(at(res::define::SOUND_FIRSTBLOOD).c_str());
+    audio->preloadBackgroundMusic(at(res::define::SOUND_DOUBLEKILL).c_str());
+    audio->preloadBackgroundMusic(at(res::define::SOUND_TRIPLEKILL).c_str());
+    audio->preloadBackgroundMusic(at(res::define::SOUND_QUADRAKILL).c_str());
     
     audio->stopBackgroundMusic();
     audio->stopAllEffects();

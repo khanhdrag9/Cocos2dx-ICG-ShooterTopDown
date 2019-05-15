@@ -22,8 +22,8 @@ bool Joystick::init()
     Size sz = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    float scaleBG = 0.5;
-    float scaleThumb = 1.1;
+    float scaleBG = 0.6;
+    float scaleThumb = 1.3;
     //Joystick Left
     _velocityLeft = Vec2::ZERO;
     _angleLeft = 0.f;
@@ -62,7 +62,8 @@ bool Joystick::init()
     _bgRight->setPosition(_centerRight);
     _thumbRight->setPosition(_centerRight);
     
-    
+    visible(side::LEFT, false);
+    visible(side::RIGHT, false);
     
 //    auto touch = EventListenerTouchOneByOne::create();
 //    touch->onTouchBegan = CC_CALLBACK_2(Joystick::touchBegan, this);
@@ -78,6 +79,36 @@ bool Joystick::init()
     
     
     return true;
+}
+
+void Joystick::setCenter(Vec2 newCenter, side s)
+{
+    if(s == side::LEFT)
+    {
+        _centerLeft = newCenter;
+        _bgLeft->setPosition(_centerLeft);
+        _thumbLeft->setPosition(_centerLeft);
+    }
+    else if(s == side::RIGHT)
+    {
+        _centerRight = newCenter;
+        _bgRight->setPosition(_centerRight);
+        _thumbRight->setPosition(_centerRight);
+    }
+}
+
+void Joystick::visible(side s, bool visible)
+{
+    if(s == side::LEFT)
+    {
+        _bgLeft->setVisible(visible);
+        _thumbLeft->setVisible(visible);
+    }
+    else if(s == side::RIGHT)
+    {
+        _bgRight->setVisible(visible);
+        _thumbRight->setVisible(visible);
+    }
 }
 
 void Joystick::updateVelocity(Vec2 point, side s)
@@ -130,8 +161,16 @@ bool Joystick::handleLastTouch(side s)
     if(wasPressed)
     {
         this->resetJoystick(s);
-        if(s == side::LEFT)_isPressLeft = false;
-        else if(s == side::RIGHT)_isPressRight = false;
+        if(s == side::LEFT)
+        {
+            visible(side::LEFT, false);
+            _isPressLeft = false;
+        }
+        else if(s == side::RIGHT)
+        {
+            visible(side::RIGHT, false);
+            _isPressRight = false;
+        }
     }
     
     return wasPressed;
@@ -166,28 +205,51 @@ Touch* getTouchInJoystick(const vector<Touch*>& touches, const Rect& box)
 //bool Joystick::touchBegan(Touch* touch, Event*)
 void Joystick::touchBegan(const vector<Touch*>& touches, Event*)
 {
-    auto touchLeft = getTouchInJoystick(touches, _bgLeft->getBoundingBox());
-    auto touchRight = getTouchInJoystick(touches, _bgRight->getBoundingBox());
-    
-    if(touchLeft)
+//    auto touchLeft = getTouchInJoystick(touches, _bgLeft->getBoundingBox());
+//    auto touchRight = getTouchInJoystick(touches, _bgRight->getBoundingBox());
+//
+//    if(touchLeft)
+//    {
+//        Vec2 touchPosLeft = convertPointTouchToGLView(touchLeft);
+//        if(isPointInCircle(touchPosLeft, _centerLeft, Joystick::radius))
+//        {
+//            _isPressLeft = true;
+//            this->updateVelocity(touchPosLeft, side::LEFT);
+//        }
+//    }
+//
+//    if(touchRight)
+//    {
+//        Vec2 touchPosRight = convertPointTouchToGLView(touchRight);
+//        if(isPointInCircle(touchPosRight, _centerRight, Joystick::radius))
+//        {
+//            _isPressRight = true;
+//            this->updateVelocity(touchPosRight, side::RIGHT);
+//        }
+//    }
+    Size sz = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    Vec2 center = Vec2(sz.width / 2.f + origin.x, sz.height / 2.f + origin.y);
+
+    for(auto touch : touches)
     {
-        Vec2 touchPosLeft = convertPointTouchToGLView(touchLeft);
-        if(isPointInCircle(touchPosLeft, _centerLeft, Joystick::radius))
+        Vec2 touchPos = touch->getLocation();
+        touchPos = convertPointTouchToGLView(touch);
+        if(touchPos.x > center.x)
         {
-            _isPressLeft = true;
-            this->updateVelocity(touchPosLeft, side::LEFT);
-        }
-    }
-    
-    if(touchRight)
-    {
-        Vec2 touchPosRight = convertPointTouchToGLView(touchRight);
-        if(isPointInCircle(touchPosRight, _centerRight, Joystick::radius))
-        {
+            setCenter(touchPos, side::RIGHT);
             _isPressRight = true;
-            this->updateVelocity(touchPosRight, side::RIGHT);
+            visible(side::RIGHT, true);
+        }
+        else
+        {
+            setCenter(touchPos, side::LEFT);
+            _isPressLeft = true;
+            visible(side::LEFT, true);
         }
     }
+
+    
 }
 
 //void Joystick::touchMoved(Touch* touch, Event*)

@@ -183,12 +183,20 @@ bool GS_PickMap::init()
         {
             if(_isFirstIn)
             {
+                _isFirstIn = false;
                 int currentPage = (int)_pageViewGlobal->getCurrentPageIndex();
                 if(currentPage == 0)
                 {
                     GoToSidePage(1);
                 }
-                _isFirstIn = false;
+                else
+                {
+                    int currentMap = (int)_pageView->getCurrentPageIndex();
+                    int playerSelect = (int)_pageViewCharacter->getCurrentPageIndex();
+                    if(currentMap >= _countMap)return;
+                    GoToMap(currentMap, playerSelect);
+                }
+                
             }
             else
             {

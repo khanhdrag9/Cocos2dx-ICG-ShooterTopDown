@@ -69,16 +69,16 @@ void BotManager::update(float dt)
         switch (playerKills)
         {
             case 1:
-                SimpleAudioEngine::getInstance()->playEffect(resMgr->at(res::define::SOUND_FIRSTBLOOD).c_str());
+                SimpleAudioEngine::getInstance()->playBackgroundMusic(resMgr->at(res::define::SOUND_FIRSTBLOOD).c_str());
                 break;
             case 2:
-                SimpleAudioEngine::getInstance()->playEffect(resMgr->at(res::define::SOUND_DOUBLEKILL).c_str());
+                SimpleAudioEngine::getInstance()->playBackgroundMusic(resMgr->at(res::define::SOUND_DOUBLEKILL).c_str());
                 break;
             case 3:
-                SimpleAudioEngine::getInstance()->playEffect(resMgr->at(res::define::SOUND_TRIPLEKILL).c_str());
+                SimpleAudioEngine::getInstance()->playBackgroundMusic(resMgr->at(res::define::SOUND_TRIPLEKILL).c_str());
                 break;
             case 4:
-                SimpleAudioEngine::getInstance()->playEffect(resMgr->at(res::define::SOUND_QUADRAKILL).c_str());
+                SimpleAudioEngine::getInstance()->playBackgroundMusic(resMgr->at(res::define::SOUND_QUADRAKILL).c_str());
                 break;
             default:
                 break;
