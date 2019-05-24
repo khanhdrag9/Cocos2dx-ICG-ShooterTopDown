@@ -867,7 +867,9 @@ shared_ptr<Vision> Game::createView(shared_ptr<Character> object, type_vision ty
 		vision = make_shared<Vision>(object);
 		break;
 	}
-	
+    vision->setDistanceVision(object->getDistanceVision());
+    vision->setAngleVision(object->getAngleVision());
+    
     //_listVision.push_back(vision);
     return _listVision.back();
 }

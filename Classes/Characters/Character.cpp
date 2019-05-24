@@ -50,6 +50,8 @@ void Character::init(CharacterCreation* creation)
     {
         _sprite = Sprite::create(creation->_sprite);
         _maxHP = creation->_maxHP;
+        _distanceVision = creation->getDistanceVision();
+        _angleVision = creation->getAngleVision();
         _currentHP = _maxHP;
         _bullet = &creation->_bullet;
         _dieEffect = creation->getDieEffect();

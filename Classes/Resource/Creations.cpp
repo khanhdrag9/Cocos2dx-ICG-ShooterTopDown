@@ -38,6 +38,8 @@ CharacterCreation::CharacterCreation(const string& sprite,
                                      const string& dieSound,
                                      const int& maxHP,
                                      const float& speed,
+                                     const float& distanceVision,
+                                     const float& angleVision,
                                      const int& maxBullet,
                                      const float& timeReload,
                                      const BulletCreation& bullet)
@@ -49,6 +51,8 @@ _sprite(sprite)
 ,_dieSound(dieSound)
 ,_maxHP(maxHP)
 ,_speed(speed)
+,_distanceVision(distanceVision)
+,_angleVision(angleVision)
 ,_maxBullet(maxBullet)
 ,_timeReload(timeReload)
 {

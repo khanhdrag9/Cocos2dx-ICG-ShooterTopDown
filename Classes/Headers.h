@@ -23,7 +23,7 @@ using namespace NS_CC;
     #define USE_JOYSTICK 1
 #else
     #define USE_TOUCH 0
-    #define USE_JOYSTICK 1
+    #define USE_JOYSTICK 0
 #endif
 #define DEBUG_SIGHT 0
 #define DEBUG_ENEMY 0
@@ -31,4 +31,4 @@ using namespace NS_CC;
 #define DISIBLE_AI 0
 #define ENABLE_FOG 1
 #define VISIBLE_ENEMY 1
-#define CHEAT 1
+#define CHEAT 0

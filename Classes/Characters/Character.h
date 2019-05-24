@@ -58,6 +58,9 @@ public:
     string _name;
     Character::type _type;
     
+    CC_SYNTHESIZE_READONLY(float, _distanceVision, DistanceVision);
+    CC_SYNTHESIZE_READONLY(float, _angleVision, AngleVision);
+    
 #if CHEAT
     bool _isBatTu = false;
 #endif

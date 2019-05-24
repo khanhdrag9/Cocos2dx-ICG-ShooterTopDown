@@ -102,21 +102,21 @@ ResourceManager::ResourceManager()
                                                                                 "CharacterAssets/CircleLoad.png",
                                                                                 "VFX/dieBlue.plist",
                                                                                 "SFX/Lose.mp3",
-                                                                                100, 250, 30, 0.35,
+                                                                                100, 250, 400.f, 35.f, 30, 0.35,
                                                                                 _listBulletCreations[res::define::BULLET_CIRCLE]));
     _listCharacterCreations.push_back(CharacterCreation("CharacterAssets/RectCharacter.png",
                                                                             "CharacterAssets/RectImage.jpg",
                                                                             "CharacterAssets/RectLoad.png",
                                                                             "VFX/dieFire.plist",
                                                                             "SFX/Lose.mp3",
-                                                                            200, 200, 15, 0.6,
+                                                                            200, 200, 500.f, 45.f, 15, 0.6,
                                                                             _listBulletCreations[res::define::BULLET_RECT]));
     _listCharacterCreations.push_back(CharacterCreation("CharacterAssets/TriangleCharacter.png",
                                                                                 "CharacterAssets/TriangleImage.jpg",
                                                                                 "CharacterAssets/TriangleLoad.png",
                                                                                 "VFX/dieGreen.plist",
                                                                                 "SFX/Lose.mp3",
-                                                                                70, 350, 45, 0.15,
+                                                                                70, 350, 300.f, 30.f, 45, 0.15,
                                                                                 _listBulletCreations[res::define::BULLET_TRIANGLE]));
     
     

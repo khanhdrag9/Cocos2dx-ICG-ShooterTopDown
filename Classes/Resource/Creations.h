@@ -24,6 +24,8 @@ class CharacterCreation
     CC_SYNTHESIZE_READONLY(string, _loadImage, LoadImage);
     CC_SYNTHESIZE_READONLY(string, _die, DieEffect);
     CC_SYNTHESIZE_READONLY(string, _dieSound, DieSound);
+    CC_SYNTHESIZE_READONLY(float, _distanceVision, DistanceVision);
+    CC_SYNTHESIZE_READONLY(float, _angleVision, AngleVision);
     int _maxHP;
     float _speed;
     int _maxBullet;
@@ -37,6 +39,8 @@ public:
                       const string& dieSound,
                       const int& maxHP,
                       const float& speed,
+                      const float& distanceVision,
+                      const float& angleVision,
                       const int& maxBullet,
                       const float& timeReload,
                       const BulletCreation& bullet);

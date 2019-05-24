@@ -89,7 +89,7 @@ void BotManager::update(float dt)
 void BotManager::initBots()
 {
 	int countEnemies = (int)_botCreations.size();
-	//countEnemies = 1;
+    countEnemies = 1;
 	//get position to init bots
 	Vec2 playerPosition = Game::getInstance()->getPlayer()->_sprite->getPosition();
 	vector<Vec2> history;

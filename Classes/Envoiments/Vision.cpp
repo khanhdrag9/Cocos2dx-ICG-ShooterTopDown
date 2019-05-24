@@ -18,27 +18,22 @@ const float Vision::origin_vision = 500.f;
 
 void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
 {
-	//threadGetPoint();
 	getPointIntersect();
 
 	Vec2 objPos = _obj->_sprite->getPosition();
     if(_isDraw)
     {
-        //chieu sang
-		//std::lock_guard<mutex> guard(_m);
-		//vector<Vec2> temp = _points2;
-		//int sizePointToDraw = (int)temp.size();
 		int sizePointToDraw = (int)_points.size();
         Color4F light(0, 0, 0, 0);
-        for(int i = 0; i < sizePointToDraw; i++)
+        for(int i = 0; i < sizePointToDraw - 1; i++)
         {
-            if(i == sizePointToDraw - 1)
-            {
-                //Vec2 pointToDraw[3] { objPos, temp[i], temp[0] };
-                Vec2 pointToDraw[3] { objPos, _points[i], _points[0] };
-                draw->drawPolygon(pointToDraw, 3, light, 0, light);
-            }
-            else
+//            if(i == sizePointToDraw - 1)
+//            {
+//                //Vec2 pointToDraw[3] { objPos, temp[i], temp[0] };
+//                Vec2 pointToDraw[3] { objPos, _points[i], _points[0] };
+//                draw->drawPolygon(pointToDraw, 3, light, 0, light);
+//            }
+//            else
             {
                 //Vec2 pointToDraw[3] { objPos, temp[i], temp[i+1] };
                 Vec2 pointToDraw[3] { objPos, _points[i], _points[i+1] };
@@ -52,12 +47,6 @@ void Vision::update(cocos2d::DrawNode *draw, ClippingNode* clipper)
     }
 }
 
-//void Vision::threadGetPoint()
-//{
-//    getPointIntersect();
-//    _points2.swap(_points);
-//}
-
 Vision::Vision():
 	_obj(nullptr),
 	_isDraw(false),
@@ -67,7 +56,8 @@ Vision::Vision():
 Vision::Vision(shared_ptr<Character> obj):
 _obj(obj),
 _isDraw(false),
-_vision(origin_vision)
+_vision(origin_vision),
+_angleVision(30.f)
 {
 }
 
@@ -99,11 +89,18 @@ void Vision::getPointIntersect()
 
 	_points.clear();
 
-	float view = 360;
-	for (int i = 0; i < view; i += 1)
+    float rotation = _obj->_sprite->getRotation();
+    if(rotation < 0)rotation += 360.f;
+    float start = rotation - _angleVision;
+    float view = rotation + _angleVision;
+    
+	for (float i = start; i < view; i += 1.f)
 	{
-		float x = sin(CC_DEGREES_TO_RADIANS(i)) * dimention + objPos.x;
-		float y = cos(CC_DEGREES_TO_RADIANS(i)) * dimention + objPos.y;
+        float p = i;
+        if(i < 0)p += 360.f;
+        else if(i >= 360)p-=360.f;
+		float x = sin(CC_DEGREES_TO_RADIANS(p)) * dimention + objPos.x;
+		float y = cos(CC_DEGREES_TO_RADIANS(p)) * dimention + objPos.y;
 
 		Vec2 point = Vec2(x, y);
 		Vec2 pointTemp = point;
@@ -123,4 +120,14 @@ void Vision::getPointIntersect()
 		point = pointTemp;
 		_points.push_back(point);
 	}
+}
+
+void Vision::setAngleVision(const float& value)
+{
+    _angleVision = value;
+}
+
+void Vision::setDistanceVision(const float& value)
+{
+    _vision = value;
 }

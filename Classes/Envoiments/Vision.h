@@ -10,10 +10,9 @@ protected:
     shared_ptr<Character> _obj;
     bool _isDraw;
 	vector<Vec2> _points;
-	//vector<Vec2> _points2;
-	//virtual void threadGetPoint();
 	void getPointIntersect();
 	float _vision;
+    float _angleVision;
 public:
 	Vision();
     Vision(shared_ptr<Character> obj);
@@ -22,6 +21,8 @@ public:
     void setDraw(bool draw);
     bool isDraw();
 	shared_ptr<Character> getObject();
+    void setAngleVision(const float& value);
+    void setDistanceVision(const float& value);
 
 	static const float origin_vision;
 };
