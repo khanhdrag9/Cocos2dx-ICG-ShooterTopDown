@@ -75,14 +75,15 @@ ResourceManager::ResourceManager()
     _listBulletCreations.clear();
     _listBulletCreations[res::define::BULLET_TRIANGLE] = BulletCreation("CharacterAssets/TriangleBullet.png",
                                                                         "CharacterAssets/TriBasicBullet.png",
-                                                                        10, 750.f, "VFX/polygonGreen.plist",
+                                                                        10, 750.f, 0.6f,
+                                                                        "VFX/polygonGreen.plist",
                                                                         "VFX/expGreen.plist",
                                                                         "SFX/laser6.mp3",
                                                                         "SFX/laser_exp.mp3");
     
     _listBulletCreations[res::define::BULLET_RECT] = BulletCreation("CharacterAssets/RectBullet.png",
                                                                     "CharacterAssets/RectBasicBullet.png",
-                                                                    40, 500.f,
+                                                                    40, 500.f, 1.35f,
                                                                     "VFX/rectFire.plist",
                                                                     "VFX/expFire.plist",
                                                                     "SFX/Fire_shoot.mp3",
@@ -90,7 +91,7 @@ ResourceManager::ResourceManager()
     
     _listBulletCreations[res::define::BULLET_CIRCLE] = BulletCreation("CharacterAssets/CircleBullet.png",
                                                                       "CharacterAssets/CircleBasicBullet.png",
-                                                                      20, 625.f,
+                                                                      20, 625.f, 1.f,
                                                                       "VFX/circleBlue.plist",
                                                                       "VFX/expBlue.plist",
                                                                       "SFX/laser2.mp3",

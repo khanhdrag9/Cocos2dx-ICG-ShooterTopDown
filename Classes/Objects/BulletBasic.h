@@ -7,6 +7,7 @@ class BulletBasic : public Character
 protected:
     Vec2 _speed;
     int _damge;
+    CC_SYNTHESIZE(float, _liveDuration, LiveDuration);
 public:
     BulletBasic();
     virtual ~BulletBasic();

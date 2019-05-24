@@ -260,7 +260,7 @@ void InformationCenter::update(float dt)
 				bot.detectPlayer.isReceived = false;
 				bot.targetGo = Vec2::ZERO;
 				if(bot.status != statusBot::WALK)bot.status = statusBot::NONE;
-				CCLOG("%d Not Found", i);
+//                CCLOG("%d Not Found", i);
 			}
         }
 		

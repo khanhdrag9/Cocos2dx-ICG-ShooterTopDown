@@ -236,6 +236,8 @@ void Character::heal(int heal)
 
 void Character::destroy()
 {
+    if(_destroy)return;
+    
     releaseCommands();
     if(_rigidBody)
         _rigidBody->_object = nullptr;

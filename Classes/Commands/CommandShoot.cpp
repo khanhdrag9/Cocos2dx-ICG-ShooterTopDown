@@ -42,6 +42,7 @@ void CommandShoot::update(float dt)
         bullet->setParticle(bulletCreation->getParticle());
         bullet->setDieEffect(bulletCreation->getExplosion());
         bullet->setDieSound(bulletCreation->getExplosionSound());
+        bullet->setLiveDuration(bulletCreation->getLiveDuration());
 
 		if (object->getType() == Character::type::PLAYER)
 		{

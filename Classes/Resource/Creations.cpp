@@ -15,15 +15,17 @@ BulletCreation::BulletCreation(const BulletCreation& bullet)
     _particle = bullet._particle;
     _explosion = bullet._explosion;
     _speed = bullet._speed;
+    _liveDuration = bullet._liveDuration;
     _shootSound = bullet._shootSound;
     _explosionSound = bullet._explosionSound;
 }
 
-BulletCreation::BulletCreation(const string& sprite, const string& image, const int& damge, const float& speed, const string& particle, const string& explosion, const string& shootSound, const string& expSound = ""):
+BulletCreation::BulletCreation(const string& sprite, const string& image, const int& damge, const float& speed, const float& liveDuration, const string& particle, const string& explosion, const string& shootSound, const string& expSound = ""):
 _bulletSprite(sprite),
 _bulletImage(image),
 _damgeBullet(damge),
 _speed(speed),
+_liveDuration(liveDuration),
 _particle(particle),
 _explosion(explosion),
 _shootSound(shootSound),

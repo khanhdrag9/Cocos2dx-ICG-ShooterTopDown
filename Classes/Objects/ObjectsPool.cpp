@@ -13,7 +13,7 @@ ObjectsPool::~ObjectsPool()
 	_bulletBasicPool.clear();
 }
 
-void ObjectsPool::update()
+void ObjectsPool::update(float dt)
 {
     for(auto i = _bulletBasicPool.begin(); i != _bulletBasicPool.end();)
     {
@@ -23,6 +23,7 @@ void ObjectsPool::update()
         }
         else
         {
+            i->get()->update(dt);
             i++;
         }
     }

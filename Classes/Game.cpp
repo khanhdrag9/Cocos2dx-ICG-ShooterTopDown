@@ -187,7 +187,7 @@ void Game::update(float dt)
 #endif
 
 	updatePhysics(dt);
-    ObjectsPool::getInstance()->update();
+    ObjectsPool::getInstance()->update(dt);
 
     /*{
         std::unique_lock<mutex> lock(_m);

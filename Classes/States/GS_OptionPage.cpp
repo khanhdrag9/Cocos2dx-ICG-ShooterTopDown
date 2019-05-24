@@ -126,7 +126,8 @@ bool GS_OptionPage::init()
             auto tagCurrentState = Game::getInstance()->getCurrentState()->getTag();
             if(tagCurrentState == Game::layer::GAMEPLAY)
             {
-                Game::getInstance()->getPlayer()->destroy();
+                if(Game::getInstance()->getPlayer())
+                    Game::getInstance()->getPlayer()->destroy();
             }
             else if(tagCurrentState == Game::layer::GAMELABEL)
             {

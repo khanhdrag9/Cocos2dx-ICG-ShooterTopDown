@@ -14,7 +14,8 @@
 
 BulletBasic::BulletBasic(): Character(),
     _speed(Vec2(0,0)),
-    _damge(0)
+    _damge(0),
+    _liveDuration(999)
 {
 }
 
@@ -30,7 +31,12 @@ void BulletBasic::init(CharacterCreation* creation)
 
 void BulletBasic::update(float dt)
 {
-    
+    _liveDuration -= dt;
+    if(_liveDuration <= 0)
+    {
+        CCLOG("damage : %d", _damge);
+        this->destroy();
+    }
 }
 
 shared_ptr<BulletBasic> BulletBasic::createBulletBasic(const string& sprite, const Vec2& position, const float& angle, const Vec2& speed, bool forceShoot)

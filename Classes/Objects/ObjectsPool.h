@@ -11,7 +11,7 @@ class ObjectsPool : public pattern::Singleton<ObjectsPool>
 public:
     ~ObjectsPool();
     
-    void update();
+    void update(float);
     void pushBulletBasic(shared_ptr<BulletBasic> bulletbasic);
     void clear();
 };
