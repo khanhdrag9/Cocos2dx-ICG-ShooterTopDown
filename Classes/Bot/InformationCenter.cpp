@@ -186,9 +186,47 @@ void InformationCenter::update(float dt)
 		//check player
         if(auto body = dynamic_pointer_cast<RigidBodyCircle>(bot.bot->_rigidBody))  
         {
-            vector<Vec2> arrayFind {playerPosition};
-            auto checkPlayerAround = findPointAvaiableAroud(bot.bot->_sprite->getPosition(), arrayFind, Vision::origin_vision * 0.75 + body->getRadius(), body->getRadius() / 2.f);
-            if(checkPlayerAround.size() > 0)    //detect player in vision
+            bool isDetected = false;
+            Vec2 botPosition = bot.bot->_sprite->getPosition();
+            Vec2 playerToBot = playerPosition - botPosition;
+            if(playerToBot.length() <= bot.bot->getDistanceVision())
+            {
+                float botRotation = bot.bot->_sprite->getRotation();
+                if(botRotation < 0)botRotation += 360.f;
+                float angleVision = bot.bot->getAngleVision();
+                float startRange = botRotation - angleVision;
+                startRange = startRange < 0 ? startRange + 360 : startRange;
+                float endRange = botRotation + angleVision;
+                endRange = endRange > 360 ? endRange - 360 : endRange;
+                
+                float rotationToPlayer = getRotateForwardAPoint(bot.bot, playerPosition);
+//                rotationToPlayer = rotationToPlayer >= 360 ? rotationToPlayer - 360 : rotationToPlayer;
+                if(abs(rotationToPlayer - botRotation) <= angleVision)
+                {
+                    if(!isDetected)
+                    {
+                        bool isInteract = false;
+                        Vec2 listPositionCheckD[]{
+                            botPosition
+                        };
+                        for(auto& line : Game::getInstance()->getRigidWord()->getListLines())
+                        {
+                            for(auto& pc : listPositionCheckD)
+                            {
+                                if(Vec2::isSegmentIntersect(playerPosition, pc, line.start, line.end))
+                                {
+                                    isInteract = true;
+                                    break;
+                                }
+                            }
+                            if(isInteract)break;
+                        }
+                        if(!isInteract)isDetected = true;
+                    }
+                }
+            }
+            
+            if(isDetected)  //detect player in vision
             {
 				if (bot.isFinish && bot.isThreadAvaiable)
 				{
@@ -219,7 +257,7 @@ void InformationCenter::update(float dt)
 				
 
                 bot.status = statusBot::SHOOT;
-                float rotation = getRotateForwardAPoint(bot.bot, checkPlayerAround.front());
+                float rotation = getRotateForwardAPoint(bot.bot, playerPosition);
                 bot.bot->_sprite->setRotation(rotation);
                 if(bot.bot->getMag()->canShoot())
                 {
@@ -350,7 +388,7 @@ void InformationCenter::update(float dt)
 					while (way.second.size() > 0)
 					{
 						shared_ptr<Command> cmd = CommandMoveTo::createCommandMoveTo(bot.bot->getSpeedMove(), way.second.front());
-						bot.commands.push(cmd);
+                        bot.commands.push(cmd);
 						way.second.pop();
 					}
 					CCLOG("%d set Way size > 0", i);

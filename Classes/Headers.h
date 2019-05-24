@@ -30,5 +30,5 @@ using namespace NS_CC;
 #define DEBUG_GRAHP 0
 #define DISIBLE_AI 0
 #define ENABLE_FOG 1
-#define VISIBLE_ENEMY 1
-#define CHEAT 0
+#define VISIBLE_ENEMY 0
+#define CHEAT 1
