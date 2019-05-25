@@ -36,4 +36,4 @@ using namespace NS_CC;
 #endif
 
 #define VISIBLE_ENEMY 0
-#define CHEAT 1
+#define CHEAT 0

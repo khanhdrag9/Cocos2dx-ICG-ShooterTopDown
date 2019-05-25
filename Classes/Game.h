@@ -11,7 +11,7 @@ class Vision;
 //class Joystick;
 
 #if USE_JOYSTICK
-#define TIME_DELAY_JOYSTICK 1.5f
+#define TIME_DELAY_JOYSTICK 0.75f
 #endif
 
 class Game : public pattern::Singleton<Game>
