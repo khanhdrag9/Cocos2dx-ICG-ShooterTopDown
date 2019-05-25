@@ -11,6 +11,7 @@
 #include "../Resource/ResourceManager.h"
 #include "../Characters/Player.h"
 #include "PopupInGame.h"
+#include "GS_PickMap.h"
 
 GS_OptionPage::~GS_OptionPage()
 {
@@ -199,11 +200,20 @@ void GS_OptionPage::Back()
     int tag = currentState->getTag();
     if(tag == Game::layer::PICKMAP)
     {
-        currentState->setVisible(false);
-        Layer* labelMenu = dynamic_cast<Layer*>(this->getScene()->getChildByTag(Game::layer::GAMELABEL));\
-        if(labelMenu)
-            game->setCurrentState(labelMenu);
-        this->setColorUI(Color3B::BLACK);
+        if(GS_PickMap* pickmap = dynamic_cast<GS_PickMap*>(currentState))
+        {
+            if(pickmap->getIndexPageViewGlobal() == 1)
+            {
+                pickmap->GoToSidePage(0);
+            }
+            else {
+                currentState->setVisible(false);
+                Layer* labelMenu = dynamic_cast<Layer*>(this->getScene()->getChildByTag(Game::layer::GAMELABEL));
+                if(labelMenu)
+                    game->setCurrentState(labelMenu);
+                this->setColorUI(Color3B::BLACK);
+            }
+        }
     }
     else if(tag == Game::layer::GAMEPLAY)
     {

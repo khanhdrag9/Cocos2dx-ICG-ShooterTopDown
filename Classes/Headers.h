@@ -29,6 +29,11 @@ using namespace NS_CC;
 #define DEBUG_ENEMY 0
 #define DEBUG_GRAHP 0
 #define DISIBLE_AI 0
+
 #define ENABLE_FOG 1
+#if ENABLE_FOG
+#define FOG_OPACITY 225
+#endif
+
 #define VISIBLE_ENEMY 0
 #define CHEAT 1

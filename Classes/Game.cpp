@@ -617,7 +617,7 @@ void Game::createMap()
     _fogSprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _fogSprite->setPosition(0,0);
 #if ENABLE_FOG
-    _fogSprite->setOpacity(150.f);
+    _fogSprite->setOpacity(FOG_OPACITY);
 #else
     _fogSprite->setOpacity(0);
 #endif

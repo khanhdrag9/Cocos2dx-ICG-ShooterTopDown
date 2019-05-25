@@ -12,9 +12,7 @@ class GS_PickMap : public Layer
     ui::PageView* _pageView;
     int _countMap;
 
-	ui::Button* _nextPageLeft;
-	ui::Button* _nextPageRight;
-    
+    Label* _playLabel;
     bool _isFirstIn;
 public:
 	enum page : int

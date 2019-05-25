@@ -16,10 +16,9 @@ _countPages(0),
 _pageView(nullptr),
 _pageViewCharacter(nullptr),
 _pageViewGlobal(nullptr),
-_nextPageLeft(nullptr),
-_nextPageRight(nullptr),
 _optionPage(nullptr),
-_isFirstIn(true)
+_isFirstIn(true),
+_playLabel(nullptr)
 {
     
 }
@@ -145,58 +144,16 @@ bool GS_PickMap::init()
 	/*=============================For buttons===================================*/
 	//next side page btn
 	_countPages = 2;
-	Button* btnNextPage[2];
-	for (int i = 0; i < 2; i++)
-	{
-        btnNextPage[i] = Button::create("nextPage.png", "", "", ui::TextureResType::PLIST);
-		btnNextPage[i]->setScale(0.25f);
-		btnNextPage[i]->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type) {
-			if (type == Widget::TouchEventType::ENDED)
-			{
-				int currentPage = (int)_pageViewGlobal->getCurrentPageIndex();
-				if (++currentPage >= TOTAL)currentPage = 0;
-				GoToSidePage(currentPage);
-			}
-		});
-		this->addChild(btnNextPage[i]);
-	}
-
-	{
-		_nextPageLeft = btnNextPage[0];
-        _nextPageLeft->setColor(Color3B::BLACK);
-		Size left = _nextPageLeft->getBoundingBox().size;
-		_nextPageLeft->setPosition(Vec2(origin.x + left.width * 0.4f, origin.y + screenSize.height * 0.15));
-		_nextPageLeft->setFlippedX(true);
-		_nextPageLeft->setVisible(false);
-
-		_nextPageRight = btnNextPage[1];
-        _nextPageRight->setColor(Color3B::WHITE);
-		Size right = _nextPageRight->getBoundingBox().size;
-		_nextPageRight->setPosition(Vec2(origin.x + screenSize.width - left.width * 0.4f, _nextPageLeft->getPositionY()));
-	}
-	
 
     //Play btn
     Button* play = Button::create(resMgr->at(res::define::BTN), "", "", ui::TextureResType::PLIST);
     play->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
         if(type == Widget::TouchEventType::ENDED)
         {
-            if(_isFirstIn)
+            int currentPage = (int)_pageViewGlobal->getCurrentPageIndex();
+            if(currentPage == 0)
             {
-                _isFirstIn = false;
-                int currentPage = (int)_pageViewGlobal->getCurrentPageIndex();
-                if(currentPage == 0)
-                {
-                    GoToSidePage(1);
-                }
-                else
-                {
-                    int currentMap = (int)_pageView->getCurrentPageIndex();
-                    int playerSelect = (int)_pageViewCharacter->getCurrentPageIndex();
-                    if(currentMap >= _countMap)return;
-                    GoToMap(currentMap, playerSelect);
-                }
-                
+                GoToSidePage(1);
             }
             else
             {
@@ -211,10 +168,10 @@ bool GS_PickMap::init()
     play->setScale(1, 0.8);
     this->addChild(play);
     
-    Label* playLabel = Label::createWithTTF("PLAY", fontTitle, 60);
+    _playLabel = Label::createWithTTF("Choose Map", fontTitle, 40);
     Size playBtnSize = play->getContentSize();
-    playLabel->setPosition(playBtnSize.width / 2.f, playBtnSize.height / 2.f);
-    play->addChild(playLabel);
+    _playLabel->setPosition(playBtnSize.width / 2.f, playBtnSize.height / 2.f);
+    play->addChild(_playLabel);
     
     
     auto tileMap = TMXTiledMap::create("Map/Map2.tmx");
@@ -248,19 +205,15 @@ void GS_PickMap::GoToMap(const int& index, const int& character)
 
 void GS_PickMap::GoToSidePage(const int& index)
 {
-	_nextPageLeft->setVisible(true);
-	_nextPageRight->setVisible(true);
-
 	if (index == 0)
     {
-		_nextPageLeft->setVisible(false);
         _optionPage->setColorUI(Color3B::WHITE);
-        
+        _playLabel->setString("Choose Map");
     }
 	else if (index == _countPages - 1)
     {
-		_nextPageRight->setVisible(false);
         _optionPage->setColorUI(Color3B::BLACK);
+        _playLabel->setString("Let's go");
     }
 
 	_pageViewGlobal->scrollToItem(index);
