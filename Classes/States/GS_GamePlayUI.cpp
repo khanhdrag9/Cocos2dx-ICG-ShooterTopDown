@@ -181,22 +181,22 @@ void GS_GamePlayUI::setCharacter(const shared_ptr<Character>& character)
     auto sz = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
     
-    auto button = ui::Button::create(_characterProfile->getBullet()->getBulletImage());
-    button->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-    button->setScale(0.5f);
-    button->setOpacity(225);
-    button->setPosition(Vec2(origin.x + sz.width * 0.7f, origin.y + sz.height * 0.1f));
-    button->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
-        if(type == ui::Widget::TouchEventType::BEGAN || type == ui::Widget::TouchEventType::MOVED)
-        {
-//            Game::getInstance()->handleShootCharacter(_characterProfile, _characterProfile->getBullet()->getSpeed());
-            Game::getInstance()->setShootOfPlayer(true);
-        }
-        else
-            Game::getInstance()->setShootOfPlayer(false);
-    });
-    this->addChild(button);
-    _skillsCharacter.push_back(button);
+//    auto button = ui::Button::create(_characterProfile->getBullet()->getBulletImage());
+//    button->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+//    button->setScale(0.5f);
+//    button->setOpacity(225);
+//    button->setPosition(Vec2(origin.x + sz.width * 0.7f, origin.y + sz.height * 0.1f));
+//    button->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
+//        if(type == ui::Widget::TouchEventType::BEGAN || type == ui::Widget::TouchEventType::MOVED)
+//        {
+////            Game::getInstance()->handleShootCharacter(_characterProfile, _characterProfile->getBullet()->getSpeed());
+//            Game::getInstance()->setShootOfPlayer(true);
+//        }
+//        else
+//            Game::getInstance()->setShootOfPlayer(false);
+//    });
+//    this->addChild(button);
+//    _skillsCharacter.push_back(button);
     
     auto reload = ui::Button::create(ResourceManager::getInstance()->at(res::define::BTN_RELOAD), "", "", ui::TextureResType::PLIST);
     reload->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);

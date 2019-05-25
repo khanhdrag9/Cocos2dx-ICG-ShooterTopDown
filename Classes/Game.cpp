@@ -57,6 +57,11 @@ _enableVolumn(true)
 , _outGame(true)
 , _threadSightReady(false)
 , _countTime(0.f)
+#if USE_JOYSTICK
+,_playerKeep(false)
+,_countJoystickStart(clock())
+,_countJoystickEnd(clock())
+#endif
 {
     
 }
@@ -386,19 +391,33 @@ void Game::handleJoystickMove()
     if(auto gameplay = dynamic_cast<GS_GamePlay*>(_currentState))
     {
         auto joystick = gameplay->getUILayer()->getJoystick();
-        if(joystick)
+        if(joystick && _player)
         {
             if(joystick->getPressLeft())
             {
                 Vec2 joystickVec = joystick->getVelocityLeft();
                 joystickVec.normalize();
                 this->handleMovePlayer(_player, joystickVec);
+                if(_playerKeep)
+                {
+                    float angle = joystick->getAngleLeft();
+                    _player->_sprite->setRotation(angle);
+                }
             }
             
             if(joystick->getPressRight())
             {
                 float angle = joystick->getAngleRight();
                 _player->_sprite->setRotation(angle);
+                _playerShoot = true;
+                _playerKeep = false;
+                _countJoystickStart = time(NULL);
+            }
+            else
+            {
+                _countJoystickEnd = time(NULL);
+                if(_countJoystickEnd - _countJoystickStart > TIME_DELAY_JOYSTICK)
+                    _playerKeep = true;
             }
         }
     }
@@ -621,9 +640,6 @@ void Game::createMap()
 #else
     _fogSprite->setOpacity(0);
 #endif
-    //_currentState->addChild(_fogSprite, 10);
-    
-
     
 	//for map backgroud
 	_tileMap = TMXTiledMap::create(_linkMap->linkMap);

@@ -10,6 +10,10 @@ class RigidWorld;
 class Vision;
 //class Joystick;
 
+#if USE_JOYSTICK
+#define TIME_DELAY_JOYSTICK 1.5f
+#endif
+
 class Game : public pattern::Singleton<Game>
 {
 public:
@@ -115,6 +119,9 @@ public:
     
 #if USE_JOYSTICK
     void handleJoystickMove();
+    time_t _countJoystickStart;
+    time_t _countJoystickEnd;
+    bool _playerKeep;
 #endif
     
 #if USE_TOUCH
