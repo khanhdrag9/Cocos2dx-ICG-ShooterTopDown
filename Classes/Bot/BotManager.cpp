@@ -83,6 +83,18 @@ void BotManager::update(float dt)
             default:
                 break;
         }
+        
+        
+    }
+    if(isDestroy && game->getPlayer()){
+        int playerKills = game->getPlayerKills();
+        Vec2 playerPosition = game->getPlayer()->_sprite->getPosition();
+        for(int i = 0; i < playerKills; ++i){
+            auto bot = createBot(&_botCreations[RandomHelper::random_int(0, (int)_botCreations.size()-1)]);
+            Vec2 position = playerPosition;
+            while((position - playerPosition).length() < 1000)position = game->getRandomPosition();
+            bot->_sprite->setPosition(position);
+        }
     }
 }
 
@@ -107,12 +119,7 @@ void BotManager::initBots()
 	for (int i = 0; i < countEnemies; i++)
 	{
 		auto bot = createBot(&_botCreations[i]); //create bot here, use player for test, use Bot instead of
-		Game::getInstance()->getRigidWord()->createRigidBodyCircle(bot);
-		bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
         bot->_sprite->setPosition(history[i]);
-        //bot->_sprite->setPosition(Vec2(192, 192));
-
-		Game::getInstance()->getCurrentState()->addChild(bot->_sprite);
 	}
 }
 
@@ -125,6 +132,9 @@ shared_ptr<Bot> BotManager::createBot(CharacterCreation* creation)
 #if !DISIBLE_AI
     InformationCenter::getInstance()->pushBot(bot);
 #endif
+    Game::getInstance()->getRigidWord()->createRigidBodyCircle(bot);
+    bot->_rigidBody->setTag(RigidBody::tag::ENEMY);
+    Game::getInstance()->getCurrentState()->addChild(bot->_sprite);
 
 	return bot;
 }

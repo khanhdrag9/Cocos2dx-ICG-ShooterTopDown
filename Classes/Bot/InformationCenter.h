@@ -78,8 +78,11 @@ public:
 
 		void clear()
 		{
+            try{
 			if (isThreadAvaiable)
 				task.get();
+            }catch(std::system_error){}
+            
 			while (commands.size() > 0)
 				commands.pop();
 			bot = nullptr;

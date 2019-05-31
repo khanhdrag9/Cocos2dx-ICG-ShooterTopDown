@@ -81,6 +81,14 @@ bool GS_GamePlayUI::init()
     this->addChild(_joystick, 50);
 #endif
     
+    //Time
+    _coutTime = TOTAL_TIME * 60;
+    _time = Label::createWithTTF(std::to_string(_coutTime), font, 40);
+    _time->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+    _time->setPosition(Vec2(origin.x + sz.width / 2, origin.y + sz.height));
+    _time->setTextColor(Color4B::YELLOW);
+    this->addChild(_time);
+    
 #if CHEAT
     string F1 = "F1: jump to revival position\n";
     string F2 = "F2: destroy visions\n";
@@ -101,8 +109,18 @@ bool GS_GamePlayUI::init()
     return true;
 }
 
+string convertSecondToMinutes(int second){
+    int m = second / 60;
+    int s = second % 60;
+    return std::to_string(m) + ":" + std::to_string(s);
+}
+
 void GS_GamePlayUI::update(float dt)
 {
+    //update time
+    
+    if(_coutTime > 0)_coutTime -= dt;
+    _time->setString(convertSecondToMinutes(_coutTime));
     //if(auto character = _characterProfile.lock())
     if(auto character = _characterProfile)
     {
@@ -276,3 +294,4 @@ void GS_GamePlayUI::clear()
 	_characterProfile = nullptr;
     _skillsCharacter.clear();
 }
+

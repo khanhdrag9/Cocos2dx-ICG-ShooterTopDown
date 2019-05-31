@@ -22,8 +22,8 @@ using namespace NS_CC;
     #define USE_TOUCH 1
     #define USE_JOYSTICK 1
 #else
-    #define USE_TOUCH 1
-    #define USE_JOYSTICK 1
+    #define USE_TOUCH 0
+    #define USE_JOYSTICK 0
 #endif
 #define DEBUG_SIGHT 0
 #define DEBUG_ENEMY 0
@@ -35,5 +35,5 @@ using namespace NS_CC;
 #define FOG_OPACITY 225
 #endif
 
-#define VISIBLE_ENEMY 0
+#define VISIBLE_ENEMY 1
 #define CHEAT 0

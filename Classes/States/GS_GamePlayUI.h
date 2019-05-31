@@ -5,10 +5,14 @@ class Character;
 class GS_OptionPage;
 class Joystick;
 
+#define TOTAL_TIME 0.20   //minutes
+
 class GS_GamePlayUI : public Layer
 {
     Label* _playerBullet;
     Label* _propertiesPlayer;
+    Label* _time;
+    CC_SYNTHESIZE_READONLY(float, _coutTime, CountTime);
 
 //    Sprite* _kdaTab;
 //    Menu* _menuKDA;

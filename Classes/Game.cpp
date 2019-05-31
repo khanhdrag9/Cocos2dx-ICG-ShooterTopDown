@@ -116,13 +116,22 @@ void Game::update(float dt)
         Director::getInstance()->popScene();
     }
     
-    if(_player == nullptr)
+//    else if (BotManager::getInstance()->countBots() == 0)
+    if(_player != nullptr)
+    {
+        if(auto gameplayer = dynamic_cast<GS_GamePlay*>(_currentState))
+        {
+            if(auto ui = gameplayer->getUILayer())
+            {
+                if(ui->getCountTime() <= 0.0){
+                    _result = game_result::WIN;
+                }
+            }
+        }
+    }
+    else
     {
         _result = game_result::LOSE;
-    }
-    else if (BotManager::getInstance()->countBots() == 0)
-    {
-        _result = game_result::WIN;
     }
     
     if(_result != game_result::NONE)
@@ -239,8 +248,8 @@ void Game::handleKeyboardPress(EventKeyboard::KeyCode keycode, Event*)  //used i
     else if(keycode == EventKeyboard::KeyCode::KEY_R)
     {
         _player->getMag()->reload();
-        
     }
+
     _isHoldKey = true;
     _keyIsHolds.push_back(keycode);
 }
@@ -1017,3 +1026,5 @@ void Game::setShootOfPlayer(bool shoot)
 {
     _playerShoot = shoot;
 }
+
+
