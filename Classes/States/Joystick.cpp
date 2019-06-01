@@ -99,7 +99,7 @@ void Joystick::setCenter(Vec2 newCenter, side s)
 
 void Joystick::visible(side s, bool visible)
 {
-    visible = true;
+//    visible = true;
     if(s == side::LEFT)
     {
         _bgLeft->setVisible(visible);

@@ -172,7 +172,11 @@ void Game::update(float dt)
         }
         else
         {
+#if USE_JOYSTICK
             if (_playerShoot && _player->getMag()->canShoot() && !_lockShoot)
+#else
+            if (_playerShoot && _player->getMag()->canShoot())
+#endif
             {
                 handleShootCharacter((shared_ptr<Character>)_player, _player->getBullet()->getSpeed());
             }
