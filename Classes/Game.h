@@ -122,6 +122,7 @@ public:
     time_t _countJoystickStart;
     time_t _countJoystickEnd;
     bool _playerKeep;
+    CC_SYNTHESIZE(bool, _lockShoot, LockShoot);
 #endif
     
 #if USE_TOUCH

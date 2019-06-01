@@ -199,28 +199,33 @@ void GS_GamePlayUI::setCharacter(const shared_ptr<Character>& character)
     auto sz = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
     
-//    auto button = ui::Button::create(_characterProfile->getBullet()->getBulletImage());
-//    button->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-//    button->setScale(0.5f);
-//    button->setOpacity(225);
-//    button->setPosition(Vec2(origin.x + sz.width * 0.7f, origin.y + sz.height * 0.1f));
-//    button->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
-//        if(type == ui::Widget::TouchEventType::BEGAN || type == ui::Widget::TouchEventType::MOVED)
-//        {
-////            Game::getInstance()->handleShootCharacter(_characterProfile, _characterProfile->getBullet()->getSpeed());
-//            Game::getInstance()->setShootOfPlayer(true);
-//        }
-//        else
-//            Game::getInstance()->setShootOfPlayer(false);
-//    });
-//    this->addChild(button);
-//    _skillsCharacter.push_back(button);
+    _bulletBtn = ui::Button::create(_characterProfile->getBullet()->getBulletImage());
+    _bulletBtn->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    _bulletBtn->setScale(0.5f);
+    _bulletBtn->setOpacity(Game::getInstance()->getLockShoot() ? 55 : 255);
+    _bulletBtn->setPosition(Vec2(origin.x + sz.width * 0.02, origin.y + Joystick::radius * 2 + Joystick::offset_y * 2));
+    _bulletBtn->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
+        if(type == ui::Widget::TouchEventType::ENDED || type == ui::Widget::TouchEventType::CANCELED)
+        {
+            auto game = Game::getInstance();
+            game->setLockShoot(!game->getLockShoot());
+            if(game->getLockShoot())
+            {
+                _bulletBtn->setOpacity(55);
+            }
+            else
+            {
+                _bulletBtn->setOpacity(255);
+            }
+        }
+    });
+    this->addChild(_bulletBtn);
+    _skillsCharacter.push_back(_bulletBtn);
     
     auto reload = ui::Button::create(ResourceManager::getInstance()->at(res::define::BTN_RELOAD), "", "", ui::TextureResType::PLIST);
     reload->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
     reload->setScale(0.4f);
-//    reload->setOpacity(225);
-    reload->setPosition(Vec2(origin.x + sz.width * 0.95, origin.y + Joystick::radius * 2 + Joystick::offset_y * 2));
+    reload->setPosition(Vec2(origin.x + sz.width * 0.98, origin.y + Joystick::radius * 2 + Joystick::offset_y * 2));
     reload->addTouchEventListener([this](Ref*, ui::Widget::TouchEventType type){
         if(type == ui::Widget::TouchEventType::BEGAN)
         {

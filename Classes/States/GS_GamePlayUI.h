@@ -5,7 +5,7 @@ class Character;
 class GS_OptionPage;
 class Joystick;
 
-#define TOTAL_TIME 0.20   //minutes
+#define TOTAL_TIME 10   //minutes
 
 class GS_GamePlayUI : public Layer
 {
@@ -39,6 +39,7 @@ public:
     
 #if USE_JOYSTICK
     CC_SYNTHESIZE_READONLY(Joystick*, _joystick, Joystick);
+    ui::Button* _bulletBtn;
 #endif
 };
 

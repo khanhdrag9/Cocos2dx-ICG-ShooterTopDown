@@ -61,6 +61,7 @@ _enableVolumn(true)
 ,_playerKeep(false)
 ,_countJoystickStart(clock())
 ,_countJoystickEnd(clock())
+,_lockShoot(false)
 #endif
 {
     
@@ -171,7 +172,7 @@ void Game::update(float dt)
         }
         else
         {
-            if (_playerShoot && _player->getMag()->canShoot())
+            if (_playerShoot && _player->getMag()->canShoot() && !_lockShoot)
             {
                 handleShootCharacter((shared_ptr<Character>)_player, _player->getBullet()->getSpeed());
             }
